@@ -8,6 +8,7 @@ Installing
 
 
 1. Depend on it
+
    Add this to your package's pubspec.yaml file:
 
    ```YAML
@@ -18,6 +19,7 @@ Installing
    If your package is an application package you should use any as the version constraint.
 
 2. Install it
+
    If you're using the Dart Editor, choose:
 
    ```
@@ -31,6 +33,7 @@ Installing
    ```
 
 3. Import it
+
    Now in your Dart code, you can use:
 
    ```Dart
