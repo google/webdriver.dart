@@ -40,3 +40,9 @@ Installing
    import 'package:webdriver/webdriver.dart';
    ```
 
+Testing
+-------
+
+To run the tests, you need to first run selenium-server-standalonei, which you
+can download from https://code.google.com/p/selenium/downloads.
+
