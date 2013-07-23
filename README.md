@@ -8,32 +8,32 @@ Installing
 
 
 1. Depend on it
-Add this to your package's pubspec.yaml file:
+   Add this to your package's pubspec.yaml file:
 
-```YAML
-dependencies:
-  webdriver: 0.6.9
-```
+   ```YAML
+   dependencies:
+     webdriver: any
+   ```
 
-If your package is an application package you should use any as the version constraint.
+   If your package is an application package you should use any as the version constraint.
 
 2. Install it
-If you're using the Dart Editor, choose:
+   If you're using the Dart Editor, choose:
 
-```
-Menu > Tools > Pub Install
-```
+   ```
+   Menu > Tools > Pub Install
+   ```
 
-Or if you want to install from the command line, run:
+   Or if you want to install from the command line, run:
 
-```
-$ pub install
-```
+   ```
+   $ pub install
+   ```
 
 3. Import it
-Now in your Dart code, you can use:
+   Now in your Dart code, you can use:
 
-```Dart
-import 'package:webdriver/webdriver.dart';
-```
+   ```Dart
+   import 'package:webdriver/webdriver.dart';
+   ```
 
