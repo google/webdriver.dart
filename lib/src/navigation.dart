@@ -1,25 +1,21 @@
 part of webdriver;
 
-class Navigation {
-  final String _sessionId;
-  final CommandProcessor _commandProcessor;
+class Navigation extends _WebDriverBase {
 
-  Navigation._(this._sessionId, this._commandProcessor);
-
-  String get _prefix => '/session/$_sessionId';
+  Navigation._(prefix, commandProcessor) : this(prefix, commandProcessor);
 
   /**
    * Navigate forwards in the browser history, if possible.
    */
-  Future forward() => _commandProcessor.post('$_prefix/forward');
+  Future forward() => _post('forward');
 
   /**
    * Navigate backwards in the browser history, if possible.
    */
-  Future back() => _commandProcessor.post('$_prefix/back');
+  Future back() => _post('back');
 
   /**
    * Refresh the current page.
    */
-  Future refresh() => _commandProcessor.post('$_prefix/refresh');
+  Future refresh() => _post('refresh');
 }

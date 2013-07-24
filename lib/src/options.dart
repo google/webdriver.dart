@@ -1,35 +1,32 @@
 part of webdriver;
 
-class Cookies {
-  final String _sessionId;
-  final CommandProcessor _commandProcessor;
+class Cookies extends _WebDriverBase {
 
-  Options._(this._sessionId, this._commandProcessor);
-
-  String get _prefix => '/session/$_sessionId/cookie';
+  Cookies._(prefix, commandProcessor) :
+      super('$prefix/cookie', commandProcessor);
 
   /**
    * Set a cookie.
    */
   Future add(Cookie cookie) =>
-      _commandProcessor.post(_prefix, { 'cookie': cookie.json });
+      _post(_prefix, { 'cookie': cookie.json });
 
   /**
    * Delete the cookie with the given name.
    */
   Future delete(String name) =>
-      _commandProcessor.delete('$_prefix/$name');
+      _delete('$name');
 
   /**
    * Delete all cookies visible to the current page.
    */
-  Future deleteAll() => _commandProcessor.delete(_prefix);
+  Future deleteAll() => _delete(_prefix);
 
   /**
    * Retrieve all cookies visible to the current page.
    */
   Future<List<Cookie>> get all =>
-      _commandProcessor.get(_prefix)
+      _get(_prefix)
       .then((cookies) => cookies.map((cookie) => new Cookie.fromJson(cookie)));
 }
 
@@ -98,16 +95,13 @@ class Cookie {
   }
 }
 
-class Timeouts {
-  final String _sessionId;
-  final CommandProcessor _commandProcessor;
+class Timeouts extends _WebDriverBase {
 
-  Timeouts._(this._sessionId, this._commandProcessor);
-
-  String get _prefix => '/session/$_sessionId/timeouts';
+  Timeouts._(prefix, commandProcessor) :
+      super('$prefix/timeouts', commandProcessor);
 
   Future _set(String type, Duration duration) =>
-      _commandProcessor.post(_prefix,
+      _post(_prefix,
           { 'type' : type, 'ms': duration.inMilliseconds});
 
   /**
@@ -129,13 +123,13 @@ class Timeouts {
    * Set the async script timeout.
    */
   Future setAsyncScriptTimeout(Duration duration) =>
-      _commandProcessor.post('$_prefix/async_script',
+      _post('async_script',
           { 'ms': duration.inMilliseconds});
 
   /**
    * Set the implicit wait timeout.
    */
   Future setImplicitWaitTimeout(Duration duration) =>
-      _commandProcessor.post('$_prefix/implicit_wait',
+      _post('implicit_wait',
           { 'ms': duration.inMilliseconds});
 }

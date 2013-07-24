@@ -1,42 +1,39 @@
 part of webdriver;
 
-class Touch implements Future {
+class Touch extends _WebDriverBase implements Future {
 
   Future _future;
-  final String _sessionId;
-  final CommandProcessor _commandProcessor;
 
-  Touch._(this._sessionId, this._commandProcessor, [this._future]) {
+  Touch._(prefix, commandProcessor, [this._future]) :
+      super('$prefix/touch', commandProcessor) {
     if (_future == null) {
       _future = new Future.value();
     }
   }
 
-  String get _prefix => '/session/$_sessionId/touch';
-
   /**
    * Single tap on the touch enabled device.
    */
   Touch click(WebElement element) => _createNext((_) =>
-      _commandProcessor.post('$_prefix/click', element.json));
+      _post('click', element.json));
 
   /**
    * Finger down on the screen.
    */
   Touch down(Point point) => _createNext((_) =>
-      _commandProcessor.post('$_prefix/down', point.json));
+      _post('down', point.json));
 
   /**
    * Finger up on the screen.
    */
   Touch up(Point point) => _createNext((_) =>
-      _commandProcessor.post('$_prefix/up', point.json));
+      _post('up', point.json));
 
   /**
    * Finger move on the screen.
    */
   Touch move(Point point) => _createNext((_) =>
-      _commandProcessor.post('$_prefix/move', point.json));
+      _post('move', point.json));
 
   /**
    * Scroll on the touch screen using finger based motion events.
@@ -49,26 +46,26 @@ class Touch implements Future {
     if (start is WebElement) {
       json['element'] = start._elementId;
     }
-    return _createNext((_) => _commandProcessor.post('$_prefix/scroll', json));
+    return _createNext((_) => _post('scroll', json));
   }
 
   /**
    * Double tap on the touch screen using finger motion events.
    */
   Touch doubleClick(WebElement element) => _createNext((_) =>
-      _commandProcessor.post('$_prefix/doubleclick', element.json));
+      _post('doubleclick', element.json));
 
   /**
    * Long press on the touch screen using finger motion events.
    */
   Touch longClick(WebElement element) => _createNext((_) =>
-      _commandProcessor.post('$_prefix/longclick', element.json));
+      _post('longclick', element.json));
 
   /**
    * Flick on the touch screen using finger motion events.
    */
   Touch flickElement(WebElement start, int xOffset, int yOffset, int speed) =>
-      _createNext((_) => _commandProcessor.post('$_prefix/flick', {
+      _createNext((_) => _post('flick', {
         'element': start._elementId,
         'xoffset': xOffset.floor(),
         'yoffset': yOffset.floor(),
@@ -79,13 +76,13 @@ class Touch implements Future {
    * Flick on the touch screen using finger motion events.
    */
   Touch flick(int xSpeed, int ySpeed) =>
-      _createNext((_) => _commandProcessor.post('$_prefix/flick', {
+      _createNext((_) => _post('flick', {
         'xspeed': xSpeed.floor(),
         'yspeed': ySpeed.floor()
       }));
 
   Touch _createNext(f) {
-    return new Touch._(_sessionId, _commandProcessor, _future.then(f));
+    return new Touch._(_prefix, _commandProcessor, _future.then(f));
   }
 
   Stream asStream() => _future.asStream();

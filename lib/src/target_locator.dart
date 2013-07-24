@@ -1,12 +1,8 @@
 part of webdriver;
 
-class TargetLocator {
-  final String _sessionId;
-  final CommandProcessor _commandProcessor;
+class TargetLocator extends _WebDriverBase {
 
-  TargetLocator._(this._sessionId, this._commandProcessor);
-
-  String get _prefix => '/session/$_sessionId';
+  TargetLocator._(prefix, commandProcessor) : super(prefix, commandProcessor);
 
   /**
    * Change focus to another frame on the page.
@@ -19,32 +15,32 @@ class TargetLocator {
    *               element.
    *   not provided: selects the first frame on the page or the main document.
    *
-   * @throws WebDriverError no such frame if the specified frame can't be
+   * Throws WebDriverError no such frame if the specified frame can't be
    * found.
    */
   Future frame([frame]) {
     if (frame is WebElement) {
       frame = frame.json;
     }
-    return _commandProcessor.post('$_prefix/frame', { 'id': frame});
+    return _post('frame', { 'id': frame});
   }
 
   /**
    * Switch the focus of future commands for this driver to the window with the
    * given name/handle.
    *
-   * @throws WebDriverError no such window if the specified window can't be
+   * Throws WebDriverError no such window if the specified window can't be
    * found.
    */
   Future window(String window) =>
-      _commandProcessor.post('$_prefix/window', { 'name': window});
+      _post('window', { 'name': window});
 
   /**
    * Switches to the currently active modal dialog for this particular driver
    * instance.
    *
-   * @throws WebDriverEror no alert present if their is not currently an alert.
+   * Throws WebDriverEror no alert present if their is not currently an alert.
    */
-  Future<Alert> alert() => _commandProcessor.get('$_prefix/alert_text')
-      .then((text) => new Alert._(text, _commandProcessor, _sessionId));
+  Future<Alert> alert() => _get('alert_text')
+      .then((text) => new Alert._(text, _prefix, _commandProcessor));
 }

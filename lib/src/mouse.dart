@@ -1,22 +1,19 @@
 part of webdriver;
 
-class Mouse implements Future {
+class Mouse extends _WebDriverBase implements Future {
 
   static const int LEFT = 0;
   static const int MIDDLE = 1;
   static const int RIGHT = 2;
 
   Future _future;
-  final String _sessionId;
-  final CommandProcessor _commandProcessor;
 
-  Mouse._(this._sessionId, this._commandProcessor, [this._future]) {
+  Mouse._(prefix, commandProcessor, [this._future]) :
+      super(prefix, commandProcessor) {
     if (_future == null) {
       _future = new Future.value();
     }
   }
-
-  String get _prefix => '/session/$_sessionId';
 
   /**
    * Click any mouse button (at the coordinates set by the last moveto command).
@@ -26,7 +23,7 @@ class Mouse implements Future {
     if (button is num) {
       json['button'] = button.clamp(0, 2).floor();
     }
-    return _createNext((_) => _commandProcessor.post('$_prefix/click', json));
+    return _createNext((_) => _post('click', json));
   }
 
   /**
@@ -39,7 +36,7 @@ class Mouse implements Future {
       json['button'] = button.clamp(0, 2).floor();
     }
     return _createNext((_) =>
-        _commandProcessor.post('$_prefix/buttondown', json));
+        _post('buttondown', json));
   }
 
   /**
@@ -52,14 +49,14 @@ class Mouse implements Future {
       json['button'] = button.clamp(0, 2).floor();
     }
     return _createNext((_) =>
-        _commandProcessor.post('$_prefix/buttonup', json));
+        _post('buttonup', json));
   }
 
   /**
    * Double-clicks at the current mouse coordinates (set by moveto).
    */
   Mouse doubleClick() =>
-      _createNext((_) => _commandProcessor.post('$_prefix/doubleclick'));
+      _createNext((_) => _post('doubleclick'));
 
   /**
    * Move the mouse.
@@ -85,11 +82,11 @@ class Mouse implements Future {
       json['xoffset'] = xOffset.floor();
       json['yoffset'] = yOffset.floor();
     }
-    return _createNext((_) => _commandProcessor.post('$_prefix/moveto', json));
+    return _createNext((_) => _post('moveto', json));
   }
 
   Mouse _createNext(f) {
-    return new Mouse._(_sessionId, _commandProcessor, _future.then(f));
+    return new Mouse._(_prefix, _commandProcessor, _future.then(f));
   }
 
   Stream asStream() => _future.asStream();

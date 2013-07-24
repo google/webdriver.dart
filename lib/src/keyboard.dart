@@ -1,18 +1,15 @@
 part of webdriver;
 
-class Keyboard implements Future {
+class Keyboard extends _WebDriverBase implements Future {
 
   Future _future;
-  final String _sessionId;
-  final CommandProcessor _commandProcessor;
 
-  Keyboard._(this._sessionId, this._commandProcessor, [this._future]) {
+  Keyboard._(prefix, commandProcessor, [this._future]) :
+      super(prefix, commandProcessor) {
     if (_future == null) {
       _future = new Future.value();
     }
   }
-
-  String get _prefix => '/session/$_sessionId';
 
   /**
    * Send a sequence of key strokes to the active element.
@@ -21,13 +18,13 @@ class Keyboard implements Future {
     if (keysToSend is String) {
       keysToSend = [ keysToSend ];
     }
-    return _createNext((_) => _commandProcessor.post(
-        '$_prefix/keys',
+    return _createNext((_) => _post(
+        'keys',
         { 'value' : keysToSend as List<String>}));
   }
 
   Keyboard _createNext(f) {
-    return new Keyboard._(_sessionId, _commandProcessor, _future.then(f));
+    return new Keyboard._(_prefix, _commandProcessor, _future.then(f));
   }
 
   Stream asStream() => _future.asStream();

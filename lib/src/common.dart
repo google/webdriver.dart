@@ -4,14 +4,12 @@ part of webdriver;
  * Simple class to provide access to index properties such as WebElement
  * attributes or css styles.
  */
-class Attributes {
-  final String _prefix;
-  final CommandProcessor _commandProcessor;
+class Attributes extends _WebDriverBase{
 
-  Attributes._(this._prefix, this._commandProcessor);
+  Attributes._(command, prefix, commandProcessor) :
+      super('$prefix/$command', commandProcessor);
 
-  Future<String> operator [](String name) =>
-      _commandProcessor.get('$_prefix/$name');
+  Future<String> operator [](String name) => _get(name);
 }
 
 class Size {
@@ -52,10 +50,32 @@ abstract class SearchContext {
   /**
    * Searchs for an element within the context.
    *
-   * @throws WebDriverError no such element exception if no matching element is
+   * Throws WebDriverError no such element exception if no matching element is
    * found.
    */
   Future<WebElement> findElement(By by);
+}
+
+abstract class _WebDriverBase {
+  final String _prefix;
+  final CommandProcessor _commandProcessor;
+
+  _WebDriverBase(this._prefix, this._commandProcessor);
+
+  Future _post(String command, [Map<String, dynamic> json]) =>
+      _commandProcessor.post(_command(command), json);
+
+  Future _get(String command) => _commandProcessor.get(_command(command));
+
+  Future _delete(String command) => _commandProcessor.delete(_command(command));
+
+  String _command(String command) {
+    if (command == null || command.isEmpty) {
+      return _prefix;
+    } else {
+      return '$command';
+    }
+  }
 }
 
 class By {
