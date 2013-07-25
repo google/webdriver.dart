@@ -48,7 +48,6 @@ class CommandProcessor {
     var successCodes = [ 200, 204 ];
     var completer = new Completer();
 
-    print(command);
     try {
       var path = command;
       if (params != null) {
