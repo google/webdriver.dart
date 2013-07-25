@@ -11,6 +11,7 @@ import 'package:crypto/crypto.dart';
 import 'package:meta/meta.dart';
 
 part 'src/alert.dart';
+part 'src/capabilities.dart';
 part 'src/command_processor.dart';
 part 'src/common.dart';
 part 'src/keyboard.dart';

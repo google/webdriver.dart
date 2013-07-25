@@ -14,18 +14,10 @@ class CommandProcessor {
    * http://localhost:4444/wd/hub.
    */
   CommandProcessor._fromUrl([this._url = 'http://localhost:4444/wd/hub']) {
-    // Break out the URL components.
-    var re = new RegExp('[^:/]+://([^/]+)(/.*)');
-    var matches = re.firstMatch(_url);
-    _host = matches[1];
-    _path = matches[2];
-    var idx = _host.indexOf(':');
-    if (idx >= 0) {
-      _port = int.parse(_host.substring(idx+1));
-      _host = _host.substring(0, idx);
-    } else {
-      _port = 80;
-    }
+    Uri uri = Uri.parse(this._url);
+    _port = uri.port;
+    _host = uri.host;
+    _path = uri.path;
   }
 
   CommandProcessor([
@@ -38,7 +30,7 @@ class CommandProcessor {
   void _failRequest(Completer completer, error, [stackTrace]) {
     if (completer != null) {
       var trace = stackTrace != null ? stackTrace : getAttachedStackTrace(error);
-      completer.completeError(new WebDriverError(-1, error), trace);
+      completer.completeError(new WebDriverError(-1, error.toString()), trace);
     }
   }
 
@@ -49,14 +41,14 @@ class CommandProcessor {
    * parameters. If a [List] or [Map] they will be posted as JSON parameters.
    * If a number or string, "/params" is appended to the URL.
    */
-  void _serverRequest(String http_method, String command, Completer completer,
-                      {List successCodes, params}) {
+  Future _serverRequest(String http_method, String command, {params}) {
     var status = 0;
     var results = null;
     var message = null;
-    if (successCodes == null) {
-      successCodes = [ 200, 204 ];
-    }
+    var successCodes = [ 200, 204 ];
+    var completer = new Completer();
+
+    print(command);
     try {
       var path = command;
       if (params != null) {
@@ -75,8 +67,8 @@ class CommandProcessor {
       client.open(http_method, _host, _port, path).then((req) {
         req.followRedirects = false;
         req.headers.add(HttpHeaders.ACCEPT, "application/json");
-        req.headers.add(
-            HttpHeaders.CONTENT_TYPE, 'application/json;charset=UTF-8');
+        req.headers.contentType
+            = new ContentType("application", "json", charset: "utf-8");
         if (params != null) {
           var body = json.stringify(params);
           req.write(body);
@@ -133,24 +125,24 @@ class CommandProcessor {
       _failRequest(completer, e, s);
       completer = null;
     }
-  }
-
-  Future get(String extraPath) {
-    var completer = new Completer();
-    _serverRequest('GET', '${_path}/$extraPath', completer);
     return completer.future;
   }
 
-  Future post(String extraPath, [params]) {
-    var completer = new Completer();
-    _serverRequest('POST', '${_path}/$extraPath', completer,
-        params: params);
-    return completer.future;
-  }
+  Future get(String extraPath) => _serverRequest('GET', _command(extraPath));
 
-  Future delete(String extraPath) {
-    var completer = new Completer();
-    _serverRequest('DELETE', '${_path}/$extraPath', completer);
-    return completer.future;
+
+  Future post(String extraPath, [params]) =>
+      _serverRequest('POST', _command(extraPath), params: params);
+
+
+  Future delete(String extraPath) =>
+      _serverRequest('DELETE', _command(extraPath));
+
+  String _command(String extraPath) {
+    if (extraPath.startsWith('/')) {
+      return '${_path}$extraPath';
+    } else {
+      return '${_path}/$extraPath';
+    }
   }
 }

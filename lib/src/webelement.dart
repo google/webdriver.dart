@@ -23,7 +23,7 @@ class WebElement extends _WebDriverBase implements SearchContext {
   /**
    * Send keys to this element.
    *
-   * @param keysToSend can be a String or List<String>.
+   * @param keysToSend a String or List<String>.
    */
   Future sendKeys(dynamic keysToSend) {
     if (keysToSend is String) {

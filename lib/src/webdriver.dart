@@ -2,23 +2,40 @@ part of webdriver;
 
 class WebDriver extends _WebDriverBase implements SearchContext {
 
-  WebDriver._(sessionId, commandProcessor) :
-      super('session/$sessionId', commandProcessor);
+  WebDriver._(commandProcessor) :
+      super('', commandProcessor) ;
 
   /**
    * Creates a WebDriver instance connected to the specifier WebDriver server.
    */
-  static Future<WebDriver> createDriver(String url) {
-    var commandProcessor = new CommandProcessor._fromUrl(url);
-    return commandProcessor.get('/session').then((sessionId) =>
-        new WebDriver._(sessionId, commandProcessor));
+  static Future<WebDriver> createDriver({
+      String url: 'http://localhost:4444/wd/hub',
+      Map<String, dynamic> desiredCapabilities}) {
+
+    if (desiredCapabilities == null) {
+      desiredCapabilities = Capabilities.empty;
+    }
+    var client = new HttpClient();
+    return client.openUrl('POST', Uri.parse(url + "/session")).then((req) {
+      req.followRedirects = false;
+      req.headers.add(HttpHeaders.ACCEPT, "application/json");
+      req.headers.add(HttpHeaders.CONTENT_TYPE, 'application/json;charset=UTF-8');
+      req.write(json.stringify({
+        'desiredCapabilities': desiredCapabilities
+      }));
+      return req.close();
+
+    }).then((rsp) {
+      CommandProcessor processor = new CommandProcessor
+          ._fromUrl(rsp.headers.value(HttpHeaders.LOCATION));
+      return new WebDriver._(processor);
+    });
   }
 
   /**
    * Navigate to the specified url.
    */
-  Future get(String url) =>
-      _post('url', {'url': url});
+  Future get(String url) => _post('url', {'url': url});
 
   /**
    * The current url.

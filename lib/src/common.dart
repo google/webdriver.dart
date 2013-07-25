@@ -72,8 +72,10 @@ abstract class _WebDriverBase {
   String _command(String command) {
     if (command == null || command.isEmpty) {
       return _prefix;
-    } else {
+    } else if (_prefix == null || _prefix.isEmpty) {
       return '$command';
+    } else {
+      return '$_prefix/$command';
     }
   }
 }
