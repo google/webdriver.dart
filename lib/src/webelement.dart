@@ -90,16 +90,21 @@ class WebElement extends _WebDriverBase implements SearchContext {
   Future<List<WebElement>> findElements(By by) => _post('elements', by.json)
       .then((response) => response.map((element) =>
           new WebElement._(element['ELEMENT'], _originalPrefix,
-              _commandProcessor)));
+              _commandProcessor)).toList());
 
   /**
    * Access to the HTML attributes of this tag.
+   *
+   * TODO(DrMarcII): consider special handling of boolean attributes.
    */
   Attributes get attributes =>
       new Attributes._('attribute', _prefix, _commandProcessor);
 
   /**
    * Access to the cssProperties of this element.
+   *
+   * TODO(DrMarcII): consider special handling of color and possibly other
+   *                 properties.
    */
   Attributes get cssProperties =>
       new Attributes._('css', _prefix, _commandProcessor);

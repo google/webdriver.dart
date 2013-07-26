@@ -51,18 +51,18 @@ class WebDriver extends _WebDriverBase implements SearchContext {
    * Search for multiple elements within the entire current page.
    */
   @override
-  Future<List<WebElement>> findElements(By by) => _commandProcessor
-      .post('elements', by.json)
-      .then((response) => response.map((element) =>
-          new WebElement._(element['ELEMENT'], _prefix, _commandProcessor)));
+  Future<List<WebElement>> findElements(By by) => _post('elements', by.json)
+      .then((response) =>
+          response.map((element) =>
+              new WebElement._(element['ELEMENT'], _prefix, _commandProcessor))
+              .toList());
 
   /**
    * Search for an element within the entire current page.
    *
    * Throws WebDriverError no such element if a matching element is not found.
    */
-  Future<WebElement> findElement(By by) => _commandProcessor
-      .post('element', by.json)
+  Future<WebElement> findElement(By by) => _post('element', by.json)
       .then((element) =>
           new WebElement._(element['ELEMENT'], _prefix, _commandProcessor));
 
@@ -84,20 +84,26 @@ class WebDriver extends _WebDriverBase implements SearchContext {
   /**
    * Handles for all of the currently displayed tabs/windows.
    */
-  Future<List<String>> get windowHandles =>
-      _get('window_handles');
+  Future<List<String>> get windowHandles => _get('window_handles');
 
   /**
    * Handle for the active tab/window.
    */
-  Future<String> get windowHandle =>
-      _get('window_handle');
+  Future<String> get windowHandle => _get('window_handle');
 
   /**
    * The currently focused element, or the body element if no element has focus.
    */
-  Future<WebElement> get activeElement =>
-      _get('element/active');
+  Future<WebElement> get activeElement => _get('element/active')
+      .then((element) {
+        if (element == null) {
+          return null;
+        } else {
+          new WebElement._(element['ELEMENT'], _prefix, _commandProcessor);
+        }
+      });
+
+
 
   TargetLocator get switchTo =>
       new TargetLocator._(_prefix, _commandProcessor);
@@ -119,7 +125,7 @@ class WebDriver extends _WebDriverBase implements SearchContext {
 
   Future<List<Window>> get windows => windowHandles
       .then((windows) => windows.map((window) =>
-          new Window._(window, _prefix, _commandProcessor)));
+          new Window._(window, _prefix, _commandProcessor)).toList());
 
   Future<List<int>> captureScreenshot() => _commandProcessor
       .get('screenshot')

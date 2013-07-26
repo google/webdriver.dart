@@ -41,6 +41,6 @@ class TargetLocator extends _WebDriverBase {
    *
    * Throws WebDriverEror no alert present if their is not currently an alert.
    */
-  Future<Alert> alert() => _get('alert_text')
+  Future<Alert> get alert => _get('alert_text')
       .then((text) => new Alert._(text, _prefix, _commandProcessor));
 }

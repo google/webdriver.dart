@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <title>test_page</title>
+    <script>
+      function promptForText() {
+        var val = prompt('button clicked');
+        if (val == null) {
+          document.getElementById('settable').textContent = 'dismissed';
+        } else {
+          document.getElementById('settable').textContent = 'accepted ' + val;
+        }
+      }
+    </script>
+  </head>
+
+  <body>
+    <table id='table1' non-standard='a non standard attr'>
+      <tr>
+        <td>r1c1</td>
+        <td>r1c2</td>
+      </tr>
+      <tr>
+        <td>r2c1</td>
+        <td>r2c2</td>
+      </tr>
+    </table>
+    <button onclick='promptForText();'>button</button>
+    <form onsubmit='alert("form submitted")'>
+      <input type='text' />
+      <input type='checkbox' />
+      <input type='password' disabled />
+    </form>
+    <div id='div' style='display: none; background-color: red'>some not displayed text</div>
+    <a id='settable' href="test_page.html" target="_new">Open copy in other window</a>
+  </body>
+</html>
