@@ -24,48 +24,47 @@ class AlertTest {
       tearDown(() => driver.quit());
 
       test('no alert', () {
-        driver.switchTo.alert.catchError(expectAsync1((error) {
+        return driver.switchTo.alert.catchError((error) {
           expect(error, new isInstanceOf<WebDriverError>());
-        }));
+        });
       });
 
       test('text', () {
-        button.click().then((_) => driver.switchTo.alert)
+        return button.click().then((_) => driver.switchTo.alert)
             .then((alert) {
               expect(alert.text, 'button clicked');
               return alert.dismiss();
-            })
-            .then(expectAsync1((_) { }));
+            });
       });
 
       test('accept', () {
-        button.click().then((_) => driver.switchTo.alert)
+        return button.click().then((_) => driver.switchTo.alert)
             .then((alert) => alert.accept())
             .then((_) => link.text)
-            .then(expectAsync1((text) {
+            .then((text) {
               expect(text, startsWith('accepted'));
-            }));
+            });
       });
 
       test('dismiss', () {
-        button.click().then((_) => driver.switchTo.alert)
+        return button.click().then((_) => driver.switchTo.alert)
             .then((alert) => alert.dismiss())
             .then((_) => link.text)
-            .then(expectAsync1((text) {
+            .then((text) {
               expect(text, startsWith('dismissed'));
-            }));
+            });
       });
 
       test('sendKeys', () {
         Alert alert;
-        button.click().then((_) => driver.switchTo.alert)
+        return button.click().then((_) => driver.switchTo.alert)
             .then((_alert) => alert = _alert)
             .then((_) => alert.sendKeys('some keys'))
             .then((_) => alert.accept())
             .then((_) => link.text)
-            .then(expectAsync1((text) {
+            .then((text) {
               expect(text, endsWith('some keys'));
-            }));
+            });
       });
     });
   }

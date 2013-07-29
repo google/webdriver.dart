@@ -42,37 +42,35 @@ class WebElementTest {
       tearDown(() => driver.quit());
 
       test('click', () {
-        button.click()
+        return button.click()
           .then((_) => driver.switchTo.alert)
-          .then((alert) =>  alert.accept())
-          .then(expectAsync1((_) { }));
+          .then((alert) =>  alert.accept());
       });
 
       test('submit', () {
-        form.submit()
+        return form.submit()
           .then((_) => driver.switchTo.alert)
           .then((alert) {
             expect(alert.text, 'form submitted');
             return alert.accept();
-          })
-          .then(expectAsync1((_) { }));
+          });
       });
 
       test('sendKeys', () {
-        textInput.sendKeys('some keys')
+        return textInput.sendKeys('some keys')
           .then((_) => textInput.attributes['value'])
-          .then(expectAsync1((value) {
+          .then((value) {
             expect(value, 'some keys');
-          }));
+          });
       });
 
       test('clear', () {
-        textInput.sendKeys('some keys')
+        return textInput.sendKeys('some keys')
           .then((_) => textInput.clear())
           .then((_) => textInput.attributes['value'])
-          .then(expectAsync1((value) {
+          .then((value) {
             expect(value, '');
-          }));
+          });
       });
 
       test('enabled', () {
@@ -175,40 +173,40 @@ class WebElementTest {
       });
 
       test('findElement -- success', () {
-        table.findElement(new By.tagName('tr'))
-            .then(expectAsync1((element) {
+        return table.findElement(new By.tagName('tr'))
+            .then((element) {
               expect(element, new isInstanceOf<WebElement>());
-            }));
+            });
       });
 
       test('findElement -- failure', () {
-        button.findElement(new By.tagName('tr'))
-            .catchError(expectAsync1((error) {
+        return button.findElement(new By.tagName('tr'))
+            .catchError((error) {
               expect(error, new isInstanceOf<WebDriverError>());
-            }));
+            });
       });
 
       test('findElements -- 1 found', () {
-        form.findElements(new By.cssSelector('input[type=text]'))
-            .then(expectAsync1((elements) {
+        return form.findElements(new By.cssSelector('input[type=text]'))
+            .then((elements) {
               expect(elements.length, 1);
               expect(elements, everyElement(new isInstanceOf<WebElement>()));
-            }));
+            });
       });
 
       test('findElements -- 4 found', () {
-        table.findElements(new By.tagName('td'))
-            .then(expectAsync1((elements) {
+        return table.findElements(new By.tagName('td'))
+            .then((elements) {
               expect(elements.length, 4);
               expect(elements, everyElement(new isInstanceOf<WebElement>()));
-            }));
+            });
       });
 
       test('findElements -- 0 found', () {
-        form.findElements(new By.tagName('td'))
-            .then(expectAsync1((elements) {
+        return form.findElements(new By.tagName('td'))
+            .then((elements) {
               expect(elements.length, 0);
-            }));
+            });
       });
 
       test('attributes', () {
