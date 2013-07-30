@@ -70,6 +70,7 @@ class CommandProcessor {
             = new ContentType("application", "json", charset: "utf-8");
         if (params != null) {
           var body = json.stringify(params);
+          print(body);
           req.write(body);
         }
         req.close().then((rsp) {

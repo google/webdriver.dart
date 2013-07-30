@@ -3,7 +3,7 @@ part of webdriver_test;
 class WebElementTest {
   main() {
 
-    File file = new File('test_page.html');
+    io.File file = new io.File('test_page.html');
 
     group('WebElement', () {
 

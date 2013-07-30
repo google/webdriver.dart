@@ -133,6 +133,7 @@ class By {
   Map<String, String> get json => { 'using': _using, 'value': _value};
 }
 
+// TODO(DrMarcII): Create a better WebDriver exception hierarchy.
 class WebDriverError {
   static const List<String> _errorTypes = const [
       null,

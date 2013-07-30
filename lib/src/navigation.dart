@@ -2,7 +2,7 @@ part of webdriver;
 
 class Navigation extends _WebDriverBase {
 
-  Navigation._(prefix, commandProcessor) : this(prefix, commandProcessor);
+  Navigation._(prefix, commandProcessor) : super(prefix, commandProcessor);
 
   /**
    * Navigate forwards in the browser history, if possible.

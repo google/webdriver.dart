@@ -4,7 +4,7 @@ class WebDriverTest {
   main() {
 
     WebDriver driver;
-    File file = new File('test_page.html');
+    io.File file = new io.File('test_page.html');
 
     group('WebDriver', () {
       group('create', () {

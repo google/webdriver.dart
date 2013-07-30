@@ -30,7 +30,7 @@ class Mouse extends _WebDriverBase implements Future {
    * Click and hold any mouse button (at the coordinates set by the last
    * moveto command).
    */
-  Mouse down([int button = 0]) {
+  Mouse down([int button]) {
     var json = {};
     if (button is num) {
       json['button'] = button.clamp(0, 2).floor();
@@ -43,7 +43,7 @@ class Mouse extends _WebDriverBase implements Future {
    * Releases the mouse button previously held (where the mouse is currently
    * at).
    */
-  Mouse up([int button = 0]) {
+  Mouse up([int button]) {
     var json = {};
     if (button is num) {
       json['button'] = button.clamp(0, 2).floor();

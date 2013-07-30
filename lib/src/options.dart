@@ -9,7 +9,7 @@ class Cookies extends _WebDriverBase {
    * Set a cookie.
    */
   Future add(Cookie cookie) =>
-      _post(_prefix, { 'cookie': cookie.json });
+      _post('', { 'cookie': cookie.json });
 
   /**
    * Delete the cookie with the given name.
@@ -20,14 +20,15 @@ class Cookies extends _WebDriverBase {
   /**
    * Delete all cookies visible to the current page.
    */
-  Future deleteAll() => _delete(_prefix);
+  Future deleteAll() => _delete('');
 
   /**
    * Retrieve all cookies visible to the current page.
    */
   Future<List<Cookie>> get all =>
-      _get(_prefix)
-      .then((cookies) => cookies.map((cookie) => new Cookie.fromJson(cookie)));
+      _get('')
+      .then((cookies) =>
+          cookies.map((cookie) => new Cookie.fromJson(cookie)).toList());
 }
 
 class Cookie {
@@ -101,8 +102,7 @@ class Timeouts extends _WebDriverBase {
       super('$prefix/timeouts', commandProcessor);
 
   Future _set(String type, Duration duration) =>
-      _post(_prefix,
-          { 'type' : type, 'ms': duration.inMilliseconds});
+      _post('', { 'type' : type, 'ms': duration.inMilliseconds});
 
   /**
    * Set the script timeout.
