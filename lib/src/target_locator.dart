@@ -19,9 +19,6 @@ class TargetLocator extends _WebDriverBase {
    * found.
    */
   Future frame([frame]) {
-    if (frame is WebElement) {
-      frame = frame.json;
-    }
     return _post('frame', { 'id': frame});
   }
 

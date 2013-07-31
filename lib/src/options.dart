@@ -2,14 +2,14 @@ part of webdriver;
 
 class Cookies extends _WebDriverBase {
 
-  Cookies._(prefix, commandProcessor) :
-      super('$prefix/cookie', commandProcessor);
+  Cookies._(prefix, commandProcessor)
+      : super('$prefix/cookie', commandProcessor);
 
   /**
    * Set a cookie.
    */
   Future add(Cookie cookie) =>
-      _post('', { 'cookie': cookie.json });
+      _post('', { 'cookie': cookie });
 
   /**
    * Delete the cookie with the given name.
@@ -75,7 +75,7 @@ class Cookie {
         expiry: expiry);
   }
 
-  Map<String, dynamic> get json {
+  Map<String, dynamic> toJson() {
     var json = {
         'name': name,
         'value': value
@@ -98,8 +98,8 @@ class Cookie {
 
 class Timeouts extends _WebDriverBase {
 
-  Timeouts._(prefix, commandProcessor) :
-      super('$prefix/timeouts', commandProcessor);
+  Timeouts._(prefix, commandProcessor)
+      : super('$prefix/timeouts', commandProcessor);
 
   Future _set(String type, Duration duration) =>
       _post('', { 'type' : type, 'ms': duration.inMilliseconds});

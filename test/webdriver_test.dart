@@ -14,6 +14,10 @@ part 'src/webdriver_test.dart';
 part 'src/webelement_test.dart';
 part 'src/window_test.dart';
 
+final Matcher isWebDriverError = new isInstanceOf<WebDriverError>();
+final Matcher isWebElement = new isInstanceOf<WebElement>();
+final Matcher isSize = new isInstanceOf<Size>();
+final Matcher isPoint = new isInstanceOf<Point>();
 
 /**
  * These tests are not expected to be run as part of normal automated testing,
@@ -22,14 +26,13 @@ part 'src/window_test.dart';
 main() {
   useVMConfiguration();
 
-  new AlertTest().main();
-  new KeyboardTest().main();
-  new MouseTest().main();
-  new NavigationTest().main();
-  new OptionsTest().main();
-  new TargetLocatorTest().main();
+//  new AlertTest().main();
+//  new KeyboardTest().main();
+//  new MouseTest().main();
+//  new NavigationTest().main();
+//  new OptionsTest().main();
+//  new TargetLocatorTest().main();
   new WebDriverTest().main();
-  new WebElementTest().main();
-  new WindowTest().main();
+//  new WebElementTest().main();
+//  new WindowTest().main();
 }
-

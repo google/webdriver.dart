@@ -20,6 +20,8 @@ class WindowTest {
         return driver.window.setSize(new Size(400, 600))
             .then((_) => driver.window.size)
             .then((size) {
+              expect(size, isSize);
+              // TODO(DrMarcII): Switch to hasProperty matchers
               expect(size.height, 400);
               expect(size.width, 600);
             });
@@ -29,6 +31,8 @@ class WindowTest {
         return driver.window.setLocation(new Point(10, 20))
             .then((_) => driver.window.location)
             .then((point) {
+              expect(point, isPoint);
+              // TODO(DrMarcII): Switch to hasProperty matchers
               expect(point.x, 10);
               expect(point.y, 20);
             });
@@ -39,6 +43,8 @@ class WindowTest {
         return driver.window.maximize()
             .then((_) => driver.window.location)
               .then((point) {
+                expect(point, isPoint);
+                // TODO(DrMarcII): Switch to hasProperty matchers
                 expect(point.x, 0);
                 expect(point.y, 0);
               });

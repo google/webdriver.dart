@@ -3,8 +3,8 @@ part of webdriver;
 
 class Window extends _WebDriverBase {
 
-  Window._(windowHandle, prefix, commandProcessor) :
-    super('$prefix/window/$windowHandle', commandProcessor);
+  Window._(windowHandle, prefix, commandProcessor)
+      : super('$prefix/window/$windowHandle', commandProcessor);
 
   /**
    * The size of this window.
@@ -26,10 +26,10 @@ class Window extends _WebDriverBase {
   /**
    * Set this window size.
    */
-  Future setSize(Size size) => _post('size', size.json);
+  Future setSize(Size size) => _post('size', size);
 
   /**
    * Set this window location.
    */
-  Future setLocation(Point point) => _post('position', point.json);
+  Future setLocation(Point point) => _post('position', point);
 }

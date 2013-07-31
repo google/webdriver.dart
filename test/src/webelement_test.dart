@@ -51,6 +51,7 @@ class WebElementTest {
         return form.submit()
           .then((_) => driver.switchTo.alert)
           .then((alert) {
+            // TODO(DrMarcII): Switch to hasProperty matchers
             expect(alert.text, 'form submitted');
             return alert.accept();
           });
@@ -74,177 +75,132 @@ class WebElementTest {
       });
 
       test('enabled', () {
-        table.enabled.then(expectAsync1((enabled) {
-          expect(enabled, isTrue);
-        }));
-        button.enabled.then(expectAsync1((enabled) {
-          expect(enabled, isTrue);
-        }));
-        form.enabled.then(expectAsync1((enabled) {
-          expect(enabled, isTrue);
-        }));
-        textInput.enabled.then(expectAsync1((enabled) {
-          expect(enabled, isTrue);
-        }));
-        checkbox.enabled.then(expectAsync1((enabled) {
-          expect(enabled, isTrue);
-        }));
-        disabled.enabled.then(expectAsync1((enabled) {
-          expect(enabled, isFalse);
-        }));
+        expect(table.enabled, completion(isTrue));
+        expect(button.enabled, completion(isTrue));
+        expect(form.enabled, completion(isTrue));
+        expect(textInput.enabled, completion(isTrue));
+        expect(checkbox.enabled, completion(isTrue));
+        expect(disabled.enabled, completion(isFalse));
       });
 
       test('displayed', () {
-        table.displayed.then(expectAsync1((displayed) {
-          expect(displayed, isTrue);
-        }));
-        button.displayed.then(expectAsync1((displayed) {
-          expect(displayed, isTrue);
-        }));
-        form.displayed.then(expectAsync1((displayed) {
-          expect(displayed, isTrue);
-        }));
-        textInput.displayed.then(expectAsync1((displayed) {
-          expect(displayed, isTrue);
-        }));
-        checkbox.displayed.then(expectAsync1((displayed) {
-          expect(displayed, isTrue);
-        }));
-        disabled.displayed.then(expectAsync1((displayed) {
-          expect(displayed, isTrue);
-        }));
-        invisible.displayed.then(expectAsync1((displayed) {
-          expect(displayed, isFalse);
-        }));
+        expect(table.displayed, completion(isTrue));
+        expect(button.displayed, completion(isTrue));
+        expect(form.displayed, completion(isTrue));
+        expect(textInput.displayed, completion(isTrue));
+        expect(checkbox.displayed, completion(isTrue));
+        expect(disabled.displayed, completion(isTrue));
+        expect(invisible.displayed, completion(isFalse));
       });
 
-      test('location', () {
-        table.location.then(expectAsync1((location) {
-          expect(location, new isInstanceOf<Point>());
+      test('location -- table', () {
+        return table.location.then((location) {
+          expect(location, isPoint);
+          // TODO(DrMarcII): Switch to hasProperty matchers
           expect(location.x, isNonNegative);
           expect(location.y, isNonNegative);
-        }));
-        invisible.location.then(expectAsync1((location) {
-          expect(location, new isInstanceOf<Point>());
-          expect(location.x, 0);
-          expect(location.y, 0);
-        }));
+        });
       });
 
-      test('size', () {
-        table.size.then(expectAsync1((size) {
-          expect(size, new isInstanceOf<Size>());
+      test('location -- invisible', () {
+        return invisible.location.then((location) {
+          expect(location, isPoint);
+          // TODO(DrMarcII): Switch to hasProperty matchers
+          expect(location.x, 0);
+          expect(location.y, 0);
+        });
+      });
+
+      test('size -- table', () {
+        return table.size.then((size) {
+          expect(size, isSize);
+          // TODO(DrMarcII): Switch to hasProperty matchers
           expect(size.width, isNonNegative);
           expect(size.height, isNonNegative);
-        }));
-        invisible.size.then(expectAsync1((size) {
-          expect(size, new isInstanceOf<Size>());
+        });
+      });
+
+      test('size -- invisible', () {
+        return invisible.size.then((size) {
+          expect(size, isSize);
           // TODO(DrMarcII): I thought these should be 0
+          // TODO(DrMarcII): Switch to hasProperty matchers
           expect(size.width, isNonNegative);
           expect(size.height, isNonNegative);
-        }));
+        });
       });
 
       test('name', () {
-        table.name.then(expectAsync1((name) {
-          expect(name, 'table');
-        }));
-        button.name.then(expectAsync1((name) {
-          expect(name, 'button');
-        }));
-        form.name.then(expectAsync1((name) {
-          expect(name, 'form');
-        }));
-        textInput.name.then(expectAsync1((name) {
-          expect(name, 'input');
-        }));
+        expect(table.name, completion('table'));
+        expect(button.name, completion('button'));
+        expect(form.name, completion('form'));
+        expect(textInput.name, completion('input'));
       });
 
       test('text', () {
-        table.text.then(expectAsync1((text) {
-          expect(text, 'r1c1 r1c2\nr2c1 r2c2');
-        }));
-        button.text.then(expectAsync1((text) {
-          expect(text, 'button');
-        }));
-        invisible.text.then(expectAsync1((text) {
-          expect(text, '');
-        }));
+        expect(table.text, completion('r1c1 r1c2\nr2c1 r2c2'));
+        expect(button.text, completion('button'));
+        expect(invisible.text, completion(''));
       });
 
       test('findElement -- success', () {
         return table.findElement(new By.tagName('tr'))
             .then((element) {
-              expect(element, new isInstanceOf<WebElement>());
+              expect(element, isWebElement);
             });
       });
 
       test('findElement -- failure', () {
         return button.findElement(new By.tagName('tr'))
             .catchError((error) {
-              expect(error, new isInstanceOf<WebDriverError>());
+              expect(error, isWebDriverError);
             });
       });
 
       test('findElements -- 1 found', () {
         return form.findElements(new By.cssSelector('input[type=text]'))
             .then((elements) {
-              expect(elements.length, 1);
-              expect(elements, everyElement(new isInstanceOf<WebElement>()));
+              expect(elements, hasLength(1));
+              expect(elements, everyElement(isWebElement));
             });
       });
 
       test('findElements -- 4 found', () {
         return table.findElements(new By.tagName('td'))
             .then((elements) {
-              expect(elements.length, 4);
-              expect(elements, everyElement(new isInstanceOf<WebElement>()));
+              expect(elements, hasLength(4));
+              expect(elements, everyElement(isWebElement));
             });
       });
 
       test('findElements -- 0 found', () {
         return form.findElements(new By.tagName('td'))
             .then((elements) {
-              expect(elements.length, 0);
+              expect(elements, isEmpty);
             });
       });
 
       test('attributes', () {
-        table.attributes['id'].then(expectAsync1((attr) {
-          expect(attr, 'table1');
-        }));
-        table.attributes['non-standard'].then(expectAsync1((attr) {
-          expect(attr, 'a non standard attr');
-        }));
-        table.attributes['disabled'].then(expectAsync1((attr) {
-          expect(attr, isNull);
-        }));
-        disabled.attributes['disabled'].then(expectAsync1((attr) {
-          expect(attr, 'true');
-        }));
+        expect(table.attributes['id'], completion('table1'));
+        expect(table.attributes['non-standard'],
+            completion('a non standard attr'));
+        expect(table.attributes['disabled'], completion(isNull));
+        expect(disabled.attributes['disabled'], completion('true'));
       });
 
       test('cssProperties', () {
-        invisible.cssProperties['display'].then(expectAsync1((prop) {
-          expect(prop, 'none');
-        }));
-        invisible.cssProperties['background-color'].then(expectAsync1((prop) {
-          expect(prop, 'rgba(255, 0, 0, 1)');
-        }));
-        invisible.cssProperties['direction'].then(expectAsync1((prop) {
-          expect(prop, 'ltr');
-        }));
+        expect(invisible.cssProperties['display'], completion('none'));
+        expect(invisible.cssProperties['background-color'],
+            completion('rgba(255, 0, 0, 1)'));
+        expect(invisible.cssProperties['direction'], completion('ltr'));
       });
 
       test('equals', () {
-        invisible.equals(disabled).then(expectAsync1((equal) {
-          expect(equal, isFalse);
-        }));
-        driver.findElement(new By.cssSelector('table'))
-          .then((element) => element.equals(table))
-          .then(expectAsync1((equals) {
-            expect(equals, isTrue);
-          }));
+        expect(invisible.equals(disabled), completion(isFalse));
+        return driver.findElement(new By.cssSelector('table'))
+          .then((element) {
+            expect(element.equals(table), completion(isTrue));
+          });
       });
     });
   }

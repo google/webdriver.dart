@@ -9,7 +9,7 @@ class AlertTest {
 
       WebDriver driver;
       WebElement button;
-      WebElement link;
+      WebElement output;
 
       setUp(() {
         return WebDriver.createDriver()
@@ -18,14 +18,14 @@ class AlertTest {
             .then((_) => driver.findElement(new By.tagName('button')))
             .then((_element) => button = _element)
             .then((_) => driver.findElement(new By.id('settable')))
-            .then((_element) => link = _element);
+            .then((_element) => output = _element);
       });
 
       tearDown(() => driver.quit());
 
       test('no alert', () {
         return driver.switchTo.alert.catchError((error) {
-          expect(error, new isInstanceOf<WebDriverError>());
+          expect(error, isWebDriverError);
         });
       });
 
@@ -40,7 +40,7 @@ class AlertTest {
       test('accept', () {
         return button.click().then((_) => driver.switchTo.alert)
             .then((alert) => alert.accept())
-            .then((_) => link.text)
+            .then((_) => output.text)
             .then((text) {
               expect(text, startsWith('accepted'));
             });
@@ -49,7 +49,7 @@ class AlertTest {
       test('dismiss', () {
         return button.click().then((_) => driver.switchTo.alert)
             .then((alert) => alert.dismiss())
-            .then((_) => link.text)
+            .then((_) => output.text)
             .then((text) {
               expect(text, startsWith('dismissed'));
             });
@@ -61,7 +61,7 @@ class AlertTest {
             .then((_alert) => alert = _alert)
             .then((_) => alert.sendKeys('some keys'))
             .then((_) => alert.accept())
-            .then((_) => link.text)
+            .then((_) => output.text)
             .then((text) {
               expect(text, endsWith('some keys'));
             });

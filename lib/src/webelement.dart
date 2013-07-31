@@ -4,8 +4,8 @@ class WebElement extends _WebDriverBase implements SearchContext {
   String _elementId;
   String _originalPrefix;
 
-  WebElement._(elementId, prefix, commandProcessor) :
-      super('$prefix/element/$elementId', commandProcessor) {
+  WebElement._(elementId, prefix, commandProcessor)
+      : super('$prefix/element/$elementId', commandProcessor) {
     this._elementId = elementId;
     this._originalPrefix = prefix;
   }
@@ -79,7 +79,7 @@ class WebElement extends _WebDriverBase implements SearchContext {
    *
    * Throws WebDriverError no such element if matching element is not found.
    */
-  Future<WebElement> findElement(By by) => _post('element', by.json)
+  Future<WebElement> findElement(By by) => _post('element', by)
       .then((element) =>
           new WebElement._(element['ELEMENT'], _originalPrefix,
               _commandProcessor));
@@ -87,7 +87,7 @@ class WebElement extends _WebDriverBase implements SearchContext {
   /**
    * Find multiple elements nested within this element.
    */
-  Future<List<WebElement>> findElements(By by) => _post('elements', by.json)
+  Future<List<WebElement>> findElements(By by) => _post('elements', by)
       .then((response) => response.map((element) =>
           new WebElement._(element['ELEMENT'], _originalPrefix,
               _commandProcessor)).toList());
@@ -116,5 +116,5 @@ class WebElement extends _WebDriverBase implements SearchContext {
   Future<bool> equals(WebElement other) =>
       _get('equals/${other._elementId}');
 
-  Map<String, String> get json => { 'ELEMENT': _elementId };
+  Map<String, String> toJson() => { 'ELEMENT': _elementId };
 }

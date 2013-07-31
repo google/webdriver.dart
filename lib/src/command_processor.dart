@@ -35,13 +35,13 @@ class CommandProcessor {
   }
 
   /**
-   * Execute a request to the WebDriver server. [http_method] should be
+   * Execute a request to the WebDriver server. [httpMethod] should be
    * one of 'GET', 'POST', or 'DELETE'. [command] is the text to append
    * to the base URL path to get the full URL. [params] are the additional
    * parameters. If a [List] or [Map] they will be posted as JSON parameters.
    * If a number or string, "/params" is appended to the URL.
    */
-  Future _serverRequest(String http_method, String command, {params}) {
+  Future _serverRequest(String httpMethod, String command, {params}) {
     var status = 0;
     var results = null;
     var message = null;
@@ -54,23 +54,22 @@ class CommandProcessor {
         if (params is num || params is String) {
           path = '$path/$params';
           params = null;
-        } else if (http_method != 'POST') {
+        } else if (httpMethod != 'POST') {
           throw new Exception(
-            'The http method called for ${command} is ${http_method} but it '
+            'The http method called for ${command} is ${httpMethod} but it '
             'must be POST if you want to pass the JSON params '
             '${json.stringify(params)}');
         }
       }
 
       var client = new HttpClient();
-      client.open(http_method, _host, _port, path).then((req) {
+      client.open(httpMethod, _host, _port, path).then((req) {
         req.followRedirects = false;
         req.headers.add(HttpHeaders.ACCEPT, "application/json");
         req.headers.contentType
             = new ContentType("application", "json", charset: "utf-8");
         if (params != null) {
           var body = json.stringify(params);
-          print(body);
           req.write(body);
         }
         req.close().then((rsp) {
@@ -88,7 +87,6 @@ class CommandProcessor {
             if (!successCodes.contains(rsp.statusCode)) {
               _failRequest(completer,
                   'Unexpected response ${rsp.statusCode}; $results');
-              completer = null;
               return;
             }
             if (status == 0 && results.length > 0) {
@@ -109,21 +107,17 @@ class CommandProcessor {
             }
           }, onError: (error) {
             _failRequest(completer, error);
-            completer = null;
           });
         })
         .catchError((error) {
           _failRequest(completer, error);
-          completer = null;
         });
       })
       .catchError((error) {
         _failRequest(completer, error);
-        completer = null;
       });
     } catch (e, s) {
       _failRequest(completer, e, s);
-      completer = null;
     }
     return completer.future;
   }

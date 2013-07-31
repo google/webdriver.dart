@@ -2,11 +2,10 @@ part of webdriver;
 
 class WebDriver extends _WebDriverBase implements SearchContext {
 
-  WebDriver._(commandProcessor) :
-      super('', commandProcessor) ;
+  WebDriver._(commandProcessor) : super('', commandProcessor) ;
 
   /**
-   * Creates a WebDriver instance connected to the specifier WebDriver server.
+   * Creates a WebDriver instance connected to the specified WebDriver server.
    */
   static Future<WebDriver> createDriver({
       String url: 'http://localhost:4444/wd/hub',
@@ -51,7 +50,7 @@ class WebDriver extends _WebDriverBase implements SearchContext {
    * Search for multiple elements within the entire current page.
    */
   @override
-  Future<List<WebElement>> findElements(By by) => _post('elements', by.json)
+  Future<List<WebElement>> findElements(By by) => _post('elements', by)
       .then((response) =>
           response.map((element) =>
               new WebElement._(element['ELEMENT'], _prefix, _commandProcessor))
@@ -62,7 +61,7 @@ class WebDriver extends _WebDriverBase implements SearchContext {
    *
    * Throws WebDriverError no such element if a matching element is not found.
    */
-  Future<WebElement> findElement(By by) => _post('element', by.json)
+  Future<WebElement> findElement(By by) => _post('element', by)
       .then((element) =>
           new WebElement._(element['ELEMENT'], _prefix, _commandProcessor));
 
@@ -104,7 +103,6 @@ class WebDriver extends _WebDriverBase implements SearchContext {
       });
 
 
-
   TargetLocator get switchTo =>
       new TargetLocator._(_prefix, _commandProcessor);
 
@@ -127,7 +125,38 @@ class WebDriver extends _WebDriverBase implements SearchContext {
       .then((windows) => windows.map((window) =>
           new Window._(window, _prefix, _commandProcessor)).toList());
 
-  Future<List<int>> captureScreenshot() => _commandProcessor
-      .get('screenshot')
+  Future<List<int>> captureScreenshot() => _get('screenshot')
       .then((screenshot) => CryptoUtils.base64StringToBytes(screenshot));
+
+  Future executeAsync(String script, List args) =>
+      _post('execute_async', {
+        'script': script,
+        'args': args
+      })
+      .then(_recursiveElementify);
+
+  Future execute(String script, List args) =>
+      _post('execute', {
+        'script': script,
+        'args': args
+      })
+      .then(_recursiveElementify);
+
+  dynamic _recursiveElementify(result) {
+    if (result is Map) {
+      if (result.length == 1 && result.containsKey('ELEMENT')) {
+        return new WebElement._(result['ELEMENT'], _prefix, _commandProcessor);
+      } else {
+        var newResult = {};
+        result.forEach((key, value) {
+          newResult[key] = _recursiveElementify(value);
+        });
+        return newResult;
+      }
+    } else if (result is List) {
+      return result.map((value) => _recursiveElementify(value)).toList();
+    } else {
+      return result;
+    }
+  }
 }

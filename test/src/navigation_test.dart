@@ -37,7 +37,7 @@ class NavigationTest {
             .then((_) => element.name)
             .catchError((error) {
               // search should be stale after refresh
-              expect(error, new isInstanceOf<WebDriverError>());
+              expect(error, isWebDriverError);
             });
       });
     });

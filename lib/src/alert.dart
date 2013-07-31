@@ -11,8 +11,8 @@ class Alert extends _WebDriverBase {
   final String text;
 
 
-  Alert._(this.text, prefix, commandProcessor) :
-      super(prefix, commandProcessor);
+  Alert._(this.text, prefix, commandProcessor)
+      : super(prefix, commandProcessor);
 
   /**
    * Accepts the currently displayed alert (may not be the alert for which

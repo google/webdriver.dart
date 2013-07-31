@@ -88,37 +88,37 @@ class WebDriverTest {
         test('findElement -- success', () {
           driver.findElement(new By.tagName('tr'))
               .then(expectAsync1((element) {
-                expect(element, new isInstanceOf<WebElement>());
+                expect(element, isWebElement);
               }));
         });
 
         test('findElement -- failure', () {
           return driver.findElement(new By.id('non-existent-id'))
               .catchError((error) {
-                expect(error, new isInstanceOf<WebDriverError>());
+                expect(error, isWebDriverError);
               });
         });
 
         test('findElements -- 1 found', () {
           return driver.findElements(new By.cssSelector('input[type=text]'))
               .then((elements) {
-                expect(elements.length, 1);
-                expect(elements, everyElement(new isInstanceOf<WebElement>()));
+                expect(elements, hasLength(1));
+                expect(elements, everyElement(isWebElement));
               });
         });
 
         test('findElements -- 4 found', () {
           return driver.findElements(new By.tagName('td'))
               .then((elements) {
-                expect(elements.length, 4);
-                expect(elements, everyElement(new isInstanceOf<WebElement>()));
+                expect(elements, hasLength(4));
+                expect(elements, everyElement(isWebElement));
               });
         });
 
         test('findElements -- 0 found', () {
           return driver.findElements(new By.id('non-existent-id'))
               .then((elements) {
-                expect(elements.length, 0);
+                expect(elements, isEmpty);
               });
         });
 
@@ -165,7 +165,7 @@ class WebDriverTest {
 
         // TODO(DrMarcII): Figure out why this doesn't pass
 //        test('activeElement', () {
-//          driver.activeElement
+//          return driver.activeElement
 //              .then((element) {
 //                expect(element, isNull);
 //                return driver
@@ -174,9 +174,9 @@ class WebDriverTest {
 //              .then((element) => element.click())
 //              .then((_) => driver.activeElement)
 //              .then((element) => element.name)
-//              .then(expectAsync1((name) {
+//              .then((name) {
 //                expect(name, 'input');
-//              }));
+//              });
 //        });
 
         test('windows', () {
@@ -184,6 +184,32 @@ class WebDriverTest {
             expect(windows, hasLength(isPositive));
             expect(windows, everyElement(new isInstanceOf<Window>()));
           });
+        });
+
+        test('execute', () {
+          WebElement button;
+          String script = '''
+              arguments[1].textContent = arguments[0];
+              return arguments[1];''';
+          return driver.findElement(new By.tagName('button'))
+              .then((_e) => button = _e)
+              .then((_) => driver.execute(script, ['new text', button]))
+              .then((WebElement e) {
+                expect(e.text, completion('new text'));
+              });
+        });
+
+        test('execute', () {
+          WebElement button;
+          String script = '''
+              arguments[1].textContent = arguments[0];
+              arguments[2](arguments[1]);''';
+          return driver.findElement(new By.tagName('button'))
+              .then((_e) => button = _e)
+              .then((_) => driver.executeAsync(script, ['new text', button]))
+              .then((WebElement e) {
+                expect(e.text, completion('new text'));
+              });
         });
 
         test('captureScreenshot', () {

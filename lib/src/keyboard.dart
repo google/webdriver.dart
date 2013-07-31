@@ -4,8 +4,8 @@ class Keyboard extends _WebDriverBase implements Future {
 
   Future _future;
 
-  Keyboard._(prefix, commandProcessor, [this._future]) :
-      super(prefix, commandProcessor) {
+  Keyboard._(prefix, commandProcessor, [this._future])
+      : super(prefix, commandProcessor) {
     if (_future == null) {
       _future = new Future.value();
     }

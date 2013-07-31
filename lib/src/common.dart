@@ -6,8 +6,8 @@ part of webdriver;
  */
 class Attributes extends _WebDriverBase{
 
-  Attributes._(command, prefix, commandProcessor) :
-      super('$prefix/$command', commandProcessor);
+  Attributes._(command, prefix, commandProcessor)
+    : super('$prefix/$command', commandProcessor);
 
   Future<String> operator [](String name) => _get(name);
 }
@@ -20,7 +20,7 @@ class Size {
 
   Size.fromJson(Map json) : this(json['height'], json['width']);
 
-  Map<String, num> get json => {
+  Map<String, num> toJson() => {
     'height': height,
     'width': width
   };
@@ -34,7 +34,7 @@ class Point {
 
   Point.fromJson(Map json) : this(json['x'], json['y']);
 
-  Map<String, num> get json => {
+  Map<String, num> toJson() => {
     'x': x,
     'y': y
   };
@@ -62,8 +62,8 @@ abstract class _WebDriverBase {
 
   _WebDriverBase(this._prefix, this._commandProcessor);
 
-  Future _post(String command, [Map<String, dynamic> json]) =>
-      _commandProcessor.post(_command(command), json);
+  Future _post(String command, [param]) =>
+      _commandProcessor.post(_command(command), param);
 
   Future _get(String command) => _commandProcessor.get(_command(command));
 
@@ -130,7 +130,7 @@ class By {
   const By.cssSelector(String cssSelector) :
       this._('css selector', cssSelector);
 
-  Map<String, String> get json => { 'using': _using, 'value': _value};
+  Map<String, String> toJson() => { 'using': _using, 'value': _value};
 }
 
 // TODO(DrMarcII): Create a better WebDriver exception hierarchy.

@@ -8,8 +8,8 @@ class Mouse extends _WebDriverBase implements Future {
 
   Future _future;
 
-  Mouse._(prefix, commandProcessor, [this._future]) :
-      super(prefix, commandProcessor) {
+  Mouse._(prefix, commandProcessor, [this._future])
+      : super(prefix, commandProcessor) {
     if (_future == null) {
       _future = new Future.value();
     }

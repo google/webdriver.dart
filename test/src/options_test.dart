@@ -73,7 +73,7 @@ class OptionsTest {
         return driver.cookies.deleteAll()
             .then((_) => driver.cookies.all)
             .then((cookies) {
-              expect(cookies, hasLength(0));
+              expect(cookies, isEmpty);
             });
       });
     });

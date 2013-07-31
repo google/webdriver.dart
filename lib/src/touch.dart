@@ -4,8 +4,8 @@ class Touch extends _WebDriverBase implements Future {
 
   Future _future;
 
-  Touch._(prefix, commandProcessor, [this._future]) :
-      super('$prefix/touch', commandProcessor) {
+  Touch._(prefix, commandProcessor, [this._future])
+      : super('$prefix/touch', commandProcessor) {
     if (_future == null) {
       _future = new Future.value();
     }
@@ -15,25 +15,25 @@ class Touch extends _WebDriverBase implements Future {
    * Single tap on the touch enabled device.
    */
   Touch click(WebElement element) => _createNext((_) =>
-      _post('click', element.json));
+      _post('click', element));
 
   /**
    * Finger down on the screen.
    */
   Touch down(Point point) => _createNext((_) =>
-      _post('down', point.json));
+      _post('down', point));
 
   /**
    * Finger up on the screen.
    */
   Touch up(Point point) => _createNext((_) =>
-      _post('up', point.json));
+      _post('up', point));
 
   /**
    * Finger move on the screen.
    */
   Touch move(Point point) => _createNext((_) =>
-      _post('move', point.json));
+      _post('move', point));
 
   /**
    * Scroll on the touch screen using finger based motion events.
@@ -53,13 +53,13 @@ class Touch extends _WebDriverBase implements Future {
    * Double tap on the touch screen using finger motion events.
    */
   Touch doubleClick(WebElement element) => _createNext((_) =>
-      _post('doubleclick', element.json));
+      _post('doubleclick', element));
 
   /**
    * Long press on the touch screen using finger motion events.
    */
   Touch longClick(WebElement element) => _createNext((_) =>
-      _post('longclick', element.json));
+      _post('longclick', element));
 
   /**
    * Flick on the touch screen using finger motion events.
