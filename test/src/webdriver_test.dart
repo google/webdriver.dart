@@ -199,7 +199,7 @@ class WebDriverTest {
               });
         });
 
-        test('execute', () {
+        test('executeAsync', () {
           WebElement button;
           String script = '''
               arguments[1].textContent = arguments[0];

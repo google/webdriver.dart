@@ -125,9 +125,32 @@ class WebDriver extends _WebDriverBase implements SearchContext {
       .then((windows) => windows.map((window) =>
           new Window._(window, _prefix, _commandProcessor)).toList());
 
+  /**
+   * Take a screenshot of the current page as PNG.
+   */
   Future<List<int>> captureScreenshot() => _get('screenshot')
       .then((screenshot) => CryptoUtils.base64StringToBytes(screenshot));
 
+  /**
+   * Inject a snippet of JavaScript into the page for execution in the context
+   * of the currently selected frame. The executed script is assumed to be
+   * asynchronous and must signal that is done by invoking the provided
+   * callback, which is always provided as the final argument to the function.
+   * The value to this callback will be returned to the client.
+   *
+   * Asynchronous script commands may not span page loads. If an unload event
+   * is fired while waiting for a script result, an error will be thrown.
+   *
+   * The script argument defines the script to execute in the form of a
+   * function body. The function will be invoked with the provided args array
+   * and the values may be accessed via the arguments object in the order
+   * specified. The final argument will always be a callback function that must
+   * be invoked to signal that the script has finished.
+   *
+   * Arguments may be any JSON-able object. WebElements will be converted to
+   * the corresponding DOM element. Likewise, any DOM Elements in the script
+   * result will be converted to WebElements.
+   */
   Future executeAsync(String script, List args) =>
       _post('execute_async', {
         'script': script,
@@ -135,6 +158,20 @@ class WebDriver extends _WebDriverBase implements SearchContext {
       })
       .then(_recursiveElementify);
 
+  /**
+   * Inject a snippet of JavaScript into the page for execution in the context
+   * of the currently selected frame. The executed script is assumed to be
+   * synchronous and the result of evaluating the script is returned.
+   *
+   * The script argument defines the script to execute in the form of a
+   * function body. The value returned by that function will be returned to the
+   * client. The function will be invoked with the provided args array and the
+   * values may be accessed via the arguments object in the order specified.
+   *
+   * Arguments may be any JSON-able object. WebElements will be converted to
+   * the corresponding DOM element. Likewise, any DOM Elements in the script
+   * result will be converted to WebElements.
+   */
   Future execute(String script, List args) =>
       _post('execute', {
         'script': script,
