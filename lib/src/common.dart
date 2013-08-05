@@ -4,7 +4,7 @@ part of webdriver;
  * Simple class to provide access to index properties such as WebElement
  * attributes or css styles.
  */
-class Attributes extends _WebDriverBase{
+class Attributes extends _WebDriverBase {
 
   Attributes._(command, prefix, commandProcessor)
     : super('$prefix/$command', commandProcessor);
