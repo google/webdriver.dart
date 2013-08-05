@@ -53,7 +53,7 @@ class WebDriver extends _WebDriverBase implements SearchContext {
   Future<List<WebElement>> findElements(By by) => _post('elements', by)
       .then((response) =>
           response.map((element) =>
-              new WebElement._(element['ELEMENT'], _prefix, _commandProcessor))
+              new WebElement._(element, _prefix, _commandProcessor))
               .toList());
 
   /**
@@ -63,7 +63,7 @@ class WebDriver extends _WebDriverBase implements SearchContext {
    */
   Future<WebElement> findElement(By by) => _post('element', by)
       .then((element) =>
-          new WebElement._(element['ELEMENT'], _prefix, _commandProcessor));
+          new WebElement._(element, _prefix, _commandProcessor));
 
   /**
    * An artist's rendition of the current page's source.
@@ -181,8 +181,8 @@ class WebDriver extends _WebDriverBase implements SearchContext {
 
   dynamic _recursiveElementify(result) {
     if (result is Map) {
-      if (result.length == 1 && result.containsKey('ELEMENT')) {
-        return new WebElement._(result['ELEMENT'], _prefix, _commandProcessor);
+      if (result.length == 1 && result.containsKey(_ELEMENT)) {
+        return new WebElement._(result, _prefix, _commandProcessor);
       } else {
         var newResult = {};
         result.forEach((key, value) {

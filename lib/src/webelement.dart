@@ -4,9 +4,9 @@ class WebElement extends _WebDriverBase implements SearchContext {
   String _elementId;
   String _originalPrefix;
 
-  WebElement._(elementId, prefix, commandProcessor)
-      : super('$prefix/element/$elementId', commandProcessor) {
-    this._elementId = elementId;
+  WebElement._(element, prefix, commandProcessor)
+      : super('$prefix/element/${element[_ELEMENT]}', commandProcessor) {
+    this._elementId = element[_ELEMENT];
     this._originalPrefix = prefix;
   }
 
@@ -81,7 +81,7 @@ class WebElement extends _WebDriverBase implements SearchContext {
    */
   Future<WebElement> findElement(By by) => _post('element', by)
       .then((element) =>
-          new WebElement._(element['ELEMENT'], _originalPrefix,
+          new WebElement._(element, _originalPrefix,
               _commandProcessor));
 
   /**
@@ -89,7 +89,7 @@ class WebElement extends _WebDriverBase implements SearchContext {
    */
   Future<List<WebElement>> findElements(By by) => _post('elements', by)
       .then((response) => response.map((element) =>
-          new WebElement._(element['ELEMENT'], _originalPrefix,
+          new WebElement._(element, _originalPrefix,
               _commandProcessor)).toList());
 
   /**
@@ -116,5 +116,6 @@ class WebElement extends _WebDriverBase implements SearchContext {
   Future<bool> equals(WebElement other) =>
       _get('equals/${other._elementId}');
 
-  Map<String, String> toJson() => { 'ELEMENT': _elementId };
+  Map<String, String> toJson() =>
+      new Map<String, String>()..[_ELEMENT] = _elementId;
 }

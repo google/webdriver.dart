@@ -1,5 +1,7 @@
 part of webdriver;
 
+const String _ELEMENT = 'ELEMENT';
+
 /**
  * Simple class to provide access to index properties such as WebElement
  * attributes or css styles.
