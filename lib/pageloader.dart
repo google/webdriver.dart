@@ -93,14 +93,23 @@ abstract class ElementFilter extends Filter {
   Future<bool> keep(WebElement element);
 }
 
-class IsDisplayed extends ElementFilter {
+class WithState extends ElementFilter {
 
-  final bool _displayed;
+  static const PRESENT = null;
+  static const VISIBLE = true;
+  static const INVISIBLE = false;
 
-  const IsDisplayed([this._displayed = true]);
+  final _displayed;
 
-  Future<bool> keep(WebElement element) =>
-      element.displayed.then((displayed) => displayed == _displayed);
+  const WithState([this._displayed = VISIBLE]);
+
+  Future<bool> keep(WebElement element) {
+    if (_displayed == null) {
+      return new Future.value(true);
+    } else {
+      return element.displayed.then((displayed) => displayed == _displayed);
+    }
+  }
 
   List<FilterFinderOption> get options =>
       [ FilterFinderOption.DISABLE_IMPLICIT_DISPLAY_FILTERING ];
@@ -183,7 +192,7 @@ class FieldInfo {
     }
 
     if (implicitDisplayFiltering) {
-      filters.insert(0, new IsDisplayed());
+      filters.insert(0, new WithState());
     }
 
     if (finder != null) {
@@ -205,8 +214,6 @@ class FieldInfo {
       SearchContext context,
       PageLoader loader) {
     var future = _getElements(context);
-
-    print(instance.reflectee);
 
     if (_instanceType.simpleName != new Symbol('WebElement')) {
       future = future.then((elements) =>
