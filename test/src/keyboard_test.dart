@@ -11,7 +11,7 @@ class KeyboardTest {
       WebElement textInput;
 
       setUp(() {
-        return WebDriver.createDriver()
+        return WebDriver.createDriver(desiredCapabilities: Capabilities.chrome)
             .then((_driver) => driver = _driver)
             .then((_) => driver.get('file://' + file.fullPathSync()))
             .then((_) =>
@@ -43,6 +43,16 @@ class KeyboardTest {
             .then((_) => textInput.attributes['value'])
             .then((value) {
               expect(value, 'abcdef');
+            });
+      });
+
+      // doesn't work with chromedriver
+      // https://code.google.com/p/chromedriver/issues/detail?id=443
+      test('sendKeys -- with tab', () {
+        return driver.keyboard.sendKeys(['abc', Keys.TAB, 'def'])
+            .then((_) => textInput.attributes['value'])
+            .then((value) {
+              expect(value, 'abc');
             });
       });
     });
