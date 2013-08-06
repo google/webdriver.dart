@@ -49,7 +49,7 @@ class KeyboardTest {
       // doesn't work with chromedriver
       // https://code.google.com/p/chromedriver/issues/detail?id=443
       test('sendKeys -- with tab', () {
-        return driver.keyboard.sendKeys(['abc\tdef'])
+        return driver.keyboard.sendKeys(['abc', Keys.TAB, 'def'])
             .then((_) => textInput.attributes['value'])
             .then((value) {
               expect(value, 'abc');
