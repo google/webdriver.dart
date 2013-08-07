@@ -1,7 +1,7 @@
 part of pageloader;
 
 /**
- * Annotate a field as representing a List of some type type. If type is
+ * Annotate a field as representing a List of some type. If type is
  * not supplied, defaults to WebElement.
  */
 // Hack because I can't figure out how to get the full type for fields.
