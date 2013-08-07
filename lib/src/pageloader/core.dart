@@ -131,8 +131,12 @@ class _FieldInfo {
       return future.then((objects) =>
           instance.setField(_fieldName, objects));
     } else {
-      return future.then((objects) =>
-          instance.setField(_fieldName, objects.first));
+      return future.then((objects) {
+        if (objects.length != 1) {
+          throw new StateError('multiple elements found for field');
+        }
+        return instance.setField(_fieldName, objects.first);
+      });
     }
   }
 
