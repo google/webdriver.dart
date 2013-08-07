@@ -95,13 +95,16 @@ abstract class ElementFilter extends Filter {
 
 class WithState extends ElementFilter {
 
-  static const PRESENT = null;
-  static const VISIBLE = true;
-  static const INVISIBLE = false;
 
   final _displayed;
 
-  const WithState([this._displayed = VISIBLE]);
+  const WithState._(this._displayed);
+
+  const WithState.present() : this._(null);
+
+  const WithState.visible() : this._(true);
+
+  const WithState.invisible() : this._(false);
 
   Future<bool> keep(WebElement element) {
     if (_displayed == null) {
@@ -192,7 +195,7 @@ class FieldInfo {
     }
 
     if (implicitDisplayFiltering) {
-      filters.insert(0, new WithState());
+      filters.insert(0, new WithState.visible());
     }
 
     if (finder != null) {

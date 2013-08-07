@@ -69,7 +69,7 @@ class Row {
 }
 
 class PageForDisplayedFilteringTest {
-  @By.id('div') @WithState(WithState.PRESENT)
+  @By.id('div') @WithState.present()
   @ListOf()
   List<WebElement> shouldHaveOneElement;
 
@@ -77,7 +77,7 @@ class PageForDisplayedFilteringTest {
   @ListOf()
   List<WebElement> shouldBeEmpty;
 
-  @By.id('div') @WithState(WithState.VISIBLE)
+  @By.id('div') @WithState.visible()
   @ListOf()
   List<WebElement> shouldAlsoBeEmpty;
 }
