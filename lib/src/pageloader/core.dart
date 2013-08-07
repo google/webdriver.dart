@@ -133,7 +133,7 @@ class _FieldInfo {
     } else {
       return future.then((objects) {
         if (objects.length != 1) {
-          throw new StateError('multiple elements found for field');
+          throw new StateError('multiple or no elements found for field');
         }
         return instance.setField(_fieldName, objects.first);
       });
