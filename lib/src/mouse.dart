@@ -15,9 +15,7 @@ class Mouse extends _WebDriverBase implements Future {
     }
   }
 
-  /**
-   * Click any mouse button (at the coordinates set by the last moveto command).
-   */
+  /// Click any mouse button (at the coordinates set by the last moveTo).
   Mouse click([int button]) {
     var json = {};
     if (button is num) {
@@ -28,7 +26,7 @@ class Mouse extends _WebDriverBase implements Future {
 
   /**
    * Click and hold any mouse button (at the coordinates set by the last
-   * moveto command).
+   * moveTo command).
    */
   Mouse down([int button]) {
     var json = {};
@@ -52,9 +50,7 @@ class Mouse extends _WebDriverBase implements Future {
         _post('buttonup', json));
   }
 
-  /**
-   * Double-clicks at the current mouse coordinates (set by moveto).
-   */
+  /// Double-clicks at the current mouse coordinates (set by moveTo).
   Mouse doubleClick() =>
       _createNext((_) => _post('doubleclick'));
 
@@ -72,7 +68,6 @@ class Mouse extends _WebDriverBase implements Future {
    *
    * All other combinations of parameters are illegal.
    */
-
   Mouse moveTo({WebElement element, int xOffset, int yOffset}) {
     var json = {};
     if (element is WebElement) {
@@ -85,18 +80,18 @@ class Mouse extends _WebDriverBase implements Future {
     return _createNext((_) => _post('moveto', json));
   }
 
-  Mouse _createNext(f) {
+  Mouse _createNext(f(value)) {
     return new Mouse._(_prefix, _commandProcessor, _future.then(f));
   }
 
   Stream asStream() => _future.asStream();
 
-  Future catchError(onError, {test}) =>
+  Future catchError(onError(error), {bool test(error)}) =>
       _future.catchError(onError, test: test);
 
-  Future then(onValue, {onError}) =>
+  Future then(onValue(value), {onError(error)}) =>
       _future.then(onValue, onError: onError);
 
-  Future whenComplete(action) =>
+  Future whenComplete(action()) =>
       _future.whenComplete(action);
 }

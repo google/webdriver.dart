@@ -44,9 +44,7 @@ class Point {
 
 abstract class SearchContext {
 
-  /**
-   * Searches for multiple elements within the context.
-   */
+  /// Searches for multiple elements within the context.
   Future<List<WebElement>> findElements(By by);
 
   /**
@@ -88,19 +86,13 @@ class By {
 
   const By._(this._using, this._value);
 
-  /**
-   * Returns an element whose ID attribute matches the search value.
-   */
+  /// Returns an element whose ID attribute matches the search value.
   const By.id(String id) : this._('id', id);
 
-  /**
-   * Returns an element matching an XPath expression.
-   */
+  /// Returns an element matching an XPath expression.
   const By.xpath(String xpath) : this._('xpath', xpath);
 
-  /**
-   * Returns an anchor element whose visible text matches the search value.
-   */
+  /// Returns an anchor element whose visible text matches the search value.
   const By.linkText(String linkText) : this._('link text', linkText);
 
   /**
@@ -110,14 +102,10 @@ class By {
   const By.partialLinkText(String partialLinkText) :
       this._('partial link text', partialLinkText);
 
-  /**
-   * Returns an element whose NAME attribute matches the search value.
-   */
+  /// Returns an element whose NAME attribute matches the search value.
   const By.name(String name) : this._('name', name);
 
-  /**
-   * Returns an element whose tag name matches the search value.
-   */
+  /// Returns an element whose tag name matches the search value.
   const By.tagName(String tagName) : this._('tag name', tagName);
 
   /**
@@ -126,9 +114,7 @@ class By {
    */
   const By.className(String className) : this._('class name', className);
 
-  /**
-   * Returns an element matching a CSS selector.
-   */
+  /// Returns an element matching a CSS selector.
   const By.cssSelector(String cssSelector) :
       this._('css selector', cssSelector);
 
