@@ -15,6 +15,7 @@ part 'src/capabilities.dart';
 part 'src/command_processor.dart';
 part 'src/common.dart';
 part 'src/keyboard.dart';
+part 'src/keys.dart';
 part 'src/mouse.dart';
 part 'src/navigation.dart';
 part 'src/options.dart';

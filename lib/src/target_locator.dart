@@ -18,9 +18,8 @@ class TargetLocator extends _WebDriverBase {
    * Throws WebDriverError no such frame if the specified frame can't be
    * found.
    */
-  Future frame([frame]) {
-    return _post('frame', { 'id': frame});
-  }
+  Future<TargetLocator> frame([frame]) =>
+      _post('frame', { 'id': frame}).then((_) => this);
 
   /**
    * Switch the focus of future commands for this driver to the window with the
@@ -29,8 +28,8 @@ class TargetLocator extends _WebDriverBase {
    * Throws WebDriverError no such window if the specified window can't be
    * found.
    */
-  Future window(String window) =>
-      _post('window', { 'name': window});
+  Future<TargetLocator> window(String window) =>
+      _post('window', { 'name': window}).then((_) => this);
 
   /**
    * Switches to the currently active modal dialog for this particular driver

@@ -4,9 +4,7 @@ class WebDriver extends _WebDriverBase implements SearchContext {
 
   WebDriver._(commandProcessor) : super('', commandProcessor) ;
 
-  /**
-   * Creates a WebDriver instance connected to the specified WebDriver server.
-   */
+  /// Creates a WebDriver instance connected to the specified WebDriver server.
   static Future<WebDriver> createDriver({
       String url: 'http://localhost:4444/wd/hub',
       Map<String, dynamic> desiredCapabilities}) {
@@ -18,7 +16,8 @@ class WebDriver extends _WebDriverBase implements SearchContext {
     return client.openUrl('POST', Uri.parse(url + "/session")).then((req) {
       req.followRedirects = false;
       req.headers.add(HttpHeaders.ACCEPT, "application/json");
-      req.headers.add(HttpHeaders.CONTENT_TYPE, 'application/json;charset=UTF-8');
+      req.headers.add(HttpHeaders.CONTENT_TYPE,
+          'application/json;charset=UTF-8');
       req.write(json.stringify({
         'desiredCapabilities': desiredCapabilities
       }));
@@ -31,24 +30,17 @@ class WebDriver extends _WebDriverBase implements SearchContext {
     });
   }
 
-  /**
-   * Navigate to the specified url.
-   */
-  Future get(String url) => _post('url', {'url': url});
+  /// Navigate to the specified url.
+  Future<WebDriver> get(String url) =>
+      _post('url', {'url': url}).then((_) => this);
 
-  /**
-   * The current url.
-   */
+  /// The current url.
   Future<String> get currentUrl => _get('url');
 
-  /**
-   * The title of the current page.
-   */
+  /// The title of the current page.
   Future<String> get title => _get('title');
 
-  /**
-   * Search for multiple elements within the entire current page.
-   */
+  /// Search for multiple elements within the entire current page.
   @override
   Future<List<WebElement>> findElements(By by) => _post('elements', by)
       .then((response) =>
@@ -65,33 +57,24 @@ class WebDriver extends _WebDriverBase implements SearchContext {
       .then((element) =>
           new WebElement._(element, _prefix, _commandProcessor));
 
-  /**
-   * An artist's rendition of the current page's source.
-   */
+  /// An artist's rendition of the current page's source.
   Future<String> get pageSource => _get('source');
 
-  /**
-   * Close the current window, quitting the browser if it is the last window.
-   */
+  /// Close the current window, quitting the browser if it is the last window.
   Future close() => _delete('window');
 
-  /**
-   * Quit the browser.
-   */
+  /// Quit the browser.
   Future quit() => _delete(_prefix);
 
-  /**
-   * Handles for all of the currently displayed tabs/windows.
-   */
+  /// Handles for all of the currently displayed tabs/windows.
   Future<List<String>> get windowHandles => _get('window_handles');
 
-  /**
-   * Handle for the active tab/window.
-   */
+  /// Handle for the active tab/window.
   Future<String> get windowHandle => _get('window_handle');
 
   /**
-   * The currently focused element, or the body element if no element has focus.
+   *  The currently focused element, or the body element if no
+   *  element has focus.
    */
   Future<WebElement> get activeElement => _get('element/active')
       .then((element) {
@@ -125,9 +108,7 @@ class WebDriver extends _WebDriverBase implements SearchContext {
       .then((windows) => windows.map((window) =>
           new Window._(window, _prefix, _commandProcessor)).toList());
 
-  /**
-   * Take a screenshot of the current page as PNG.
-   */
+  /// Take a screenshot of the current page as PNG.
   Future<List<int>> captureScreenshot() => _get('screenshot')
       .then((screenshot) => CryptoUtils.base64StringToBytes(screenshot));
 
