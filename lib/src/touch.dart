@@ -14,26 +14,26 @@ class Touch extends _WebDriverBase implements Future {
   /**
    * Single tap on the touch enabled device.
    */
-  Touch click(WebElement element) => _createNext((_) =>
-      _post('click', element));
+  Touch click(WebElement element) =>
+      _createNext((_) => _post('click', element));
 
   /**
    * Finger down on the screen.
    */
-  Touch down(Point point) => _createNext((_) =>
-      _post('down', point));
+  Touch down(Point point) =>
+      _createNext((_) => _post('down', point));
 
   /**
    * Finger up on the screen.
    */
-  Touch up(Point point) => _createNext((_) =>
-      _post('up', point));
+  Touch up(Point point) =>
+      _createNext((_) => _post('up', point));
 
   /**
    * Finger move on the screen.
    */
-  Touch move(Point point) => _createNext((_) =>
-      _post('move', point));
+  Touch move(Point point) =>
+      _createNext((_) => _post('move', point));
 
   /**
    * Scroll on the touch screen using finger based motion events.
@@ -52,14 +52,14 @@ class Touch extends _WebDriverBase implements Future {
   /**
    * Double tap on the touch screen using finger motion events.
    */
-  Touch doubleClick(WebElement element) => _createNext((_) =>
-      _post('doubleclick', element));
+  Touch doubleClick(WebElement element) =>
+      _createNext((_) => _post('doubleclick', element));
 
   /**
    * Long press on the touch screen using finger motion events.
    */
-  Touch longClick(WebElement element) => _createNext((_) =>
-      _post('longclick', element));
+  Touch longClick(WebElement element) =>
+      _createNext((_) => _post('longclick', element));
 
   /**
    * Flick on the touch screen using finger motion events.
@@ -81,18 +81,18 @@ class Touch extends _WebDriverBase implements Future {
         'yspeed': ySpeed.floor()
       }));
 
-  Touch _createNext(f) {
+  Touch _createNext(f(value)) {
     return new Touch._(_prefix, _commandProcessor, _future.then(f));
   }
 
   Stream asStream() => _future.asStream();
 
-  Future catchError(onError, {test}) =>
+  Future catchError(onError(error), {bool test(error)}) =>
       _future.catchError(onError, test: test);
 
-  Future then(onValue, {onError}) =>
+  Future then(onValue(value), {onError(error)}) =>
       _future.then(onValue, onError: onError);
 
-  Future whenComplete(action) =>
+  Future whenComplete(action()) =>
       _future.whenComplete(action);
 }
