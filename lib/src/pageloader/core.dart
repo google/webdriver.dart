@@ -20,10 +20,25 @@ class PageLoader {
     var fieldFutures = [];
     var instance = _reflectedInstance(type);
 
+    var symbols = new Set<Symbol>();
+
+    for (MethodMirror field in type.setters.values) {
+      if (!symbols.contains(field.simpleName)) {
+        var fieldInfo = new _FieldInfo(field);
+        if (fieldInfo != null) {
+          fieldFutures.add(fieldInfo.setField(instance, context, this));
+          symbols.add(fieldInfo._fieldName);
+        }
+      }
+    }
+
     for (VariableMirror field in type.variables.values) {
-      var fieldInfo = new _FieldInfo(field);
-      if (fieldInfo != null) {
-        fieldFutures.add(fieldInfo.setField(instance, context, this));
+      if (!symbols.contains(field.simpleName) && !field.isFinal) {
+        var fieldInfo = new _FieldInfo(field);
+        if (fieldInfo != null) {
+          fieldFutures.add(fieldInfo.setField(instance, context, this));
+          symbols.add(fieldInfo._fieldName);
+        }
       }
     }
 
@@ -54,10 +69,24 @@ class _FieldInfo {
   final TypeMirror _instanceType;
   final bool _isList;
 
-  factory _FieldInfo(VariableMirror field) {
+  factory _FieldInfo(DeclarationMirror field) {
     var finder;
     var filters = new List<Filter>();
-    var type = field.type;
+    var type;
+    var name;
+
+    if (field is VariableMirror) {
+      type = field.type;
+      name = field.simpleName;
+    } else if (field is MethodMirror && field.isSetter) {
+      type = field.parameters.first.type;
+      // HACK to get correct symbol name for operating with setField.
+      name = field.simpleName.toString();
+      name = new Symbol(name.substring(8, name.length - 3));
+    } else {
+      throw new StateError('This should not happen');
+    }
+
     var isList = false;
 
     if (type.simpleName == const Symbol('List')) {
@@ -109,7 +138,7 @@ class _FieldInfo {
     }
 
     if (finder != null) {
-      return new _FieldInfo._(field.simpleName, finder, filters, type, isList);
+      return new _FieldInfo._(name, finder, filters, type, isList);
     } else {
       return null;
     }
@@ -134,17 +163,11 @@ class _FieldInfo {
               loader._getInstance(_instanceType, element))));
     }
 
-    if (_isList) {
-      return future.then((objects) =>
-          instance.setField(_fieldName, objects));
-    } else {
-      return future.then((objects) {
-        if (objects.length != 1) {
-          throw new StateError('multiple or no elements found for field');
-        }
-        return instance.setField(_fieldName, objects.first);
-      });
+    if (!_isList) {
+      future = future.then((objects) => objects.first);
     }
+
+    return future.then((value) => instance.setField(_fieldName, value));
   }
 
   Future<List<WebElement>> _getElements(SearchContext context) {
@@ -153,7 +176,12 @@ class _FieldInfo {
       future = future.then(filter.filter);
     }
     if (!_isList) {
-      future.then((elements) => elements.take(1));
+      future = future.then((elements) {
+        if (elements.length != 1) {
+          throw new StateError('multiple or no elements found for field');
+        }
+        return elements.take(1);
+      });
     }
     return future;
   }

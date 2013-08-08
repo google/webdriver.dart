@@ -11,28 +11,20 @@ class ListOf {
   const ListOf([this.type = WebElement]);
 }
 
-/**
- * Finders identify an initial set of WebElements to be used for a field.
- */
+///Finders identify an initial set of WebElements to be used for a field.
 abstract class Finder extends _FilterFinder {
   const Finder();
 
-  /**
-   * returns the List<WebElement> that should be considered for a field.
-   */
+  /// returns the List<WebElement> that should be considered for a field.
   Future<List<WebElement>> findElements(SearchContext context);
 }
 
-/**
- * Filters reduce the set of elements to be used for a field.
- */
+/// Filters reduce the set of elements to be used for a field.
 abstract class Filter extends _FilterFinder {
 
   const Filter();
 
-  /**
-   * Returns a subset of elements that should be kept for a field.
-   */
+  /// Returns a subset of elements that should be kept for a field.
   Future<List<WebElement>> filter(List<WebElement> elements);
 }
 
@@ -59,9 +51,7 @@ abstract class ElementFilter extends Filter {
           return newElements;
         });
 
-  /**
-   * Return true if you want include this element.
-   */
+  /// Return true if you want include this element.
   Future<bool> keep(WebElement element);
 }
 
@@ -85,9 +75,7 @@ class WithState extends ElementFilter {
 
   const WithState._(this._displayed);
 
-  /**
-   * Keep all elements regardless of whether they are visible or not.
-   */
+  /// Keep all elements regardless of whether they are visible or not.
   const WithState.present() : this._(null);
 
   /**
@@ -96,9 +84,7 @@ class WithState extends ElementFilter {
    */
   const WithState.visible() : this._(true);
 
-  /**
-   * Keep only elements that are invisible.
-   */
+  /// Keep only elements that are invisible.
   const WithState.invisible() : this._(false);
 
   @override
@@ -165,18 +151,13 @@ class _ByFinder extends Finder {
   }
 }
 
-/**
- * Enum of options for that can be returned by _FilterFinder.options.
- */
+/// Enum of options for that can be returned by _FilterFinder.options.
 class FilterFinderOption {
   final String option;
 
   const FilterFinderOption._(this.option);
 
-  /**
-   * Disable the default implicit display filtering for a field.
-   */
+  /// Disable the default implicit display filtering for a field.
   static const FilterFinderOption DISABLE_IMPLICIT_DISPLAY_FILTERING =
       const FilterFinderOption._('DISABLE_IMPLICIT_DISPLAY_FILTERING');
-
 }
