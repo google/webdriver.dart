@@ -70,14 +70,12 @@ class Row {
 
 class PageForDisplayedFilteringTest {
   @By.id('div') @WithState.present()
-  @ListOf()
   List<WebElement> shouldHaveOneElement;
 
   @By.id('div')
-  @ListOf()
   List<WebElement> shouldBeEmpty;
 
   @By.id('div') @WithState.visible()
   @ListOf()
-  List<WebElement> shouldAlsoBeEmpty;
+  dynamic shouldAlsoBeEmpty;
 }

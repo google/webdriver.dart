@@ -58,8 +58,12 @@ class _FieldInfo {
     var finder;
     var filters = new List<Filter>();
     var type = field.type;
-
     var isList = false;
+
+    if (type.simpleName == const Symbol('List')) {
+      isList = true;
+      type = null;
+    }
 
     var implicitDisplayFiltering = true;
 
@@ -82,6 +86,9 @@ class _FieldInfo {
       } else if (datum is Filter) {
         filters.add(datum);
       } else if (datum is ListOf) {
+        if (type != null && type.simpleName != const Symbol('dynamic')) {
+          throw new StateError('Field type is not compatible with ListOf');
+        }
         isList = true;
         type = reflectClass(datum.type);
       }
@@ -91,10 +98,10 @@ class _FieldInfo {
               FilterFinderOption.DISABLE_IMPLICIT_DISPLAY_FILTERING)) {
         implicitDisplayFiltering = false;
       }
+    }
 
-      if (type.simpleName == const Symbol('dynamic')) {
-        type = reflectClass(WebElement);
-      }
+    if (type == null || type.simpleName == const Symbol('dynamic')) {
+      type = reflectClass(WebElement);
     }
 
     if (implicitDisplayFiltering) {
