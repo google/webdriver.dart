@@ -59,7 +59,8 @@ class WebDriverTest {
       group('methods', () {
 
         setUp(() {
-          return WebDriver.createDriver(desiredCapabilities: Capabilities.firefox)
+          return WebDriver
+              .createDriver(desiredCapabilities: Capabilities.firefox)
               .then((_driver) => driver = _driver)
               .then((_) => driver.get('file://' + file.fullPathSync()));
         });

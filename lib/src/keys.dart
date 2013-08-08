@@ -37,7 +37,6 @@ class Keys {
   static const String NUMPAD_7 = '\uE021';
   static const String NUMPAD_8 = '\uE022';
   static const String NUMPAD_9 = '\uE023';
-
   static const String MULTIPLY = '\uE024';
   static const String ADD = '\uE025';
   static const String SEPARATOR = '\uE026';
@@ -57,6 +56,5 @@ class Keys {
   static const String F11 = '\uE03B';
   static const String F12 = '\uE03C';
   static const String COMMAND = '\uE03D';
-  static const String META = COMMAND; // alias
-
+  static const String META = COMMAND;
 }

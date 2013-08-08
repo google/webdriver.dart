@@ -1,8 +1,7 @@
 part of webdriver;
 
-/**
- * A JavaScript alert(), confirm(), or prompt() dialog
- */
+
+/// A JavaScript alert(), confirm(), or prompt() dialog
 class Alert extends _WebDriverBase {
   /**
    * The text of the JavaScript alert(), confirm(), or
@@ -21,7 +20,7 @@ class Alert extends _WebDriverBase {
    * @throws WebDriverError no such alert exception if there isn't currently an
    * alert.
    */
-  Future accept() => _post('accept_alert');
+  Future<Alert> accept() => _post('accept_alert').then((_) => this);
 
   /**
    * Dismisses the currently displayed alert (may not be the alert for which
@@ -30,7 +29,7 @@ class Alert extends _WebDriverBase {
    * Throws WebDriverError no such alert exception if there isn't currently an
    * alert.
    */
-  Future dismiss() => _post('dismiss_alert');
+  Future<Alert> dismiss() => _post('dismiss_alert').then((_) => this);
 
   /**
    * Sends keys to the currently displayed alert (may not be the alert for which
@@ -39,6 +38,6 @@ class Alert extends _WebDriverBase {
    * Throws WebDriverError no such alert exception if there isn't currently an
    * alert.
    */
-  Future sendKeys(String keysToSend) =>
-      _post('alert_text', { 'text': keysToSend });
+  Future<Alert> sendKeys(String keysToSend) =>
+      _post('alert_text', { 'text': keysToSend }).then((_) => this);
 }
