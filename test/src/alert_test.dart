@@ -12,7 +12,7 @@ class AlertTest {
       WebElement output;
 
       setUp(() {
-        return WebDriver.createDriver()
+        return WebDriver.createDriver(desiredCapabilities: Capabilities.chrome)
             .then((_driver) => driver = _driver)
             .then((_) => driver.get('file://' + file.fullPathSync()))
             .then((_) => driver.findElement(new By.tagName('button')))
