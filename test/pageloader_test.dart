@@ -102,7 +102,6 @@ class Table {
 
 class Row {
   @By.tagName('td')
-  @ListOf()
   List<WebElement> cells;
 }
 
