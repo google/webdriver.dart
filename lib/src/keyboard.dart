@@ -12,9 +12,7 @@ class Keyboard extends _WebDriverBase implements Future {
   }
 
   /**
-   * Send a sequence of key strokes to the active element.
-   *
-   * @param keysToSend a String or List<String>.
+   * Send a [keysToSend] to the active element.
    */
   Keyboard sendKeys(dynamic keysToSend) {
     if (keysToSend is String) {

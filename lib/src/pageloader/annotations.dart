@@ -1,8 +1,8 @@
 part of pageloader;
 
 /**
- * Annotate a field as representing a List of some type. If type is
- * not supplied, defaults to WebElement.
+ * Annotate a field as representing a [List] of [type]. If [type] is
+ * not supplied, defaults to [WebElement].
  */
 // Hack because I can't figure out how to get the full type for fields.
 class ListOf {
@@ -11,26 +11,26 @@ class ListOf {
   const ListOf([this.type = WebElement]);
 }
 
-///Finders identify an initial set of WebElements to be used for a field.
+/// Finders identify an initial set of [WebElement]s to be used for a field.
 abstract class Finder extends _FilterFinder {
   const Finder();
 
-  /// returns the List<WebElement> that should be considered for a field.
+  /// returns the [List<WebElement>] that should be considered for a field.
   Future<List<WebElement>> findElements(SearchContext context);
 }
 
-/// Filters reduce the set of elements to be used for a field.
+/// Filters reduce the set of [WebElement]s to be used for a field.
 abstract class Filter extends _FilterFinder {
 
   const Filter();
 
-  /// Returns a subset of elements that should be kept for a field.
+  /// Returns a subset of [elements] that should be kept for a field.
   Future<List<WebElement>> filter(List<WebElement> elements);
 }
 
 /**
- * Convenience class for Filters that only need information about a specific
- * element to determine whether to keep it or not.
+ * Convenience class for [Filter]s that only need information about a specific
+ * [WebElement] to determine whether to keep it or not.
  */
 abstract class ElementFilter extends Filter {
 
@@ -51,7 +51,7 @@ abstract class ElementFilter extends Filter {
           return newElements;
         });
 
-  /// Return true if you want include this element.
+  /// Return [true] if you want to keep [element].
   Future<bool> keep(WebElement element);
 }
 
@@ -59,15 +59,15 @@ abstract class _FilterFinder {
   const _FilterFinder();
 
   /**
-   * Returns a set of FilterFinderOptions that control the behavior of this
-   * Filter or Finder.
+   * Returns a set of [FilterFinderOption]s that control the behavior of this
+   * [Filter] or [Finder].
    */
   List<FilterFinderOption> get options => const [];
 }
 
 /**
- * Filter that keeps elements based on their visibility. Overrides the
- * default visibility filter used by PageLoader.
+ * [Filter] that keeps [WebElement]s based on their visibility. Overrides the
+ * default visibility filter used by [PageLoader].
  */
 class WithState extends ElementFilter {
 
@@ -75,16 +75,16 @@ class WithState extends ElementFilter {
 
   const WithState._(this._displayed);
 
-  /// Keep all elements regardless of whether they are visible or not.
+  /// Keep all [WebElement]s regardless of whether they are visible or not.
   const WithState.present() : this._(null);
 
   /**
-   * Keep only elements that are visible. This is the default for PageLoader
-   * so should generally not be necessary.
+   * Keep only [WebElement]s that are visible. This is the default for
+   * [PageLoader] so should generally not be necessary.
    */
   const WithState.visible() : this._(true);
 
-  /// Keep only elements that are invisible.
+  /// Keep only [WebElement]s that are invisible.
   const WithState.invisible() : this._(false);
 
   @override
@@ -102,7 +102,7 @@ class WithState extends ElementFilter {
 }
 
 /**
- * Matches the root WebElement being used for constructing the current page
+ * Matches the root [WebElement] being used for constructing the current page
  * object.
  */
 class Root extends Finder {
@@ -123,7 +123,7 @@ class Root extends Finder {
 }
 
 /**
- * Keeps only elements that have the given attribute with the given value.
+ * Keeps only [WebElement]s that have the given attribute with the given value.
  */
 class WithAttribute extends ElementFilter {
 
@@ -151,7 +151,7 @@ class _ByFinder extends Finder {
   }
 }
 
-/// Enum of options for that can be returned by _FilterFinder.options.
+/// Enum of options for that can be returned by [_FilterFinder.options].
 class FilterFinderOption {
   final String option;
 

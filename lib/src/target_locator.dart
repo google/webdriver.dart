@@ -7,7 +7,7 @@ class TargetLocator extends _WebDriverBase {
   /**
    * Change focus to another frame on the page.
    *
-   * @param frame If is a:
+   * If [frame] is a:
    *   int: select by its zero-based indexed
    *   String: select frame by the name of the frame window or the id of the
    *           frame or iframe tag.
@@ -15,7 +15,7 @@ class TargetLocator extends _WebDriverBase {
    *               element.
    *   not provided: selects the first frame on the page or the main document.
    *
-   * Throws WebDriverError no such frame if the specified frame can't be
+   * Throws [WebDriverError] no such frame if the specified frame can't be
    * found.
    */
   Future<TargetLocator> frame([frame]) =>
@@ -25,7 +25,7 @@ class TargetLocator extends _WebDriverBase {
    * Switch the focus of future commands for this driver to the window with the
    * given name/handle.
    *
-   * Throws WebDriverError no such window if the specified window can't be
+   * Throws [WebDriverError] no such window if the specified window can't be
    * found.
    */
   Future<TargetLocator> window(String window) =>
