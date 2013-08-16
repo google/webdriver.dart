@@ -57,14 +57,14 @@ class Mouse extends _WebDriverBase implements Future {
   /**
    * Move the mouse.
    *
-   * If element is specified and xOffset and yOffset are not, will move the
-   * mouse to the center of the element.
+   * If [element] is specified and [xOffset] and [yOffset] are not, will move
+   * the mouse to the center of the [element].
    *
-   * If xOffset and yOffset are specified, will move the mouse that distance
+   * If [xOffset] and [yOffset] are specified, will move the mouse that distance
    * from its current location.
    *
    * If all three are specified, will move the mouse to the offset relative to
-   * the top-left corner of the element.
+   * the top-left corner of the [element].
    *
    * All other combinations of parameters are illegal.
    */

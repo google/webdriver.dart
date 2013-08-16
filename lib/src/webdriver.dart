@@ -51,7 +51,7 @@ class WebDriver extends _WebDriverBase implements SearchContext {
   /**
    * Search for an element within the entire current page.
    *
-   * Throws WebDriverError no such element if a matching element is not found.
+   * Throws [WebDriverError] no such element if a matching element is not found.
    */
   Future<WebElement> findElement(By by) => _post('element', by)
       .then((element) =>

@@ -16,11 +16,7 @@ class WebElement extends _WebDriverBase implements SearchContext {
   /// Submit this element if it is part of a form.
   Future<WebElement> submit() => _post('submit').then((_) => this);
 
-  /**
-   * Send keys to this element.
-   *
-   * @param keysToSend a String or List<String>.
-   */
+  /// Send [keysToSend] (a [String] or [List<String>]) to this element.
   Future<WebElement> sendKeys(dynamic keysToSend) {
     if (keysToSend is String) {
       keysToSend = [ keysToSend ];
@@ -58,7 +54,7 @@ class WebElement extends _WebDriverBase implements SearchContext {
   /**
    * Find an element nested within this element.
    *
-   * Throws WebDriverError no such element if matching element is not found.
+   * Throws [WebDriverError] no such element if matching element is not found.
    */
   Future<WebElement> findElement(By by) => _post('element', by)
       .then((element) =>

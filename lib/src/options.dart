@@ -9,7 +9,7 @@ class Cookies extends _WebDriverBase {
   Future<Cookies> add(Cookie cookie) => _post('', { 'cookie': cookie })
       .then((_) => this);
 
-  /// Delete the cookie with the given name.
+  /// Delete the cookie with the given [name].
   Future<Cookies> delete(String name) => _delete('$name').then((_) => this);
 
   /// Delete all cookies visible to the current page.
