@@ -10,8 +10,8 @@ class PageLoader {
   PageLoader(this._driver);
 
   /**
-   * Creates a new instance of type and binds annotated fields to corresponding
-   * elements.
+   * Creates a new instance of [type] and binds annotated fields to
+   * corresponding [WebElement]s.
    */
   Future getInstance(Type type) =>
       _getInstance(reflectClass(type), _driver);

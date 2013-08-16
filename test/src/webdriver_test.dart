@@ -133,7 +133,8 @@ class WebDriverTest {
           int numHandles;
           return driver.windowHandles
               .then((handles) => numHandles = handles.length)
-              .then((_) => driver.findElement(new By.partialLinkText('Open copy')))
+              .then((_) =>
+                  driver.findElement(new By.partialLinkText('Open copy')))
               .then((element) => element.click())
               .then((_) => driver.close())
               .then((_) => driver.windowHandles)
@@ -147,7 +148,8 @@ class WebDriverTest {
           String newHandle;
           return driver.windowHandle
               .then((_handle) => origHandle = _handle)
-              .then((_) => driver.findElement(new By.partialLinkText('Open copy')))
+              .then((_) =>
+                  driver.findElement(new By.partialLinkText('Open copy')))
               .then((element) => element.click())
               .then((_) => driver.windowHandles)
               .then((handles) {
@@ -213,13 +215,13 @@ class WebDriverTest {
               });
         });
 
-//        test('captureScreenshot', () {
-//          return driver.captureScreenshot()
-//              .then((screenshot) {
-//                expect(screenshot, hasLength(isPositive));
-//                expect(screenshot, everyElement(new isInstanceOf<int>()));
-//              });
-//        });
+        test('captureScreenshot', () {
+          return driver.captureScreenshot()
+              .then((screenshot) {
+                expect(screenshot, hasLength(isPositive));
+                expect(screenshot, everyElement(new isInstanceOf<int>()));
+              });
+        });
       });
     });
   }

@@ -1,7 +1,8 @@
 webdriver
 =========
 
-Provides WebDriver bindings for Dart. These use the WebDriver JSON interface, and as such, require the use of the WebDriver remote server.
+Provides WebDriver bindings for Dart. These use the WebDriver JSON interface,
+and as such, require the use of the WebDriver remote server.
 
 Installing
 ----------
@@ -16,7 +17,8 @@ Installing
      webdriver: any
    ```
 
-   If your package is an application package you should use any as the version constraint.
+   If your package is an application package you should use any as the version
+   constraint.
 
 2. Install it
 

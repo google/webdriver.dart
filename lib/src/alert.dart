@@ -17,7 +17,7 @@ class Alert extends _WebDriverBase {
    * Accepts the currently displayed alert (may not be the alert for which
    * this object was created).
    *
-   * @throws WebDriverError no such alert exception if there isn't currently an
+   * Throws [WebDriverError] no such alert exception if there isn't currently an
    * alert.
    */
   Future<Alert> accept() => _post('accept_alert').then((_) => this);
@@ -26,7 +26,7 @@ class Alert extends _WebDriverBase {
    * Dismisses the currently displayed alert (may not be the alert for which
    * this object was created).
    *
-   * Throws WebDriverError no such alert exception if there isn't currently an
+   * Throws [WebDriverError] no such alert exception if there isn't currently an
    * alert.
    */
   Future<Alert> dismiss() => _post('dismiss_alert').then((_) => this);
@@ -35,7 +35,7 @@ class Alert extends _WebDriverBase {
    * Sends keys to the currently displayed alert (may not be the alert for which
    * this object was created).
    *
-   * Throws WebDriverError no such alert exception if there isn't currently an
+   * Throws [WebDriverError] no such alert exception if there isn't currently an
    * alert.
    */
   Future<Alert> sendKeys(String keysToSend) =>

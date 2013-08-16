@@ -3,7 +3,7 @@ part of webdriver;
 const String _ELEMENT = 'ELEMENT';
 
 /**
- * Simple class to provide access to index properties such as WebElement
+ * Simple class to provide access to indexed properties such as WebElement
  * attributes or css styles.
  */
 class Attributes extends _WebDriverBase {
@@ -50,7 +50,7 @@ abstract class SearchContext {
   /**
    * Searchs for an element within the context.
    *
-   * Throws WebDriverError no such element exception if no matching element is
+   * Throws [WebDriverError] no such element exception if no matching element is
    * found.
    */
   Future<WebElement> findElement(By by);
