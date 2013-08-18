@@ -28,12 +28,12 @@ main() {
   useVMConfiguration();
 
   new AlertTest().main();
-  new KeyboardTest().main();
-  new MouseTest().main();
-  new NavigationTest().main();
-  new OptionsTest().main();
-  new TargetLocatorTest().main();
-  new WebDriverTest().main();
-  new WebElementTest().main();
-  new WindowTest().main();
+//  new KeyboardTest().main();
+//  new MouseTest().main();
+//  new NavigationTest().main();
+//  new OptionsTest().main();
+//  new TargetLocatorTest().main();
+//  new WebDriverTest().main();
+//  new WebElementTest().main();
+//  new WindowTest().main();
 }

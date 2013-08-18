@@ -32,10 +32,7 @@ class CommandProcessor {
    * If a number or string, "/params" is appended to the URL.
    */
   Future _serverRequest(String httpMethod, String command, {params}) {
-    var status = 0;
-    var results = null;
-    var message = null;
-    var successCodes = [ 200, 204 ];
+    const successCodes = const [ 200, 204 ];
     var completer = new Completer();
 
     try {
@@ -64,50 +61,50 @@ class CommandProcessor {
         } else {
           req.contentLength = 0;
         }
-        req.close().then((rsp) {
-          List<int> body = new List<int>();
-          rsp.listen(body.addAll, onDone: () {
-            var value = null;
-            // For some reason we get a bunch of NULs on the end
-            // of the text and the json.parse blows up on these, so
-            // strip them.
-            // These NULs can be seen in the TCP packet, so it is not
-            // an issue with character encoding; it seems to be a bug
-            // in WebDriver stack.
-            results = new String.fromCharCodes(body)
-                .replaceAll(new RegExp('\u{0}*\$'), '');
-            if (!successCodes.contains(rsp.statusCode)) {
-              _failRequest(completer,
-                  'Unexpected response ${rsp.statusCode}; $results');
-              return;
-            }
-            if (status == 0 && results.length > 0) {
-              // 4xx responses send plain text; others send JSON.
-              if (rsp.statusCode < 400) {
-                results = json.parse(results);
-                status = results['status'];
+        return req.close();
+      }).then((HttpClientResponse rsp) {
+        return rsp.transform(new StringDecoder())
+            .fold(new StringBuffer(), (buffer, data) => buffer..write(data))
+            .then((StringBuffer buffer) {
+              // For some reason we get a bunch of NULs on the end
+              // of the text and the json.parse blows up on these, so
+              // strip them.
+              // These NULs can be seen in the TCP packet, so it is not
+              // an issue with character encoding; it seems to be a bug
+              // in WebDriver stack.
+              var results = buffer.toString()
+                  .replaceAll(new RegExp('\u{0}*\$'), '');
+
+              if (!successCodes.contains(rsp.statusCode)) {
+                _failRequest(completer,
+                    'Unexpected response ${rsp.statusCode}; $results');
+                return;
               }
-              if (results is Map && (results as Map).containsKey('value')) {
-                value = results['value'];
+
+              var status = -1;
+              var message = null;
+              var value = null;
+              if (!results.isEmpty) {
+                // 4xx responses send plain text; others send JSON.
+                if (rsp.statusCode < 400 || rsp.statusCode >= 500) {
+                  results = json.parse(results);
+                  status = results['status'];
+                }
+                if (results is Map && (results as Map).containsKey('value')) {
+                  value = results['value'];
+                }
+                if (value is Map && value.containsKey('message')) {
+                  message = value['message'];
+                }
               }
-              if (value is Map && value.containsKey('message')) {
-                message = value['message'];
+
+              if (status == 0) {
+                completer.complete(value);
+              } else {
+                completer.completeError(new WebDriverError(status, message));
               }
-            }
-            if (status == 0) {
-              completer.complete(value);
-            }
-          }, onError: (error) {
-            _failRequest(completer, error);
-          });
-        })
-        .catchError((error) {
-          _failRequest(completer, error);
-        });
-      })
-      .catchError((error) {
-        _failRequest(completer, error);
-      });
+            });
+      }).catchError((error) => _failRequest(completer, error));
     } catch (e, s) {
       _failRequest(completer, e, s);
     }
