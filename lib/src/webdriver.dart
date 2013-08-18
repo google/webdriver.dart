@@ -13,19 +13,29 @@ class WebDriver extends _WebDriverBase implements SearchContext {
       desiredCapabilities = Capabilities.empty;
     }
     var client = new HttpClient();
-    return client.openUrl('POST', Uri.parse(url + "/session")).then((req) {
+    var requestUri = Uri.parse(url + "/session");
+    return client.openUrl('POST', requestUri).then((req) {
       req.followRedirects = false;
       req.headers.add(HttpHeaders.ACCEPT, "application/json");
-      req.headers.add(HttpHeaders.CONTENT_TYPE,
-          'application/json;charset=UTF-8');
-      req.write(json.stringify({
-        'desiredCapabilities': desiredCapabilities
-      }));
+      req.headers.contentType = _CONTENT_TYPE_JSON;
+      var body = utf.encodeUtf8(
+          json.stringify({'desiredCapabilities': desiredCapabilities}));
+      req.contentLength = body.length;
+      req.add(body);
       return req.close();
 
     }).then((rsp) {
-      CommandProcessor processor = new CommandProcessor
-          ._fromUrl(rsp.headers.value(HttpHeaders.LOCATION));
+      var rspUri = Uri.parse(rsp.headers.value(HttpHeaders.LOCATION));
+      var host = rspUri.host;
+      var port = rspUri.port;
+      if (host.isEmpty) {
+        host = requestUri.host;
+        if (port == 0) {
+          port = requestUri.port;
+        }
+      }
+      CommandProcessor processor = new CommandProcessor(
+          host, port, rspUri.path);
       return new WebDriver._(processor);
     });
   }
