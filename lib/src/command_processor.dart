@@ -18,10 +18,10 @@ class CommandProcessor {
   }
 
   void _failRequest(Completer completer, error, [stackTrace]) {
-    if (completer != null) {
-      var trace = stackTrace != null ? stackTrace : getAttachedStackTrace(error);
-      completer.completeError(new WebDriverError(-1, error.toString()), trace);
+    if (stackTrace == null) {
+      stackTrace = getAttachedStackTrace(error);
     }
+    completer.completeError(new WebDriverError(-1, error.toString()), stackTrace);
   }
 
   /**
@@ -32,10 +32,7 @@ class CommandProcessor {
    * If a number or string, "/params" is appended to the URL.
    */
   Future _serverRequest(String httpMethod, String command, {params}) {
-    var status = 0;
-    var results = null;
-    var message = null;
-    var successCodes = [ 200, 204 ];
+    const successCodes = const [ HttpStatus.OK, HttpStatus.NO_CONTENT ];
     var completer = new Completer();
 
     try {
@@ -64,50 +61,55 @@ class CommandProcessor {
         } else {
           req.contentLength = 0;
         }
-        req.close().then((rsp) {
-          List<int> body = new List<int>();
-          rsp.listen(body.addAll, onDone: () {
-            var value = null;
-            // For some reason we get a bunch of NULs on the end
-            // of the text and the json.parse blows up on these, so
-            // strip them.
-            // These NULs can be seen in the TCP packet, so it is not
-            // an issue with character encoding; it seems to be a bug
-            // in WebDriver stack.
-            results = new String.fromCharCodes(body)
-                .replaceAll(new RegExp('\u{0}*\$'), '');
-            if (!successCodes.contains(rsp.statusCode)) {
-              _failRequest(completer,
-                  'Unexpected response ${rsp.statusCode}; $results');
-              return;
-            }
-            if (status == 0 && results.length > 0) {
-              // 4xx responses send plain text; others send JSON.
-              if (rsp.statusCode < 400) {
+        return req.close();
+      }).then((HttpClientResponse rsp) {
+        return rsp.transform(new StringDecoder())
+            .fold(new StringBuffer(), (buffer, data) => buffer..write(data))
+            .then((StringBuffer buffer) {
+              // For some reason we get a bunch of NULs on the end
+              // of the text and the json.parse blows up on these, so
+              // strip them.
+              // These NULs can be seen in the TCP packet, so it is not
+              // an issue with character encoding; it seems to be a bug
+              // in WebDriver stack.
+              var results = buffer.toString()
+                  .replaceAll(new RegExp('\u{0}*\$'), '');
+
+              var status = -1;
+              var message = null;
+              var value = null;
+              // 4xx responses send plain text; others send JSON
+              if (HttpStatus.BAD_REQUEST <= rsp.statusCode
+                  && rsp.statusCode < HttpStatus.INTERNAL_SERVER_ERROR) {
+                if (rsp.statusCode == HttpStatus.NOT_FOUND) {
+                  status = 9; // UnkownCommand
+                } else {
+                  status = 13; // UnknownError
+                }
+                message = results;
+              } else if (!results.isEmpty) {
                 results = json.parse(results);
-                status = results['status'];
+                if (results.containsKey('status')) {
+                  status = results['status'];
+                }
+                if (results.containsKey('value')) {
+                  value = results['value'];
+                }
+                if (results.containsKey('message')) {
+                  message = results['message'];
+                }
               }
-              if (results is Map && (results as Map).containsKey('value')) {
-                value = results['value'];
+
+              if (status != 0) {
+                completer.completeError(new WebDriverError(status, message));
+              } else if (!successCodes.contains(rsp.statusCode)) {
+                completer.completeError(new WebDriverError(-1,
+                    'Unexpected response ${rsp.statusCode}; $results'));
+              } else {
+                completer.complete(value);
               }
-              if (value is Map && value.containsKey('message')) {
-                message = value['message'];
-              }
-            }
-            if (status == 0) {
-              completer.complete(value);
-            }
-          }, onError: (error) {
-            _failRequest(completer, error);
-          });
-        })
-        .catchError((error) {
-          _failRequest(completer, error);
-        });
-      })
-      .catchError((error) {
-        _failRequest(completer, error);
-      });
+            });
+      }).catchError((error) => _failRequest(completer, error));
     } catch (e, s) {
       _failRequest(completer, e, s);
     }

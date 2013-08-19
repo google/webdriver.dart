@@ -139,7 +139,7 @@ class WebDriverError {
       'ObsoleteElement',
       'ElementNotDisplayed',
       'InvalidElementState',
-      'Unhandled',
+      'Unknown',
       'Expected',
       'ElementNotSelectable',
       'NoSuchDocument',
