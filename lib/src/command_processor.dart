@@ -18,10 +18,10 @@ class CommandProcessor {
   }
 
   void _failRequest(Completer completer, error, [stackTrace]) {
-    if (completer != null) {
-      var trace = stackTrace != null ? stackTrace : getAttachedStackTrace(error);
-      completer.completeError(new WebDriverError(-1, error.toString()), trace);
+    if (stacktrace == null) {
+      stackTrace = getAttachedStackTrace(error);
     }
+    completer.completeError(new WebDriverError(-1, error.toString()), trace);
   }
 
   /**
@@ -32,7 +32,7 @@ class CommandProcessor {
    * If a number or string, "/params" is appended to the URL.
    */
   Future _serverRequest(String httpMethod, String command, {params}) {
-    const successCodes = const [ 200, 204 ];
+    const successCodes = const [ HttpStatus.OK, HttpStatus.NO_CONTENT ];
     var completer = new Completer();
 
     try {
@@ -75,33 +75,38 @@ class CommandProcessor {
               var results = buffer.toString()
                   .replaceAll(new RegExp('\u{0}*\$'), '');
 
-              if (!successCodes.contains(rsp.statusCode)) {
-                _failRequest(completer,
-                    'Unexpected response ${rsp.statusCode}; $results');
-                return;
-              }
-
               var status = -1;
               var message = null;
               var value = null;
-              if (!results.isEmpty) {
-                // 4xx responses send plain text; others send JSON.
-                if (rsp.statusCode < 400 || rsp.statusCode >= 500) {
-                  results = json.parse(results);
+              // 4xx responses send plain text; others send JSON
+              if (HttpStatus.BAD_REQUEST <= rsp.statusCode
+                  && rsp.statusCode < HttpStatus.INTERNAL_SERVER_ERROR) {
+                if (rsp.statusCode == HttpStatus.NOT_FOUND) {
+                  status = 9; // UnkownCommand
+                } else {
+                  status = 13; // UnknownError
+                }
+                message = results;
+              } else if (!results.isEmpty) {
+                results = json.parse(results);
+                if (results.containsKey('status')) {
                   status = results['status'];
                 }
-                if (results is Map && (results as Map).containsKey('value')) {
+                if (results.containsKey('value')) {
                   value = results['value'];
                 }
-                if (value is Map && value.containsKey('message')) {
-                  message = value['message'];
+                if (results.containsKey('message')) {
+                  message = results['message'];
                 }
               }
 
-              if (status == 0) {
-                completer.complete(value);
-              } else {
+              if (status != 0) {
                 completer.completeError(new WebDriverError(status, message));
+              } else if (!successCodes.contains(rsp.statusCode)) {
+                completer.completeError(new WebDriverError(-1,
+                    'Unexpected response ${rsp.statusCode}; $results'));
+              } else {
+                completer.complete(value);
               }
             });
       }).catchError((error) => _failRequest(completer, error));
