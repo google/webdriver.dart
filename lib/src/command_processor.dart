@@ -18,10 +18,10 @@ class CommandProcessor {
   }
 
   void _failRequest(Completer completer, error, [stackTrace]) {
-    if (stacktrace == null) {
+    if (stackTrace == null) {
       stackTrace = getAttachedStackTrace(error);
     }
-    completer.completeError(new WebDriverError(-1, error.toString()), trace);
+    completer.completeError(new WebDriverError(-1, error.toString()), stackTrace);
   }
 
   /**
