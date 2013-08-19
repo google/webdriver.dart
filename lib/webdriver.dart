@@ -7,6 +7,7 @@ library webdriver;
 import 'dart:async';
 import 'dart:io';
 import 'dart:json' as json;
+import 'dart:utf' as utf;
 import 'package:crypto/crypto.dart';
 import 'package:meta/meta.dart';
 

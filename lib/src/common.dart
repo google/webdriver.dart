@@ -1,6 +1,8 @@
 part of webdriver;
 
 const String _ELEMENT = 'ELEMENT';
+final ContentType _CONTENT_TYPE_JSON =
+    new ContentType("application", "json", charset: "utf-8");
 
 /**
  * Simple class to provide access to indexed properties such as WebElement

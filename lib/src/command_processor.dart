@@ -9,21 +9,11 @@ class CommandProcessor {
   String get path => _path;
   String get url => _url;
 
-  /**
-   * The default URL for WebDriver remote server is
-   * http://localhost:4444/wd/hub.
-   */
-  CommandProcessor._fromUrl([this._url = 'http://localhost:4444/wd/hub']) {
-    Uri uri = Uri.parse(this._url);
-    _port = uri.port;
-    _host = uri.host;
-    _path = uri.path;
-  }
-
   CommandProcessor([
       this._host = 'localhost',
       this._port = 4444,
       this._path = '/wd/hub']) {
+    assert(!this._host.isEmpty);
     _url = 'http://$_host:$_port$_path';
   }
 
@@ -66,11 +56,13 @@ class CommandProcessor {
       client.open(httpMethod, _host, _port, path).then((req) {
         req.followRedirects = false;
         req.headers.add(HttpHeaders.ACCEPT, "application/json");
-        req.headers.contentType
-            = new ContentType("application", "json", charset: "utf-8");
+        req.headers.contentType = _CONTENT_TYPE_JSON;
         if (params != null) {
-          var body = json.stringify(params);
-          req.write(body);
+          var body = utf.encodeUtf8(json.stringify(params));
+          req.contentLength = body.length;
+          req.add(body);
+        } else {
+          req.contentLength = 0;
         }
         req.close().then((rsp) {
           List<int> body = new List<int>();
@@ -133,10 +125,15 @@ class CommandProcessor {
       _serverRequest('DELETE', _command(extraPath));
 
   String _command(String extraPath) {
+    var command;
     if (extraPath.startsWith('/')) {
-      return '${_path}$extraPath';
+      command = '${_path}$extraPath';
     } else {
-      return '${_path}/$extraPath';
+      command = '${_path}/$extraPath';
     }
+    if (command.endsWith('/')) {
+      command = command.substring(0, command.length - 1);
+    }
+    return command;
   }
 }
