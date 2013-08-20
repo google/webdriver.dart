@@ -75,7 +75,7 @@ class CommandProcessor {
               var results = buffer.toString()
                   .replaceAll(new RegExp('\u{0}*\$'), '');
 
-              var status = -1;
+              var status = 0;
               var message = null;
               var value = null;
               // 4xx responses send plain text; others send JSON
