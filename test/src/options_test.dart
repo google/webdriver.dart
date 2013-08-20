@@ -82,7 +82,7 @@ class OptionsTest {
       WebDriver driver;
 
       setUp(() {
-        return WebDriver.createDriver()
+        return WebDriver.createDriver(desiredCapabilities: Capabilities.chrome)
             .then((_driver) => driver = _driver);
       });
 
