@@ -1,20 +1,20 @@
 part of webdriver;
 
 class CommandProcessor {
-  String _host;
-  int _port;
-  String _path;
-  String _url;
+  final Uri _uri;
 
-  String get path => _path;
-  String get url => _url;
+  String get _host => _uri.host;
+  int get _port => _uri.port;
+  String get path => _uri.path;
+
+  String get url => _uri.toString();
 
   CommandProcessor([
-      this._host = 'localhost',
-      this._port = 4444,
-      this._path = '/wd/hub']) {
+      String host = 'localhost',
+      int port = 4444,
+      String path = '/wd/hub']) :
+      _uri = new Uri(scheme: 'http', host: host, port: port, path: path) {
     assert(!this._host.isEmpty);
-    _url = 'http://$_host:$_port$_path';
   }
 
   void _failRequest(Completer completer, error, [stackTrace]) {
@@ -129,9 +129,9 @@ class CommandProcessor {
   String _command(String extraPath) {
     var command;
     if (extraPath.startsWith('/')) {
-      command = '${_path}$extraPath';
+      command = '${path}$extraPath';
     } else {
-      command = '${_path}/$extraPath';
+      command = '${path}/$extraPath';
     }
     if (command.endsWith('/')) {
       command = command.substring(0, command.length - 1);

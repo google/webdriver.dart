@@ -1,9 +1,10 @@
 library webdriver_test;
 
 import 'dart:io' as io;
+import 'package:path/path.dart' as pathos;
 import 'package:webdriver/webdriver.dart';
 import 'package:unittest/unittest.dart';
-import 'package:unittest/vm_config.dart';
+import 'package:unittest/compact_vm_config.dart';
 
 part 'src/alert_test.dart';
 part 'src/keyboard_test.dart';
@@ -24,8 +25,8 @@ final Matcher isPoint = new isInstanceOf<Point>();
  * These tests are not expected to be run as part of normal automated testing,
  * as they are slow and they have external dependencies.
  */
-main() {
-  useVMConfiguration();
+void main() {
+  useCompactVMConfiguration();
 
   new AlertTest().main();
   new KeyboardTest().main();
@@ -36,4 +37,14 @@ main() {
   new WebDriverTest().main();
   new WebElementTest().main();
   new WindowTest().main();
+}
+
+final _testPagePath = _getTestPagePath();
+
+String _getTestPagePath() {
+  var scriptPath = (new io.Options()).script;
+  var scriptDir = pathos.dirname(scriptPath);
+  var testPagePath = pathos.join(scriptDir, 'test_page.html');
+  testPagePath = pathos.absolute(testPagePath);
+  return pathos.toUri(testPagePath).toString();
 }

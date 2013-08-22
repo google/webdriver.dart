@@ -55,7 +55,7 @@ class WebDriver extends _WebDriverBase implements SearchContext {
             if (status != 0) {
               var value = respObj['value'];
               var message =
-                  value.contains('message') ? value['message'] : null;
+                  value.containsKey('message') ? value['message'] : null;
               throw new WebDriverError(status, message);
             }
 

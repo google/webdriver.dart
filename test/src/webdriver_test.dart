@@ -4,7 +4,6 @@ class WebDriverTest {
   main() {
 
     WebDriver driver;
-    io.File file = new io.File('test_page.html');
 
     group('WebDriver', () {
       group('create', () {
@@ -62,7 +61,7 @@ class WebDriverTest {
           return WebDriver
               .createDriver(desiredCapabilities: Capabilities.chrome)
               .then((_driver) => driver = _driver)
-              .then((_) => driver.get('file://' + file.fullPathSync()));
+              .then((_) => driver.get(_testPagePath));
         });
 
         tearDown(() => driver.quit());

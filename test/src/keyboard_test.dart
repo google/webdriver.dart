@@ -3,8 +3,6 @@ part of webdriver_test;
 class KeyboardTest {
   main() {
 
-    io.File file = new io.File('test_page.html');
-
     group('Keyboard', () {
 
       WebDriver driver;
@@ -13,7 +11,7 @@ class KeyboardTest {
       setUp(() {
         return WebDriver.createDriver(desiredCapabilities: Capabilities.firefox)
             .then((_driver) => driver = _driver)
-            .then((_) => driver.get('file://' + file.fullPathSync()))
+            .then((_) => driver.get(_testPagePath))
             .then((_) =>
                 driver.findElement(new By.cssSelector('input[type=text]')))
             .then((_element) => textInput = _element)

@@ -3,8 +3,6 @@ part of webdriver_test;
 class MouseTest {
   main() {
 
-    io.File file = new io.File('test_page.html');
-
     group('Mouse', () {
 
       WebDriver driver;
@@ -13,7 +11,7 @@ class MouseTest {
       setUp(() {
         return WebDriver.createDriver(desiredCapabilities: Capabilities.chrome)
             .then((_driver) => driver = _driver)
-            .then((_) => driver.get('file://' + file.fullPathSync()))
+            .then((_) => driver.get(_testPagePath))
             .then((_) => driver.findElement(new By.tagName('button')))
             .then((_e) => button = _e);
       });
