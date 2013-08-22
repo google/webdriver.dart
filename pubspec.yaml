@@ -9,4 +9,5 @@ dependencies:
   crypto: '>=0.6.19'
   meta: '>=0.6.19'
 dev_dependencies:
+  path: '>=0.6.19'
   unittest: '>=0.6.19'

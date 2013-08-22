@@ -3,7 +3,6 @@ part of webdriver_test;
 class AlertTest {
   main() {
 
-    io.File file = new io.File('test_page.html');
 
     group('Alert', () {
 
@@ -14,7 +13,7 @@ class AlertTest {
       setUp(() {
         return WebDriver.createDriver(desiredCapabilities: Capabilities.chrome)
             .then((_driver) => driver = _driver)
-            .then((_) => driver.get('file://' + file.fullPathSync()))
+            .then((_) => driver.get(_testPagePath))
             .then((_) => driver.findElement(new By.tagName('button')))
             .then((_element) => button = _element)
             .then((_) => driver.findElement(new By.id('settable')))

@@ -3,8 +3,6 @@ part of webdriver_test;
 class WindowTest {
   main() {
 
-    io.File file = new io.File('test_page.html');
-
     group('Window', () {
 
       WebDriver driver;
