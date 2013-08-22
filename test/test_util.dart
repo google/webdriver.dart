@@ -1,6 +1,6 @@
 library webdriver_test_util;
 
-import 'dart:io' as io;
+import 'dart:io';
 import 'package:path/path.dart' as pathos;
 
 String _testPagePath;
@@ -13,9 +13,11 @@ String get testPagePath {
 }
 
 String _getTestPagePath() {
-  var scriptPath = (new io.Options()).script;
-  var scriptDir = pathos.dirname(scriptPath);
-  var testPagePath = pathos.join(scriptDir, 'test_page.html');
+  var testPagePath = pathos.join(pathos.current, 'test', 'test_page.html');
   testPagePath = pathos.absolute(testPagePath);
+  if(!FileSystemEntity.isFileSync(testPagePath)) {
+    throw new Exception('Could not find the test file at "$testPagePath".'
+        ' Make sure you are running tests from the root of the project.');
+  }
   return pathos.toUri(testPagePath).toString();
 }
