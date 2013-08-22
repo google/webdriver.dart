@@ -1,12 +1,12 @@
 name: webdriver
-version: 0.7.3
+version: 0.7.4
 author: Dart Team <misc@dartlang.org>
 description: Provides WebDriver bindings for Dart. These use the WebDriver JSON interface, and as such, require the use of the WebDriver remote server.
 homepage: https://github.com/dart-lang/webdriver
 environment:
-  sdk: '>=0.6.17+2'
+  sdk: '>=0.6.19'
 dependencies:
-  crypto: '>=0.6.17+2'
-  meta: '>=0.6.17+2'
+  crypto: '>=0.6.19'
+  meta: '>=0.6.19'
 dev_dependencies:
-  unittest: '>=0.6.17+2'
+  unittest: '>=0.6.19'
