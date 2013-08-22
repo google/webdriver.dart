@@ -3,7 +3,7 @@ library webdriver_test;
 import 'package:webdriver/pageloader.dart';
 import 'package:webdriver/webdriver.dart';
 import 'package:unittest/unittest.dart';
-import 'package:unittest/vm_config.dart';
+import 'package:unittest/compact_vm_config.dart';
 
 import 'test_util.dart';
 
@@ -12,7 +12,7 @@ import 'test_util.dart';
  * as they are slow and they have external dependencies.
  */
 void main() {
-  useVMConfiguration();
+  useCompactVMConfiguration();
 
   WebDriver driver;
   PageLoader loader;
