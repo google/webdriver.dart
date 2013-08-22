@@ -24,7 +24,7 @@ final Matcher isPoint = new isInstanceOf<Point>();
  * These tests are not expected to be run as part of normal automated testing,
  * as they are slow and they have external dependencies.
  */
-main() {
+void main() {
   useCompactVMConfiguration();
 
   new AlertTest().main();
