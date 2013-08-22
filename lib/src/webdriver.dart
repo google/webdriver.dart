@@ -25,9 +25,45 @@ class WebDriver extends _WebDriverBase implements SearchContext {
       return req.close();
 
     }).then((rsp) {
-      var rspUri = Uri.parse(rsp.headers.value(HttpHeaders.LOCATION));
-      var host = rspUri.host;
-      var port = rspUri.port;
+      // Starting in Selenium 2.34.0, the post/redirect/get pattern is no
+      // longer used when creating a new session.
+      if (300 <= rsp.statusCode && rsp.statusCode <= 399) {
+        return Uri.parse(rsp.headers.value(HttpHeaders.LOCATION));
+      }
+
+      return rsp.transform(new StringDecoder())
+          .fold(new StringBuffer(), (buffer, data) => buffer..write(data))
+          .then((StringBuffer buffer) {
+            // Strip NULs that WebDriver seems to include in some responses.
+            var results = buffer.toString()
+                .replaceAll(new RegExp('\u{0}*\$'), '');
+
+            var status = 0;
+
+            // 4xx responses send plain text; others send JSON
+            if (HttpStatus.BAD_REQUEST <= rsp.statusCode
+                && rsp.statusCode < HttpStatus.INTERNAL_SERVER_ERROR) {
+              status = 13;  // UnknownError
+              if (rsp.statusCode == HttpStatus.NOT_FOUND) {
+                status = 9; // UnkownCommand
+              }
+              throw new WebDriverError(status, results);
+            }
+
+            var respObj = json.parse(results);
+            status = respObj['status'];
+            if (status != 0) {
+              var value = respObj['value'];
+              var message =
+                  value.contains('message') ? value['message'] : null;
+              throw new WebDriverError(status, message);
+            }
+
+            return Uri.parse(url + '/session/' + respObj['sessionId']);
+          });
+    }).then((sessionUrl) {
+      var host = sessionUrl.host;
+      var port = sessionUrl.port;
       if (host.isEmpty) {
         host = requestUri.host;
         if (port == 0) {
@@ -35,7 +71,7 @@ class WebDriver extends _WebDriverBase implements SearchContext {
         }
       }
       CommandProcessor processor = new CommandProcessor(
-          host, port, rspUri.path);
+          host, port, sessionUrl.path);
       return new WebDriver._(processor);
     });
   }
