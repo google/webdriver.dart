@@ -2,8 +2,13 @@ library webdriver_test_util;
 
 import 'dart:io';
 import 'package:path/path.dart' as pathos;
+import 'package:unittest/unittest.dart';
+import 'package:webdriver/webdriver.dart';
 
-String _testPagePath;
+final Matcher isWebDriverError = new isInstanceOf<WebDriverError>();
+final Matcher isWebElement = new isInstanceOf<WebElement>();
+final Matcher isSize = new isInstanceOf<Size>();
+final Matcher isPoint = new isInstanceOf<Point>();
 
 String get testPagePath {
   if(_testPagePath == null) {
@@ -21,3 +26,5 @@ String _getTestPagePath() {
   }
   return pathos.toUri(testPagePath).toString();
 }
+
+String _testPagePath;

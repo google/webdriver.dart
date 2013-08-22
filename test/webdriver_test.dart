@@ -1,25 +1,16 @@
 library webdriver_test;
 
-import 'package:webdriver/webdriver.dart';
-import 'package:unittest/unittest.dart';
 import 'package:unittest/compact_vm_config.dart';
 
-import 'test_util.dart';
-
-part 'src/alert_test.dart';
-part 'src/keyboard_test.dart';
-part 'src/mouse_test.dart';
-part 'src/navigation_test.dart';
-part 'src/options_test.dart';
-part 'src/target_locator_test.dart';
-part 'src/webdriver_test.dart';
-part 'src/webelement_test.dart';
-part 'src/window_test.dart';
-
-final Matcher isWebDriverError = new isInstanceOf<WebDriverError>();
-final Matcher isWebElement = new isInstanceOf<WebElement>();
-final Matcher isSize = new isInstanceOf<Size>();
-final Matcher isPoint = new isInstanceOf<Point>();
+import 'src/alert_test.dart' as alert;
+import 'src/keyboard_test.dart' as keyboard;
+import 'src/mouse_test.dart' as mouse;
+import 'src/navigation_test.dart' as navigation;
+import 'src/options_test.dart' as options;
+import 'src/target_locator_test.dart' as target_locator;
+import 'src/web_driver_test.dart' as web_driver;
+import 'src/web_element_test.dart' as web_element;
+import 'src/window_test.dart' as window;
 
 /**
  * These tests are not expected to be run as part of normal automated testing,
@@ -28,13 +19,13 @@ final Matcher isPoint = new isInstanceOf<Point>();
 void main() {
   useCompactVMConfiguration();
 
-  new AlertTest().main();
-  new KeyboardTest().main();
-  new MouseTest().main();
-  new NavigationTest().main();
-  new OptionsTest().main();
-  new TargetLocatorTest().main();
-  new WebDriverTest().main();
-  new WebElementTest().main();
-  new WindowTest().main();
+  alert.main();
+  keyboard.main();
+  mouse.main();
+  navigation.main();
+  options.main();
+  target_locator.main();
+  web_driver.main();
+  web_element.main();
+  window.main();
 }
