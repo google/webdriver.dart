@@ -15,7 +15,7 @@ class TargetLocatorTest {
       setUp(() {
         return WebDriver.createDriver(desiredCapabilities: Capabilities.chrome)
             .then((_driver) => driver = _driver)
-            .then((_) => driver.get(_testPagePath))
+            .then((_) => driver.get(testPagePath))
             .then((_) => driver.findElement(new By.name('frame')))
             .then((_e) => frame = _e);
       });

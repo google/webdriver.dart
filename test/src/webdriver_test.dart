@@ -61,7 +61,7 @@ class WebDriverTest {
           return WebDriver
               .createDriver(desiredCapabilities: Capabilities.chrome)
               .then((_driver) => driver = _driver)
-              .then((_) => driver.get(_testPagePath));
+              .then((_) => driver.get(testPagePath));
         });
 
         tearDown(() => driver.quit());

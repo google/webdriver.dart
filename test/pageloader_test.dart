@@ -1,19 +1,18 @@
 library webdriver_test;
 
-import 'dart:io' as io;
 import 'package:webdriver/pageloader.dart';
 import 'package:webdriver/webdriver.dart';
 import 'package:unittest/unittest.dart';
 import 'package:unittest/vm_config.dart';
 
+import 'test_util.dart';
+
 /**
  * These tests are not expected to be run as part of normal automated testing,
  * as they are slow and they have external dependencies.
  */
-main() {
+void main() {
   useVMConfiguration();
-
-  io.File file = new io.File('test_page.html');
 
   WebDriver driver;
   PageLoader loader;
@@ -22,7 +21,7 @@ main() {
         .then((_driver) {
           driver = _driver;
           loader = new PageLoader(driver);
-          return driver.get('file://' + file.fullPathSync());
+          return driver.get(testPagePath);
         }));
 
   tearDown(() => driver.quit());

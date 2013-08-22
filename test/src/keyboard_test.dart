@@ -11,7 +11,7 @@ class KeyboardTest {
       setUp(() {
         return WebDriver.createDriver(desiredCapabilities: Capabilities.firefox)
             .then((_driver) => driver = _driver)
-            .then((_) => driver.get(_testPagePath))
+            .then((_) => driver.get(testPagePath))
             .then((_) =>
                 driver.findElement(new By.cssSelector('input[type=text]')))
             .then((_element) => textInput = _element)
