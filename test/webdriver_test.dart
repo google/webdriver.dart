@@ -3,7 +3,7 @@ library webdriver_test;
 import 'dart:io' as io;
 import 'package:webdriver/webdriver.dart';
 import 'package:unittest/unittest.dart';
-import 'package:unittest/vm_config.dart';
+import 'package:unittest/compact_vm_config.dart';
 
 part 'src/alert_test.dart';
 part 'src/keyboard_test.dart';
@@ -25,7 +25,7 @@ final Matcher isPoint = new isInstanceOf<Point>();
  * as they are slow and they have external dependencies.
  */
 main() {
-  useVMConfiguration();
+  useCompactVMConfiguration();
 
   new AlertTest().main();
   new KeyboardTest().main();
