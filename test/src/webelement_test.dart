@@ -3,8 +3,6 @@ part of webdriver_test;
 class WebElementTest {
   main() {
 
-    io.File file = new io.File('test_page.html');
-
     group('WebElement', () {
 
       WebDriver driver;
@@ -19,7 +17,7 @@ class WebElementTest {
       setUp(() {
         return WebDriver.createDriver(desiredCapabilities: Capabilities.chrome)
             .then((_driver) => driver = _driver)
-            .then((_) => driver.get('file://' + file.fullPathSync()))
+            .then((_) => driver.get(_testPagePath))
             .then((_) => driver.findElement(new By.tagName('table')))
             .then((_element) => table = _element)
             .then((_) => driver.findElement(new By.tagName('button')))

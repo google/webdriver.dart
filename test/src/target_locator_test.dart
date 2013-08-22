@@ -7,8 +7,6 @@ part of webdriver_test;
 class TargetLocatorTest {
   main() {
 
-    io.File file = new io.File('test_page.html');
-
     group('TargetLocator', () {
 
       WebDriver driver;
@@ -17,7 +15,7 @@ class TargetLocatorTest {
       setUp(() {
         return WebDriver.createDriver(desiredCapabilities: Capabilities.chrome)
             .then((_driver) => driver = _driver)
-            .then((_) => driver.get('file://' + file.fullPathSync()))
+            .then((_) => driver.get(_testPagePath))
             .then((_) => driver.findElement(new By.name('frame')))
             .then((_e) => frame = _e);
       });
