@@ -1,70 +1,71 @@
-part of webdriver_test;
+library webdriver_test.alert;
 
-class AlertTest {
-  main() {
+import 'package:unittest/unittest.dart';
+import 'package:webdriver/webdriver.dart';
+import '../test_util.dart';
 
+void main() {
 
-    group('Alert', () {
+  group('Alert', () {
 
-      WebDriver driver;
-      WebElement button;
-      WebElement output;
+    WebDriver driver;
+    WebElement button;
+    WebElement output;
 
-      setUp(() {
-        return WebDriver.createDriver(desiredCapabilities: Capabilities.chrome)
-            .then((_driver) => driver = _driver)
-            .then((_) => driver.get(_testPagePath))
-            .then((_) => driver.findElement(new By.tagName('button')))
-            .then((_element) => button = _element)
-            .then((_) => driver.findElement(new By.id('settable')))
-            .then((_element) => output = _element);
-      });
+    setUp(() {
+      return WebDriver.createDriver(desiredCapabilities: Capabilities.chrome)
+          .then((_driver) => driver = _driver)
+          .then((_) => driver.get(testPagePath))
+          .then((_) => driver.findElement(new By.tagName('button')))
+          .then((_element) => button = _element)
+          .then((_) => driver.findElement(new By.id('settable')))
+          .then((_element) => output = _element);
+    });
 
-      tearDown(() => driver.quit());
+    tearDown(() => driver.quit());
 
-      test('no alert', () {
-        return driver.switchTo.alert.catchError((error) {
-          expect(error, isWebDriverError);
-        });
-      });
-
-      test('text', () {
-        return button.click().then((_) => driver.switchTo.alert)
-            .then((alert) {
-              expect(alert.text, 'button clicked');
-              return alert.dismiss();
-            });
-      });
-
-      test('accept', () {
-        return button.click().then((_) => driver.switchTo.alert)
-            .then((alert) => alert.accept())
-            .then((_) => output.text)
-            .then((text) {
-              expect(text, startsWith('accepted'));
-            });
-      });
-
-      test('dismiss', () {
-        return button.click().then((_) => driver.switchTo.alert)
-            .then((alert) => alert.dismiss())
-            .then((_) => output.text)
-            .then((text) {
-              expect(text, startsWith('dismissed'));
-            });
-      });
-
-      test('sendKeys', () {
-        Alert alert;
-        return button.click().then((_) => driver.switchTo.alert)
-            .then((_alert) => alert = _alert)
-            .then((_) => alert.sendKeys('some keys'))
-            .then((_) => alert.accept())
-            .then((_) => output.text)
-            .then((text) {
-              expect(text, endsWith('some keys'));
-            });
+    test('no alert', () {
+      return driver.switchTo.alert.catchError((error) {
+        expect(error, isWebDriverError);
       });
     });
-  }
+
+    test('text', () {
+      return button.click().then((_) => driver.switchTo.alert)
+          .then((alert) {
+            expect(alert.text, 'button clicked');
+            return alert.dismiss();
+          });
+    });
+
+    test('accept', () {
+      return button.click().then((_) => driver.switchTo.alert)
+          .then((alert) => alert.accept())
+          .then((_) => output.text)
+          .then((text) {
+            expect(text, startsWith('accepted'));
+          });
+    });
+
+    test('dismiss', () {
+      return button.click().then((_) => driver.switchTo.alert)
+          .then((alert) => alert.dismiss())
+          .then((_) => output.text)
+          .then((text) {
+            expect(text, startsWith('dismissed'));
+          });
+    });
+
+    test('sendKeys', () {
+      Alert alert;
+      return button.click().then((_) => driver.switchTo.alert)
+          .then((_alert) => alert = _alert)
+          .then((_) => alert.sendKeys('some keys'))
+          .then((_) => alert.accept())
+          .then((_) => output.text)
+          .then((text) {
+            expect(text, endsWith('some keys'));
+          });
+    });
+  });
 }
