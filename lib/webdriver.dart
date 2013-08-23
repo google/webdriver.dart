@@ -22,6 +22,6 @@ part 'src/navigation.dart';
 part 'src/options.dart';
 part 'src/target_locator.dart';
 part 'src/touch.dart';
-part 'src/webdriver.dart';
-part 'src/webelement.dart';
+part 'src/web_driver.dart';
+part 'src/web_element.dart';
 part 'src/window.dart';

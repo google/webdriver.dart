@@ -1,52 +1,54 @@
-part of webdriver_test;
+library webdriver_test.window;
 
-class WindowTest {
-  main() {
+import 'package:unittest/unittest.dart';
+import 'package:webdriver/webdriver.dart';
+import '../test_util.dart';
 
-    group('Window', () {
+void main() {
 
-      WebDriver driver;
+  group('Window', () {
 
-      setUp(() {
-        return WebDriver.createDriver(desiredCapabilities: Capabilities.chrome)
-            .then((_driver) => driver = _driver);
-      });
+    WebDriver driver;
 
-      tearDown(() => driver.quit());
+    setUp(() {
+      return WebDriver.createDriver(desiredCapabilities: Capabilities.chrome)
+          .then((_driver) => driver = _driver);
+    });
 
-      test('size', () {
-        return driver.window.setSize(new Size(400, 600))
-            .then((_) => driver.window.size)
-            .then((size) {
-              expect(size, isSize);
-              // TODO(DrMarcII): Switch to hasProperty matchers
-              expect(size.height, 400);
-              expect(size.width, 600);
-            });
-      });
+    tearDown(() => driver.quit());
 
-      test('location', () {
-        return driver.window.setLocation(new Point(10, 20))
-            .then((_) => driver.window.location)
+    test('size', () {
+      return driver.window.setSize(new Size(400, 600))
+          .then((_) => driver.window.size)
+          .then((size) {
+            expect(size, isSize);
+            // TODO(DrMarcII): Switch to hasProperty matchers
+            expect(size.height, 400);
+            expect(size.width, 600);
+          });
+    });
+
+    test('location', () {
+      return driver.window.setLocation(new Point(10, 20))
+          .then((_) => driver.window.location)
+          .then((point) {
+            expect(point, isPoint);
+            // TODO(DrMarcII): Switch to hasProperty matchers
+            expect(point.x, 10);
+            expect(point.y, 20);
+          });
+    });
+
+    // fails in some cases with multiple monitors
+    test('maximize', () {
+      return driver.window.maximize()
+          .then((_) => driver.window.location)
             .then((point) {
               expect(point, isPoint);
               // TODO(DrMarcII): Switch to hasProperty matchers
-              expect(point.x, 10);
-              expect(point.y, 20);
+              expect(point.x, 0);
+              expect(point.y, 0);
             });
-      });
-
-      // fails in some cases with multiple monitors
-      test('maximize', () {
-        return driver.window.maximize()
-            .then((_) => driver.window.location)
-              .then((point) {
-                expect(point, isPoint);
-                // TODO(DrMarcII): Switch to hasProperty matchers
-                expect(point.x, 0);
-                expect(point.y, 0);
-              });
-      });
     });
-  }
+  });
 }
