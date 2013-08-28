@@ -64,20 +64,11 @@ class CommandProcessor {
         }
         return req.close();
       }).then((HttpClientResponse rsp) {
-        return rsp.transform(new Utf8Decoder())
-            .fold(new StringBuffer(), (buffer, data) => buffer..write(data))
-            .then((StringBuffer buffer) {
-              // For some reason we get a bunch of NULs on the end
-              // of the text and the json.parse blows up on these, so
-              // strip them.
-              // These NULs can be seen in the TCP packet, so it is not
-              // an issue with character encoding; it seems to be a bug
-              // in WebDriver stack.
-              var results = buffer.toString()
-                  .replaceAll(new RegExp('\u{0}*\$'), '');
+        return _toStringEscapeNUL(rsp)
+            .then((String results) {
 
               var status = 0;
-              var message = null;
+              String message = null;
               var value = null;
               // 4xx responses send plain text; others send JSON
               if (HttpStatus.BAD_REQUEST <= rsp.statusCode
@@ -89,15 +80,15 @@ class CommandProcessor {
                 }
                 message = results;
               } else if (!results.isEmpty) {
-                results = JSON.decode(results);
-                if (results.containsKey('status')) {
-                  status = results['status'];
+                Map values = JSON.decode(results);
+                if (values.containsKey('status')) {
+                  status = values['status'];
                 }
-                if (results.containsKey('value')) {
-                  value = results['value'];
+                if (values.containsKey('value')) {
+                  value = values['value'];
                 }
-                if (results.containsKey('message')) {
-                  message = results['message'];
+                if (values.containsKey('message')) {
+                  message = values['message'];
                 }
               }
 
