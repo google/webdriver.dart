@@ -21,7 +21,8 @@ class CommandProcessor {
     if (stackTrace == null) {
       stackTrace = getAttachedStackTrace(error);
     }
-    completer.completeError(new WebDriverError(-1, error.toString()), stackTrace);
+    completer
+        .completeError(new WebDriverError(-1, error.toString()), stackTrace);
   }
 
   /**
