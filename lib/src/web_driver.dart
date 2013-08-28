@@ -31,7 +31,7 @@ class WebDriver extends _WebDriverBase implements SearchContext {
         return Uri.parse(rsp.headers.value(HttpHeaders.LOCATION));
       }
 
-      return rsp.transform(new StringDecoder())
+      return rsp.transform(new Utf8Decoder())
           .fold(new StringBuffer(), (buffer, data) => buffer..write(data))
           .then((StringBuffer buffer) {
             // Strip NULs that WebDriver seems to include in some responses.

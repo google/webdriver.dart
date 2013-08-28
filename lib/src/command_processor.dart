@@ -63,7 +63,7 @@ class CommandProcessor {
         }
         return req.close();
       }).then((HttpClientResponse rsp) {
-        return rsp.transform(new StringDecoder())
+        return rsp.transform(new Utf8Decoder())
             .fold(new StringBuffer(), (buffer, data) => buffer..write(data))
             .then((StringBuffer buffer) {
               // For some reason we get a bunch of NULs on the end

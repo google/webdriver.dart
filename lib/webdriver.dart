@@ -5,6 +5,7 @@
 library webdriver;
 
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 import 'dart:json' as json;
 import 'dart:utf' as utf;
