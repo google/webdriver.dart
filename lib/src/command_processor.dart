@@ -46,7 +46,7 @@ class CommandProcessor {
           throw new Exception(
             'The http method called for ${command} is ${httpMethod} but it '
             'must be POST if you want to pass the JSON params '
-            '${json.stringify(params)}');
+            '${JSON.encode(params)}');
         }
       }
 
@@ -56,7 +56,7 @@ class CommandProcessor {
         req.headers.add(HttpHeaders.ACCEPT, "application/json");
         req.headers.contentType = _CONTENT_TYPE_JSON;
         if (params != null) {
-          var body = utf.encodeUtf8(json.stringify(params));
+          var body = UTF8.encode(JSON.encode(params));
           req.contentLength = body.length;
           req.add(body);
         } else {
@@ -89,7 +89,7 @@ class CommandProcessor {
                 }
                 message = results;
               } else if (!results.isEmpty) {
-                results = json.parse(results);
+                results = JSON.decode(results);
                 if (results.containsKey('status')) {
                   status = results['status'];
                 }
