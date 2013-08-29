@@ -18,8 +18,8 @@ class WebDriver extends _WebDriverBase implements SearchContext {
       req.followRedirects = false;
       req.headers.add(HttpHeaders.ACCEPT, "application/json");
       req.headers.contentType = _CONTENT_TYPE_JSON;
-      var body = utf.encodeUtf8(
-          json.stringify({'desiredCapabilities': desiredCapabilities}));
+      var body = UTF8.encode(
+          JSON.encode({'desiredCapabilities': desiredCapabilities}));
       req.contentLength = body.length;
       req.add(body);
       return req.close();
@@ -50,7 +50,7 @@ class WebDriver extends _WebDriverBase implements SearchContext {
               throw new WebDriverError(status, results);
             }
 
-            var respObj = json.parse(results);
+            var respObj = JSON.decode(results);
             status = respObj['status'];
             if (status != 0) {
               var value = respObj['value'];
