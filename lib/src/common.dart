@@ -230,3 +230,10 @@ class WebDriverError {
     return '$statusCode $type: $message $results\n$details';
   }
 }
+
+Future<String> _toStringEscapeNUL(Stream<List<int>> source) {
+  var regexp = new RegExp('\u{0}*\$');
+  return source.transform(const Utf8Decoder())
+    .map((String value) => value.replaceAll(regexp, ''))
+    .join();
+}
