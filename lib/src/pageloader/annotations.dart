@@ -16,7 +16,7 @@ abstract class Finder extends _FilterFinder {
   const Finder();
 
   /// returns the [List<WebElement>] that should be considered for a field.
-  Future<List<WebElement>> findElements(SearchContext context);
+  Future<List<WebElement>> findElements(WebDriver driver, SearchContext context);
 }
 
 /// Filters reduce the set of [WebElement]s to be used for a field.
@@ -109,7 +109,7 @@ class Root extends Finder {
   const Root();
 
   @override
-  Future<List<WebElement>> findElements(SearchContext context) {
+  Future<List<WebElement>> findElements(WebDriver driver, SearchContext context) {
     if (context is WebElement) {
       return new Future.value([ context ]);
     } else {
@@ -146,7 +146,7 @@ class _ByFinder extends Finder {
   const _ByFinder(this._by);
 
   @override
-  Future<List<WebElement>> findElements(SearchContext context) {
+  Future<List<WebElement>> findElements(WebDriver driver, SearchContext context) {
     return context.findElements(_by);
   }
 }
