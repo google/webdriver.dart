@@ -94,9 +94,9 @@ class CommandProcessor {
                 }
                 if (results.containsKey('value')) {
                   value = results['value'];
-                }
-                if (results.containsKey('message')) {
-                  message = results['message'];
+                  if (value is Map && value.containsKey('message')) {
+                    message = results['message'];
+                  }
                 }
               }
 

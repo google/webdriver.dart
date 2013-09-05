@@ -24,7 +24,7 @@ class PageLoader {
 
     for (MethodMirror field in type.setters.values) {
       if (!symbols.contains(field.simpleName)) {
-        var fieldInfo = new _FieldInfo(field);
+        var fieldInfo = new _FieldInfo(_driver, field);
         if (fieldInfo != null) {
           fieldFutures.add(fieldInfo.setField(instance, context, this));
           symbols.add(fieldInfo._fieldName);
@@ -34,7 +34,7 @@ class PageLoader {
 
     for (VariableMirror field in type.variables.values) {
       if (!symbols.contains(field.simpleName) && !field.isFinal) {
-        var fieldInfo = new _FieldInfo(field);
+        var fieldInfo = new _FieldInfo(_driver, field);
         if (fieldInfo != null) {
           fieldFutures.add(fieldInfo.setField(instance, context, this));
           symbols.add(fieldInfo._fieldName);
@@ -63,13 +63,14 @@ class PageLoader {
 }
 
 class _FieldInfo {
+  final WebDriver _driver;
   final Symbol _fieldName;
   final Finder _finder;
   final List<Filter> _filters;
   final TypeMirror _instanceType;
   final bool _isList;
 
-  factory _FieldInfo(DeclarationMirror field) {
+  factory _FieldInfo(WebDriver driver, DeclarationMirror field) {
     var finder;
     var filters = new List<Filter>();
     var type;
@@ -138,13 +139,14 @@ class _FieldInfo {
     }
 
     if (finder != null) {
-      return new _FieldInfo._(name, finder, filters, type, isList);
+      return new _FieldInfo._(driver, name, finder, filters, type, isList);
     } else {
       return null;
     }
   }
 
   _FieldInfo._(
+      this._driver,
       this._fieldName,
       this._finder,
       this._filters,
@@ -171,7 +173,7 @@ class _FieldInfo {
   }
 
   Future<List<WebElement>> _getElements(SearchContext context) {
-    var future = _finder.findElements(context);
+    var future = _finder.findElements(_driver, context);
     for (var filter in _filters) {
       future = future.then(filter.filter);
     }
