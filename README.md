@@ -4,6 +4,9 @@ webdriver
 Provides WebDriver bindings for Dart. These use the WebDriver JSON interface,
 and as such, require the use of the WebDriver remote server.
 
+For a nicer interface and better support consider using:
+  https://github.com/google/dart-sync-webdriver
+
 Installing
 ----------
 
