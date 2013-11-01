@@ -17,30 +17,11 @@ class PageLoader {
       _getInstance(reflectClass(type), _driver);
 
   Future _getInstance(ClassMirror type, SearchContext context) {
-    var fieldFutures = [];
+    var fieldInfos = _fieldInfos(type);
     var instance = _reflectedInstance(type);
 
-    var symbols = new Set<Symbol>();
-
-    for (MethodMirror field in type.setters.values) {
-      if (!symbols.contains(field.simpleName)) {
-        var fieldInfo = new _FieldInfo(_driver, field);
-        if (fieldInfo != null) {
-          fieldFutures.add(fieldInfo.setField(instance, context, this));
-          symbols.add(fieldInfo._fieldName);
-        }
-      }
-    }
-
-    for (VariableMirror field in type.variables.values) {
-      if (!symbols.contains(field.simpleName) && !field.isFinal) {
-        var fieldInfo = new _FieldInfo(_driver, field);
-        if (fieldInfo != null) {
-          fieldFutures.add(fieldInfo.setField(instance, context, this));
-          symbols.add(fieldInfo._fieldName);
-        }
-      }
-    }
+    var fieldFutures = fieldInfos.map((info) =>
+        info.setField(instance, context, this));
 
     return Future.wait(fieldFutures).then((_) => instance.reflectee);
   }
@@ -60,6 +41,22 @@ class PageLoader {
     }
     return page;
   }
+
+  Iterable<_FieldInfo> _fieldInfos(ClassMirror type) {
+    var infos = <_FieldInfo>[];
+
+    while (type != null) {
+      for (DeclarationMirror decl in type.declarations.values) {
+        _FieldInfo info = new _FieldInfo(_driver, decl);
+        if (info != null) {
+          infos.add(info);
+        }
+      }
+      type = type.superclass;
+    }
+
+    return infos;
+  }
 }
 
 class _FieldInfo {
@@ -76,7 +73,7 @@ class _FieldInfo {
     var type;
     var name;
 
-    if (field is VariableMirror) {
+    if (field is VariableMirror && !field.isFinal) {
       type = field.type;
       name = field.simpleName;
     } else if (field is MethodMirror && field.isSetter) {
@@ -85,7 +82,7 @@ class _FieldInfo {
       name = field.simpleName.toString();
       name = new Symbol(name.substring(8, name.length - 3));
     } else {
-      throw new StateError('This should not happen');
+      return null;
     }
 
     var isList = false;
