@@ -29,7 +29,9 @@ class PageLoader {
   InstanceMirror _reflectedInstance(ClassMirror aClass) {
     InstanceMirror page;
 
-    for (MethodMirror constructor in aClass.constructors.values) {
+    Iterable<MethodMirror> ctors = aClass.instanceMembers.values.where(
+        (member) => member.isConstructor);
+    for (MethodMirror constructor in ctors) {
       if (constructor.parameters.isEmpty) {
         page = aClass.newInstance(constructor.constructorName, []);
         break;
