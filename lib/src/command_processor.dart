@@ -18,9 +18,6 @@ class CommandProcessor {
   }
 
   void _failRequest(Completer completer, error, [stackTrace]) {
-    if (stackTrace == null) {
-      stackTrace = getAttachedStackTrace(error);
-    }
     completer
         .completeError(new WebDriverError(-1, error.toString()), stackTrace);
   }
@@ -110,7 +107,7 @@ class CommandProcessor {
                 completer.complete(value);
               }
             });
-      }).catchError((error) => _failRequest(completer, error));
+      }).catchError((error, s) => _failRequest(completer, error, s));
     } catch (e, s) {
       _failRequest(completer, e, s);
     }

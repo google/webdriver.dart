@@ -7,8 +7,8 @@ library webdriver;
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io' hide JSON;
+
 import 'package:crypto/crypto.dart';
-import 'package:meta/meta.dart';
 
 part 'src/alert.dart';
 part 'src/capabilities.dart';

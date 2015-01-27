@@ -88,10 +88,9 @@ void main() {
       });
 
       test('findElement -- success', () {
-        driver.findElement(new By.tagName('tr'))
-            .then(expectAsync1((element) {
-              expect(element, isWebElement);
-            }));
+        return driver.findElement(new By.tagName('tr')) .then((element) {
+          expect(element, isWebElement);
+        });
       });
 
       test('findElement -- failure', () {

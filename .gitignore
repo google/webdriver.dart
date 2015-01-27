@@ -2,5 +2,6 @@
 packages
 pubspec.lock
 .project
+.pub/
 .buildlog
-
+.settings/

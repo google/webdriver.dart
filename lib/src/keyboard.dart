@@ -37,4 +37,7 @@ class Keyboard extends _WebDriverBase implements Future {
 
   Future whenComplete(action()) =>
       _future.whenComplete(action);
+
+  Future timeout(Duration timeLimit, {onTimeout()}) =>
+      _future.timeout(timeLimit, onTimeout: onTimeout);
 }
