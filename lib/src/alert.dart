@@ -1,6 +1,5 @@
 part of webdriver;
 
-
 /// A JavaScript alert(), confirm(), or prompt() dialog
 class Alert extends _WebDriverBase {
   /**
@@ -8,7 +7,6 @@ class Alert extends _WebDriverBase {
    * prompt() dialog.
    */
   final String text;
-
 
   Alert._(this.text, prefix, commandProcessor)
       : super(prefix, commandProcessor);

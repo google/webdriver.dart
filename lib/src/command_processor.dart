@@ -116,10 +116,8 @@ class CommandProcessor {
 
   Future get(String extraPath) => _serverRequest('GET', _command(extraPath));
 
-
   Future post(String extraPath, [params]) =>
       _serverRequest('POST', _command(extraPath), params: params);
-
 
   Future delete(String extraPath) =>
       _serverRequest('DELETE', _command(extraPath));
