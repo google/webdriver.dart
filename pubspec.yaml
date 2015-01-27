@@ -1,5 +1,5 @@
 name: webdriver
-version: 0.8.7
+version: 0.8.8
 author: Dart Team <misc@dartlang.org>
 description: >
   Provides WebDriver bindings for Dart. These use the WebDriver JSON interface,
@@ -8,7 +8,7 @@ homepage: https://github.com/google/webdriver.dart
 environment:
   sdk: '>=1.0.0 <2.0.0'
 dependencies:
-  crypto: '>=0.8.7'
+  crypto: '>=0.8.7 <0.10.0'
 dev_dependencies:
-  path: '>=0.8.7'
-  unittest: '>=0.8.7'
+  path: '>=1.0.0 <2.0.0'
+  unittest: '>=0.8.7 <0.12.0'

@@ -1,6 +1,5 @@
 part of webdriver;
 
-
 class Window extends _WebDriverBase {
 
   Window._(windowHandle, prefix, commandProcessor)

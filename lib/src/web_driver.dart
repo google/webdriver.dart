@@ -131,7 +131,6 @@ class WebDriver extends _WebDriverBase implements SearchContext {
         }
       });
 
-
   TargetLocator get switchTo =>
       new TargetLocator._(_prefix, _commandProcessor);
 
