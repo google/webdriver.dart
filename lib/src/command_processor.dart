@@ -7,7 +7,7 @@ class _CommandProcessor {
 
   final HttpClient client = new HttpClient();
 
-  Object post(Uri uri, dynamic params, {Converter<String, dynamic> decoder: _defaultDecoder}) async {
+  Future<Object> post(Uri uri, dynamic params, {Converter<String, dynamic> decoder: _defaultDecoder}) async {
     HttpClientRequest request = await client.postUrl(uri);
     _setUpRequest(request);
     request.headers.contentType = _contentTypeJson;
@@ -16,13 +16,13 @@ class _CommandProcessor {
     return await _processResponse(await request.close(), decoder);
   }
 
-  Object get(Uri uri, {Converter<String, dynamic> decoder: _defaultDecoder}) async {
+  Future<Object> get(Uri uri, {Converter<String, dynamic> decoder: _defaultDecoder}) async {
     HttpClientRequest request = await client.getUrl(uri);
     _setUpRequest(request);
     return await _processResponse(await request.close(), decoder);
   }
 
-  Object delete(Uri uri, {Converter<String, dynamic> decoder: _defaultDecoder}) async {
+  Future<Object> delete(Uri uri, {Converter<String, dynamic> decoder: _defaultDecoder}) async {
     HttpClientRequest request = await client.deleteUrl(uri);
     _setUpRequest(request);
     return await _processResponse(await request.close(), decoder);
@@ -31,7 +31,6 @@ class _CommandProcessor {
   _processResponse(HttpClientResponse response, Converter<String, dynamic> decoder) async {
     var respBody = decoder.convert(await UTF8.decodeStream(response));
     if (response.statusCode < 200 || response.statusCode > 299 || (respBody is Map && respBody['status'] != 0)) {
-      // TODO(DrMarcII) FIXME
       throw new WebDriverException(httpStatusCode: response.statusCode, httpReasonPhrase: response.reasonPhrase, jsonResp: respBody);
     }
     if (respBody is Map) {

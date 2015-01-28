@@ -27,7 +27,6 @@ class Capabilities {
       ..[VERSION] = ''
       ..[PLATFORM] = Platform.ANY;
 
-
   static Map<String, dynamic> get firefox => empty
       ..[BROWSER_NAME] = Browser.FIREFOX
       ..[VERSION] = ''

@@ -10,7 +10,6 @@ For a nicer interface and better support consider using:
 Installing
 ----------
 
-
 1. Depend on it
 
    Add this to your package's pubspec.yaml file:

@@ -1,6 +1,5 @@
 part of webdriver;
 
-
 class Window extends _WebDriverBase {
 
   final String handle;
