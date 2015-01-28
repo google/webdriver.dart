@@ -10,8 +10,8 @@ class Alert extends _WebDriverBase {
   final String text;
 
 
-  Alert._(this.text, prefix, commandProcessor)
-      : super(prefix, commandProcessor);
+  Alert._(this.text, driver)
+      : super(driver, '');
 
   /**
    * Accepts the currently displayed alert (may not be the alert for which
@@ -20,7 +20,9 @@ class Alert extends _WebDriverBase {
    * Throws [WebDriverError] no such alert exception if there isn't currently an
    * alert.
    */
-  Future<Alert> accept() => _post('accept_alert').then((_) => this);
+  Future accept() async {
+    await _post('accept_alert');
+  }
 
   /**
    * Dismisses the currently displayed alert (may not be the alert for which
@@ -29,7 +31,9 @@ class Alert extends _WebDriverBase {
    * Throws [WebDriverError] no such alert exception if there isn't currently an
    * alert.
    */
-  Future<Alert> dismiss() => _post('dismiss_alert').then((_) => this);
+  Future dismiss() async {
+    await _post('dismiss_alert');
+  }
 
   /**
    * Sends keys to the currently displayed alert (may not be the alert for which
@@ -38,6 +42,7 @@ class Alert extends _WebDriverBase {
    * Throws [WebDriverError] no such alert exception if there isn't currently an
    * alert.
    */
-  Future<Alert> sendKeys(String keysToSend) =>
-      _post('alert_text', { 'text': keysToSend }).then((_) => this);
+  Future sendKeys(String keysToSend) async {
+    await _post('alert_text', { 'text': keysToSend });
+  }
 }

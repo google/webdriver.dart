@@ -1,84 +1,36 @@
 part of webdriver;
 
-class WebDriver extends _WebDriverBase implements SearchContext {
+class WebDriver implements SearchContext {
 
-  WebDriver._(commandProcessor) : super('', commandProcessor) ;
+  final _CommandProcessor _commandProcessor;
+  final Uri _prefix;
+  final Map<String, dynamic> capabilities;
+
+  WebDriver._(this._commandProcessor, this._prefix, this.capabilities);
 
   /// Creates a WebDriver instance connected to the specified WebDriver server.
   static Future<WebDriver> createDriver({
-      String url: 'http://localhost:4444/wd/hub',
-      Map<String, dynamic> desiredCapabilities}) {
+      Uri uri,
+      Map<String, dynamic> desiredCapabilities}) async {
+
+    if (uri == null) {
+      uri = Uri.parse('http://localhost:4444/wd/hub');
+    }
+
+    var commandProcessor = new _CommandProcessor();
 
     if (desiredCapabilities == null) {
       desiredCapabilities = Capabilities.empty;
     }
-    var client = new HttpClient();
-    var requestUri = Uri.parse(url + "/session");
-    return client.openUrl('POST', requestUri).then((req) {
-      req.followRedirects = false;
-      req.headers.add(HttpHeaders.ACCEPT, "application/json");
-      req.headers.contentType = _CONTENT_TYPE_JSON;
-      var body = UTF8.encode(
-          JSON.encode({'desiredCapabilities': desiredCapabilities}));
-      req.contentLength = body.length;
-      req.add(body);
-      return req.close();
 
-    }).then((rsp) {
-      // Starting in Selenium 2.34.0, the post/redirect/get pattern is no
-      // longer used when creating a new session.
-      if (300 <= rsp.statusCode && rsp.statusCode <= 399) {
-        return Uri.parse(rsp.headers.value(HttpHeaders.LOCATION));
-      }
-
-      return rsp.transform(new Utf8Decoder())
-          .fold(new StringBuffer(), (buffer, data) => buffer..write(data))
-          .then((StringBuffer buffer) {
-            // Strip NULs that WebDriver seems to include in some responses.
-            var results = buffer.toString()
-                .replaceAll(new RegExp('\u{0}*\$'), '');
-
-            var status = 0;
-
-            // 4xx responses send plain text; others send JSON
-            if (HttpStatus.BAD_REQUEST <= rsp.statusCode
-                && rsp.statusCode < HttpStatus.INTERNAL_SERVER_ERROR) {
-              status = 13;  // UnknownError
-              if (rsp.statusCode == HttpStatus.NOT_FOUND) {
-                status = 9; // UnkownCommand
-              }
-              throw new WebDriverError(status, results);
-            }
-
-            var respObj = JSON.decode(results);
-            status = respObj['status'];
-            if (status != 0) {
-              var value = respObj['value'];
-              var message =
-                  value.containsKey('message') ? value['message'] : null;
-              throw new WebDriverError(status, message);
-            }
-
-            return Uri.parse(url + '/session/' + respObj['sessionId']);
-          });
-    }).then((sessionUrl) {
-      var host = sessionUrl.host;
-      var port = sessionUrl.port;
-      if (host.isEmpty) {
-        host = requestUri.host;
-        if (port == 0) {
-          port = requestUri.port;
-        }
-      }
-      CommandProcessor processor = new CommandProcessor(
-          host, port, sessionUrl.path);
-      return new WebDriver._(processor);
-    });
+    var response = await commandProcessor.post(uri.resolve('session'), { 'desiredCapabilities' : desiredCapabilities });
+    return new WebDriver._(commandProcessor, uri.resolve(response['id']), new UnmodifiableMapView(response['capabilities']));
   }
 
   /// Navigate to the specified url.
-  Future<WebDriver> get(String url) =>
-      _post('url', {'url': url}).then((_) => this);
+  Future get(String url) async {
+    await _post('url', {'url': url});
+  }
 
   /// The current url.
   Future<String> get currentUrl => _get('url');
@@ -88,20 +40,27 @@ class WebDriver extends _WebDriverBase implements SearchContext {
 
   /// Search for multiple elements within the entire current page.
   @override
-  Future<List<WebElement>> findElements(By by) => _post('elements', by)
-      .then((response) =>
-          response.map((element) =>
-              new WebElement._(element, _prefix, _commandProcessor))
-              .toList());
+  Stream<WebElement> findElements(By by) async* {
+    var elements = await _post('elements', by);
+    int i = 0;
+
+    for (var element in elements) {
+      yield new WebElement._(this, element['ELEMENT'], this, by, i);
+      i++;
+    }
+  }
+
 
   /**
    * Search for an element within the entire current page.
    *
    * Throws [WebDriverError] no such element if a matching element is not found.
    */
-  Future<WebElement> findElement(By by) => _post('element', by)
-      .then((element) =>
-          new WebElement._(element, _prefix, _commandProcessor));
+  Future<WebElement> findElement(By by) async {
+    var element = await _post('element', by);
+    return new WebElement._(this,  element['ELEMENT'], this, by);
+  }
+
 
   /// An artist's rendition of the current page's source.
   Future<String> get pageSource => _get('source');
@@ -110,49 +69,47 @@ class WebDriver extends _WebDriverBase implements SearchContext {
   Future close() => _delete('window');
 
   /// Quit the browser.
-  Future quit() => _delete(_prefix);
+  Future quit() => _delete('');
 
   /// Handles for all of the currently displayed tabs/windows.
-  Future<List<String>> get windowHandles => _get('window_handles');
+  Stream<Window> get windows async* {
+    var handles = await _get('window_handles');
+
+    for (var handle in handles) {
+      yield new Window._(this, handle);
+    }
+  }
 
   /// Handle for the active tab/window.
-  Future<String> get windowHandle => _get('window_handle');
+  Future<Window> get window async {
+    var handle = await _get('window_handle');
+    return new Window._(this, handle);
+  }
 
   /**
    *  The currently focused element, or the body element if no
    *  element has focus.
    */
-  Future<WebElement> get activeElement => _get('element/active')
-      .then((element) {
-        if (element == null) {
-          return null;
-        } else {
-          new WebElement._(element['ELEMENT'], _prefix, _commandProcessor);
-        }
-      });
-
+  Future<WebElement> get activeElement async {
+    var element = await _get('element/active');
+    if (element != null) {
+      return new WebElement._(this, element['ELEMENT'], this, 'activeElement');
+    }
+    return null;
+  }
 
   TargetLocator get switchTo =>
-      new TargetLocator._(_prefix, _commandProcessor);
+      new TargetLocator._(this);
 
-  Navigation get navigate => new Navigation._(_prefix, _commandProcessor);
+  Navigation get navigate => new Navigation._(this);
 
-  Cookies get cookies => new Cookies._(_prefix, _commandProcessor);
+  Cookies get cookies => new Cookies._(this);
 
-  Timeouts get timeouts => new Timeouts._(_prefix, _commandProcessor);
+  Timeouts get timeouts => new Timeouts._(this);
 
-  Keyboard get keyboard => new Keyboard._(_prefix, _commandProcessor);
+  Keyboard get keyboard => new Keyboard._(this);
 
-  Mouse get mouse => new Mouse._(_prefix, _commandProcessor);
-
-  Touch get touch => new Touch._(_prefix, _commandProcessor);
-
-  Window get window =>
-      new Window._( 'current', _prefix, _commandProcessor);
-
-  Future<List<Window>> get windows => windowHandles
-      .then((windows) => windows.map((window) =>
-          new Window._(window, _prefix, _commandProcessor)).toList());
+  Mouse get mouse => new Mouse._(this);
 
   /// Take a screenshot of the current page as PNG.
   Future<List<int>> captureScreenshot() => _get('screenshot')
@@ -209,7 +166,7 @@ class WebDriver extends _WebDriverBase implements SearchContext {
   dynamic _recursiveElementify(result) {
     if (result is Map) {
       if (result.length == 1 && result.containsKey(_ELEMENT)) {
-        return new WebElement._(result, _prefix, _commandProcessor);
+        return new WebElement._(this, result['ELEMENT'], this, 'javascript');
       } else {
         var newResult = {};
         result.forEach((key, value) {
@@ -223,4 +180,10 @@ class WebDriver extends _WebDriverBase implements SearchContext {
       return result;
     }
   }
+
+  Future _post(String command, [params]) => _commandProcessor.post(_prefix.resolve(command), params);
+
+  Future _get(String command) => _commandProcessor.get(_prefix.resolve(command));
+
+  Future _delete(String command) => _commandProcessor.delete(_prefix.resolve(command));
 }

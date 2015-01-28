@@ -3,24 +3,36 @@ part of webdriver;
 
 class Window extends _WebDriverBase {
 
-  Window._(windowHandle, prefix, commandProcessor)
-      : super('$prefix/window/$windowHandle', commandProcessor);
+  final String handle;
+
+  Window._(driver, handle)
+      : this.handle = handle,
+      super(driver, 'window/$handle');
 
   /// The size of this window.
-  Future<Size> get size =>  _get('size')
-      .then((json) => new Size.fromJson(json));
+  Future<Size> get size async {
+    var size = await _get('size');
+    return new Size.fromJson(size);
+  }
 
   /// The location of this window.
-  Future<Point> get location =>  _get('position')
-      .then((json) => new Point.fromJson(json));
+  Future<Point> get location async {
+    var point = await _get('position');
+    return new Point.fromJson(point);
+  }
 
   /// Maximize this window.
-  Future<Window> maximize() => _post('maximize').then((_) => this);
+  Future maximize() async {
+    await _post('maximize');
+  }
 
   /// Set this window size.
-  Future<Window> setSize(Size size) => _post('size', size).then((_) => this);
+  Future setSize(Size size) async {
+    await _post('size', size);
+  }
 
   /// Set this window location.
-  Future<Window> setLocation(Point point) =>
-      _post('position', point).then((_) => this);
+  Future setLocation(Point point) async {
+    await _post('position', point);
+  }
 }

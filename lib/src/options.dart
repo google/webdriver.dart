@@ -2,24 +2,31 @@ part of webdriver;
 
 class Cookies extends _WebDriverBase {
 
-  Cookies._(prefix, commandProcessor)
-      : super('$prefix/cookie', commandProcessor);
+  Cookies._(driver)
+      : super(driver, 'cookie');
 
   /// Set a cookie.
-  Future<Cookies> add(Cookie cookie) => _post('', { 'cookie': cookie })
-      .then((_) => this);
+  Future add(Cookie cookie) async {
+    await _post('', { 'cookie': cookie });
+  }
 
   /// Delete the cookie with the given [name].
-  Future<Cookies> delete(String name) => _delete('$name').then((_) => this);
+  Future delete(String name) async {
+    await _delete('$name');
+  }
 
   /// Delete all cookies visible to the current page.
-  Future<Cookies> deleteAll() => _delete('').then((_) => this);
+  Future deleteAll() async {
+    await _delete('');
+  }
 
   /// Retrieve all cookies visible to the current page.
-  Future<List<Cookie>> get all =>
-      _get('')
-      .then((cookies) =>
-          cookies.map((cookie) => new Cookie.fromJson(cookie)).toList());
+  Stream<Cookie> get all async* {
+    var cookies = await _get('');
+    for (var cookie in cookies) {
+      yield new Cookie.fromJson(cookie);
+    }
+  }
 }
 
 class Cookie {
@@ -77,32 +84,22 @@ class Cookie {
 
 class Timeouts extends _WebDriverBase {
 
-  Timeouts._(prefix, commandProcessor)
-      : super('$prefix/timeouts', commandProcessor);
+  Timeouts._(driver)
+      : super(driver, 'timeouts');
 
-  Future<Timeouts> _set(String type, Duration duration) =>
-      _post('', { 'type' : type, 'ms': duration.inMilliseconds})
-      .then((_) => this);
+  Future _set(String type, Duration duration) async {
+      await _post('', { 'type' : type, 'ms': duration.inMilliseconds});
+  }
 
   /// Set the script timeout.
-  Future<Timeouts> setScriptTimeout(Duration duration) =>
+  Future setScriptTimeout(Duration duration) =>
       _set('script', duration);
 
   /// Set the implicit timeout.
-  Future<Timeouts> setImplicitTimeout(Duration duration) =>
+  Future setImplicitTimeout(Duration duration) =>
       _set('implicit', duration);
 
   /// Set the page load timeout.
-  Future<Timeouts> setPageLoadTimeout(Duration duration) =>
+  Future setPageLoadTimeout(Duration duration) =>
       _set('page load', duration);
-
-  /// Set the async script timeout.
-  Future<Timeouts> setAsyncScriptTimeout(Duration duration) =>
-      _post('async_script', { 'ms': duration.inMilliseconds})
-      .then((_) => this);
-
-  /// Set the implicit wait timeout.
-  Future<Timeouts> setImplicitWaitTimeout(Duration duration) =>
-      _post('implicit_wait', { 'ms': duration.inMilliseconds})
-      .then((_) => this);
 }

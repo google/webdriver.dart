@@ -1,8 +1,6 @@
 part of webdriver;
 
 const String _ELEMENT = 'ELEMENT';
-final ContentType _CONTENT_TYPE_JSON =
-    new ContentType("application", "json", charset: "utf-8");
 
 /**
  * Simple class to provide access to indexed properties such as WebElement
@@ -10,8 +8,8 @@ final ContentType _CONTENT_TYPE_JSON =
  */
 class Attributes extends _WebDriverBase {
 
-  Attributes._(command, prefix, commandProcessor)
-    : super('$prefix/$command', commandProcessor);
+  Attributes._(driver, command)
+    : super(driver, command);
 
   Future<String> operator [](String name) => _get(name);
 }
@@ -47,7 +45,7 @@ class Point {
 abstract class SearchContext {
 
   /// Searches for multiple elements within the context.
-  Future<List<WebElement>> findElements(By by);
+  Stream<WebElement> findElements(By by);
 
   /**
    * Searchs for an element within the context.
@@ -60,25 +58,25 @@ abstract class SearchContext {
 
 abstract class _WebDriverBase {
   final String _prefix;
-  final CommandProcessor _commandProcessor;
+  final WebDriver driver;
 
-  _WebDriverBase(this._prefix, this._commandProcessor);
+  _WebDriverBase(this.driver, this._prefix);
 
   Future _post(String command, [param]) =>
-      _commandProcessor.post(_command(command), param);
+      driver._post(resolve(command), param);
 
-  Future _get(String command) => _commandProcessor.get(_command(command));
+  Future _get(String command) => driver._get(resolve(command));
 
-  Future _delete(String command) => _commandProcessor.delete(_command(command));
+  Future _delete(String command) => driver._delete(resolve(command));
 
-  String _command(String command) {
+  String resolve(command) {
+    if (_prefix == null || _prefix.isEmpty) {
+      return command;
+    }
     if (command == null || command.isEmpty) {
       return _prefix;
-    } else if (_prefix == null || _prefix.isEmpty) {
-      return '$command';
-    } else {
-      return '$_prefix/$command';
     }
+    return '$_prefix/$command';
   }
 }
 
