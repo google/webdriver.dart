@@ -56,7 +56,6 @@ class _CommandProcessor {
   void _setUpRequest(HttpClientRequest request) {
     request.followRedirects = false;
     request.headers.add(HttpHeaders.ACCEPT, "application/json");
-    request.headers.add(HttpHeaders.ACCEPT, "application/json");
     request.headers.add(HttpHeaders.ACCEPT_CHARSET, UTF8.name);
     request.headers.add(HttpHeaders.CACHE_CONTROL, "no-cache");
   }
