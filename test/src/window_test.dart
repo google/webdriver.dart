@@ -4,7 +4,7 @@ import 'package:unittest/unittest.dart';
 import 'package:webdriver/webdriver.dart';
 
 void main() {
-  solo_group('Window', () {
+  group('Window', () {
     WebDriver driver;
 
     setUp(() async {
