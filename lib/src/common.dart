@@ -21,6 +21,13 @@ class Size {
   Size.fromJson(Map json) : this(json['height'], json['width']);
 
   Map<String, num> toJson() => {'height': height, 'width': width};
+
+  @override
+  int get hashCode => height.hashCode * 3 + width.hashCode;
+
+  @override
+  bool operator ==(other) =>
+      other is Size && other.height == this.height && other.width == this.width;
 }
 
 class Point {
@@ -32,6 +39,13 @@ class Point {
   Point.fromJson(Map json) : this(json['x'], json['y']);
 
   Map<String, num> toJson() => {'x': x, 'y': y};
+
+  @override
+  int get hashCode => x.hashCode * 3 + x.hashCode;
+
+  @override
+  bool operator ==(other) =>
+      other is Point && other.x == this.x && other.x == this.x;
 }
 
 abstract class SearchContext {
