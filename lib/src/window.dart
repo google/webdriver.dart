@@ -1,12 +1,11 @@
 part of webdriver;
 
 class Window extends _WebDriverBase {
-
   final String handle;
 
   Window._(driver, handle)
       : this.handle = handle,
-      super(driver, 'window/$handle');
+        super(driver, 'window/$handle');
 
   /// The size of this window.
   Future<Size> get size async {
@@ -34,4 +33,12 @@ class Window extends _WebDriverBase {
   Future setLocation(Point point) async {
     await _post('position', point);
   }
+
+  @override
+  int get hashCode => handle.hashCode * 3 + driver.hashCode;
+
+  @override
+  bool operator ==(other) => other is Window &&
+      other.driver == this.driver &&
+      other.handle == this.handle;
 }

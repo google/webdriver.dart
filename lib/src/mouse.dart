@@ -1,13 +1,11 @@
 part of webdriver;
 
 class Mouse extends _WebDriverBase {
-
   static const int LEFT = 0;
   static const int MIDDLE = 1;
   static const int RIGHT = 2;
 
-  Mouse._(driver)
-      : super(driver, '');
+  Mouse._(driver) : super(driver, '');
 
   /// Click any mouse button (at the coordinates set by the last moveTo).
   Future click([int button]) async {
@@ -44,7 +42,7 @@ class Mouse extends _WebDriverBase {
 
   /// Double-clicks at the current mouse coordinates (set by moveTo).
   Future doubleClick() async {
-     await _post('doubleclick');
+    await _post('doubleclick');
   }
 
   /**

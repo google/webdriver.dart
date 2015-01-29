@@ -8,8 +8,7 @@ class Alert extends _WebDriverBase {
    */
   final String text;
 
-  Alert._(this.text, driver)
-      : super(driver, '');
+  Alert._(this.text, driver) : super(driver, '');
 
   /**
    * Accepts the currently displayed alert (may not be the alert for which
@@ -41,6 +40,6 @@ class Alert extends _WebDriverBase {
    * alert.
    */
   Future sendKeys(String keysToSend) async {
-    await _post('alert_text', { 'text': keysToSend });
+    await _post('alert_text', {'text': keysToSend});
   }
 }

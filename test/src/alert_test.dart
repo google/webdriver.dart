@@ -5,67 +5,52 @@ import 'package:webdriver/webdriver.dart';
 import '../test_util.dart';
 
 void main() {
-
   group('Alert', () {
-
     WebDriver driver;
     WebElement button;
     WebElement output;
 
-    setUp(() {
-      return WebDriver.createDriver(desiredCapabilities: Capabilities.chrome)
-          .then((_driver) => driver = _driver)
-          .then((_) => driver.get(testPagePath))
-          .then((_) => driver.findElement(new By.tagName('button')))
-          .then((_element) => button = _element)
-          .then((_) => driver.findElement(new By.id('settable')))
-          .then((_element) => output = _element);
+    setUp(() async {
+      driver = await WebDriver.createDriver(
+          desiredCapabilities: Capabilities.chrome);
+      await driver.get(testPagePath);
+      button = await driver.findElement(const By.tagName('button'));
+      output = await driver.findElement(const By.id('settable'));
     });
 
     tearDown(() => driver.quit());
 
     test('no alert', () {
-      return driver.switchTo.alert.catchError((error) {
-        expect(error, isWebDriverError);
-      });
+      expect(driver.switchTo.alert, throws);
     });
 
-    test('text', () {
-      return button.click().then((_) => driver.switchTo.alert)
-          .then((alert) {
-            expect(alert.text, 'button clicked');
-            return alert.dismiss();
-          });
+    test('text', () async {
+      await button.click();
+      var alert = await driver.switchTo.alert;
+      expect(alert.text, 'button clicked');
+      await alert.dismiss();
     });
 
-    test('accept', () {
-      return button.click().then((_) => driver.switchTo.alert)
-          .then((alert) => alert.accept())
-          .then((_) => output.text)
-          .then((text) {
-            expect(text, startsWith('accepted'));
-          });
+    test('accept', () async {
+      await button.click();
+      var alert = await driver.switchTo.alert;
+      await alert.accept();
+      expect(await output.text, startsWith('accepted'));
     });
 
-    test('dismiss', () {
-      return button.click().then((_) => driver.switchTo.alert)
-          .then((alert) => alert.dismiss())
-          .then((_) => output.text)
-          .then((text) {
-            expect(text, startsWith('dismissed'));
-          });
+    test('dismiss', () async {
+      await button.click();
+      var alert = await driver.switchTo.alert;
+      await alert.dismiss();
+      expect(await output.text, startsWith('dismissed'));
     });
 
-    test('sendKeys', () {
-      Alert alert;
-      return button.click().then((_) => driver.switchTo.alert)
-          .then((_alert) => alert = _alert)
-          .then((_) => alert.sendKeys('some keys'))
-          .then((_) => alert.accept())
-          .then((_) => output.text)
-          .then((text) {
-            expect(text, endsWith('some keys'));
-          });
+    test('sendKeys', () async {
+      await button.click();
+      Alert alert = await driver.switchTo.alert;
+      await alert.sendKeys('some keys');
+      await alert.accept();
+      expect(await output.text, endsWith('some keys'));
     });
   });
 }

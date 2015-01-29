@@ -24,7 +24,7 @@ class WebElement extends _WebDriverBase implements SearchContext {
 
   /// Send [keysToSend] to this element.
   Future sendKeys(String keysToSend) async {
-    await _post('value', { 'value' : [ keysToSend ]});
+    await _post('value', {'value': [keysToSend]});
   }
 
   /// Clear the content of a text element.
@@ -70,22 +70,39 @@ class WebElement extends _WebDriverBase implements SearchContext {
   }
 
   /// Find multiple elements nested within this element.
-  Stream<WebElement> findElements(By by) async* {
-    var elements = await _post('elements', by);
-    int i = 0;
-    for (var element in elements) {
-      yield new WebElement._(driver, element['ELEMENT'], this, by, i);
-      i++;
-    }
+  Stream<WebElement> findElements(By by) {
+    var controller = new StreamController<WebElement>();
+
+    () async {
+      var elements = await _post('elements', by);
+      int i = 0;
+      for (var element in elements) {
+        controller
+            .add(new WebElement._(driver, element['ELEMENT'], this, by, i));
+        i++;
+      }
+      await controller.close();
+    }();
+
+    return controller.stream;
   }
+
+// TODO(DrMarcII): switch to this when async* is supported
+//  async* {
+//    var elements = await _post('elements', by);
+//    int i = 0;
+//    for (var element in elements) {
+//      yield new WebElement._(driver, element['ELEMENT'], this, by, i);
+//      i++;
+//    }
+//  }
 
   /**
    * Access to the HTML attributes of this tag.
    *
    * TODO(DrMarcII): consider special handling of boolean attributes.
    */
-  Attributes get attributes =>
-      new Attributes._(driver, '$_prefix/attribute');
+  Attributes get attributes => new Attributes._(driver, '$_prefix/attribute');
 
   /**
    * Access to the cssProperties of this element.
@@ -93,8 +110,7 @@ class WebElement extends _WebDriverBase implements SearchContext {
    * TODO(DrMarcII): consider special handling of color and possibly other
    *                 properties.
    */
-  Attributes get cssProperties =>
-      new Attributes._(driver, '$_prefix/css');
+  Attributes get cssProperties => new Attributes._(driver, '$_prefix/css');
 
   /**
    * Does this element represent the same element as another element?

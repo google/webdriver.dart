@@ -10,6 +10,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:crypto/crypto.dart';
+import 'package:matcher/matcher.dart';
 
 part 'src/alert.dart';
 part 'src/capabilities.dart';
@@ -25,3 +26,4 @@ part 'src/target_locator.dart';
 part 'src/web_driver.dart';
 part 'src/web_element.dart';
 part 'src/window.dart';
+part 'src/util.dart';

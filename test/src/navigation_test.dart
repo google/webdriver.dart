@@ -2,46 +2,34 @@ library webdriver_test.navigation;
 
 import 'package:unittest/unittest.dart';
 import 'package:webdriver/webdriver.dart';
-import '../test_util.dart';
 
 void main() {
-
   group('Navigation', () {
-
     WebDriver driver;
 
-    setUp(() {
-      return WebDriver.createDriver(desiredCapabilities: Capabilities.chrome)
-          .then((_driver) => driver = _driver)
-          .then((_) => driver.get('http://www.google.com'));
+    setUp(() async {
+      driver = await WebDriver.createDriver(
+          desiredCapabilities: Capabilities.chrome);
+      await driver.get('http://www.google.com/ncr');
     });
 
     tearDown(() => driver.quit());
 
-    test('forward/back', () {
-      return driver.get('http://www.yahoo.com')
-          .then((_) => driver.navigate.back())
-          .then((_) => driver.title)
-          .then((title) {
-            expect(title, contains('Google'));
-            return driver.navigate.forward();
-          })
-          .then((_) => driver.title)
-          .then((title) {
-            expect(title, contains('Yahoo'));
-          });
+    test('forward/back', () async {
+      await driver.get('http://www.yahoo.com');
+      await driver.navigate.back();
+      await waitFor(() => driver.title, matcher: contains('Google'));
+      await driver.navigate.forward();
+      await waitFor(() => driver.title, matcher: contains('Yahoo'));
     });
 
-    test('refresh', () {
-      var element;
-      return driver.findElement(new By.name('q'))
-          .then((_e) => element = _e)
-          .then((_) => driver.navigate.refresh())
-          .then((_) => element.name)
-          .catchError((error) {
-            // search should be stale after refresh
-              expect(error, isWebDriverError);
-            });
+    test('refresh', () async {
+      var element = await driver.findElement(new By.name('q'));
+      await driver.navigate.refresh();
+      try {
+        await element.name;
+        throw 'Expected SERE';
+      } on StaleElementReferenceException {}
     });
   });
 }

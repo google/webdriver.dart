@@ -5,9 +5,7 @@ import 'package:webdriver/webdriver.dart';
 import '../test_util.dart';
 
 void main() {
-
   group('WebElement', () {
-
     WebDriver driver;
     WebElement table;
     WebElement button;
@@ -17,191 +15,158 @@ void main() {
     WebElement disabled;
     WebElement invisible;
 
-    setUp(() {
-      return WebDriver.createDriver(desiredCapabilities: Capabilities.chrome)
-          .then((_driver) => driver = _driver)
-          .then((_) => driver.get(testPagePath))
-          .then((_) => driver.findElement(new By.tagName('table')))
-          .then((_element) => table = _element)
-          .then((_) => driver.findElement(new By.tagName('button')))
-          .then((_element) => button = _element)
-          .then((_) => driver.findElement(new By.tagName('form')))
-          .then((_element) => form = _element)
-          .then((_) =>
-              driver.findElement(new By.cssSelector('input[type=text]')))
-          .then((_element) => textInput = _element)
-          .then((_) =>
-              driver.findElement(new By.cssSelector('input[type=checkbox]')))
-          .then((_element) => checkbox = _element)
-          .then((_) =>
-              driver.findElement(new By.cssSelector('input[type=password]')))
-          .then((_element) => disabled = _element)
-          .then((_) => driver.findElement(new By.tagName('div')))
-          .then((_element) => invisible = _element);
+    setUp(() async {
+      driver = await WebDriver.createDriver(
+          desiredCapabilities: Capabilities.chrome);
+      await driver.get(testPagePath);
+      table = await driver.findElement(new By.tagName('table'));
+      button = await driver.findElement(new By.tagName('button'));
+      form = await driver.findElement(new By.tagName('form'));
+      textInput =
+          await driver.findElement(new By.cssSelector('input[type=text]'));
+      checkbox =
+          await driver.findElement(new By.cssSelector('input[type=checkbox]'));
+      disabled =
+          await driver.findElement(new By.cssSelector('input[type=password]'));
+      invisible = await driver.findElement(new By.tagName('div'));
     });
 
     tearDown(() => driver.quit());
 
-    test('click', () {
-      return button.click()
-        .then((_) => driver.switchTo.alert)
-        .then((alert) =>  alert.accept());
+    test('click', () async {
+      await button.click();
+      var alert = await driver.switchTo.alert;
+      await alert.accept();
     });
 
-    test('submit', () {
-      return form.submit()
-        .then((_) => driver.switchTo.alert)
-        .then((alert) {
-          // TODO(DrMarcII): Switch to hasProperty matchers
-          expect(alert.text, 'form submitted');
-          return alert.accept();
-        });
+    test('submit', () async {
+      await form.submit();
+      var alert = await driver.switchTo.alert;
+      expect(alert.text, 'form submitted');
+      await alert.accept();
     });
 
-    test('sendKeys', () {
-      return textInput.sendKeys('some keys')
-        .then((_) => textInput.attributes['value'])
-        .then((value) {
-          expect(value, 'some keys');
-        });
+    test('sendKeys', () async {
+      await textInput.sendKeys('some keys');
+      expect(await textInput.attributes['value'], 'some keys');
     });
 
-    test('clear', () {
-      return textInput.sendKeys('some keys')
-        .then((_) => textInput.clear())
-        .then((_) => textInput.attributes['value'])
-        .then((value) {
-          expect(value, '');
-        });
+    test('clear', () async {
+      await textInput.sendKeys('some keys');
+      await textInput.clear();
+      expect(await textInput.attributes['value'], '');
     });
 
-    test('enabled', () {
-      expect(table.enabled, completion(isTrue));
-      expect(button.enabled, completion(isTrue));
-      expect(form.enabled, completion(isTrue));
-      expect(textInput.enabled, completion(isTrue));
-      expect(checkbox.enabled, completion(isTrue));
-      expect(disabled.enabled, completion(isFalse));
+    test('enabled', () async {
+      expect(await table.enabled, isTrue);
+      expect(await button.enabled, isTrue);
+      expect(await form.enabled, isTrue);
+      expect(await textInput.enabled, isTrue);
+      expect(await checkbox.enabled, isTrue);
+      expect(await disabled.enabled, isFalse);
     });
 
-    test('displayed', () {
-      expect(table.displayed, completion(isTrue));
-      expect(button.displayed, completion(isTrue));
-      expect(form.displayed, completion(isTrue));
-      expect(textInput.displayed, completion(isTrue));
-      expect(checkbox.displayed, completion(isTrue));
-      expect(disabled.displayed, completion(isTrue));
-      expect(invisible.displayed, completion(isFalse));
+    test('displayed', () async {
+      expect(await table.displayed, isTrue);
+      expect(await button.displayed, isTrue);
+      expect(await form.displayed, isTrue);
+      expect(await textInput.displayed, isTrue);
+      expect(await checkbox.displayed, isTrue);
+      expect(await disabled.displayed, isTrue);
+      expect(await invisible.displayed, isFalse);
     });
 
-    test('location -- table', () {
-      return table.location.then((location) {
-        expect(location, isPoint);
-        // TODO(DrMarcII): Switch to hasProperty matchers
-        expect(location.x, isNonNegative);
-        expect(location.y, isNonNegative);
-      });
+    test('location -- table', () async {
+      var location = await table.location;
+      expect(location, isPoint);
+      expect(location.x, isNonNegative);
+      expect(location.y, isNonNegative);
     });
 
-    test('location -- invisible', () {
-      return invisible.location.then((location) {
-        expect(location, isPoint);
-        // TODO(DrMarcII): Switch to hasProperty matchers
-        expect(location.x, 0);
-        expect(location.y, 0);
-      });
+    test('location -- invisible', () async {
+      var location = await invisible.location;
+      expect(location, isPoint);
+      expect(location.x, 0);
+      expect(location.y, 0);
     });
 
-    test('size -- table', () {
-      return table.size.then((size) {
-        expect(size, isSize);
-        // TODO(DrMarcII): Switch to hasProperty matchers
-        expect(size.width, isNonNegative);
-        expect(size.height, isNonNegative);
-      });
+    test('size -- table', () async {
+      var size = await table.size;
+      expect(size, isSize);
+      expect(size.width, isNonNegative);
+      expect(size.height, isNonNegative);
     });
 
-    test('size -- invisible', () {
-      return invisible.size.then((size) {
-        expect(size, isSize);
-        // TODO(DrMarcII): I thought these should be 0
-        // TODO(DrMarcII): Switch to hasProperty matchers
-        expect(size.width, isNonNegative);
-        expect(size.height, isNonNegative);
-      });
+    test('size -- invisible', () async {
+      var size = await invisible.size;
+      expect(size, isSize);
+      // TODO(DrMarcII): I thought these should be 0
+      expect(size.width, isNonNegative);
+      expect(size.height, isNonNegative);
     });
 
-    test('name', () {
-      expect(table.name, completion('table'));
-      expect(button.name, completion('button'));
-      expect(form.name, completion('form'));
-      expect(textInput.name, completion('input'));
+    test('name', () async {
+      expect(await table.name, 'table');
+      expect(await button.name, 'button');
+      expect(await form.name, 'form');
+      expect(await textInput.name, 'input');
     });
 
-    test('text', () {
-      expect(table.text, completion('r1c1 r1c2\nr2c1 r2c2'));
-      expect(button.text, completion('button'));
-      expect(invisible.text, completion(''));
+    test('text', () async {
+      expect(await table.text, 'r1c1 r1c2\nr2c1 r2c2');
+      expect(await button.text, 'button');
+      expect(await invisible.text, '');
     });
 
-    test('findElement -- success', () {
-      return table.findElement(new By.tagName('tr'))
-          .then((element) {
-            expect(element, isWebElement);
-          });
+    test('findElement -- success', () async {
+      var element = await table.findElement(new By.tagName('tr'));
+      expect(element, isWebElement);
     });
 
-    test('findElement -- failure', () {
-      return button.findElement(new By.tagName('tr'))
-          .catchError((error) {
-            expect(error, isWebDriverError);
-          });
+    test('findElement -- failure', () async {
+      try {
+        await button.findElement(new By.tagName('tr'));
+        throw 'Expected NoSuchElementException';
+      } on NoSuchElementException {}
     });
 
-    test('findElements -- 1 found', () {
-      return form.findElements(new By.cssSelector('input[type=text]'))
-          .then((elements) {
-            expect(elements, hasLength(1));
-            expect(elements, everyElement(isWebElement));
-          });
+    test('findElements -- 1 found', () async {
+      var elements = await form
+          .findElements(new By.cssSelector('input[type=text]'))
+          .toList();
+      expect(elements, hasLength(1));
+      expect(elements, everyElement(isWebElement));
     });
 
-    test('findElements -- 4 found', () {
-      return table.findElements(new By.tagName('td'))
-          .then((elements) {
-            expect(elements, hasLength(4));
-            expect(elements, everyElement(isWebElement));
-          });
+    test('findElements -- 4 found', () async {
+      var elements = await table.findElements(new By.tagName('td')).toList();
+      expect(elements, hasLength(4));
+      expect(elements, everyElement(isWebElement));
     });
 
-    test('findElements -- 0 found', () {
-      return form.findElements(new By.tagName('td'))
-          .then((elements) {
-            expect(elements, isEmpty);
-          });
+    test('findElements -- 0 found', () async {
+      var elements = await form.findElements(new By.tagName('td')).toList();
+      expect(elements, isEmpty);
     });
 
-    test('attributes', () {
-      expect(table.attributes['id'], completion('table1'));
-      expect(table.attributes['non-standard'],
-          completion('a non standard attr'));
-      expect(table.attributes['disabled'], completion(isNull));
-      expect(disabled.attributes['disabled'], completion('true'));
+    test('attributes', () async {
+      expect(await table.attributes['id'], 'table1');
+      expect(await table.attributes['non-standard'], 'a non standard attr');
+      expect(await table.attributes['disabled'], isNull);
+      expect(await disabled.attributes['disabled'], 'true');
     });
 
-    test('cssProperties', () {
-      expect(invisible.cssProperties['display'], completion('none'));
-      expect(invisible.cssProperties['background-color'],
-          completion('rgba(255, 0, 0, 1)'));
-      expect(invisible.cssProperties['direction'], completion('ltr'));
+    test('cssProperties', () async {
+      expect(await invisible.cssProperties['display'], 'none');
+      expect(await invisible.cssProperties['background-color'],
+          'rgba(255, 0, 0, 1)');
+      expect(await invisible.cssProperties['direction'], 'ltr');
     });
 
-    test('equals', () {
-      expect(invisible.equals(disabled), completion(isFalse));
-      return driver.findElement(new By.cssSelector('table'))
-        .then((element) {
-          expect(element.equals(table), completion(isTrue));
-        });
+    test('equals', () async {
+      expect(await invisible.equals(disabled), isFalse);
+      var element = await driver.findElement(new By.cssSelector('table'));
+      expect(await element.equals(table), isTrue);
     });
   });
 }

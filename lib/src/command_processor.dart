@@ -1,39 +1,53 @@
 part of webdriver;
 
-final ContentType _contentTypeJson = new ContentType("application", "json", charset: "utf-8");
-const _defaultDecoder = const JsonDecoder();
+final ContentType _contentTypeJson =
+    new ContentType("application", "json", charset: "utf-8");
 
 class _CommandProcessor {
-
   final HttpClient client = new HttpClient();
 
-  Future<Object> post(Uri uri, dynamic params, {Converter<String, dynamic> decoder: _defaultDecoder}) async {
+  Future<Object> post(Uri uri, dynamic params, {bool value: true}) async {
     HttpClientRequest request = await client.postUrl(uri);
     _setUpRequest(request);
     request.headers.contentType = _contentTypeJson;
-    request.encoding = UTF8;
-    request.write(JSON.encode(params));
-    return await _processResponse(await request.close(), decoder);
+    if (params != null) {
+      var body = UTF8.encode(JSON.encode(params));
+      request.contentLength = body.length;
+      request.add(body);
+    } else {
+      request.contentLength = 0;
+    }
+    return await _processResponse(await request.close(), value);
   }
 
-  Future<Object> get(Uri uri, {Converter<String, dynamic> decoder: _defaultDecoder}) async {
+  Future<Object> get(Uri uri, {bool value: true}) async {
     HttpClientRequest request = await client.getUrl(uri);
     _setUpRequest(request);
-    return await _processResponse(await request.close(), decoder);
+    return await _processResponse(await request.close(), value);
   }
 
-  Future<Object> delete(Uri uri, {Converter<String, dynamic> decoder: _defaultDecoder}) async {
+  Future<Object> delete(Uri uri, {bool value: true}) async {
     HttpClientRequest request = await client.deleteUrl(uri);
     _setUpRequest(request);
-    return await _processResponse(await request.close(), decoder);
+    return await _processResponse(await request.close(), value);
   }
 
-  _processResponse(HttpClientResponse response, Converter<String, dynamic> decoder) async {
-    var respBody = decoder.convert(await UTF8.decodeStream(response));
-    if (response.statusCode < 200 || response.statusCode > 299 || (respBody is Map && respBody['status'] != 0)) {
-      throw new WebDriverException(httpStatusCode: response.statusCode, httpReasonPhrase: response.reasonPhrase, jsonResp: respBody);
+  _processResponse(HttpClientResponse response, bool value) async {
+    var respBody = await UTF8.decodeStream(response);
+
+    try {
+      respBody = JSON.decode(respBody);
+    } catch (e) {}
+
+    if (response.statusCode < 200 ||
+        response.statusCode > 299 ||
+        (respBody is Map && respBody['status'] != 0)) {
+      throw new WebDriverException(
+          httpStatusCode: response.statusCode,
+          httpReasonPhrase: response.reasonPhrase,
+          jsonResp: respBody);
     }
-    if (respBody is Map) {
+    if (value && respBody is Map) {
       return respBody['value'];
     }
     return respBody;

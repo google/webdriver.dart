@@ -1,7 +1,6 @@
 part of webdriver;
 
 class TargetLocator extends _WebDriverBase {
-
   TargetLocator._(driver) : super(driver, '');
 
   /**
@@ -19,7 +18,7 @@ class TargetLocator extends _WebDriverBase {
    * found.
    */
   Future frame([frame]) async {
-      await _post('frame', { 'id': frame});
+    await _post('frame', {'id': frame});
   }
 
   /**
@@ -31,9 +30,9 @@ class TargetLocator extends _WebDriverBase {
    */
   Future window(dynamic window) async {
     if (window is Window) {
-      await _post('window', { 'name': window.handle});
-    } else if (window is String){
-      await _post('window', { 'name': window });
+      await _post('window', {'name': window.handle});
+    } else if (window is String) {
+      await _post('window', {'name': window});
     } else {
       throw 'Unsupported type: ${window.runtimeType}';
     }
