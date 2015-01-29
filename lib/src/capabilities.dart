@@ -23,19 +23,19 @@ class Capabilities {
       "webdriver.logging.profiler.enabled";
 
   static Map<String, dynamic> get chrome => empty
-      ..[BROWSER_NAME] = Browser.CHROME
-      ..[VERSION] = ''
-      ..[PLATFORM] = Platform.ANY;
+    ..[BROWSER_NAME] = Browser.CHROME
+    ..[VERSION] = ''
+    ..[PLATFORM] = Platform.ANY;
 
   static Map<String, dynamic> get firefox => empty
-      ..[BROWSER_NAME] = Browser.FIREFOX
-      ..[VERSION] = ''
-      ..[PLATFORM] = Platform.ANY;
+    ..[BROWSER_NAME] = Browser.FIREFOX
+    ..[VERSION] = ''
+    ..[PLATFORM] = Platform.ANY;
 
   static Map<String, dynamic> get android => empty
-      ..[BROWSER_NAME] = Browser.ANDROID
-      ..[VERSION] = ''
-      ..[PLATFORM] = Platform.ANDROID;
+    ..[BROWSER_NAME] = Browser.ANDROID
+    ..[VERSION] = ''
+    ..[PLATFORM] = Platform.ANDROID;
 
   static Map<String, dynamic> get empty => new Map<String, dynamic>();
 }
@@ -49,13 +49,13 @@ class Browser {
   static const String GOOGLECHROME = "googlechrome";
   static const String SAFARI = "safari";
   static const String OPERA = "opera";
-  static const String IEXPLORE= "iexplore";
-  static const String IEXPLORE_PROXY= "iexploreproxy";
+  static const String IEXPLORE = "iexplore";
+  static const String IEXPLORE_PROXY = "iexploreproxy";
   static const String SAFARI_PROXY = "safariproxy";
   static const String CHROME = "chrome";
   static const String KONQUEROR = "konqueror";
   static const String MOCK = "mock";
-  static const String IE_HTA="iehta";
+  static const String IE_HTA = "iehta";
   static const String ANDROID = "android";
   static const String HTMLUNIT = "htmlunit";
   static const String IE = "internet explorer";

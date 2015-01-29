@@ -5,50 +5,43 @@ import 'package:webdriver/webdriver.dart';
 import '../test_util.dart';
 
 void main() {
-
-  group('Window', () {
-
+  solo_group('Window', () {
     WebDriver driver;
 
-    setUp(() {
-      return WebDriver.createDriver(desiredCapabilities: Capabilities.chrome)
-          .then((_driver) => driver = _driver);
+    setUp(() async {
+      driver = await WebDriver.createDriver(
+          desiredCapabilities: Capabilities.chrome);
     });
 
     tearDown(() => driver.quit());
 
-    test('size', () {
-      return driver.window.setSize(new Size(400, 600))
-          .then((_) => driver.window.size)
-          .then((size) {
-            expect(size, isSize);
-            // TODO(DrMarcII): Switch to hasProperty matchers
-            expect(size.height, 400);
-            expect(size.width, 600);
-          });
+    test('size', () async {
+      var window = await driver.window;
+      await window.setSize(new Size(400, 600));
+      var size = await window.size;
+      expect(size, isSize);
+      expect(size.height, 400);
+      expect(size.width, 600);
     });
 
-    test('location', () {
-      return driver.window.setLocation(new Point(10, 20))
-          .then((_) => driver.window.location)
-          .then((point) {
-            expect(point, isPoint);
-            // TODO(DrMarcII): Switch to hasProperty matchers
-            expect(point.x, 10);
-            expect(point.y, 20);
-          });
+    test('location', () async {
+      var window = await driver.window;
+
+      await window.setLocation(new Point(10, 20));
+      var point = await window.location;
+      expect(point, isPoint);
+      expect(point.x, 10);
+      expect(point.y, 20);
     });
 
     // fails in some cases with multiple monitors
-    test('maximize', () {
-      return driver.window.maximize()
-          .then((_) => driver.window.location)
-            .then((point) {
-              expect(point, isPoint);
-              // TODO(DrMarcII): Switch to hasProperty matchers
-              expect(point.x, 0);
-              expect(point.y, 0);
-            });
+    test('maximize', () async {
+      var window = await driver.window;
+      await window.maximize();
+      var point = await window.location;
+      expect(point, isPoint);
+      expect(point.x, 0);
+      expect(point.y, 0);
     });
   });
 }

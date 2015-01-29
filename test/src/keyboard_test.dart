@@ -5,56 +5,35 @@ import 'package:webdriver/webdriver.dart';
 import '../test_util.dart';
 
 void main() {
-
   group('Keyboard', () {
-
     WebDriver driver;
     WebElement textInput;
 
-    setUp(() {
-      return WebDriver.createDriver(desiredCapabilities: Capabilities.firefox)
-          .then((_driver) => driver = _driver)
-          .then((_) => driver.get(testPagePath))
-          .then((_) =>
-              driver.findElement(new By.cssSelector('input[type=text]')))
-          .then((_element) => textInput = _element)
-          .then((_) => driver.mouse.moveTo(element: textInput).click());
+    setUp(() async {
+      driver = await WebDriver.createDriver(
+          desiredCapabilities: Capabilities.firefox);
+      await driver.get(testPagePath);
+      textInput =
+          await driver.findElement(new By.cssSelector('input[type=text]'));
+      await textInput.click();
     });
 
     tearDown(() => driver.quit());
 
-    test('sendKeys -- once', () {
-      return driver.keyboard.sendKeys('abcdef')
-          .then((_) => textInput.attributes['value'])
-          .then((value) {
-            expect(value, 'abcdef');
-          });
+    test('sendKeys -- once', () async {
+      await driver.keyboard.sendKeys('abcdef');
+      expect(await textInput.attributes['value'], 'abcdef');
     });
 
-    test('sendKeys -- twice', () {
-      return driver.keyboard.sendKeys('abc').sendKeys('def')
-          .then((_) => textInput.attributes['value'])
-          .then((value) {
-            expect(value, 'abcdef');
-          });
+    test('sendKeys -- twice', () async {
+      await driver.keyboard.sendKeys('abc');
+      await driver.keyboard.sendKeys('def');
+      expect(await textInput.attributes['value'], 'abcdef');
     });
 
-    test('sendKeys -- list', () {
-      return driver.keyboard.sendKeys(['a', 'b', 'c', 'd', 'e', 'f'])
-          .then((_) => textInput.attributes['value'])
-          .then((value) {
-            expect(value, 'abcdef');
-          });
-    });
-
-    // doesn't work with chromedriver
-    // https://code.google.com/p/chromedriver/issues/detail?id=443
-    test('sendKeys -- with tab', () {
-      return driver.keyboard.sendKeys(['abc', Keys.TAB, 'def'])
-          .then((_) => textInput.attributes['value'])
-          .then((value) {
-            expect(value, 'abc');
-            });
+    test('sendKeys -- with tab', () async {
+      await driver.keyboard.sendKeys('abc${Keys.TAB}def');
+      expect(await textInput.attributes['value'], 'abc');
     });
   });
 }

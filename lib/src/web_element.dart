@@ -1,32 +1,36 @@
 part of webdriver;
 
 class WebElement extends _WebDriverBase implements SearchContext {
-  String _elementId;
-  String _originalPrefix;
+  final String id;
 
-  WebElement._(element, prefix, commandProcessor)
-      : super('$prefix/element/${element[_ELEMENT]}', commandProcessor) {
-    this._elementId = element[_ELEMENT];
-    this._originalPrefix = prefix;
-  }
+  // These fields represent information about how the element was found.
+  final SearchContext context;
+  final dynamic /* String | By */ locator;
+  final int index;
+
+  WebElement._(driver, id, [this.context, this.locator, this.index])
+      : this.id = id,
+        super(driver, 'element/$id');
 
   /// Click on this element.
-  Future<WebElement> click() => _post('click').then((_) => this);
+  Future click() async {
+    await _post('click');
+  }
 
   /// Submit this element if it is part of a form.
-  Future<WebElement> submit() => _post('submit').then((_) => this);
+  Future submit() async {
+    await _post('submit');
+  }
 
-  /// Send [keysToSend] (a [String] or [List<String>]) to this element.
-  Future<WebElement> sendKeys(dynamic keysToSend) {
-    if (keysToSend is String) {
-      keysToSend = [ keysToSend ];
-    }
-    return _post('value', { 'value' : keysToSend as List<String>})
-        .then((_) => this);
+  /// Send [keysToSend] to this element.
+  Future sendKeys(String keysToSend) async {
+    await _post('value', {'value': [keysToSend]});
   }
 
   /// Clear the content of a text element.
-  Future<WebElement> clear() => _post('clear').then((_) => this);
+  Future clear() async {
+    await _post('clear');
+  }
 
   /// Is this radio button/checkbox selected?
   Future<bool> get selected => _get('selected');
@@ -38,12 +42,16 @@ class WebElement extends _WebDriverBase implements SearchContext {
   Future<bool> get displayed => _get('displayed');
 
   /// The location within the document of this element.
-  Future<Point> get location => _get('location')
-      .then((json) => new Point.fromJson(json));
+  Future<Point> get location async {
+    var point = await _get('location');
+    return new Point.fromJson(point);
+  }
 
   /// The size of this element.
-  Future<Size> get size => _get('size')
-      .then((json) => new Size.fromJson(json));
+  Future<Size> get size async {
+    var size = await _get('size');
+    return new Size.fromJson(size);
+  }
 
   /// The tag name for this element.
   Future<String> get name => _get('name');
@@ -56,23 +64,45 @@ class WebElement extends _WebDriverBase implements SearchContext {
    *
    * Throws [WebDriverError] no such element if matching element is not found.
    */
-  Future<WebElement> findElement(By by) => _post('element', by)
-      .then((element) =>
-          new WebElement._(element, _originalPrefix, _commandProcessor));
+  Future<WebElement> findElement(By by) async {
+    var element = await _post('element', by);
+    return new WebElement._(driver, element['ELEMENT'], this, by);
+  }
 
   /// Find multiple elements nested within this element.
-  Future<List<WebElement>> findElements(By by) => _post('elements', by)
-      .then((response) => response.map((element) =>
-          new WebElement._(element, _originalPrefix, _commandProcessor))
-              .toList());
+  Stream<WebElement> findElements(By by) {
+    var controller = new StreamController<WebElement>();
+
+    () async {
+      var elements = await _post('elements', by);
+      int i = 0;
+      for (var element in elements) {
+        controller
+            .add(new WebElement._(driver, element['ELEMENT'], this, by, i));
+        i++;
+      }
+      await controller.close();
+    }();
+
+    return controller.stream;
+  }
+
+// TODO(DrMarcII): switch to this when async* is supported
+//  async* {
+//    var elements = await _post('elements', by);
+//    int i = 0;
+//    for (var element in elements) {
+//      yield new WebElement._(driver, element['ELEMENT'], this, by, i);
+//      i++;
+//    }
+//  }
 
   /**
    * Access to the HTML attributes of this tag.
    *
    * TODO(DrMarcII): consider special handling of boolean attributes.
    */
-  Attributes get attributes =>
-      new Attributes._('attribute', _prefix, _commandProcessor);
+  Attributes get attributes => new Attributes._(driver, '$_prefix/attribute');
 
   /**
    * Access to the cssProperties of this element.
@@ -80,15 +110,13 @@ class WebElement extends _WebDriverBase implements SearchContext {
    * TODO(DrMarcII): consider special handling of color and possibly other
    *                 properties.
    */
-  Attributes get cssProperties =>
-      new Attributes._('css', _prefix, _commandProcessor);
+  Attributes get cssProperties => new Attributes._(driver, '$_prefix/css');
 
   /**
    * Does this element represent the same element as another element?
    * Not the same as ==
    */
-  Future<bool> equals(WebElement other) => _get('equals/${other._elementId}');
+  Future<bool> equals(WebElement other) => _get('equals/${other.id}');
 
-  Map<String, String> toJson() =>
-      new Map<String, String>()..[_ELEMENT] = _elementId;
+  Map<String, String> toJson() => {'ELEMENT': id};
 }

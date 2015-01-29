@@ -9,51 +9,38 @@ import '../test_util.dart';
  * in other classes.
  */
 void main() {
-
   group('TargetLocator', () {
-
     WebDriver driver;
     WebElement frame;
 
-    setUp(() {
-      return WebDriver.createDriver(desiredCapabilities: Capabilities.chrome)
-          .then((_driver) => driver = _driver)
-          .then((_) => driver.get(testPagePath))
-          .then((_) => driver.findElement(new By.name('frame')))
-          .then((_e) => frame = _e);
+    setUp(() async {
+      driver = await WebDriver.createDriver(
+          desiredCapabilities: Capabilities.chrome);
+      await driver.get(testPagePath);
+      frame = await driver.findElement(new By.name('frame'));
     });
 
     tearDown(() => driver.quit());
 
-    test('frame index', () {
-      return driver.switchTo.frame(0)
-          .then((_) => driver.pageSource)
-          .then((source) {
-            expect(source, contains('this is a frame'));
-          });
+    test('frame index', () async {
+      await driver.switchTo.frame(0);
+      expect(await driver.pageSource, contains('this is a frame'));
     });
 
-    test('frame name', () {
-      return driver.switchTo.frame('frame')
-          .then((_) => driver.pageSource)
-          .then((source) {
-            expect(source, contains('this is a frame'));
-          });
+    test('frame name', () async {
+      await driver.switchTo.frame('frame');
+      expect(await driver.pageSource, contains('this is a frame'));
     });
 
-    test('frame element', () {
-      return driver.switchTo.frame(frame)
-          .then((_) => driver.pageSource)
-          .then((source) {
-            expect(source, contains('this is a frame'));
-          });
+    test('frame element', () async {
+      await driver.switchTo.frame(frame);
+      expect(await driver.pageSource, contains('this is a frame'));
     });
 
-    test('root frame', () {
-      return driver.switchTo.frame(frame)
-          .then((_) => driver.switchTo.frame())
-          .then((_) => driver.pageSource)
-          .then((_) => driver.findElement(new By.tagName('button')));
+    test('root frame', () async {
+      await driver.switchTo.frame(frame);
+      await driver.switchTo.frame();
+      await driver.findElement(new By.tagName('button'));
     });
   });
 }

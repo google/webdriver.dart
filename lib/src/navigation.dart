@@ -1,15 +1,20 @@
 part of webdriver;
 
 class Navigation extends _WebDriverBase {
-
-  Navigation._(prefix, commandProcessor) : super(prefix, commandProcessor);
+  Navigation._(driver) : super(driver, '');
 
   ///  Navigate forwards in the browser history, if possible.
-  Future<Navigation> forward() => _post('forward').then((_) => this);
+  Future forward() async {
+    await _post('forward');
+  }
 
   /// Navigate backwards in the browser history, if possible.
-  Future<Navigation> back() => _post('back').then((_) => this);
+  Future back() async {
+    await _post('back');
+  }
 
   /// Refresh the current page.
-  Future<Navigation> refresh() => _post('refresh').then((_) => this);
+  Future refresh() async {
+    await _post('refresh');
+  }
 }

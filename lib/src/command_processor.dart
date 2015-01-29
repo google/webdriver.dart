@@ -1,137 +1,62 @@
 part of webdriver;
 
-class CommandProcessor {
-  final Uri _uri;
+final ContentType _contentTypeJson =
+    new ContentType("application", "json", charset: "utf-8");
 
-  String get _host => _uri.host;
-  int get _port => _uri.port;
-  String get path => _uri.path;
+class _CommandProcessor {
+  final HttpClient client = new HttpClient();
 
-  String get url => _uri.toString();
-
-  CommandProcessor([
-      String host = 'localhost',
-      int port = 4444,
-      String path = '/wd/hub']) :
-      _uri = new Uri(scheme: 'http', host: host, port: port, path: path) {
-    assert(!this._host.isEmpty);
+  Future<Object> post(Uri uri, dynamic params, {bool value: true}) async {
+    HttpClientRequest request = await client.postUrl(uri);
+    _setUpRequest(request);
+    request.headers.contentType = _contentTypeJson;
+    if (params != null) {
+      var body = UTF8.encode(JSON.encode(params));
+      request.contentLength = body.length;
+      request.add(body);
+    } else {
+      request.contentLength = 0;
+    }
+    return await _processResponse(await request.close(), value);
   }
 
-  void _failRequest(Completer completer, error, [stackTrace]) {
-    completer
-        .completeError(new WebDriverError(-1, error.toString()), stackTrace);
+  Future<Object> get(Uri uri, {bool value: true}) async {
+    HttpClientRequest request = await client.getUrl(uri);
+    _setUpRequest(request);
+    return await _processResponse(await request.close(), value);
   }
 
-  /**
-   * Execute a request to the WebDriver server. [httpMethod] should be
-   * one of 'GET', 'POST', or 'DELETE'. [command] is the text to append
-   * to the base URL path to get the full URL. [params] are the additional
-   * parameters. If a [List] or [Map] they will be posted as JSON parameters.
-   * If a number or string, "/params" is appended to the URL.
-   */
-  Future _serverRequest(String httpMethod, String command, {params}) {
-    const successCodes = const [ HttpStatus.OK, HttpStatus.NO_CONTENT ];
-    var completer = new Completer();
+  Future<Object> delete(Uri uri, {bool value: true}) async {
+    HttpClientRequest request = await client.deleteUrl(uri);
+    _setUpRequest(request);
+    return await _processResponse(await request.close(), value);
+  }
+
+  _processResponse(HttpClientResponse response, bool value) async {
+    var respBody = await UTF8.decodeStream(response);
 
     try {
-      var path = command;
-      if (params != null) {
-        if (params is num || params is String) {
-          path = '$path/$params';
-          params = null;
-        } else if (httpMethod != 'POST') {
-          throw new Exception(
-            'The http method called for ${command} is ${httpMethod} but it '
-            'must be POST if you want to pass the JSON params '
-            '${JSON.encode(params)}');
-        }
-      }
+      respBody = JSON.decode(respBody);
+    } catch (e) {}
 
-      var client = new HttpClient();
-      client.open(httpMethod, _host, _port, path).then((req) {
-        req.followRedirects = false;
-        req.headers.add(HttpHeaders.ACCEPT, "application/json");
-        req.headers.contentType = _CONTENT_TYPE_JSON;
-        if (params != null) {
-          var body = UTF8.encode(JSON.encode(params));
-          req.contentLength = body.length;
-          req.add(body);
-        } else {
-          req.contentLength = 0;
-        }
-        return req.close();
-      }).then((HttpClientResponse rsp) {
-        return rsp.transform(new Utf8Decoder())
-            .fold(new StringBuffer(), (buffer, data) => buffer..write(data))
-            .then((StringBuffer buffer) {
-              // For some reason we get a bunch of NULs on the end
-              // of the text and the json.parse blows up on these, so
-              // strip them.
-              // These NULs can be seen in the TCP packet, so it is not
-              // an issue with character encoding; it seems to be a bug
-              // in WebDriver stack.
-              var results = buffer.toString()
-                  .replaceAll(new RegExp('\u{0}*\$'), '');
-
-              var status = 0;
-              var message = null;
-              var value = null;
-              // 4xx responses send plain text; others send JSON
-              if (HttpStatus.BAD_REQUEST <= rsp.statusCode
-                  && rsp.statusCode < HttpStatus.INTERNAL_SERVER_ERROR) {
-                if (rsp.statusCode == HttpStatus.NOT_FOUND) {
-                  status = 9; // UnkownCommand
-                } else {
-                  status = 13; // UnknownError
-                }
-                message = results;
-              } else if (!results.isEmpty) {
-                results = JSON.decode(results);
-                if (results.containsKey('status')) {
-                  status = results['status'];
-                }
-                if (results.containsKey('value')) {
-                  value = results['value'];
-                  if (value is Map && value.containsKey('message')) {
-                    message = results['message'];
-                  }
-                }
-              }
-
-              if (status != 0) {
-                completer.completeError(new WebDriverError(status, message));
-              } else if (!successCodes.contains(rsp.statusCode)) {
-                completer.completeError(new WebDriverError(-1,
-                    'Unexpected response ${rsp.statusCode}; $results'));
-              } else {
-                completer.complete(value);
-              }
-            });
-      }).catchError((error, s) => _failRequest(completer, error, s));
-    } catch (e, s) {
-      _failRequest(completer, e, s);
+    if (response.statusCode < 200 ||
+        response.statusCode > 299 ||
+        (respBody is Map && respBody['status'] != 0)) {
+      throw new WebDriverException(
+          httpStatusCode: response.statusCode,
+          httpReasonPhrase: response.reasonPhrase,
+          jsonResp: respBody);
     }
-    return completer.future;
+    if (value && respBody is Map) {
+      return respBody['value'];
+    }
+    return respBody;
   }
 
-  Future get(String extraPath) => _serverRequest('GET', _command(extraPath));
-
-  Future post(String extraPath, [params]) =>
-      _serverRequest('POST', _command(extraPath), params: params);
-
-  Future delete(String extraPath) =>
-      _serverRequest('DELETE', _command(extraPath));
-
-  String _command(String extraPath) {
-    var command;
-    if (extraPath.startsWith('/')) {
-      command = '${path}$extraPath';
-    } else {
-      command = '${path}/$extraPath';
-    }
-    if (command.endsWith('/')) {
-      command = command.substring(0, command.length - 1);
-    }
-    return command;
+  void _setUpRequest(HttpClientRequest request) {
+    request.followRedirects = false;
+    request.headers.add(HttpHeaders.ACCEPT, "application/json");
+    request.headers.add(HttpHeaders.ACCEPT_CHARSET, UTF8.name);
+    request.headers.add(HttpHeaders.CACHE_CONTROL, "no-cache");
   }
 }

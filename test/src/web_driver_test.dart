@@ -5,222 +5,160 @@ import 'package:webdriver/webdriver.dart';
 import '../test_util.dart';
 
 void main() {
-
   group('WebDriver', () {
     group('create', () {
-      test('default', () {
-        WebDriver driver;
-        return WebDriver.createDriver()
-            .then((_driver) {
-              driver = _driver;
-            })
-            .then((_) => driver.get('http://www.google.com'))
-            .then((_) => driver.findElement(new By.name('q')))
-            .then((element) => element.name)
-            .then((name) {
-              expect(name, 'input');
-              return driver.quit();
-            });
+      test('default', () async {
+        WebDriver driver = await WebDriver.createDriver();
+        await driver.get('http://www.google.com');
+        var element = await driver.findElement(new By.name('q'));
+        expect(await element.name, 'input');
+        await driver.quit();
       });
 
-      test('chrome', () {
-        WebDriver driver;
-        return WebDriver
-            .createDriver(desiredCapabilities: Capabilities.chrome)
-            .then((_driver) {
-              driver = _driver;
-            })
-            .then((_) => driver.get('http://www.google.com'))
-            .then((_) => driver.findElement(new By.name('q')))
-            .then((element) => element.name)
-            .then((name) {
-              expect(name, 'input');
-              return driver.quit();
-            });
+      test('chrome', () async {
+        WebDriver driver = await WebDriver.createDriver(
+            desiredCapabilities: Capabilities.chrome);
+        await driver.get('http://www.google.com');
+        var element = await driver.findElement(new By.name('q'));
+        expect(await element.name, 'input');
+        await driver.quit();
       });
 
-      test('firefox', () {
-        WebDriver driver;
-        return WebDriver
-            .createDriver(desiredCapabilities: Capabilities.firefox)
-            .then((_driver) {
-              driver = _driver;
-            })
-            .then((_) => driver.get('http://www.google.com'))
-            .then((_) => driver.findElement(new By.name('q')))
-            .then((element) => element.name)
-            .then((name) {
-              expect(name, 'input');
-              return driver.quit();
-            });
+      test('firefox', () async {
+        WebDriver driver = await WebDriver.createDriver(
+            desiredCapabilities: Capabilities.firefox);
+        await driver.get('http://www.google.com');
+        var element = await driver.findElement(new By.name('q'));
+        expect(await element.name, 'input');
+        await driver.quit();
       });
     });
 
     group('methods', () {
       WebDriver driver;
 
-      setUp(() {
-        return WebDriver
-            .createDriver(desiredCapabilities: Capabilities.chrome)
-            .then((_driver) => driver = _driver)
-            .then((_) => driver.get(testPagePath));
+      setUp(() async {
+        driver = await WebDriver.createDriver(
+            desiredCapabilities: Capabilities.chrome);
+        await driver.get(testPagePath);
       });
 
       tearDown(() => driver.quit());
 
-      test('get', () {
-        return driver.get('http://www.google.com')
-            .then((_) => driver.findElement(new By.name('q')))
-            .then((_) => driver.get('http://www.yahoo.com'))
-            .then((_) => driver.findElement(new By.name('p')));
+      test('get', () async {
+        await driver.get('http://www.google.com');
+        await driver.findElement(new By.name('q'));
+        await driver.get('http://www.yahoo.com');
+        await driver.findElement(new By.name('p'));
       });
 
-      test('currentUrl', () {
-        return driver.currentUrl.then((url) {
-          expect(url, startsWith('file:'));
-          expect(url, endsWith('test_page.html'));
-          return driver.get('http://www.google.com');
-        })
-        .then((_) => driver.currentUrl)
-        .then((url) {
-          expect(url, contains('www.google.com'));
-        });
+      test('currentUrl', () async {
+        var url = await driver.currentUrl;
+        expect(url, startsWith('file:'));
+        expect(url, endsWith('test_page.html'));
+        await driver.get('http://www.google.com');
+        url = await driver.currentUrl;
+        expect(url, contains('www.google.com'));
       });
 
-      test('findElement -- success', () {
-        return driver.findElement(new By.tagName('tr')) .then((element) {
-          expect(element, isWebElement);
-        });
+      test('findElement -- success', () async {
+        var element = await driver.findElement(new By.tagName('tr'));
+        expect(element, isWebElement);
       });
 
-      test('findElement -- failure', () {
-        return driver.findElement(new By.id('non-existent-id'))
-            .catchError((error) {
-              expect(error, isWebDriverError);
-            });
+      test('findElement -- failure', () async {
+        try {
+          await driver.findElement(new By.id('non-existent-id'));
+          throw 'expected NoSuchElementException';
+        } on NoSuchElementException {}
       });
 
-      test('findElements -- 1 found', () {
-        return driver.findElements(new By.cssSelector('input[type=text]'))
-            .then((elements) {
-              expect(elements, hasLength(1));
-              expect(elements, everyElement(isWebElement));
-            });
+      test('findElements -- 1 found', () async {
+        var elements = await driver
+            .findElements(new By.cssSelector('input[type=text]'))
+            .toList();
+        expect(elements, hasLength(1));
+        expect(elements, everyElement(isWebElement));
       });
 
-      test('findElements -- 4 found', () {
-        return driver.findElements(new By.tagName('td'))
-            .then((elements) {
-              expect(elements, hasLength(4));
-              expect(elements, everyElement(isWebElement));
-            });
+      test('findElements -- 4 found', () async {
+        var elements = await driver.findElements(new By.tagName('td')).toList();
+        expect(elements, hasLength(4));
+        expect(elements, everyElement(isWebElement));
       });
 
-      test('findElements -- 0 found', () {
-        return driver.findElements(new By.id('non-existent-id'))
-            .then((elements) {
-              expect(elements, isEmpty);
-            });
+      test('findElements -- 0 found', () async {
+        var elements =
+            await driver.findElements(new By.id('non-existent-id')).toList();
+        expect(elements, isEmpty);
       });
 
-      test('pageSource', () {
-        return driver.pageSource.then((source) {
-          expect(source, contains('<title>test_page</title>'));
-        });
+      test('pageSource', () async {
+        expect(await driver.pageSource, contains('<title>test_page</title>'));
       });
 
-      test('close/windowHandles', () {
-        int numHandles;
-        return driver.windowHandles
-            .then((handles) => numHandles = handles.length)
-            .then((_) =>
-                driver.findElement(new By.partialLinkText('Open copy')))
-            .then((element) => element.click())
-            .then((_) => driver.close())
-            .then((_) => driver.windowHandles)
-            .then((handles) {
-              expect(handles, hasLength(numHandles));
-            });
+      test('close/windows', () async {
+        int numHandles = (await driver.windows.toList()).length;
+        await (await driver.findElement(new By.partialLinkText('Open copy')))
+            .click();
+        expect(await driver.windows.toList(), hasLength(numHandles + 1));
+        await driver.close();
+        expect(await driver.windows.toList(), hasLength(numHandles));
       });
 
-      test('windowHandle', () {
-        String origHandle;
-        String newHandle;
-        return driver.windowHandle
-            .then((_handle) => origHandle = _handle)
-            .then((_) =>
-                driver.findElement(new By.partialLinkText('Open copy')))
-            .then((element) => element.click())
-            .then((_) => driver.windowHandles)
-            .then((handles) {
-              for (String aHandle in handles) {
-                if (aHandle != origHandle) {
-                  newHandle = aHandle;
-                  return driver.switchTo.window(aHandle);
-                }
-              }
-            })
-            .then((_) => driver.windowHandle)
-            .then((finalHandle) {
-              expect(finalHandle, newHandle);
-            });
+      test('window', () async {
+        Window orig = await driver.window;
+        Window next;
+        await (await driver.findElement(new By.partialLinkText('Open copy')))
+            .click();
+        for (Window window in driver.windows) {
+          if (window != orig) {
+            next = window;
+            await driver.switchTo.window(window);
+            break;
+          }
+        }
+        expect(await driver.window, equals(next));
+        await driver.close();
       });
 
-      // TODO(DrMarcII): Figure out why this doesn't pass
-//        test('activeElement', () {
-//          return driver.activeElement
-//              .then((element) {
-//                expect(element, isNull);
-//                return driver
-//                    .findElement(new By.cssSelector('input[type=text]'));
-//              })
-//              .then((element) => element.click())
-//              .then((_) => driver.activeElement)
-//              .then((element) => element.name)
-//              .then((name) {
-//                expect(name, 'input');
-//              });
-//        });
-
-      test('windows', () {
-        return driver.windows.then((windows) {
-          expect(windows, hasLength(isPositive));
-          expect(windows, everyElement(new isInstanceOf<Window>()));
-        });
+      test('activeElement', () async {
+        var element = await driver.activeElement;
+        expect(await element.name, 'body');
+        await (await driver.findElement(new By.cssSelector('input[type=text]')))
+            .click();
+        element = await driver.activeElement;
+        expect(await element.name, 'input');
       });
 
-      test('execute', () {
-        WebElement button;
+      test('windows', () async {
+        var windows = await driver.windows.toList();
+        expect(windows, hasLength(isPositive));
+        expect(windows, everyElement(new isInstanceOf<Window>()));
+      });
+
+      test('execute', () async {
+        WebElement button = await driver.findElement(new By.tagName('button'));
         String script = '''
             arguments[1].textContent = arguments[0];
             return arguments[1];''';
-        return driver.findElement(new By.tagName('button'))
-            .then((_e) => button = _e)
-            .then((_) => driver.execute(script, ['new text', button]))
-            .then((WebElement e) {
-              expect(e.text, completion('new text'));
-            });
+        var e = await driver.execute(script, ['new text', button]);
+        expect(await e.text, 'new text');
       });
 
-      test('executeAsync', () {
-        WebElement button;
+      test('executeAsync', () async {
+        WebElement button = await driver.findElement(new By.tagName('button'));
         String script = '''
             arguments[1].textContent = arguments[0];
             arguments[2](arguments[1]);''';
-        return driver.findElement(new By.tagName('button'))
-            .then((_e) => button = _e)
-            .then((_) => driver.executeAsync(script, ['new text', button]))
-            .then((WebElement e) {
-              expect(e.text, completion('new text'));
-            });
+        var e = await driver.executeAsync(script, ['new text', button]);
+        expect(await e.text, 'new text');
       });
 
-      test('captureScreenshot', () {
-        return driver.captureScreenshot()
-            .then((screenshot) {
-              expect(screenshot, hasLength(isPositive));
-              expect(screenshot, everyElement(new isInstanceOf<int>()));
-            });
+      test('captureScreenshot', () async {
+        var screenshot = await driver.captureScreenshot();
+        expect(screenshot, hasLength(isPositive));
+        expect(screenshot, everyElement(new isInstanceOf<int>()));
       });
     });
   });

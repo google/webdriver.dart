@@ -11,7 +11,7 @@ final Matcher isSize = new isInstanceOf<Size>();
 final Matcher isPoint = new isInstanceOf<Point>();
 
 String get testPagePath {
-  if(_testPagePath == null) {
+  if (_testPagePath == null) {
     _testPagePath = _getTestPagePath();
   }
   return _testPagePath;
@@ -20,7 +20,7 @@ String get testPagePath {
 String _getTestPagePath() {
   var testPagePath = path.join(path.current, 'test', 'test_page.html');
   testPagePath = path.absolute(testPagePath);
-  if(!FileSystemEntity.isFileSync(testPagePath)) {
+  if (!FileSystemEntity.isFileSync(testPagePath)) {
     throw new Exception('Could not find the test file at "$testPagePath".'
         ' Make sure you are running tests from the root of the project.');
   }

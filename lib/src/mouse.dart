@@ -1,58 +1,49 @@
 part of webdriver;
 
-class Mouse extends _WebDriverBase implements Future {
-
+class Mouse extends _WebDriverBase {
   static const int LEFT = 0;
   static const int MIDDLE = 1;
   static const int RIGHT = 2;
 
-  Future _future;
-
-  Mouse._(prefix, commandProcessor, [this._future])
-      : super(prefix, commandProcessor) {
-    if (_future == null) {
-      _future = new Future.value();
-    }
-  }
+  Mouse._(driver) : super(driver, '');
 
   /// Click any mouse button (at the coordinates set by the last moveTo).
-  Mouse click([int button]) {
+  Future click([int button]) async {
     var json = {};
     if (button is num) {
       json['button'] = button.clamp(0, 2).floor();
     }
-    return _createNext((_) => _post('click', json));
+    await _post('click', json);
   }
 
   /**
    * Click and hold any mouse button (at the coordinates set by the last
    * moveTo command).
    */
-  Mouse down([int button]) {
+  Future down([int button]) async {
     var json = {};
     if (button is num) {
       json['button'] = button.clamp(0, 2).floor();
     }
-    return _createNext((_) =>
-        _post('buttondown', json));
+    await _post('buttondown', json);
   }
 
   /**
    * Releases the mouse button previously held (where the mouse is currently
    * at).
    */
-  Mouse up([int button]) {
+  Future up([int button]) async {
     var json = {};
     if (button is num) {
       json['button'] = button.clamp(0, 2).floor();
     }
-    return _createNext((_) =>
-        _post('buttonup', json));
+    await _post('buttonup', json);
   }
 
   /// Double-clicks at the current mouse coordinates (set by moveTo).
-  Mouse doubleClick() =>
-      _createNext((_) => _post('doubleclick'));
+  Future doubleClick() async {
+    await _post('doubleclick');
+  }
 
   /**
    * Move the mouse.
@@ -68,33 +59,15 @@ class Mouse extends _WebDriverBase implements Future {
    *
    * All other combinations of parameters are illegal.
    */
-  Mouse moveTo({WebElement element, int xOffset, int yOffset}) {
+  Future moveTo({WebElement element, int xOffset, int yOffset}) async {
     var json = {};
     if (element is WebElement) {
-      json['element'] = element._elementId;
+      json['element'] = element.id;
     }
     if (xOffset is num && yOffset is num) {
       json['xoffset'] = xOffset.floor();
       json['yoffset'] = yOffset.floor();
     }
-    return _createNext((_) => _post('moveto', json));
+    await _post('moveto', json);
   }
-
-  Mouse _createNext(f(value)) {
-    return new Mouse._(_prefix, _commandProcessor, _future.then(f));
-  }
-
-  Stream asStream() => _future.asStream();
-
-  Future catchError(onError(error), {bool test(error)}) =>
-      _future.catchError(onError, test: test);
-
-  Future then(onValue(value), {onError(error)}) =>
-      _future.then(onValue, onError: onError);
-
-  Future whenComplete(action()) =>
-      _future.whenComplete(action);
-
-  Future timeout(Duration timeLimit, {onTimeout()}) =>
-      _future.timeout(timeLimit, onTimeout: onTimeout);
 }

@@ -4,103 +4,81 @@ import 'package:unittest/unittest.dart';
 import 'package:webdriver/webdriver.dart';
 
 void main() {
-
   group('Cookies', () {
-
     WebDriver driver;
 
-    setUp(() {
-      return WebDriver.createDriver(desiredCapabilities: Capabilities.chrome)
-          .then((_driver) => driver = _driver)
-          .then((_) => driver.get('http://www.google.com'));
+    setUp(() async {
+      driver = await WebDriver.createDriver(
+          desiredCapabilities: Capabilities.chrome);
+      await driver.get('http://www.google.com');
     });
 
     tearDown(() => driver.quit());
 
-    test('add simple cookie', () {
-      return driver.cookies.add(new Cookie('mycookie', 'myvalue'))
-          .then((_) => driver.cookies.all)
-          .then((cookies) {
-            bool found = false;
-            for (var cookie in cookies) {
-              if (cookie.name == 'mycookie') {
-                found = true;
-                expect(cookie.value, 'myvalue');
-              }
-            }
-            expect(found, isTrue);
-          });
+    test('add simple cookie', () async {
+      await driver.cookies.add(new Cookie('mycookie', 'myvalue'));
+
+      bool found = false;
+      for (var cookie in driver.cookies.all) {
+        if (cookie.name == 'mycookie') {
+          found = true;
+          expect(cookie.value, 'myvalue');
+          break;
+        }
+      }
+      expect(found, isTrue);
     });
 
-    test('add complex cookie', () {
-      var date = new DateTime.utc(2014);
-      return driver.cookies
-          .add(new Cookie(
-              'mycookie',
-              'myvalue',
-              path: '/',
-              domain: '.google.com',
-              secure: false,
-              expiry: date))
-          .then((_) => driver.cookies.all)
-          .then((cookies) {
-            bool found = false;
-            for (var cookie in cookies) {
-              if (cookie.name == 'mycookie') {
-                found = true;
-                expect(cookie.value, 'myvalue');
-                expect(cookie.expiry, date);
-              }
-            }
-            expect(found, isTrue);
-          });
+    test('add complex cookie', () async {
+      var date = new DateTime.utc(2020);
+      await driver.cookies.add(new Cookie('mycookie', 'myvalue',
+          path: '/', domain: '.google.com', secure: false, expiry: date));
+      bool found = false;
+      for (var cookie in driver.cookies.all) {
+        if (cookie.name == 'mycookie') {
+          found = true;
+          expect(cookie.value, 'myvalue');
+          expect(cookie.expiry, date);
+          break;
+        }
+      }
+      expect(found, isTrue);
     });
 
-    test('delete cookie', () {
-      return driver.cookies.add(new Cookie('mycookie', 'myvalue'))
-          .then((_) => driver.cookies.delete('mycookie'))
-          .then((_) => driver.cookies.all)
-          .then((cookies) {
-            bool found = false;
-            for (var cookie in cookies) {
-              if (cookie.name == 'mycookie') {
-                found = true;
-              }
-            }
-            expect(found, isFalse);
-          });
+    test('delete cookie', () async {
+      await driver.cookies.add(new Cookie('mycookie', 'myvalue'));
+      await driver.cookies.delete('mycookie');
+      bool found = false;
+      for (var cookie in driver.cookies.all) {
+        if (cookie.name == 'mycookie') {
+          found = true;
+          break;
+        }
+      }
+      expect(found, isFalse);
     });
 
-    test('delete all cookies', () {
-      return driver.cookies.deleteAll()
-          .then((_) => driver.cookies.all)
-          .then((cookies) {
-            expect(cookies, isEmpty);
-          });
+    test('delete all cookies', () async {
+      await driver.cookies.deleteAll();
+      expect(await driver.cookies.all.toList(), isEmpty);
     });
   });
 
   group('TimeOuts', () {
     WebDriver driver;
 
-    setUp(() {
-      return WebDriver.createDriver(desiredCapabilities: Capabilities.chrome)
-          .then((_driver) => driver = _driver);
+    setUp(() async {
+      driver = await WebDriver.createDriver(
+          desiredCapabilities: Capabilities.chrome);
     });
 
     tearDown(() => driver.quit());
 
     // TODO(DrMarcII): Figure out how to tell if timeouts are correctly set
-    test('set all timeouts', () {
-      return driver.timeouts.setScriptTimeout(new Duration(seconds: 5))
-          .then((_) => driver.timeouts
-              .setImplicitTimeout(new Duration(seconds: 1)))
-          .then((_) => driver.timeouts
-              .setPageLoadTimeout(new Duration(seconds: 10)))
-          .then((_) => driver.timeouts
-              .setAsyncScriptTimeout(new Duration(seconds: 7)))
-          .then((_) => driver.timeouts
-              .setImplicitWaitTimeout(new Duration(seconds: 2)));
+    test('set all timeouts', () async {
+      await driver.timeouts.setScriptTimeout(new Duration(seconds: 5));
+      await driver.timeouts.setImplicitTimeout(new Duration(seconds: 1));
+      await driver.timeouts.setPageLoadTimeout(new Duration(seconds: 10));
     });
   });
 }
