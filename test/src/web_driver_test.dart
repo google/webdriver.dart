@@ -111,7 +111,7 @@ void main() {
         Window next;
         await (await driver.findElement(new By.partialLinkText('Open copy')))
             .click();
-        for (Window window in driver.windows) {
+        await for (Window window in driver.windows) {
           if (window != orig) {
             next = window;
             await driver.switchTo.window(window);

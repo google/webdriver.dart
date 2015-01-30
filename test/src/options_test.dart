@@ -19,7 +19,7 @@ void main() {
       await driver.cookies.add(new Cookie('mycookie', 'myvalue'));
 
       bool found = false;
-      for (var cookie in driver.cookies.all) {
+      await for (var cookie in driver.cookies.all) {
         if (cookie.name == 'mycookie') {
           found = true;
           expect(cookie.value, 'myvalue');
@@ -34,7 +34,7 @@ void main() {
       await driver.cookies.add(new Cookie('mycookie', 'myvalue',
           path: '/', domain: '.google.com', secure: false, expiry: date));
       bool found = false;
-      for (var cookie in driver.cookies.all) {
+      await for (var cookie in driver.cookies.all) {
         if (cookie.name == 'mycookie') {
           found = true;
           expect(cookie.value, 'myvalue');
@@ -49,7 +49,7 @@ void main() {
       await driver.cookies.add(new Cookie('mycookie', 'myvalue'));
       await driver.cookies.delete('mycookie');
       bool found = false;
-      for (var cookie in driver.cookies.all) {
+      await for (var cookie in driver.cookies.all) {
         if (cookie.name == 'mycookie') {
           found = true;
           break;
