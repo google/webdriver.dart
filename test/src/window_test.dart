@@ -36,7 +36,8 @@ void main() {
       await window.maximize();
 
       // maximizing can take some time
-      await waitFor(() async => (await window.location).x, matcher: lessThan(100));
+      await waitFor(() async => (await window.location).x,
+          matcher: lessThan(100));
 
       var location = await window.location;
       var size = await window.size;
