@@ -1,6 +1,6 @@
 part of webdriver;
 
-const DEFAULT_TIMEOUT = const Duration(minutes: 1);
+const DEFAULT_TIMEOUT = const Duration(seconds: 5);
 const DEFAULT_INTERVAL = const Duration(milliseconds: 500);
 
 Future waitFor(Future predicate(), {Matcher matcher: isTrue,

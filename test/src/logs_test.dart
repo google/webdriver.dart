@@ -6,11 +6,10 @@ import 'package:webdriver/webdriver.dart';
 void main() {
   group('Logs', () {
     WebDriver driver;
-    
+
     setUp(() async {
       Map capabilities = Capabilities.chrome
-          ..[Capabilities.LOGGING_PREFS] =
-              {LogType.PERFORMANCE: LogLevel.INFO};
+        ..[Capabilities.LOGGING_PREFS] = {LogType.PERFORMANCE: LogLevel.INFO};
       driver = await WebDriver.createDriver(desiredCapabilities: capabilities);
       await driver.get('http://www.google.com');
     });
