@@ -28,6 +28,7 @@ void main() {
       expect(await window.location, position);
     });
 
+    // May not work on some OS/browser combinations (notably Mac OS X).
     test('maximize', () async {
       var window = await driver.window;
       await window.setSize(const Size(200, 300));
