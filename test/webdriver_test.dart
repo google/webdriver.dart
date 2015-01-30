@@ -13,7 +13,6 @@ import 'src/web_driver_test.dart' as web_driver;
 import 'src/web_element_test.dart' as web_element;
 import 'src/window_test.dart' as window;
 
-
 /**
  * These tests are not expected to be run as part of normal automated testing,
  * as they are slow and they have external dependencies.
