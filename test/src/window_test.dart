@@ -29,7 +29,7 @@ void main() {
     });
 
     // May not work on some OS/browser combinations (notably Mac OS X).
-    solo_test('maximize', () async {
+    test('maximize', () async {
       var window = await driver.window;
       await window.setSize(const Size(200, 300));
       await window.setLocation(const Point(100, 200));
