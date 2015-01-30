@@ -3,11 +3,20 @@ part of webdriver;
 class Logs extends _WebDriverBase {
   Logs._(driver) : super(driver, 'log');
 
-  Future<Iterable<LogEntry>> get(String logType) async =>
-      (await _post('', {'type': logType})).map(
-          (entry) => new LogEntry.fromMap(entry));
-}
+  Stream<LogEntry> get(String logType) {
+    var controller = new StreamController<LogEntry>();
 
+    () async {
+      var entries = await _post('', {'type': logType});
+      for (var entry in entries) {
+        controller.add(new LogEntry.fromMap(entry));
+      }
+      await controller.close();
+    }();
+
+    return controller.stream;
+  }
+}
 class LogEntry {
   final String message;
   final int timestamp;

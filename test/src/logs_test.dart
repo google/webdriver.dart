@@ -18,7 +18,7 @@ void main() {
     tearDown(() => driver.quit());
 
     test('get logs', () async {
-      Iterable<LogEntry> logs = await driver.logs.get(LogType.PERFORMANCE);
+      List<LogEntry> logs = await driver.logs.get(LogType.PERFORMANCE).toList();
       expect(logs.length, greaterThan(0));
       logs.forEach((entry) {
         expect(entry.level, equals(LogLevel.INFO));
