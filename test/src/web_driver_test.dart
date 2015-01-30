@@ -2,13 +2,14 @@ library webdriver_test.web_driver;
 
 import 'package:unittest/unittest.dart';
 import 'package:webdriver/webdriver.dart';
+
 import '../test_util.dart';
 
 void main() {
   group('WebDriver', () {
     group('create', () {
       test('default', () async {
-        WebDriver driver = await WebDriver.createDriver();
+        WebDriver driver = await createTestDriver();
         await driver.get('http://www.google.com');
         var element = await driver.findElement(new By.name('q'));
         expect(await element.name, 'input');
@@ -16,8 +17,7 @@ void main() {
       });
 
       test('chrome', () async {
-        WebDriver driver = await WebDriver.createDriver(
-            desiredCapabilities: Capabilities.chrome);
+        WebDriver driver = await createTestDriver();
         await driver.get('http://www.google.com');
         var element = await driver.findElement(new By.name('q'));
         expect(await element.name, 'input');
@@ -25,6 +25,9 @@ void main() {
       });
 
       test('firefox', () async {
+        // Avoid this test on the bot; currently we just test against chromedriver.
+        if (isRunningOnTravis()) return;
+
         WebDriver driver = await WebDriver.createDriver(
             desiredCapabilities: Capabilities.firefox);
         await driver.get('http://www.google.com');
@@ -38,8 +41,7 @@ void main() {
       WebDriver driver;
 
       setUp(() async {
-        driver = await WebDriver.createDriver(
-            desiredCapabilities: Capabilities.chrome);
+        driver = await createTestDriver();
         await driver.get(testPagePath);
       });
 

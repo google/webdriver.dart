@@ -2,6 +2,7 @@ library webdriver_test.web_element;
 
 import 'package:unittest/unittest.dart';
 import 'package:webdriver/webdriver.dart';
+
 import '../test_util.dart';
 
 void main() {
@@ -16,8 +17,7 @@ void main() {
     WebElement invisible;
 
     setUp(() async {
-      driver = await WebDriver.createDriver(
-          desiredCapabilities: Capabilities.chrome);
+      driver = await createTestDriver();
       await driver.get(testPagePath);
       table = await driver.findElement(new By.tagName('table'));
       button = await driver.findElement(new By.tagName('button'));

@@ -3,13 +3,14 @@ library webdriver_test.options;
 import 'package:unittest/unittest.dart';
 import 'package:webdriver/webdriver.dart';
 
+import '../test_util.dart';
+
 void main() {
   group('Cookies', () {
     WebDriver driver;
 
     setUp(() async {
-      driver = await WebDriver.createDriver(
-          desiredCapabilities: Capabilities.chrome);
+      driver = await createTestDriver();
       await driver.get('http://www.google.com');
     });
 
@@ -68,8 +69,7 @@ void main() {
     WebDriver driver;
 
     setUp(() async {
-      driver = await WebDriver.createDriver(
-          desiredCapabilities: Capabilities.chrome);
+      driver = await createTestDriver();
     });
 
     tearDown(() => driver.quit());

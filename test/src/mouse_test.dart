@@ -2,6 +2,7 @@ library webdriver_test.mouse;
 
 import 'package:unittest/unittest.dart';
 import 'package:webdriver/webdriver.dart';
+
 import '../test_util.dart';
 
 void main() {
@@ -10,8 +11,7 @@ void main() {
     WebElement button;
 
     setUp(() async {
-      driver = await WebDriver.createDriver(
-          desiredCapabilities: Capabilities.chrome);
+      driver = await createTestDriver();
       await driver.get(testPagePath);
       button = await driver.findElement(new By.tagName('button'));
     });

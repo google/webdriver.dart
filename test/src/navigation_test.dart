@@ -3,13 +3,14 @@ library webdriver_test.navigation;
 import 'package:unittest/unittest.dart';
 import 'package:webdriver/webdriver.dart';
 
+import '../test_util.dart';
+
 void main() {
   group('Navigation', () {
     WebDriver driver;
 
     setUp(() async {
-      driver = await WebDriver.createDriver(
-          desiredCapabilities: Capabilities.chrome);
+      driver = await createTestDriver();
       await driver.get('http://www.google.com/ncr');
     });
 

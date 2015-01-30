@@ -2,6 +2,7 @@ library webdriver_test.keyboard;
 
 import 'package:unittest/unittest.dart';
 import 'package:webdriver/webdriver.dart';
+
 import '../test_util.dart';
 
 void main() {
@@ -10,8 +11,7 @@ void main() {
     WebElement textInput;
 
     setUp(() async {
-      driver = await WebDriver.createDriver(
-          desiredCapabilities: Capabilities.firefox);
+      driver = await createTestDriver();
       await driver.get(testPagePath);
       textInput =
           await driver.findElement(new By.cssSelector('input[type=text]'));
