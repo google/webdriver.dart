@@ -29,11 +29,15 @@ void main() {
     });
 
     // May not work on some OS/browser combinations (notably Mac OS X).
-    test('maximize', () async {
+    solo_test('maximize', () async {
       var window = await driver.window;
       await window.setSize(const Size(200, 300));
       await window.setLocation(const Point(100, 200));
       await window.maximize();
+
+      // maximizing can take some time
+      await waitFor(() async => (await window.location).x, matcher: lessThan(100));
+
       var location = await window.location;
       var size = await window.size;
       expect(location.x, lessThan(100));
