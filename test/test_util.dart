@@ -1,6 +1,7 @@
 library webdriver_test_util;
 
 import 'dart:io';
+
 import 'package:path/path.dart' as path;
 import 'package:unittest/unittest.dart';
 import 'package:webdriver/webdriver.dart';
