@@ -2,10 +2,9 @@ library webdriver_test.window;
 
 import 'package:unittest/unittest.dart';
 import 'package:webdriver/webdriver.dart';
-import '../test_util.dart';
 
 void main() {
-  solo_group('Window', () {
+  group('Window', () {
     WebDriver driver;
 
     setUp(() async {
@@ -17,31 +16,30 @@ void main() {
 
     test('size', () async {
       var window = await driver.window;
-      await window.setSize(new Size(400, 600));
-      var size = await window.size;
-      expect(size, isSize);
-      expect(size.height, 400);
-      expect(size.width, 600);
+      var size = const Size(400, 600);
+      await window.setSize(size);
+      expect(await window.size, size);
     });
 
     test('location', () async {
       var window = await driver.window;
-
-      await window.setLocation(new Point(10, 20));
-      var point = await window.location;
-      expect(point, isPoint);
-      expect(point.x, 10);
-      expect(point.y, 20);
+      var position = const Point(100, 200);
+      await window.setLocation(position);
+      expect(await window.location, position);
     });
 
-    // fails in some cases with multiple monitors
+    // May not work on some OS/browser combinations (notably Mac OS X).
     test('maximize', () async {
       var window = await driver.window;
+      await window.setSize(const Size(200, 300));
+      await window.setLocation(const Point(100, 200));
       await window.maximize();
-      var point = await window.location;
-      expect(point, isPoint);
-      expect(point.x, 0);
-      expect(point.y, 0);
+      var location = await window.location;
+      var size = await window.size;
+      expect(location.x, lessThan(100));
+      expect(location.y, lessThan(200));
+      expect(size.height, greaterThan(200));
+      expect(size.width, greaterThan(300));
     });
   });
 }
