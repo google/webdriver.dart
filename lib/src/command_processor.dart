@@ -6,7 +6,10 @@ final ContentType _contentTypeJson =
 class _CommandProcessor {
   final HttpClient client = new HttpClient();
 
+  Completer _lock;
+
   Future<Object> post(Uri uri, dynamic params, {bool value: true}) async {
+    await _getLock();
     HttpClientRequest request = await client.postUrl(uri);
     _setUpRequest(request);
     request.headers.contentType = _contentTypeJson;
@@ -21,12 +24,14 @@ class _CommandProcessor {
   }
 
   Future<Object> get(Uri uri, {bool value: true}) async {
+    await _getLock();
     HttpClientRequest request = await client.getUrl(uri);
     _setUpRequest(request);
     return await _processResponse(await request.close(), value);
   }
 
   Future<Object> delete(Uri uri, {bool value: true}) async {
+    await _getLock();
     HttpClientRequest request = await client.deleteUrl(uri);
     _setUpRequest(request);
     return await _processResponse(await request.close(), value);
@@ -34,7 +39,7 @@ class _CommandProcessor {
 
   _processResponse(HttpClientResponse response, bool value) async {
     var respBody = await UTF8.decodeStream(response);
-
+    _releaseLock();
     try {
       respBody = JSON.decode(respBody);
     } catch (e) {}
@@ -58,5 +63,20 @@ class _CommandProcessor {
     request.headers.add(HttpHeaders.ACCEPT, "application/json");
     request.headers.add(HttpHeaders.ACCEPT_CHARSET, UTF8.name);
     request.headers.add(HttpHeaders.CACHE_CONTROL, "no-cache");
+  }
+
+  Future _getLock() async {
+    while (_lock != null) {
+      await _lock.future;
+    }
+    _lock = new Completer();
+  }
+
+  void _releaseLock() {
+    if (_lock == null) {
+      throw new StateError('No lock to release');
+    }
+    _lock.complete();
+    _lock = null;
   }
 }
