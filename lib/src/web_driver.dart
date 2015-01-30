@@ -144,6 +144,8 @@ class WebDriver implements SearchContext {
   Navigation get navigate => new Navigation._(this);
 
   Cookies get cookies => new Cookies._(this);
+  
+  Logs get logs => new Logs._(this);
 
   Timeouts get timeouts => new Timeouts._(this);
 
