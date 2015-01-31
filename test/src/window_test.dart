@@ -37,11 +37,11 @@ void main() {
 
       // maximizing can take some time
       await waitFor(() async => (await window.location).x,
-          matcher: lessThan(100));
+          matcher: lessThanOrEqualTo(100));
 
       var location = await window.location;
       var size = await window.size;
-      expect(location.x, lessThan(100));
+      expect(location.x, lessThanOrEqualTo(100));
       expect(location.y, lessThan(200));
       expect(size.height, greaterThan(200));
       expect(size.width, greaterThan(300));
