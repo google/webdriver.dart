@@ -7,7 +7,6 @@ import 'package:webdriver/src/lock.dart';
 
 void main() {
   group('Lock', () {
-
     test('basic acquire/release', () async {
       var lock = new Lock();
       expect(lock.isAcquired, isFalse);
@@ -39,7 +38,4 @@ void main() {
       expect(secondLockAcquired, isTrue);
     });
   });
-
-
-
 }
