@@ -4,6 +4,7 @@ import 'package:unittest/vm_config.dart';
 
 import 'src/alert_test.dart' as alert;
 import 'src/keyboard_test.dart' as keyboard;
+import 'src/lock_test.dart' as lock;
 import 'src/logs_test.dart' as logs;
 import 'src/mouse_test.dart' as mouse;
 import 'src/navigation_test.dart' as navigation;
@@ -22,6 +23,7 @@ void main() {
 
   alert.main();
   keyboard.main();
+  lock.main();
   logs.main();
   mouse.main();
   navigation.main();
