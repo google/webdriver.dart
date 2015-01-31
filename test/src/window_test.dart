@@ -3,13 +3,14 @@ library webdriver_test.window;
 import 'package:unittest/unittest.dart';
 import 'package:webdriver/webdriver.dart';
 
+import '../test_util.dart';
+
 void main() {
   group('Window', () {
     WebDriver driver;
 
     setUp(() async {
-      driver = await WebDriver.createDriver(
-          desiredCapabilities: Capabilities.chrome);
+      driver = await createTestDriver();
     });
 
     tearDown(() => driver.quit());
