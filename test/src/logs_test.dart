@@ -3,14 +3,18 @@ library webdriver_test.logs;
 import 'package:unittest/unittest.dart';
 import 'package:webdriver/webdriver.dart';
 
+import '../test_util.dart';
+
 void main() {
   group('Logs', () {
     WebDriver driver;
 
     setUp(() async {
-      Map capabilities = Capabilities.chrome
-        ..[Capabilities.LOGGING_PREFS] = {LogType.PERFORMANCE: LogLevel.INFO};
-      driver = await WebDriver.createDriver(desiredCapabilities: capabilities);
+      Map capabilities = {
+        Capabilities.LOGGING_PREFS: {LogType.PERFORMANCE: LogLevel.INFO}
+      };
+
+      driver = await createTestDriver(additionalCapabilities: capabilities);
       await driver.get('http://www.google.com');
     });
 

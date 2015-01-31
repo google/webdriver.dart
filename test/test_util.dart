@@ -1,6 +1,8 @@
 library webdriver_test_util;
 
-import 'dart:io';
+import 'dart:async';
+import 'dart:io' hide Platorm;
+import 'dart:io' as io show Platform;
 
 import 'package:path/path.dart' as path;
 import 'package:unittest/unittest.dart';
@@ -10,6 +12,8 @@ final Matcher isWebDriverError = new isInstanceOf<WebDriverError>();
 final Matcher isWebElement = new isInstanceOf<WebElement>();
 final Matcher isSize = new isInstanceOf<Size>();
 final Matcher isPoint = new isInstanceOf<Point>();
+
+bool isRunningOnTravis() => io.Platform.environment['TRAVIS'] == 'true';
 
 String get testPagePath {
   if (_testPagePath == null) {
@@ -29,3 +33,28 @@ String _getTestPagePath() {
 }
 
 String _testPagePath;
+
+Future<WebDriver> createTestDriver({Map additionalCapabilities}) {
+  Map capabilities = Capabilities.chrome;
+  Map env = io.Platform.environment;
+
+  Map chromeOptions = {};
+
+  if (env['CHROMEDRIVER_BINARY'] != null) {
+    chromeOptions['binary'] = env['CHROMEDRIVER_BINARY'];
+  }
+
+  if (env['CHROMEDRIVER_ARGS'] != null) {
+    chromeOptions['args'] = env['CHROMEDRIVER_ARGS'].split(' ');
+  }
+
+  if (chromeOptions.isNotEmpty) {
+    capabilities['chromeOptions'] = chromeOptions;
+  }
+
+  if (additionalCapabilities != null) {
+    capabilities.addAll(additionalCapabilities);
+  }
+
+  return WebDriver.createDriver(desiredCapabilities: capabilities);
+}
