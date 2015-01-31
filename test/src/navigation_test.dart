@@ -27,10 +27,14 @@ void main() {
     test('refresh', () async {
       var element = await driver.findElement(new By.name('q'));
       await driver.navigate.refresh();
-      try {
-        await element.name;
-        throw 'Expected SERE';
-      } on StaleElementReferenceException {}
+      await waitFor(() async {
+        try {
+          await element.name;
+        } on StaleElementReferenceException {
+          return true;
+        }
+        return 'expected StaleElementReferenceException';
+      });
     });
   });
 }

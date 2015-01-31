@@ -111,6 +111,7 @@ void main() {
       test('window', () async {
         Window orig = await driver.window;
         Window next;
+
         await (await driver.findElement(new By.partialLinkText('Open copy')))
             .click();
         await for (Window window in driver.windows) {

@@ -14,7 +14,7 @@ void main() {
       driver = await createTestDriver();
       await driver.get(testPagePath);
       textInput =
-          await driver.findElement(new By.cssSelector('input[type=text]'));
+          await driver.findElement(const By.cssSelector('input[type=text]'));
       await textInput.click();
     });
 
