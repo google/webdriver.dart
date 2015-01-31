@@ -36,11 +36,12 @@ void main() {
       await window.maximize();
 
       // maximizing can take some time
-      await waitFor(() async => (await window.location).x,
-          matcher: lessThanOrEqualTo(100));
+      await waitFor(() async => (await window.size).height,
+          matcher: greaterThan(200));
 
       var location = await window.location;
       var size = await window.size;
+      // Changed from `lessThan(100)` to pass the test on Mac.
       expect(location.x, lessThanOrEqualTo(100));
       expect(location.y, lessThan(200));
       expect(size.height, greaterThan(200));
