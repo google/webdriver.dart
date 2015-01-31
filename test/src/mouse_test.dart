@@ -13,7 +13,7 @@ void main() {
       driver = await WebDriver.createDriver(
           desiredCapabilities: Capabilities.chrome);
       await driver.get(testPagePath);
-      button = await driver.findElement(new By.tagName('button'));
+      button = await driver.findElement(const By.tagName('button'));
     });
 
     tearDown(() => driver.quit());

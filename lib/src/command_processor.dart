@@ -6,7 +6,10 @@ final ContentType _contentTypeJson =
 class _CommandProcessor {
   final HttpClient client = new HttpClient();
 
+  Lock _lock = new Lock();
+
   Future<Object> post(Uri uri, dynamic params, {bool value: true}) async {
+    await _lock.acquire();
     HttpClientRequest request = await client.postUrl(uri);
     _setUpRequest(request);
     request.headers.contentType = _contentTypeJson;
@@ -21,12 +24,14 @@ class _CommandProcessor {
   }
 
   Future<Object> get(Uri uri, {bool value: true}) async {
+    await _lock.acquire();
     HttpClientRequest request = await client.getUrl(uri);
     _setUpRequest(request);
     return await _processResponse(await request.close(), value);
   }
 
   Future<Object> delete(Uri uri, {bool value: true}) async {
+    await _lock.acquire();
     HttpClientRequest request = await client.deleteUrl(uri);
     _setUpRequest(request);
     return await _processResponse(await request.close(), value);
@@ -34,7 +39,7 @@ class _CommandProcessor {
 
   _processResponse(HttpClientResponse response, bool value) async {
     var respBody = await UTF8.decodeStream(response);
-
+    _lock.release();
     try {
       respBody = JSON.decode(respBody);
     } catch (e) {}

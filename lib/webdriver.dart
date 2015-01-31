@@ -12,6 +12,8 @@ import 'dart:io';
 import 'package:crypto/crypto.dart';
 import 'package:matcher/matcher.dart';
 
+import 'src/lock.dart';
+
 part 'src/alert.dart';
 part 'src/capabilities.dart';
 part 'src/command_processor.dart';
