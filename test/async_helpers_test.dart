@@ -39,7 +39,7 @@ void main() {
     });
   });
 
-  group('Clock', () {
+  group('Clock.waitFor', () {
     var clock = new FakeClock();
 
     test('that returns a string', () async {
