@@ -1,8 +1,8 @@
 library webdriver_test;
 
+import 'async_helpers_test.dart' as async_helpers;
 import 'src/alert_test.dart' as alert;
 import 'src/keyboard_test.dart' as keyboard;
-import 'src/lock_test.dart' as lock;
 import 'src/logs_test.dart' as logs;
 import 'src/mouse_test.dart' as mouse;
 import 'src/navigation_test.dart' as navigation;
@@ -17,9 +17,9 @@ import 'src/window_test.dart' as window;
  * as they are slow and they have external dependencies.
  */
 void main() {
+  async_helpers.main();
   alert.main();
   keyboard.main();
-  lock.main();
   logs.main();
   mouse.main();
   navigation.main();
