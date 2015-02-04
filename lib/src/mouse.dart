@@ -20,10 +20,8 @@ class Mouse extends _WebDriverBase {
     await _post('click', json);
   }
 
-  /**
-   * Click and hold any mouse button (at the coordinates set by the last
-   * moveTo command).
-   */
+  /// Click and hold any mouse button (at the coordinates set by the last
+  /// moveTo command).
   Future down([int button]) async {
     var json = {};
     if (button is num) {
@@ -32,10 +30,7 @@ class Mouse extends _WebDriverBase {
     await _post('buttondown', json);
   }
 
-  /**
-   * Releases the mouse button previously held (where the mouse is currently
-   * at).
-   */
+  /// Releases the mouse button previously held (where the mouse is currently at).
   Future up([int button]) async {
     var json = {};
     if (button is num) {
@@ -49,20 +44,17 @@ class Mouse extends _WebDriverBase {
     await _post('doubleclick');
   }
 
-  /**
-   * Move the mouse.
-   *
-   * If [element] is specified and [xOffset] and [yOffset] are not, will move
-   * the mouse to the center of the [element].
-   *
-   * If [xOffset] and [yOffset] are specified, will move the mouse that distance
-   * from its current location.
-   *
-   * If all three are specified, will move the mouse to the offset relative to
-   * the top-left corner of the [element].
-   *
-   * All other combinations of parameters are illegal.
-   */
+  /// Move the mouse.
+  ///
+  /// If [element] is specified and [xOffset] and [yOffset] are not, will move
+  /// the mouse to the center of the [element].
+  ///
+  /// If [xOffset] and [yOffset] are specified, will move the mouse that distance
+  /// from its current location.
+  ///
+  /// If all three are specified, will move the mouse to the offset relative to
+  /// the top-left corner of the [element].
+  /// All other combinations of parameters are illegal.
   Future moveTo({WebElement element, int xOffset, int yOffset}) async {
     var json = {};
     if (element is WebElement) {

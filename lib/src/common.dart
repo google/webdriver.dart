@@ -6,10 +6,8 @@ part of webdriver;
 
 const String _ELEMENT = 'ELEMENT';
 
-/**
- * Simple class to provide access to indexed properties such as WebElement
- * attributes or css styles.
- */
+/// Simple class to provide access to indexed properties such as WebElement
+/// attributes or css styles.
 class Attributes extends _WebDriverBase {
   Attributes._(driver, command) : super(driver, command);
 
@@ -64,12 +62,9 @@ abstract class SearchContext {
   /// Searches for multiple elements within the context.
   Stream<WebElement> findElements(By by);
 
-  /**
-   * Searchs for an element within the context.
-   *
-   * Throws [WebDriverError] no such element exception if no matching element is
-   * found.
-   */
+  /// Searchs for an element within the context.
+  ///
+  /// Throws [NoSuchElementException] if no matching element is found.
   Future<WebElement> findElement(By by);
 }
 
@@ -112,10 +107,8 @@ class By {
   /// Returns an anchor element whose visible text matches the search value.
   const By.linkText(String linkText) : this._('link text', linkText);
 
-  /**
-   * Returns an anchor element whose visible text partially matches the search
-   * value.
-   */
+  /// Returns an anchor element whose visible text partially matches the search
+  /// value.
   const By.partialLinkText(String partialLinkText)
       : this._('partial link text', partialLinkText);
 

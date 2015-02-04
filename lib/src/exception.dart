@@ -5,15 +5,11 @@
 part of webdriver;
 
 abstract class WebDriverException {
-  /**
-   * Either the status value returned in the JSON response (preferred) or the
-   * HTTP status code.
-   */
+  /// Either the status value returned in the JSON response (preferred) or the
+  /// HTTP status code.
   final int statusCode;
 
-  /**
-   * A message describing the error.
-   */
+  /// A message describing the error.
   final String message;
 
   factory WebDriverException(

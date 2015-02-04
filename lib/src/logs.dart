@@ -30,6 +30,7 @@ class Logs extends _WebDriverBase {
   @override
   bool operator ==(other) => other is Logs && other.driver == driver;
 }
+
 class LogEntry {
   final String message;
   final DateTime timestamp;

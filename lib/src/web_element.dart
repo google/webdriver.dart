@@ -63,11 +63,9 @@ class WebElement extends _WebDriverBase implements SearchContext {
   ///  Visible text within this element.
   Future<String> get text => _get('text');
 
-  /**
-   * Find an element nested within this element.
-   *
-   * Throws [WebDriverError] no such element if matching element is not found.
-   */
+  ///Find an element nested within this element.
+  ///
+  /// Throws [NoSuchElementException] if matching element is not found.
   Future<WebElement> findElement(By by) async {
     var element = await _post('element', by);
     return new WebElement._(driver, element[_ELEMENT], this, by);
@@ -101,25 +99,19 @@ class WebElement extends _WebDriverBase implements SearchContext {
 //    }
 //  }
 
-  /**
-   * Access to the HTML attributes of this tag.
-   *
-   * TODO(DrMarcII): consider special handling of boolean attributes.
-   */
+  /// Access to the HTML attributes of this tag.
+  ///
+  /// TODO(DrMarcII): consider special handling of boolean attributes.
   Attributes get attributes => new Attributes._(driver, '$_prefix/attribute');
 
-  /**
-   * Access to the cssProperties of this element.
-   *
-   * TODO(DrMarcII): consider special handling of color and possibly other
-   *                 properties.
-   */
+  /// Access to the cssProperties of this element.
+  ///
+  /// TODO(DrMarcII): consider special handling of color and possibly other
+  /// properties.
   Attributes get cssProperties => new Attributes._(driver, '$_prefix/css');
 
-  /**
-   * Does this element represent the same element as another element?
-   * Not the same as ==
-   */
+  /// Does this element represent the same element as another element?
+  /// Not the same as ==
   Future<bool> equals(WebElement other) => _get('equals/${other.id}');
 
   Map<String, String> toJson() => {_ELEMENT: id};
