@@ -119,4 +119,37 @@ class WebElement extends _WebDriverBase implements SearchContext {
   Future<bool> equals(WebElement other) => _get('equals/${other.id}');
 
   Map<String, String> toJson() => {'ELEMENT': id};
+
+  @override
+  int get hashCode => driver.hashCode * 3 + id.hashCode;
+
+  @override
+  bool operator ==(other) =>
+      other is WebElement && other.driver == this.driver && other.id == this.id;
+
+  @override
+  String toString() {
+    var out = new StringBuffer()..write(context);
+    if (locator is By) {
+      if (index == null) {
+        out..write('.findElement(');
+      } else {
+        out..write('.findElements(');
+      }
+      out
+        ..write(locator)
+        ..write(')');
+    } else {
+      out
+        ..write('.')
+        ..write(locator);
+    }
+    if (index != null) {
+      out
+        ..write('[')
+        ..write(index)
+        ..write(']');
+    }
+    return out.toString();
+  }
 }

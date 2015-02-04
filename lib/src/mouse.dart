@@ -70,4 +70,13 @@ class Mouse extends _WebDriverBase {
     }
     await _post('moveto', json);
   }
+
+  @override
+  String toString() => '$driver.mouse';
+
+  @override
+  int get hashCode => driver.hashCode;
+
+  @override
+  bool operator ==(other) => other is Mouse && other.driver == driver;
 }

@@ -41,4 +41,7 @@ class Window extends _WebDriverBase {
   bool operator ==(other) => other is Window &&
       other.driver == this.driver &&
       other.handle == this.handle;
+
+  @override
+  String toString() => '$driver.windows[$handle]';
 }

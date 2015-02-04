@@ -3,8 +3,8 @@ library webdriver.async_helpers;
 import 'dart:async';
 import 'package:matcher/matcher.dart';
 
-const defaultInterval = const Duration(milliseconds: 200);
-const defaultTimeout = const Duration(seconds: 2);
+const defaultInterval = const Duration(milliseconds: 500);
+const defaultTimeout = const Duration(seconds: 5);
 
 const clock = const Clock();
 

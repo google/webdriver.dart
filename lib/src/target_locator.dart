@@ -48,4 +48,13 @@ class TargetLocator extends _WebDriverBase {
     var text = await _get('alert_text');
     return new Alert._(text, driver);
   }
+
+  @override
+  String toString() => '$driver.switchTo';
+
+  @override
+  int get hashCode => driver.hashCode;
+
+  @override
+  bool operator ==(other) => other is TargetLocator && other.driver == driver;
 }

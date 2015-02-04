@@ -42,4 +42,7 @@ class Alert extends _WebDriverBase {
   Future sendKeys(String keysToSend) async {
     await _post('alert_text', {'text': keysToSend});
   }
+
+  @override
+  String toString() => '$driver.switchTo.alert[$text]';
 }

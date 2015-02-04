@@ -17,4 +17,13 @@ class Navigation extends _WebDriverBase {
   Future refresh() async {
     await _post('refresh');
   }
+
+  @override
+  String toString() => '$driver.navigate';
+
+  @override
+  int get hashCode => driver.hashCode;
+
+  @override
+  bool operator ==(other) => other is Navigation && other.driver == driver;
 }

@@ -101,10 +101,8 @@ class WebDriver implements SearchContext {
 
     () async {
       var handles = await _get('window_handles');
-      int i = 0;
       for (var handle in handles) {
         controller.add(new Window._(this, handle));
-        i++;
       }
       await controller.close();
     }();
@@ -225,4 +223,10 @@ class WebDriver implements SearchContext {
 
   Future _delete(String command) =>
       _commandProcessor.delete(_prefix.resolve(command));
+
+  @override
+  WebDriver get driver => this;
+
+  @override
+  String toString() => 'WebDriver($_prefix)';
 }

@@ -8,7 +8,6 @@ import 'package:path/path.dart' as path;
 import 'package:unittest/unittest.dart';
 import 'package:webdriver/webdriver.dart';
 
-final Matcher isWebDriverError = new isInstanceOf<WebDriverError>();
 final Matcher isWebElement = new isInstanceOf<WebElement>();
 final Matcher isSize = new isInstanceOf<Size>();
 final Matcher isPoint = new isInstanceOf<Point>();

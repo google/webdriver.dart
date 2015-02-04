@@ -9,4 +9,13 @@ class Keyboard extends _WebDriverBase {
   Future sendKeys(String keysToSend) async {
     await _post('keys', {'value': [keysToSend]});
   }
+
+  @override
+  String toString() => '$driver.keyboard';
+
+  @override
+  int get hashCode => driver.hashCode;
+
+  @override
+  bool operator ==(other) => other is Keyboard && other.driver == driver;
 }
