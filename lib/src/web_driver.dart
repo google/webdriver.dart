@@ -56,7 +56,7 @@ class WebDriver implements SearchContext {
       var elements = await _post('elements', by);
       int i = 0;
       for (var element in elements) {
-        controller.add(new WebElement._(this, element['ELEMENT'], this, by, i));
+        controller.add(new WebElement._(this, element[_ELEMENT], this, by, i));
         i++;
       }
       await controller.close();
@@ -71,7 +71,7 @@ class WebDriver implements SearchContext {
 //    int i = 0;
 //
 //    for (var element in elements) {
-//      yield new WebElement._(this, element['ELEMENT'], this, by, i);
+//      yield new WebElement._(this, element[_ELEMENT], this, by, i);
 //      i++;
 //    }
 //  }
@@ -83,7 +83,7 @@ class WebDriver implements SearchContext {
    */
   Future<WebElement> findElement(By by) async {
     var element = await _post('element', by);
-    return new WebElement._(this, element['ELEMENT'], this, by);
+    return new WebElement._(this, element[_ELEMENT], this, by);
   }
 
   /// An artist's rendition of the current page's source.
@@ -136,7 +136,7 @@ class WebDriver implements SearchContext {
   Future<WebElement> get activeElement async {
     var element = await _post('element/active');
     if (element != null) {
-      return new WebElement._(this, element['ELEMENT'], this, 'activeElement');
+      return new WebElement._(this, element[_ELEMENT], this, 'activeElement');
     }
     return null;
   }
@@ -204,7 +204,7 @@ class WebDriver implements SearchContext {
   dynamic _recursiveElementify(result) {
     if (result is Map) {
       if (result.length == 1 && result.containsKey(_ELEMENT)) {
-        return new WebElement._(this, result['ELEMENT'], this, 'javascript');
+        return new WebElement._(this, result[_ELEMENT], this, 'javascript');
       } else {
         var newResult = {};
         result.forEach((key, value) {

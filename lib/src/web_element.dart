@@ -70,7 +70,7 @@ class WebElement extends _WebDriverBase implements SearchContext {
    */
   Future<WebElement> findElement(By by) async {
     var element = await _post('element', by);
-    return new WebElement._(driver, element['ELEMENT'], this, by);
+    return new WebElement._(driver, element[_ELEMENT], this, by);
   }
 
   /// Find multiple elements nested within this element.
@@ -82,7 +82,7 @@ class WebElement extends _WebDriverBase implements SearchContext {
       int i = 0;
       for (var element in elements) {
         controller
-            .add(new WebElement._(driver, element['ELEMENT'], this, by, i));
+            .add(new WebElement._(driver, element[_ELEMENT], this, by, i));
         i++;
       }
       await controller.close();
@@ -96,7 +96,7 @@ class WebElement extends _WebDriverBase implements SearchContext {
 //    var elements = await _post('elements', by);
 //    int i = 0;
 //    for (var element in elements) {
-//      yield new WebElement._(driver, element['ELEMENT'], this, by, i);
+//      yield new WebElement._(driver, element[_ELEMENT], this, by, i);
 //      i++;
 //    }
 //  }
@@ -122,7 +122,7 @@ class WebElement extends _WebDriverBase implements SearchContext {
    */
   Future<bool> equals(WebElement other) => _get('equals/${other.id}');
 
-  Map<String, String> toJson() => {'ELEMENT': id};
+  Map<String, String> toJson() => {_ELEMENT: id};
 
   @override
   int get hashCode => driver.hashCode * 3 + id.hashCode;
