@@ -1,3 +1,7 @@
+// Copyright (c) 2015, the Dart project authors.  Please see the AUTHORS file
+// for details. All rights reserved. Use of this source code is governed by a
+// BSD-style license that can be found in the LICENSE file.
+
 part of webdriver;
 
 class WebElement extends _WebDriverBase implements SearchContext {
@@ -59,14 +63,12 @@ class WebElement extends _WebDriverBase implements SearchContext {
   ///  Visible text within this element.
   Future<String> get text => _get('text');
 
-  /**
-   * Find an element nested within this element.
-   *
-   * Throws [WebDriverError] no such element if matching element is not found.
-   */
+  ///Find an element nested within this element.
+  ///
+  /// Throws [NoSuchElementException] if matching element is not found.
   Future<WebElement> findElement(By by) async {
     var element = await _post('element', by);
-    return new WebElement._(driver, element['ELEMENT'], this, by);
+    return new WebElement._(driver, element[_ELEMENT], this, by);
   }
 
   /// Find multiple elements nested within this element.
@@ -78,7 +80,7 @@ class WebElement extends _WebDriverBase implements SearchContext {
       int i = 0;
       for (var element in elements) {
         controller
-            .add(new WebElement._(driver, element['ELEMENT'], this, by, i));
+            .add(new WebElement._(driver, element[_ELEMENT], this, by, i));
         i++;
       }
       await controller.close();
@@ -92,31 +94,58 @@ class WebElement extends _WebDriverBase implements SearchContext {
 //    var elements = await _post('elements', by);
 //    int i = 0;
 //    for (var element in elements) {
-//      yield new WebElement._(driver, element['ELEMENT'], this, by, i);
+//      yield new WebElement._(driver, element[_ELEMENT], this, by, i);
 //      i++;
 //    }
 //  }
 
-  /**
-   * Access to the HTML attributes of this tag.
-   *
-   * TODO(DrMarcII): consider special handling of boolean attributes.
-   */
+  /// Access to the HTML attributes of this tag.
+  ///
+  /// TODO(DrMarcII): consider special handling of boolean attributes.
   Attributes get attributes => new Attributes._(driver, '$_prefix/attribute');
 
-  /**
-   * Access to the cssProperties of this element.
-   *
-   * TODO(DrMarcII): consider special handling of color and possibly other
-   *                 properties.
-   */
+  /// Access to the cssProperties of this element.
+  ///
+  /// TODO(DrMarcII): consider special handling of color and possibly other
+  /// properties.
   Attributes get cssProperties => new Attributes._(driver, '$_prefix/css');
 
-  /**
-   * Does this element represent the same element as another element?
-   * Not the same as ==
-   */
+  /// Does this element represent the same element as another element?
+  /// Not the same as ==
   Future<bool> equals(WebElement other) => _get('equals/${other.id}');
 
-  Map<String, String> toJson() => {'ELEMENT': id};
+  Map<String, String> toJson() => {_ELEMENT: id};
+
+  @override
+  int get hashCode => driver.hashCode * 3 + id.hashCode;
+
+  @override
+  bool operator ==(other) =>
+      other is WebElement && other.driver == this.driver && other.id == this.id;
+
+  @override
+  String toString() {
+    var out = new StringBuffer()..write(context);
+    if (locator is By) {
+      if (index == null) {
+        out..write('.findElement(');
+      } else {
+        out..write('.findElements(');
+      }
+      out
+        ..write(locator)
+        ..write(')');
+    } else {
+      out
+        ..write('.')
+        ..write(locator);
+    }
+    if (index != null) {
+      out
+        ..write('[')
+        ..write(index)
+        ..write(']');
+    }
+    return out.toString();
+  }
 }

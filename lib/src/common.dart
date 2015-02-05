@@ -1,11 +1,13 @@
+// Copyright (c) 2015, the Dart project authors.  Please see the AUTHORS file
+// for details. All rights reserved. Use of this source code is governed by a
+// BSD-style license that can be found in the LICENSE file.
+
 part of webdriver;
 
 const String _ELEMENT = 'ELEMENT';
 
-/**
- * Simple class to provide access to indexed properties such as WebElement
- * attributes or css styles.
- */
+/// Simple class to provide access to indexed properties such as WebElement
+/// attributes or css styles.
 class Attributes extends _WebDriverBase {
   Attributes._(driver, command) : super(driver, command);
 
@@ -28,6 +30,9 @@ class Size {
   @override
   bool operator ==(other) =>
       other is Size && other.height == this.height && other.width == this.width;
+
+  @override
+  String toString() => 'Size<${height}h X ${width}w>';
 }
 
 class Point {
@@ -46,19 +51,20 @@ class Point {
   @override
   bool operator ==(other) =>
       other is Point && other.x == this.x && other.x == this.x;
+
+  @override
+  String toString() => 'Point($x, $y)';
 }
 
 abstract class SearchContext {
+  WebDriver get driver;
 
   /// Searches for multiple elements within the context.
   Stream<WebElement> findElements(By by);
 
-  /**
-   * Searchs for an element within the context.
-   *
-   * Throws [WebDriverError] no such element exception if no matching element is
-   * found.
-   */
+  /// Searchs for an element within the context.
+  ///
+  /// Throws [NoSuchElementException] if no matching element is found.
   Future<WebElement> findElement(By by);
 }
 
@@ -101,10 +107,8 @@ class By {
   /// Returns an anchor element whose visible text matches the search value.
   const By.linkText(String linkText) : this._('link text', linkText);
 
-  /**
-   * Returns an anchor element whose visible text partially matches the search
-   * value.
-   */
+  /// Returns an anchor element whose visible text partially matches the search
+  /// value.
   const By.partialLinkText(String partialLinkText)
       : this._('partial link text', partialLinkText);
 
@@ -125,112 +129,36 @@ class By {
       : this._('css selector', cssSelector);
 
   Map<String, String> toJson() => {'using': _using, 'value': _value};
-}
 
-// TODO(DrMarcII): Create a better WebDriver exception hierarchy.
-class WebDriverError {
-  static const List<String> _errorTypes = const [
-    null,
-    'IndexOutOfBounds',
-    'NoCollection',
-    'NoString',
-    'NoStringLength',
-    'NoStringWrapper',
-    'NoSuchDriver',
-    'NoSuchElement',
-    'NoSuchFrame',
-    'UnknownCommand',
-    'ObsoleteElement',
-    'ElementNotDisplayed',
-    'InvalidElementState',
-    'Unknown',
-    'Expected',
-    'ElementNotSelectable',
-    'NoSuchDocument',
-    'UnexpectedJavascript',
-    'NoScriptResult',
-    'XPathLookup',
-    'NoSuchCollection',
-    'TimeOut',
-    'NullPointer',
-    'NoSuchWindow',
-    'InvalidCookieDomain',
-    'UnableToSetCookie',
-    'UnexpectedAlertOpen',
-    'NoAlertOpen',
-    'ScriptTimeout',
-    'InvalidElementCoordinates',
-    'IMENotAvailable',
-    'IMEEngineActivationFailed',
-    'InvalidSelector',
-    'SessionNotCreatedException',
-    'MoveTargetOutOfBounds'
-  ];
-  static const List<String> _errorDetails = const [
-    null,
-    'IndexOutOfBounds',
-    'NoCollection',
-    'NoString',
-    'NoStringLength',
-    'NoStringWrapper',
-    'NoSuchDriver',
-    'An element could not be located on the page using the given '
-        'search parameters.',
-    'A request to switch to a frame could not be satisfied because the '
-        'frame could not be found.',
-    'The requested resource could not be found, or a request was '
-        'received using an HTTP method that is not supported by the '
-        'mapped resource.',
-    'An element command failed because the referenced element is no '
-        'longer attached to the DOM.',
-    'An element command could not be completed because the element '
-        'is not visible on the page.',
-    'An element command could not be completed because the element is in '
-        'an invalid state (e.g. attempting to click a disabled element).',
-    'An unknown server-side error occurred while processing the command.',
-    'Expected',
-    'An attempt was made to select an element that cannot be selected.',
-    'NoSuchDocument',
-    'An error occurred while executing user supplied JavaScript.',
-    'NoScriptResult',
-    'An error occurred while searching for an element by XPath.',
-    'NoSuchCollection',
-    'An operation did not complete before its timeout expired.',
-    'NullPointer',
-    'A request to switch to a different window could not be satisfied '
-        'because the window could not be found.',
-    'An illegal attempt was made to set a cookie under a different '
-        'domain than the current page.',
-    'A request to set a cookie\'s value could not be satisfied.',
-    'A modal dialog was open, blocking this operation.',
-    'An attempt was made to operate on a modal dialog when one was '
-        'not open.',
-    'A script did not complete before its timeout expired.',
-    'The coordinates provided to an interactions operation are invalid.',
-    'IME was not available.',
-    'An IME engine could not be started.',
-    'Argument was an invalid selector (e.g. XPath/CSS).',
-    'A new session could not be created.',
-    'Target provided for a move action is out of bounds.'
-  ];
-
-  final int statusCode;
-  String type;
-  final String message;
-  String details;
-  final String results;
-
-  WebDriverError(this.statusCode, this.message, [this.results = '']) {
-    if (statusCode < 0 || statusCode > 32) {
-      type = 'External';
-      details = '';
-    } else {
-      type = _errorTypes[statusCode];
-      details = _errorDetails[statusCode];
-    }
-  }
-
+  @override
   String toString() {
-    return '$statusCode $type: $message $results\n$details';
+    var constructor;
+    switch (_using) {
+      case 'link text':
+        constructor = 'linkText';
+        break;
+      case 'partial link text':
+        constructor = 'partialLinkText';
+        break;
+      case 'tag name':
+        constructor = 'tagName';
+        break;
+      case 'class name':
+        constructor = 'className';
+        break;
+      case 'css selector':
+        constructor = 'cssSelector';
+        break;
+      default:
+        constructor = _using;
+    }
+    return 'By.$constructor($_value)';
   }
+
+  @override
+  int get hashCode => _using.hashCode * 3 + _value.hashCode;
+
+  @override
+  bool operator ==(other) =>
+      other is By && other._using == this._using && other._value == this._value;
 }

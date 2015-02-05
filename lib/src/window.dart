@@ -1,3 +1,7 @@
+// Copyright (c) 2015, the Dart project authors.  Please see the AUTHORS file
+// for details. All rights reserved. Use of this source code is governed by a
+// BSD-style license that can be found in the LICENSE file.
+
 part of webdriver;
 
 class Window extends _WebDriverBase {
@@ -41,4 +45,7 @@ class Window extends _WebDriverBase {
   bool operator ==(other) => other is Window &&
       other.driver == this.driver &&
       other.handle == this.handle;
+
+  @override
+  String toString() => '$driver.windows[$handle]';
 }

@@ -1,4 +1,4 @@
-// Copyright (c) 2011, the Dart project authors.  Please see the AUTHORS file
+// Copyright (c) 2015, the Dart project authors.  Please see the AUTHORS file
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
@@ -12,7 +12,8 @@ import 'dart:io';
 import 'package:crypto/crypto.dart';
 import 'package:matcher/matcher.dart';
 
-import 'src/lock.dart';
+import 'async_helpers.dart';
+export 'async_helpers.dart' show waitFor;
 
 part 'src/alert.dart';
 part 'src/capabilities.dart';
@@ -29,4 +30,3 @@ part 'src/target_locator.dart';
 part 'src/web_driver.dart';
 part 'src/web_element.dart';
 part 'src/window.dart';
-part 'src/util.dart';

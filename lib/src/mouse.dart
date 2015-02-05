@@ -1,3 +1,7 @@
+// Copyright (c) 2015, the Dart project authors.  Please see the AUTHORS file
+// for details. All rights reserved. Use of this source code is governed by a
+// BSD-style license that can be found in the LICENSE file.
+
 part of webdriver;
 
 class Mouse extends _WebDriverBase {
@@ -16,10 +20,8 @@ class Mouse extends _WebDriverBase {
     await _post('click', json);
   }
 
-  /**
-   * Click and hold any mouse button (at the coordinates set by the last
-   * moveTo command).
-   */
+  /// Click and hold any mouse button (at the coordinates set by the last
+  /// moveTo command).
   Future down([int button]) async {
     var json = {};
     if (button is num) {
@@ -28,10 +30,7 @@ class Mouse extends _WebDriverBase {
     await _post('buttondown', json);
   }
 
-  /**
-   * Releases the mouse button previously held (where the mouse is currently
-   * at).
-   */
+  /// Releases the mouse button previously held (where the mouse is currently at).
   Future up([int button]) async {
     var json = {};
     if (button is num) {
@@ -45,20 +44,17 @@ class Mouse extends _WebDriverBase {
     await _post('doubleclick');
   }
 
-  /**
-   * Move the mouse.
-   *
-   * If [element] is specified and [xOffset] and [yOffset] are not, will move
-   * the mouse to the center of the [element].
-   *
-   * If [xOffset] and [yOffset] are specified, will move the mouse that distance
-   * from its current location.
-   *
-   * If all three are specified, will move the mouse to the offset relative to
-   * the top-left corner of the [element].
-   *
-   * All other combinations of parameters are illegal.
-   */
+  /// Move the mouse.
+  ///
+  /// If [element] is specified and [xOffset] and [yOffset] are not, will move
+  /// the mouse to the center of the [element].
+  ///
+  /// If [xOffset] and [yOffset] are specified, will move the mouse that distance
+  /// from its current location.
+  ///
+  /// If all three are specified, will move the mouse to the offset relative to
+  /// the top-left corner of the [element].
+  /// All other combinations of parameters are illegal.
   Future moveTo({WebElement element, int xOffset, int yOffset}) async {
     var json = {};
     if (element is WebElement) {
@@ -70,4 +66,13 @@ class Mouse extends _WebDriverBase {
     }
     await _post('moveto', json);
   }
+
+  @override
+  String toString() => '$driver.mouse';
+
+  @override
+  int get hashCode => driver.hashCode;
+
+  @override
+  bool operator ==(other) => other is Mouse && other.driver == driver;
 }

@@ -1,3 +1,7 @@
+// Copyright (c) 2015, the Dart project authors.  Please see the AUTHORS file
+// for details. All rights reserved. Use of this source code is governed by a
+// BSD-style license that can be found in the LICENSE file.
+
 part of webdriver;
 
 class Cookies extends _WebDriverBase {
@@ -34,7 +38,6 @@ class Cookies extends _WebDriverBase {
 
     return controller.stream;
   }
-
 // TODO(DrMarcII): switch to this when async* is supported
 //  async* {
 //    var cookies = await _get('');
@@ -42,6 +45,15 @@ class Cookies extends _WebDriverBase {
 //      yield new Cookie.fromJson(cookie);
 //    }
 //  }
+
+  @override
+  String toString() => '$driver.cookies';
+
+  @override
+  int get hashCode => driver.hashCode;
+
+  @override
+  bool operator ==(other) => other is Cookies && other.driver == driver;
 }
 
 class Cookie {
@@ -90,6 +102,9 @@ class Cookie {
     }
     return json;
   }
+
+  @override
+  String toString() => 'Cookie${toJson()}';
 }
 
 class Timeouts extends _WebDriverBase {
@@ -107,4 +122,13 @@ class Timeouts extends _WebDriverBase {
 
   /// Set the page load timeout.
   Future setPageLoadTimeout(Duration duration) => _set('page load', duration);
+
+  @override
+  String toString() => '$driver.timeouts';
+
+  @override
+  int get hashCode => driver.hashCode;
+
+  @override
+  bool operator ==(other) => other is Timeouts && other.driver == driver;
 }

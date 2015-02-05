@@ -1,3 +1,7 @@
+// Copyright (c) 2015, the Dart project authors.  Please see the AUTHORS file
+// for details. All rights reserved. Use of this source code is governed by a
+// BSD-style license that can be found in the LICENSE file.
+
 part of webdriver;
 
 class WebDriver implements SearchContext {
@@ -52,7 +56,7 @@ class WebDriver implements SearchContext {
       var elements = await _post('elements', by);
       int i = 0;
       for (var element in elements) {
-        controller.add(new WebElement._(this, element['ELEMENT'], this, by, i));
+        controller.add(new WebElement._(this, element[_ELEMENT], this, by, i));
         i++;
       }
       await controller.close();
@@ -67,19 +71,17 @@ class WebDriver implements SearchContext {
 //    int i = 0;
 //
 //    for (var element in elements) {
-//      yield new WebElement._(this, element['ELEMENT'], this, by, i);
+//      yield new WebElement._(this, element[_ELEMENT], this, by, i);
 //      i++;
 //    }
 //  }
 
-  /**
-   * Search for an element within the entire current page.
-   *
-   * Throws [WebDriverError] no such element if a matching element is not found.
-   */
+  /// Search for an element within the entire current page.
+  /// Throws [NoSuchElementException] if a matching element is not found.
+  @override
   Future<WebElement> findElement(By by) async {
     var element = await _post('element', by);
-    return new WebElement._(this, element['ELEMENT'], this, by);
+    return new WebElement._(this, element[_ELEMENT], this, by);
   }
 
   /// An artist's rendition of the current page's source.
@@ -101,10 +103,8 @@ class WebDriver implements SearchContext {
 
     () async {
       var handles = await _get('window_handles');
-      int i = 0;
       for (var handle in handles) {
         controller.add(new Window._(this, handle));
-        i++;
       }
       await controller.close();
     }();
@@ -127,14 +127,12 @@ class WebDriver implements SearchContext {
     return new Window._(this, handle);
   }
 
-  /**
-   *  The currently focused element, or the body element if no
-   *  element has focus.
-   */
+  /// The currently focused element, or the body element if no element has
+  /// focus.
   Future<WebElement> get activeElement async {
     var element = await _post('element/active');
     if (element != null) {
-      return new WebElement._(this, element['ELEMENT'], this, 'activeElement');
+      return new WebElement._(this, element[_ELEMENT], this, 'activeElement');
     }
     return null;
   }
@@ -157,52 +155,48 @@ class WebDriver implements SearchContext {
   Future<List<int>> captureScreenshot() => _get('screenshot')
       .then((screenshot) => CryptoUtils.base64StringToBytes(screenshot));
 
-  /**
-   * Inject a snippet of JavaScript into the page for execution in the context
-   * of the currently selected frame. The executed script is assumed to be
-   * asynchronous and must signal that is done by invoking the provided
-   * callback, which is always provided as the final argument to the function.
-   * The value to this callback will be returned to the client.
-   *
-   * Asynchronous script commands may not span page loads. If an unload event
-   * is fired while waiting for a script result, an error will be thrown.
-   *
-   * The script argument defines the script to execute in the form of a
-   * function body. The function will be invoked with the provided args array
-   * and the values may be accessed via the arguments object in the order
-   * specified. The final argument will always be a callback function that must
-   * be invoked to signal that the script has finished.
-   *
-   * Arguments may be any JSON-able object. WebElements will be converted to
-   * the corresponding DOM element. Likewise, any DOM Elements in the script
-   * result will be converted to WebElements.
-   */
+  /// Inject a snippet of JavaScript into the page for execution in the context
+  /// of the currently selected frame. The executed script is assumed to be
+  /// asynchronous and must signal that is done by invoking the provided
+  /// callback, which is always provided as the final argument to the function.
+  /// The value to this callback will be returned to the client.
+  ///
+  /// Asynchronous script commands may not span page loads. If an unload event
+  /// is fired while waiting for a script result, an error will be thrown.
+  ///
+  /// The script argument defines the script to execute in the form of a
+  /// function body. The function will be invoked with the provided args array
+  /// and the values may be accessed via the arguments object in the order
+  /// specified. The final argument will always be a callback function that must
+  /// be invoked to signal that the script has finished.
+  ///
+  /// Arguments may be any JSON-able object. WebElements will be converted to
+  /// the corresponding DOM element. Likewise, any DOM Elements in the script
+  /// result will be converted to WebElements.
   Future executeAsync(String script, List args) => _post('execute_async', {
     'script': script,
     'args': args
   }).then(_recursiveElementify);
 
-  /**
-   * Inject a snippet of JavaScript into the page for execution in the context
-   * of the currently selected frame. The executed script is assumed to be
-   * synchronous and the result of evaluating the script is returned.
-   *
-   * The script argument defines the script to execute in the form of a
-   * function body. The value returned by that function will be returned to the
-   * client. The function will be invoked with the provided args array and the
-   * values may be accessed via the arguments object in the order specified.
-   *
-   * Arguments may be any JSON-able object. WebElements will be converted to
-   * the corresponding DOM element. Likewise, any DOM Elements in the script
-   * result will be converted to WebElements.
-   */
+  /// Inject a snippet of JavaScript into the page for execution in the context
+  /// of the currently selected frame. The executed script is assumed to be
+  /// synchronous and the result of evaluating the script is returned.
+  ///
+  /// The script argument defines the script to execute in the form of a
+  /// function body. The value returned by that function will be returned to the
+  /// client. The function will be invoked with the provided args array and the
+  /// values may be accessed via the arguments object in the order specified.
+  ///
+  /// Arguments may be any JSON-able object. WebElements will be converted to
+  /// the corresponding DOM element. Likewise, any DOM Elements in the script
+  /// result will be converted to WebElements.
   Future execute(String script, List args) => _post(
       'execute', {'script': script, 'args': args}).then(_recursiveElementify);
 
   dynamic _recursiveElementify(result) {
     if (result is Map) {
       if (result.length == 1 && result.containsKey(_ELEMENT)) {
-        return new WebElement._(this, result['ELEMENT'], this, 'javascript');
+        return new WebElement._(this, result[_ELEMENT], this, 'javascript');
       } else {
         var newResult = {};
         result.forEach((key, value) {
@@ -225,4 +219,10 @@ class WebDriver implements SearchContext {
 
   Future _delete(String command) =>
       _commandProcessor.delete(_prefix.resolve(command));
+
+  @override
+  WebDriver get driver => this;
+
+  @override
+  String toString() => 'WebDriver($_prefix)';
 }

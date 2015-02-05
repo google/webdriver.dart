@@ -1,3 +1,7 @@
+// Copyright (c) 2015, the Dart project authors.  Please see the AUTHORS file
+// for details. All rights reserved. Use of this source code is governed by a
+// BSD-style license that can be found in the LICENSE file.
+
 library webdriver_test_util;
 
 import 'dart:async';
@@ -8,7 +12,6 @@ import 'package:path/path.dart' as path;
 import 'package:unittest/unittest.dart';
 import 'package:webdriver/webdriver.dart';
 
-final Matcher isWebDriverError = new isInstanceOf<WebDriverError>();
 final Matcher isWebElement = new isInstanceOf<WebElement>();
 final Matcher isSize = new isInstanceOf<Size>();
 final Matcher isPoint = new isInstanceOf<Point>();

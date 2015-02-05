@@ -1,3 +1,7 @@
+// Copyright (c) 2015, the Dart project authors.  Please see the AUTHORS file
+// for details. All rights reserved. Use of this source code is governed by a
+// BSD-style license that can be found in the LICENSE file.
+
 part of webdriver;
 
 class Navigation extends _WebDriverBase {
@@ -17,4 +21,13 @@ class Navigation extends _WebDriverBase {
   Future refresh() async {
     await _post('refresh');
   }
+
+  @override
+  String toString() => '$driver.navigate';
+
+  @override
+  int get hashCode => driver.hashCode;
+
+  @override
+  bool operator ==(other) => other is Navigation && other.driver == driver;
 }

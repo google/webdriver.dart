@@ -1,3 +1,7 @@
+// Copyright (c) 2015, the Dart project authors.  Please see the AUTHORS file
+// for details. All rights reserved. Use of this source code is governed by a
+// BSD-style license that can be found in the LICENSE file.
+
 part of webdriver;
 
 class Logs extends _WebDriverBase {
@@ -16,16 +20,30 @@ class Logs extends _WebDriverBase {
 
     return controller.stream;
   }
+
+  @override
+  String toString() => '$driver.logs';
+
+  @override
+  int get hashCode => driver.hashCode;
+
+  @override
+  bool operator ==(other) => other is Logs && other.driver == driver;
 }
+
 class LogEntry {
   final String message;
-  final int timestamp;
+  final DateTime timestamp;
   final String level;
 
   const LogEntry(this.message, this.timestamp, this.level);
 
-  LogEntry.fromMap(Map map)
-      : this(map['message'], map['timestamp'], map['level']);
+  LogEntry.fromMap(Map map) : this(map['message'],
+          new DateTime.fromMillisecondsSinceEpoch(map['timestamp'].toInt(),
+              isUtc: true), map['level']);
+
+  @override
+  String toString() => '$level[$timestamp]: $message';
 }
 
 class LogType {
