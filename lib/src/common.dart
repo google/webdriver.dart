@@ -14,27 +14,6 @@ class Attributes extends _WebDriverBase {
   Future<String> operator [](String name) => _get(name);
 }
 
-class Size {
-  final num height;
-  final num width;
-
-  const Size(this.height, this.width);
-
-  Size.fromJson(Map json) : this(json['height'], json['width']);
-
-  Map<String, num> toJson() => {'height': height, 'width': width};
-
-  @override
-  int get hashCode => height.hashCode * 3 + width.hashCode;
-
-  @override
-  bool operator ==(other) =>
-      other is Size && other.height == this.height && other.width == this.width;
-
-  @override
-  String toString() => 'Size<${height}h X ${width}w>';
-}
-
 abstract class SearchContext {
   WebDriver get driver;
 

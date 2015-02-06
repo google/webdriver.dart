@@ -12,9 +12,10 @@ class Window extends _WebDriverBase {
         super(driver, 'window/$handle');
 
   /// The size of this window.
-  Future<Size> get size async {
+  Future<Rectangle<int>> get size async {
     var size = await _get('size');
-    return new Size.fromJson(size);
+    return new Rectangle<int>(
+        0, 0, size['width'].toInt(), size['height'].toInt());
   }
 
   /// The location of this window.
@@ -29,13 +30,14 @@ class Window extends _WebDriverBase {
   }
 
   /// Set this window size.
-  Future setSize(Size size) async {
-    await _post('size', size);
+  Future setSize(Rectangle<int> size) async {
+    await _post(
+        'size', {'width': size.width.toInt(), 'height': size.height.toInt()});
   }
 
   /// Set this window location.
   Future setLocation(Point<int> point) async {
-    await _post('position', {'x': point.x, 'y': point.y});
+    await _post('position', {'x': point.x.toInt(), 'y': point.y.toInt()});
   }
 
   @override

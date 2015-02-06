@@ -96,14 +96,14 @@ void main() {
 
     test('size -- table', () async {
       var size = await table.size;
-      expect(size, isSize);
+      expect(size, isRectangle);
       expect(size.width, isNonNegative);
       expect(size.height, isNonNegative);
     });
 
     test('size -- invisible', () async {
       var size = await invisible.size;
-      expect(size, isSize);
+      expect(size, isRectangle);
       // TODO(DrMarcII): I thought these should be 0
       expect(size.width, isNonNegative);
       expect(size.height, isNonNegative);

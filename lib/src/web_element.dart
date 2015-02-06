@@ -56,9 +56,10 @@ class WebElement extends _WebDriverBase implements SearchContext {
   }
 
   /// The size of this element.
-  Future<Size> get size async {
+  Future<Rectangle<int>> get size async {
     var size = await _get('size');
-    return new Size.fromJson(size);
+    return new Rectangle<int>(
+        0, 0, size['width'].toInt(), size['height'].toInt());
   }
 
   /// The tag name for this element.

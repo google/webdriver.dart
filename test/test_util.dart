@@ -13,7 +13,7 @@ import 'package:unittest/unittest.dart';
 import 'package:webdriver/webdriver.dart';
 
 final Matcher isWebElement = new isInstanceOf<WebElement>();
-final Matcher isSize = new isInstanceOf<Size>();
+final Matcher isRectangle = new isInstanceOf<Rectangle<int>>();
 final Matcher isPoint = new isInstanceOf<Point<int>>();
 
 bool isRunningOnTravis() => io.Platform.environment['TRAVIS'] == 'true';
