@@ -4,7 +4,7 @@
 
 library webdriver_test.async_helpers;
 
-import 'dart:async';
+import 'dart:async' show Future;
 
 import 'package:unittest/unittest.dart';
 import 'package:webdriver/async_helpers.dart';

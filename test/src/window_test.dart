@@ -4,6 +4,8 @@
 
 library webdriver_test.window;
 
+import 'dart:math' show Point, Rectangle;
+
 import 'package:unittest/unittest.dart';
 import 'package:webdriver/webdriver.dart';
 
