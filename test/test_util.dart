@@ -4,19 +4,20 @@
 
 library webdriver_test_util;
 
-import 'dart:async';
-import 'dart:io' hide Platorm;
-import 'dart:io' as io show Platform;
+import 'dart:async' show Future;
+import 'dart:io' show FileSystemEntity, Platform;
+import 'dart:math' show Point, Rectangle;
 
 import 'package:path/path.dart' as path;
-import 'package:unittest/unittest.dart';
-import 'package:webdriver/webdriver.dart';
+import 'package:matcher/matcher.dart' show Matcher, isInstanceOf;
+import 'package:webdriver/webdriver.dart'
+    show Capabilities, WebDriver, WebElement;
 
 final Matcher isWebElement = new isInstanceOf<WebElement>();
 final Matcher isRectangle = new isInstanceOf<Rectangle<int>>();
 final Matcher isPoint = new isInstanceOf<Point<int>>();
 
-bool isRunningOnTravis() => io.Platform.environment['TRAVIS'] == 'true';
+bool isRunningOnTravis() => Platform.environment['TRAVIS'] == 'true';
 
 String get testPagePath {
   if (_testPagePath == null) {
@@ -39,7 +40,7 @@ String _testPagePath;
 
 Future<WebDriver> createTestDriver({Map additionalCapabilities}) {
   Map capabilities = Capabilities.chrome;
-  Map env = io.Platform.environment;
+  Map env = Platform.environment;
 
   Map chromeOptions = {};
 
