@@ -48,7 +48,8 @@ class WebElement extends _WebDriverBase implements SearchContext {
   /// The location within the document of this element.
   Future<Point> get location async {
     var point = await _get('location');
-    return new Point.fromJson(point);
+    return new Point<int>(point['x'].toInt(), point['y'].toInt());
+    ;
   }
 
   /// The size of this element.

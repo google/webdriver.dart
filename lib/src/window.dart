@@ -18,9 +18,9 @@ class Window extends _WebDriverBase {
   }
 
   /// The location of this window.
-  Future<Point> get location async {
+  Future<Point<int>> get location async {
     var point = await _get('position');
-    return new Point.fromJson(point);
+    return new Point<int>(point['x'].toInt(), point['y'].toInt());
   }
 
   /// Maximize this window.
@@ -34,8 +34,8 @@ class Window extends _WebDriverBase {
   }
 
   /// Set this window location.
-  Future setLocation(Point point) async {
-    await _post('position', point);
+  Future setLocation(Point<int> point) async {
+    await _post('position', {'x': point.x, 'y': point.y});
   }
 
   @override

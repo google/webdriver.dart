@@ -28,7 +28,7 @@ void main() {
 
     test('location', () async {
       var window = await driver.window;
-      var position = const Point(100, 200);
+      var position = const Point<int>(100, 200);
       await window.setLocation(position);
       expect(await window.location, position);
     });
@@ -37,7 +37,7 @@ void main() {
     skip_test('maximize', () async {
       var window = await driver.window;
       await window.setSize(const Size(200, 300));
-      await window.setLocation(const Point(100, 200));
+      await window.setLocation(const Point<int>(100, 200));
       await window.maximize();
 
       // maximizing can take some time

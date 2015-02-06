@@ -35,27 +35,6 @@ class Size {
   String toString() => 'Size<${height}h X ${width}w>';
 }
 
-class Point {
-  final num x;
-  final num y;
-
-  const Point(this.x, this.y);
-
-  Point.fromJson(Map json) : this(json['x'], json['y']);
-
-  Map<String, num> toJson() => {'x': x, 'y': y};
-
-  @override
-  int get hashCode => x.hashCode * 3 + x.hashCode;
-
-  @override
-  bool operator ==(other) =>
-      other is Point && other.x == this.x && other.x == this.x;
-
-  @override
-  String toString() => 'Point($x, $y)';
-}
-
 abstract class SearchContext {
   WebDriver get driver;
 

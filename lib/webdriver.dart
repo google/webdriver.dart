@@ -8,6 +8,8 @@ import 'dart:async';
 import 'dart:collection';
 import 'dart:convert';
 import 'dart:io';
+import 'dart:math' show Point;
+export 'dart:math' show Point;
 
 import 'package:crypto/crypto.dart';
 import 'package:matcher/matcher.dart';
