@@ -21,7 +21,7 @@ void main() {
 
     test('size', () async {
       var window = await driver.window;
-      var size = const Size(400, 600);
+      var size = const Rectangle<int>(0, 0, 600, 400);
       await window.setSize(size);
       expect(await window.size, size);
     });
@@ -36,7 +36,7 @@ void main() {
     // May not work on some OS/browser combinations (notably Mac OS X).
     skip_test('maximize', () async {
       var window = await driver.window;
-      await window.setSize(const Size(200, 300));
+      await window.setSize(const Rectangle<int>(0, 0, 300, 200));
       await window.setLocation(const Point<int>(100, 200));
       await window.maximize();
 
