@@ -15,7 +15,7 @@ void main() {
 
     setUp(() async {
       Map capabilities = {
-        Capabilities.LOGGING_PREFS: {LogType.PERFORMANCE: LogLevel.INFO}
+        Capabilities.loggingPrefs: {LogType.performance: LogLevel.info}
       };
 
       driver = await createTestDriver(additionalCapabilities: capabilities);
@@ -25,10 +25,10 @@ void main() {
     tearDown(() => driver.quit());
 
     test('get logs', () async {
-      List<LogEntry> logs = await driver.logs.get(LogType.PERFORMANCE).toList();
+      List<LogEntry> logs = await driver.logs.get(LogType.performance).toList();
       expect(logs.length, greaterThan(0));
       logs.forEach((entry) {
-        expect(entry.level, equals(LogLevel.INFO));
+        expect(entry.level, equals(LogLevel.info));
       });
     });
   });

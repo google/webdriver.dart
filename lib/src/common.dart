@@ -4,7 +4,7 @@
 
 part of webdriver;
 
-const String _ELEMENT = 'ELEMENT';
+const String _element = 'ELEMENT';
 
 /// Simple class to provide access to indexed properties such as WebElement
 /// attributes or css styles.
