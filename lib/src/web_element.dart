@@ -7,9 +7,12 @@ part of webdriver;
 class WebElement extends _WebDriverBase implements SearchContext {
   final String id;
 
-  // These fields represent information about how the element was found.
+  /// The context from which this element was found.
   final SearchContext context;
+  /// How the element was located from the context.
   final dynamic /* String | By */ locator;
+  /// The index of this element in the set of element founds. If the method
+  /// used to find this element always returns one element, then this is null.
   final int index;
 
   WebElement._(driver, id, [this.context, this.locator, this.index])
@@ -69,7 +72,7 @@ class WebElement extends _WebDriverBase implements SearchContext {
   /// Throws [NoSuchElementException] if matching element is not found.
   Future<WebElement> findElement(By by) async {
     var element = await _post('element', by);
-    return new WebElement._(driver, element[_ELEMENT], this, by);
+    return new WebElement._(driver, element[_element], this, by);
   }
 
   /// Find multiple elements nested within this element.
@@ -81,7 +84,7 @@ class WebElement extends _WebDriverBase implements SearchContext {
       int i = 0;
       for (var element in elements) {
         controller
-            .add(new WebElement._(driver, element[_ELEMENT], this, by, i));
+            .add(new WebElement._(driver, element[_element], this, by, i));
         i++;
       }
       await controller.close();
@@ -115,7 +118,7 @@ class WebElement extends _WebDriverBase implements SearchContext {
   /// Not the same as ==
   Future<bool> equals(WebElement other) => _get('equals/${other.id}');
 
-  Map<String, String> toJson() => {_ELEMENT: id};
+  Map<String, String> toJson() => {_element: id};
 
   @override
   int get hashCode => driver.hashCode * 3 + id.hashCode;

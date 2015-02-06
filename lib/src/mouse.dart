@@ -5,9 +5,9 @@
 part of webdriver;
 
 class Mouse extends _WebDriverBase {
-  static const int LEFT = 0;
-  static const int MIDDLE = 1;
-  static const int RIGHT = 2;
+  static const int left = 0;
+  static const int middle = 1;
+  static const int right = 2;
 
   Mouse._(driver) : super(driver, '');
 

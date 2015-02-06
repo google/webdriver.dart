@@ -36,7 +36,7 @@ void main() {
     });
 
     test('sendKeys -- with tab', () async {
-      await driver.keyboard.sendKeys('abc${Keys.TAB}def');
+      await driver.keyboard.sendKeys('abc${Keyboard.tab}def');
       expect(await textInput.attributes['value'], 'abc');
     });
   });

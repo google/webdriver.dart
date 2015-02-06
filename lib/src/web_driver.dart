@@ -5,6 +5,8 @@
 part of webdriver;
 
 class WebDriver implements SearchContext {
+  static final Uri defaultUri = Uri.parse('http://127.0.0.1:4444/wd/hub/');
+
   final _CommandProcessor _commandProcessor;
   final Uri _prefix;
   final Map<String, dynamic> capabilities;
@@ -20,7 +22,7 @@ class WebDriver implements SearchContext {
   static Future<WebDriver> createDriver(
       {Uri uri, Map<String, dynamic> desiredCapabilities}) async {
     if (uri == null) {
-      uri = Uri.parse('http://127.0.0.1:4444/wd/hub/');
+      uri = defaultUri;
     }
 
     var commandProcessor = new _CommandProcessor();
@@ -56,7 +58,7 @@ class WebDriver implements SearchContext {
       var elements = await _post('elements', by);
       int i = 0;
       for (var element in elements) {
-        controller.add(new WebElement._(this, element[_ELEMENT], this, by, i));
+        controller.add(new WebElement._(this, element[_element], this, by, i));
         i++;
       }
       await controller.close();
@@ -81,7 +83,7 @@ class WebDriver implements SearchContext {
   @override
   Future<WebElement> findElement(By by) async {
     var element = await _post('element', by);
-    return new WebElement._(this, element[_ELEMENT], this, by);
+    return new WebElement._(this, element[_element], this, by);
   }
 
   /// An artist's rendition of the current page's source.
@@ -132,7 +134,7 @@ class WebDriver implements SearchContext {
   Future<WebElement> get activeElement async {
     var element = await _post('element/active');
     if (element != null) {
-      return new WebElement._(this, element[_ELEMENT], this, 'activeElement');
+      return new WebElement._(this, element[_element], this, 'activeElement');
     }
     return null;
   }
@@ -195,8 +197,8 @@ class WebDriver implements SearchContext {
 
   dynamic _recursiveElementify(result) {
     if (result is Map) {
-      if (result.length == 1 && result.containsKey(_ELEMENT)) {
-        return new WebElement._(this, result[_ELEMENT], this, 'javascript');
+      if (result.length == 1 && result.containsKey(_element)) {
+        return new WebElement._(this, result[_element], this, 'javascript');
       } else {
         var newResult = {};
         result.forEach((key, value) {

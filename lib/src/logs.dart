@@ -47,19 +47,19 @@ class LogEntry {
 }
 
 class LogType {
-  static const String BROWSER = 'browser';
-  static const String CLIENT = 'client';
-  static const String DRIVER = 'driver';
-  static const String PERFORMANCE = 'performance';
-  static const String PROFILER = 'profiler';
-  static const String SERVER = 'server';
+  static const String browser = 'browser';
+  static const String client = 'client';
+  static const String driver = 'driver';
+  static const String performance = 'performance';
+  static const String profiler = 'profiler';
+  static const String server = 'server';
 }
 
 class LogLevel {
-  static const String OFF = 'OFF';
-  static const String SEVERE = 'SEVERE';
-  static const String WARNING = 'WARNING';
-  static const String INFO = 'INFO';
-  static const String DEBUG = 'DEBUG';
-  static const String ALL = 'ALL';
+  static const String off = 'OFF';
+  static const String severe = 'SEVERE';
+  static const String warning = 'WARNING';
+  static const String info = 'INFO';
+  static const String debug = 'DEBUG';
+  static const String all = 'ALL';
 }

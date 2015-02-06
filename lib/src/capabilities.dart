@@ -5,70 +5,69 @@
 part of webdriver;
 
 class Capabilities {
-  static const String BROWSER_NAME = "browserName";
-  static const String PLATFORM = "platform";
-  static const String SUPPORTS_JAVASCRIPT = "javascriptEnabled";
-  static const String TAKES_SCREENSHOT = "takesScreenshot";
-  static const String VERSION = "version";
-  static const String SUPPORTS_ALERTS = "handlesAlerts";
-  static const String SUPPORTS_SQL_DATABASE = "databaseEnabled";
-  static const String SUPPORTS_LOCATION_CONTEXT = "locationContextEnabled";
-  static const String SUPPORTS_APPLICATION_CACHE = "applicationCacheEnabled";
-  static const String SUPPORTS_BROWSER_CONNECTION = "browserConnectionEnabled";
-  static const String SUPPORTS_FINDING_BY_CSS = "cssSelectorsEnabled";
-  static const String PROXY = "proxy";
-  static const String SUPPORTS_WEB_STORAGE = "webStorageEnabled";
-  static const String ROTATABLE = "rotatable";
-  static const String ACCEPT_SSL_CERTS = "acceptSslCerts";
-  static const String HAS_NATIVE_EVENTS = "nativeEvents";
-  static const String UNEXPECTED_ALERT_BEHAVIOUR = "unexpectedAlertBehaviour";
-  static const String LOGGING_PREFS = "loggingPrefs";
-  static const String ENABLE_PROFILING_CAPABILITY =
-      "webdriver.logging.profiler.enabled";
+  static const String browserName = "browserName";
+  static const String platform = "platform";
+  static const String supportsJavascript = "javascriptEnabled";
+  static const String takesScreenshot = "takesScreenshot";
+  static const String version = "version";
+  static const String supportsAlerts = "handlesAlerts";
+  static const String supportSqlDatabase = "databaseEnabled";
+  static const String supportsLocationContext = "locationContextEnabled";
+  static const String supportsApplicationCache = "applicationCacheEnabled";
+  static const String supportsBrowserConnection = "browserConnectionEnabled";
+  static const String supportsFindingByCss = "cssSelectorsEnabled";
+  static const String proxy = "proxy";
+  static const String supportsWebStorage = "webStorageEnabled";
+  static const String rotatable = "rotatable";
+  static const String acceptSslCerts = "acceptSslCerts";
+  static const String hasNativeEvents = "nativeEvents";
+  static const String unexpectedAlertBehaviour = "unexpectedAlertBehaviour";
+  static const String loggingPrefs = "loggingPrefs";
+  static const String enableProfiling = "webdriver.logging.profiler.enabled";
 
   static Map<String, dynamic> get chrome => empty
-    ..[BROWSER_NAME] = Browser.CHROME
-    ..[VERSION] = ''
-    ..[PLATFORM] = Platform.ANY;
+    ..[browserName] = Browser.chrome
+    ..[version] = ''
+    ..[platform] = BrowserPlatform.any;
 
   static Map<String, dynamic> get firefox => empty
-    ..[BROWSER_NAME] = Browser.FIREFOX
-    ..[VERSION] = ''
-    ..[PLATFORM] = Platform.ANY;
+    ..[browserName] = Browser.firefox
+    ..[version] = ''
+    ..[platform] = BrowserPlatform.any;
 
   static Map<String, dynamic> get android => empty
-    ..[BROWSER_NAME] = Browser.ANDROID
-    ..[VERSION] = ''
-    ..[PLATFORM] = Platform.ANDROID;
+    ..[browserName] = Browser.android
+    ..[version] = ''
+    ..[platform] = BrowserPlatform.android;
 
   static Map<String, dynamic> get empty => new Map<String, dynamic>();
 }
 
 class Browser {
-  static const String FIREFOX = "firefox";
-  static const String FIREFOX_2 = "firefox2";
-  static const String FIREFOX_3 = "firefox3";
-  static const String FIREFOX_PROXY = "firefoxproxy";
-  static const String FIREFOX_CHROME = "firefoxchrome";
-  static const String GOOGLECHROME = "googlechrome";
-  static const String SAFARI = "safari";
-  static const String OPERA = "opera";
-  static const String IEXPLORE = "iexplore";
-  static const String IEXPLORE_PROXY = "iexploreproxy";
-  static const String SAFARI_PROXY = "safariproxy";
-  static const String CHROME = "chrome";
-  static const String KONQUEROR = "konqueror";
-  static const String MOCK = "mock";
-  static const String IE_HTA = "iehta";
-  static const String ANDROID = "android";
-  static const String HTMLUNIT = "htmlunit";
-  static const String IE = "internet explorer";
-  static const String IPHONE = "iPhone";
-  static const String IPAD = "iPad";
-  static const String PHANTOMJS = "phantomjs";
+  static const String firefox = "firefox";
+  static const String firefox2 = "firefox2";
+  static const String firefox3 = "firefox3";
+  static const String firefoxProxy = "firefoxproxy";
+  static const String firefoxChrome = "firefoxchrome";
+  static const String googleChrome = "googlechrome";
+  static const String safari = "safari";
+  static const String opera = "opera";
+  static const String iexplore = "iexplore";
+  static const String iexploreProxy = "iexploreproxy";
+  static const String safariProxy = "safariproxy";
+  static const String chrome = "chrome";
+  static const String konqueror = "konqueror";
+  static const String mock = "mock";
+  static const String ieHta = "iehta";
+  static const String android = "android";
+  static const String htmlUnit = "htmlunit";
+  static const String ie = "internet explorer";
+  static const String iphone = "iPhone";
+  static const String ipad = "iPad";
+  static const String phantomJS = "phantomjs";
 }
 
-class Platform {
-  static const String ANY = "ANY";
-  static const String ANDROID = "ANDROID";
+class BrowserPlatform {
+  static const String any = "ANY";
+  static const String android = "ANDROID";
 }

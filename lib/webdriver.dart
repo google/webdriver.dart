@@ -23,7 +23,6 @@ part 'src/command_processor.dart';
 part 'src/common.dart';
 part 'src/exception.dart';
 part 'src/keyboard.dart';
-part 'src/keys.dart';
 part 'src/logs.dart';
 part 'src/mouse.dart';
 part 'src/navigation.dart';
