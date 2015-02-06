@@ -14,7 +14,7 @@ import 'package:webdriver/webdriver.dart';
 
 final Matcher isWebElement = new isInstanceOf<WebElement>();
 final Matcher isSize = new isInstanceOf<Size>();
-final Matcher isPoint = new isInstanceOf<Point>();
+final Matcher isPoint = new isInstanceOf<Point<int>>();
 
 bool isRunningOnTravis() => io.Platform.environment['TRAVIS'] == 'true';
 
