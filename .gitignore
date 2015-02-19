@@ -5,3 +5,4 @@ pubspec.lock
 .pub/
 .buildlog
 .settings/
+.idea/
