@@ -43,7 +43,9 @@ Installing
    Now in your Dart code, you can use:
 
    ```Dart
-   import 'package:webdriver/core.dart';
+   import 'package:webdriver/io.dart';
+   
+   WebDriver driver = buildDriver(...);
    ```
 
 Testing
