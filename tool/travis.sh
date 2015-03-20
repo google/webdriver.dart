@@ -19,7 +19,9 @@ set -e
 
 # Verify that the libraries are error free.
 dartanalyzer --fatal-warnings \
-  lib/webdriver.dart \
+  lib/async_helpers.dart \
+  lib/core.dart \
+  lib/io.dart \
   test/webdriver_test.dart
 
 if [ "$TRAVIS" ]; then
