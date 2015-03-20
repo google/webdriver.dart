@@ -20,8 +20,8 @@ import 'dart:math' show Point, Rectangle;
 
 import 'package:path/path.dart' as path;
 import 'package:matcher/matcher.dart' show Matcher, isInstanceOf;
-import 'package:webdriver/webdriver.dart'
-    show Capabilities, WebDriver, WebElement;
+import 'package:webdriver/io.dart'
+    show Capabilities, WebDriver, WebElement, createDriver;
 
 final Matcher isWebElement = new isInstanceOf<WebElement>();
 final Matcher isRectangle = new isInstanceOf<Rectangle<int>>();
@@ -70,5 +70,5 @@ Future<WebDriver> createTestDriver({Map additionalCapabilities}) {
     capabilities.addAll(additionalCapabilities);
   }
 
-  return WebDriver.createDriver(desiredCapabilities: capabilities);
+  return createDriver(desired: capabilities);
 }

@@ -15,7 +15,7 @@
 library webdriver_test.mouse;
 
 import 'package:unittest/unittest.dart';
-import 'package:webdriver/webdriver.dart';
+import 'package:webdriver/core.dart';
 
 import '../test_util.dart';
 
@@ -26,7 +26,7 @@ void main() {
 
     setUp(() async {
       driver = await createTestDriver();
-      await driver.get(testPagePath);
+      await driver.navigate.to(testPagePath);
       button = await driver.findElement(const By.tagName('button'));
     });
 

@@ -15,7 +15,8 @@
 library webdriver_test.navigation;
 
 import 'package:unittest/unittest.dart';
-import 'package:webdriver/webdriver.dart';
+import 'package:webdriver/async_helpers.dart';
+import 'package:webdriver/core.dart';
 
 import '../test_util.dart';
 
@@ -25,13 +26,13 @@ void main() {
 
     setUp(() async {
       driver = await createTestDriver();
-      await driver.get('http://www.google.com/ncr');
+      await driver.navigate.to('http://www.google.com/ncr');
     });
 
     tearDown(() => driver.quit());
 
     test('forward/back', () async {
-      await driver.get('http://www.yahoo.com');
+      await driver.navigate.to('http://www.yahoo.com');
       await driver.navigate.back();
       await waitFor(() => driver.title, matcher: contains('Google'));
       await driver.navigate.forward();

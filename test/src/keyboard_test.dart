@@ -15,7 +15,7 @@
 library webdriver_test.keyboard;
 
 import 'package:unittest/unittest.dart';
-import 'package:webdriver/webdriver.dart';
+import 'package:webdriver/core.dart';
 
 import '../test_util.dart';
 
@@ -26,7 +26,7 @@ void main() {
 
     setUp(() async {
       driver = await createTestDriver();
-      await driver.get(testPagePath);
+      await driver.navigate.to(testPagePath);
       textInput =
           await driver.findElement(const By.cssSelector('input[type=text]'));
       await textInput.click();

@@ -55,26 +55,13 @@ class Capabilities {
 
 class Browser {
   static const String firefox = "firefox";
-  static const String firefox2 = "firefox2";
-  static const String firefox3 = "firefox3";
-  static const String firefoxProxy = "firefoxproxy";
-  static const String firefoxChrome = "firefoxchrome";
-  static const String googleChrome = "googlechrome";
   static const String safari = "safari";
   static const String opera = "opera";
-  static const String iexplore = "iexplore";
-  static const String iexploreProxy = "iexploreproxy";
-  static const String safariProxy = "safariproxy";
   static const String chrome = "chrome";
-  static const String konqueror = "konqueror";
-  static const String mock = "mock";
-  static const String ieHta = "iehta";
   static const String android = "android";
-  static const String htmlUnit = "htmlunit";
   static const String ie = "internet explorer";
   static const String iphone = "iPhone";
   static const String ipad = "iPad";
-  static const String phantomJS = "phantomjs";
 }
 
 class BrowserPlatform {

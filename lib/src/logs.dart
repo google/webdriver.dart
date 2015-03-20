@@ -17,18 +17,11 @@ part of webdriver;
 class Logs extends _WebDriverBase {
   Logs._(driver) : super(driver, 'log');
 
-  Stream<LogEntry> get(String logType) {
-    var controller = new StreamController<LogEntry>();
-
-    () async {
-      var entries = await _post('', {'type': logType});
-      for (var entry in entries) {
-        controller.add(new LogEntry.fromMap(entry));
-      }
-      await controller.close();
-    }();
-
-    return controller.stream;
+  Stream<LogEntry> get(String logType) async* {
+    var entries = await _post('', {'type': logType});
+    for (var entry in entries) {
+      yield new LogEntry.fromMap(entry);
+    }
   }
 
   @override

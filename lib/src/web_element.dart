@@ -20,7 +20,7 @@ class WebElement extends _WebDriverBase implements SearchContext {
   /// The context from which this element was found.
   final SearchContext context;
   /// How the element was located from the context.
-  final dynamic /* String | By */ locator;
+  final dynamic /* String | Finder */ locator;
   /// The index of this element in the set of element founds. If the method
   /// used to find this element always returns one element, then this is null.
   final int index;
@@ -87,32 +87,14 @@ class WebElement extends _WebDriverBase implements SearchContext {
   }
 
   /// Find multiple elements nested within this element.
-  Stream<WebElement> findElements(By by) {
-    var controller = new StreamController<WebElement>();
-
-    () async {
-      var elements = await _post('elements', by);
-      int i = 0;
-      for (var element in elements) {
-        controller
-            .add(new WebElement._(driver, element[_element], this, by, i));
-        i++;
-      }
-      await controller.close();
-    }();
-
-    return controller.stream;
+  Stream<WebElement> findElements(By by) async* {
+    var elements = await _post('elements', by);
+    int i = 0;
+    for (var element in elements) {
+      yield new WebElement._(driver, element[_element], this, by, i);
+      i++;
+    }
   }
-
-// TODO(DrMarcII): switch to this when async* is supported
-//  async* {
-//    var elements = await _post('elements', by);
-//    int i = 0;
-//    for (var element in elements) {
-//      yield new WebElement._(driver, element[_ELEMENT], this, by, i);
-//      i++;
-//    }
-//  }
 
   /// Access to the HTML attributes of this tag.
   ///
@@ -141,7 +123,7 @@ class WebElement extends _WebDriverBase implements SearchContext {
   @override
   String toString() {
     var out = new StringBuffer()..write(context);
-    if (locator is By) {
+    if (locator is Finder) {
       if (index == null) {
         out..write('.findElement(');
       } else {

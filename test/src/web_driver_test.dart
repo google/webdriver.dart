@@ -15,7 +15,8 @@
 library webdriver_test.web_driver;
 
 import 'package:unittest/unittest.dart';
-import 'package:webdriver/webdriver.dart';
+import 'package:webdriver/core.dart';
+import 'package:webdriver/io.dart';
 
 import '../test_util.dart';
 
@@ -24,7 +25,7 @@ void main() {
     group('create', () {
       test('default', () async {
         WebDriver driver = await createTestDriver();
-        await driver.get('http://www.google.com');
+        await driver.navigate.to('http://www.google.com');
         var element = await driver.findElement(new By.name('q'));
         expect(await element.name, 'input');
         await driver.quit();
@@ -32,7 +33,7 @@ void main() {
 
       test('chrome', () async {
         WebDriver driver = await createTestDriver();
-        await driver.get('http://www.google.com');
+        await driver.navigate.to('http://www.google.com');
         var element = await driver.findElement(new By.name('q'));
         expect(await element.name, 'input');
         await driver.quit();
@@ -42,9 +43,8 @@ void main() {
         // Avoid this test on the bot; currently we just test against chromedriver.
         if (isRunningOnTravis()) return;
 
-        WebDriver driver = await WebDriver.createDriver(
-            desiredCapabilities: Capabilities.firefox);
-        await driver.get('http://www.google.com');
+        WebDriver driver = await createDriver(desired: Capabilities.firefox);
+        await driver.navigate.to('http://www.google.com');
         var element = await driver.findElement(new By.name('q'));
         expect(await element.name, 'input');
         await driver.quit();
@@ -56,15 +56,15 @@ void main() {
 
       setUp(() async {
         driver = await createTestDriver();
-        await driver.get(testPagePath);
+        await driver.navigate.to(testPagePath);
       });
 
       tearDown(() => driver.quit());
 
       test('get', () async {
-        await driver.get('http://www.google.com');
+        await driver.navigate.to('http://www.google.com');
         await driver.findElement(new By.name('q'));
-        await driver.get('http://www.yahoo.com');
+        await driver.navigate.to('http://www.yahoo.com');
         await driver.findElement(new By.name('p'));
       });
 
@@ -72,7 +72,7 @@ void main() {
         var url = await driver.currentUrl;
         expect(url, startsWith('file:'));
         expect(url, endsWith('test_page.html'));
-        await driver.get('http://www.google.com');
+        await driver.navigate.to('http://www.google.com');
         url = await driver.currentUrl;
         expect(url, contains('www.google.com'));
       });

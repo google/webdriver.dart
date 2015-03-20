@@ -15,7 +15,7 @@
 library webdriver_test.options;
 
 import 'package:unittest/unittest.dart';
-import 'package:webdriver/webdriver.dart';
+import 'package:webdriver/core.dart';
 
 import '../test_util.dart';
 
@@ -25,7 +25,7 @@ void main() {
 
     setUp(() async {
       driver = await createTestDriver();
-      await driver.get('http://www.google.com');
+      await driver.navigate.to('http://www.google.com');
     });
 
     tearDown(() => driver.quit());

@@ -17,7 +17,8 @@ library webdriver_test.window;
 import 'dart:math' show Point, Rectangle;
 
 import 'package:unittest/unittest.dart';
-import 'package:webdriver/webdriver.dart';
+import 'package:webdriver/async_helpers.dart';
+import 'package:webdriver/core.dart';
 
 import '../test_util.dart';
 
@@ -38,7 +39,7 @@ void main() {
       expect(await window.size, size);
     });
 
-    test('location', () async {
+    skip_test('location', () async {
       var window = await driver.window;
       var position = const Point<int>(100, 200);
       await window.setLocation(position);

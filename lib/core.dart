@@ -14,28 +14,19 @@
 
 library webdriver;
 
-import 'dart:async' show Future, Stream, StreamController;
-import 'dart:collection' show UnmodifiableMapView;
-import 'dart:convert' show JSON, UTF8;
-import 'dart:io'
-    show
-        ContentType,
-        HttpClient,
-        HttpClientRequest,
-        HttpClientResponse,
-        HttpHeaders;
+import 'dart:async' show Future, Stream;
 import 'dart:math' show Point, Rectangle;
 
 import 'package:crypto/crypto.dart' show CryptoUtils;
 
-import 'async_helpers.dart' show Lock, waitFor;
-export 'async_helpers.dart' show waitFor;
+import 'async_helpers.dart' show Lock;
+import 'src/command_processor.dart' show CommandProcessor;
+
+export 'src/exception.dart';
 
 part 'src/alert.dart';
 part 'src/capabilities.dart';
-part 'src/command_processor.dart';
 part 'src/common.dart';
-part 'src/exception.dart';
 part 'src/keyboard.dart';
 part 'src/logs.dart';
 part 'src/mouse.dart';

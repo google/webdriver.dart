@@ -17,6 +17,13 @@ part of webdriver;
 class Navigation extends _WebDriverBase {
   Navigation._(driver) : super(driver, '');
 
+  Future to(/* Uri | String */ url) async {
+    if (url is Uri) {
+      url = url.toString();
+    }
+    await _post('url', {'url': url});
+  }
+
   ///  Navigate forwards in the browser history, if possible.
   Future forward() async {
     await _post('forward');
