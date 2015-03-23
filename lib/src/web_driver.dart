@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-part of webdriver;
+part of webdriver.core;
 
 class WebDriver implements SearchContext {
   final CommandProcessor _commandProcessor;

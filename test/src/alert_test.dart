@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-library webdriver_test.alert;
+library webdriver.alert_test;
 
 import 'package:unittest/unittest.dart';
 import 'package:webdriver/core.dart';

@@ -19,13 +19,21 @@ set -e
 
 # Verify that the libraries are error free.
 dartanalyzer --fatal-warnings \
-  lib/webdriver.dart \
-  test/webdriver_test.dart
+  lib/async_helpers.dart \
+  lib/core.dart \
+  lib/html.dart \
+  lib/io.dart \
+  test/async_helpers_test.dart \
+  test/html_test.dart \
+  test/io_test.dart
 
-if [ "$TRAVIS" ]; then
-  # Start chromedriver.
-  chromedriver --port=4444 --url-base=wd/hub &
-  
-  # Run test/webdriver_test.dart.
-  dart test/webdriver_test.dart
-fi
+# run test/async_helpers_test.dart
+dart test/async_helpers_test.dart
+
+# Start chromedriver.
+chromedriver --port=4444 --url-base=wd/hub &
+
+# Run test/io_test.dart.
+dart test/io_test.dart
+
+# TODO(DrMarcII): run html tests.

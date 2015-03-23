@@ -12,14 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-library webdriver;
+library webdriver.core;
 
 import 'dart:async' show Future, Stream;
 import 'dart:math' show Point, Rectangle;
 
 import 'package:crypto/crypto.dart' show CryptoUtils;
 
-import 'async_helpers.dart' show Lock;
 import 'src/command_processor.dart' show CommandProcessor;
 
 export 'src/exception.dart';

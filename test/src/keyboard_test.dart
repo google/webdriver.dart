@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-library webdriver_test.keyboard;
+library webdriver.keyboard_test;
 
 import 'package:unittest/unittest.dart';
 import 'package:webdriver/core.dart';

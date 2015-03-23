@@ -12,14 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-library webdriver_test.async_helpers;
+library webdriver.async_helpers_test;
 
 import 'dart:async' show Future;
 
+import 'package:unittest/compact_vm_config.dart';
 import 'package:unittest/unittest.dart';
 import 'package:webdriver/async_helpers.dart';
 
 void main() {
+  useCompactVMConfiguration();
+
   group('Lock', () {
     test('basic acquire/release', () async {
       var lock = new Lock();

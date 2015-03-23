@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-part of webdriver;
+part of webdriver.core;
 
 class TargetLocator extends _WebDriverBase {
   TargetLocator._(driver) : super(driver, '');

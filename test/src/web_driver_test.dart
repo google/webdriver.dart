@@ -12,11 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-library webdriver_test.web_driver;
+library webdriver.web_driver_test;
 
 import 'package:unittest/unittest.dart';
 import 'package:webdriver/core.dart';
-import 'package:webdriver/io.dart';
 
 import '../test_util.dart';
 
@@ -41,9 +40,10 @@ void main() {
 
       test('firefox', () async {
         // Avoid this test on the bot; currently we just test against chromedriver.
-        if (isRunningOnTravis()) return;
+        if (runningOnTravis) return;
 
-        WebDriver driver = await createDriver(desired: Capabilities.firefox);
+        WebDriver driver = await createTestDriver(
+            additionalCapabilities: Capabilities.firefox);
         await driver.navigate.to('http://www.google.com');
         var element = await driver.findElement(new By.name('q'));
         expect(await element.name, 'input');
@@ -70,7 +70,7 @@ void main() {
 
       test('currentUrl', () async {
         var url = await driver.currentUrl;
-        expect(url, startsWith('file:'));
+        expect(url, anyOf(startsWith('file:'), startsWith('http:')));
         expect(url, endsWith('test_page.html'));
         await driver.navigate.to('http://www.google.com');
         url = await driver.currentUrl;

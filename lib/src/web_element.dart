@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-part of webdriver;
+part of webdriver.core;
 
 class WebElement extends _WebDriverBase implements SearchContext {
   final String id;
@@ -62,7 +62,6 @@ class WebElement extends _WebDriverBase implements SearchContext {
   Future<Point> get location async {
     var point = await _get('location');
     return new Point<int>(point['x'].toInt(), point['y'].toInt());
-    ;
   }
 
   /// The size of this element.
@@ -123,7 +122,7 @@ class WebElement extends _WebDriverBase implements SearchContext {
   @override
   String toString() {
     var out = new StringBuffer()..write(context);
-    if (locator is Finder) {
+    if (locator is By) {
       if (index == null) {
         out..write('.findElement(');
       } else {
