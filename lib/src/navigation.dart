@@ -12,10 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-part of webdriver;
+part of webdriver.core;
 
 class Navigation extends _WebDriverBase {
   Navigation._(driver) : super(driver, '');
+
+  Future to(/* Uri | String */ url) async {
+    if (url is Uri) {
+      url = url.toString();
+    }
+    await _post('url', {'url': url});
+  }
 
   ///  Navigate forwards in the browser history, if possible.
   Future forward() async {

@@ -12,10 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-library webdriver_test.mouse;
+library webdriver.mouse_test;
 
 import 'package:unittest/unittest.dart';
-import 'package:webdriver/webdriver.dart';
+import 'package:webdriver/core.dart';
 
 import '../test_util.dart';
 
@@ -26,7 +26,7 @@ void main() {
 
     setUp(() async {
       driver = await createTestDriver();
-      await driver.get(testPagePath);
+      await driver.navigate.to(testPagePath);
       button = await driver.findElement(const By.tagName('button'));
     });
 

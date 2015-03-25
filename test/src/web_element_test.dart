@@ -12,10 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-library webdriver_test.web_element;
+library webdriver.web_element_test;
 
 import 'package:unittest/unittest.dart';
-import 'package:webdriver/webdriver.dart';
+import 'package:webdriver/core.dart';
 
 import '../test_util.dart';
 
@@ -32,7 +32,7 @@ void main() {
 
     setUp(() async {
       driver = await createTestDriver();
-      await driver.get(testPagePath);
+      await driver.navigate.to(testPagePath);
       table = await driver.findElement(new By.tagName('table'));
       button = await driver.findElement(new By.tagName('button'));
       form = await driver.findElement(new By.tagName('form'));

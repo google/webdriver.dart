@@ -12,96 +12,52 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-part of webdriver;
+part of webdriver.core;
 
 class WebDriver implements SearchContext {
-  static final Uri defaultUri = Uri.parse('http://127.0.0.1:4444/wd/hub/');
-
-  final _CommandProcessor _commandProcessor;
+  final CommandProcessor _commandProcessor;
   final Uri _prefix;
   final Map<String, dynamic> capabilities;
   final String id;
   final Uri uri;
 
-  WebDriver._(this._commandProcessor, Uri uri, String id, this.capabilities)
+  WebDriver(this._commandProcessor, Uri uri, String id, this.capabilities)
       : this.uri = uri,
         this.id = id,
         this._prefix = uri.resolve('session/$id/');
 
-  /// Creates a WebDriver instance connected to the specified WebDriver server.
-  static Future<WebDriver> createDriver(
-      {Uri uri, Map<String, dynamic> desiredCapabilities}) async {
-    if (uri == null) {
-      uri = defaultUri;
-    }
-
-    var commandProcessor = new _CommandProcessor();
-
-    if (desiredCapabilities == null) {
-      desiredCapabilities = Capabilities.empty;
-    }
-
-    var response = await commandProcessor.post(uri.resolve('session'), {
-      'desiredCapabilities': desiredCapabilities
-    }, value: false);
-    return new WebDriver._(commandProcessor, uri, response['sessionId'],
-        new UnmodifiableMapView(response['value']));
-  }
-
-  /// Navigate to the specified url.
-  Future get(String url) async {
-    await _post('url', {'url': url});
-  }
-
   /// The current url.
-  Future<String> get currentUrl => _get('url');
+  Future<String> get currentUrl => get('url');
 
   /// The title of the current page.
-  Future<String> get title => _get('title');
+  Future<String> get title => get('title');
 
   /// Search for multiple elements within the entire current page.
   @override
-  Stream<WebElement> findElements(By by) {
-    var controller = new StreamController<WebElement>();
+  Stream<WebElement> findElements(By by) async* {
+    var elements = await post('elements', by);
+    int i = 0;
 
-    () async {
-      var elements = await _post('elements', by);
-      int i = 0;
-      for (var element in elements) {
-        controller.add(new WebElement._(this, element[_element], this, by, i));
-        i++;
-      }
-      await controller.close();
-    }();
-
-    return controller.stream;
+    for (var element in elements) {
+      yield new WebElement._(this, element[_element], this, by, i);
+      i++;
+    }
   }
-
-// TODO(DrMarcII): switch to this when async* is supported
-//   async* {
-//    var elements = await _post('elements', by);
-//    int i = 0;
-//
-//    for (var element in elements) {
-//      yield new WebElement._(this, element[_element], this, by, i);
-//      i++;
-//    }
-//  }
 
   /// Search for an element within the entire current page.
   /// Throws [NoSuchElementException] if a matching element is not found.
   @override
   Future<WebElement> findElement(By by) async {
-    var element = await _post('element', by);
+    var element = await post('element', by);
     return new WebElement._(this, element[_element], this, by);
   }
 
   /// An artist's rendition of the current page's source.
-  Future<String> get pageSource => _get('source');
+  Future<String> get pageSource => get('source');
 
   /// Close the current window, quitting the browser if it is the last window.
   Future close() async {
-    await _delete('window');
+    await delete('window');
   }
 
   /// Quit the browser.
@@ -110,39 +66,24 @@ class WebDriver implements SearchContext {
   }
 
   /// Handles for all of the currently displayed tabs/windows.
-  Stream<Window> get windows {
-    var controller = new StreamController<Window>();
+  Stream<Window> get windows async* {
+    var handles = await get('window_handles');
 
-    () async {
-      var handles = await _get('window_handles');
-      for (var handle in handles) {
-        controller.add(new Window._(this, handle));
-      }
-      await controller.close();
-    }();
-
-    return controller.stream;
+    for (var handle in handles) {
+      yield new Window._(this, handle);
+    }
   }
-
-// TODO(DrMarcII): switch to this when async* is supported
-//  async* {
-//    var handles = await _get('window_handles');
-//
-//    for (var handle in handles) {
-//      yield new Window._(this, handle);
-//    }
-//  }
 
   /// Handle for the active tab/window.
   Future<Window> get window async {
-    var handle = await _get('window_handle');
+    var handle = await get('window_handle');
     return new Window._(this, handle);
   }
 
   /// The currently focused element, or the body element if no element has
   /// focus.
   Future<WebElement> get activeElement async {
-    var element = await _post('element/active');
+    var element = await post('element/active');
     if (element != null) {
       return new WebElement._(this, element[_element], this, 'activeElement');
     }
@@ -164,7 +105,7 @@ class WebDriver implements SearchContext {
   Mouse get mouse => new Mouse._(this);
 
   /// Take a screenshot of the current page as PNG.
-  Future<List<int>> captureScreenshot() => _get('screenshot')
+  Future<List<int>> captureScreenshot() => get('screenshot')
       .then((screenshot) => CryptoUtils.base64StringToBytes(screenshot));
 
   /// Inject a snippet of JavaScript into the page for execution in the context
@@ -185,10 +126,9 @@ class WebDriver implements SearchContext {
   /// Arguments may be any JSON-able object. WebElements will be converted to
   /// the corresponding DOM element. Likewise, any DOM Elements in the script
   /// result will be converted to WebElements.
-  Future executeAsync(String script, List args) => _post('execute_async', {
-    'script': script,
-    'args': args
-  }).then(_recursiveElementify);
+  Future executeAsync(String script, List args) => post(
+          'execute_async', {'script': script, 'args': args})
+      .then(_recursiveElementify);
 
   /// Inject a snippet of JavaScript into the page for execution in the context
   /// of the currently selected frame. The executed script is assumed to be
@@ -202,7 +142,7 @@ class WebDriver implements SearchContext {
   /// Arguments may be any JSON-able object. WebElements will be converted to
   /// the corresponding DOM element. Likewise, any DOM Elements in the script
   /// result will be converted to WebElements.
-  Future execute(String script, List args) => _post(
+  Future execute(String script, List args) => post(
       'execute', {'script': script, 'args': args}).then(_recursiveElementify);
 
   dynamic _recursiveElementify(result) {
@@ -223,13 +163,12 @@ class WebDriver implements SearchContext {
     }
   }
 
-  Future _post(String command, [params]) =>
+  Future post(String command, [params]) =>
       _commandProcessor.post(_prefix.resolve(command), params);
 
-  Future _get(String command) =>
-      _commandProcessor.get(_prefix.resolve(command));
+  Future get(String command) => _commandProcessor.get(_prefix.resolve(command));
 
-  Future _delete(String command) =>
+  Future delete(String command) =>
       _commandProcessor.delete(_prefix.resolve(command));
 
   @override

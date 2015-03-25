@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-part of webdriver;
+part of webdriver.core;
 
 /// A JavaScript alert(), confirm(), or prompt() dialog
 class Alert extends _WebDriverBase {

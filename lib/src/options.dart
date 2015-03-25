@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-part of webdriver;
+part of webdriver.core;
 
 class Cookies extends _WebDriverBase {
   Cookies._(driver) : super(driver, 'cookie');
@@ -33,28 +33,12 @@ class Cookies extends _WebDriverBase {
   }
 
   /// Retrieve all cookies visible to the current page.
-  Stream<Cookie> get all {
-    var controller = new StreamController<Cookie>();
-
-    () async {
-      var cookies = await _get('');
-      int i = 0;
-      for (var cookie in cookies) {
-        controller.add(new Cookie.fromJson(cookie));
-        i++;
-      }
-      await controller.close();
-    }();
-
-    return controller.stream;
+  Stream<Cookie> get all async* {
+    var cookies = await _get('');
+    for (var cookie in cookies) {
+      yield new Cookie.fromJson(cookie);
+    }
   }
-// TODO(DrMarcII): switch to this when async* is supported
-//  async* {
-//    var cookies = await _get('');
-//    for (var cookie in cookies) {
-//      yield new Cookie.fromJson(cookie);
-//    }
-//  }
 
   @override
   String toString() => '$driver.cookies';

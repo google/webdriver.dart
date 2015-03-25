@@ -12,9 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-library webdriver_test;
+library webdriver.html_test;
 
-import 'async_helpers_test.dart' as async_helpers;
+import 'dart:html' as html;
+
+import 'package:unittest/html_enhanced_config.dart';
+import 'package:webdriver/html.dart' show WebDriver, Capabilities, createDriver;
+
 import 'src/alert_test.dart' as alert;
 import 'src/keyboard_test.dart' as keyboard;
 import 'src/logs_test.dart' as logs;
@@ -25,13 +29,25 @@ import 'src/target_locator_test.dart' as target_locator;
 import 'src/web_driver_test.dart' as web_driver;
 import 'src/web_element_test.dart' as web_element;
 import 'src/window_test.dart' as window;
+import 'test_util.dart' as test_util;
 
-/**
- * These tests are not expected to be run as part of normal automated testing,
- * as they are slow and they have external dependencies.
- */
 void main() {
-  async_helpers.main();
+  useHtmlEnhancedConfiguration();
+
+  test_util.runningOnTravis = false;
+  test_util.createTestDriver = ({Map additionalCapabilities}) {
+    Map capabilities = Capabilities.chrome;
+
+    if (additionalCapabilities != null) {
+      capabilities.addAll(additionalCapabilities);
+    }
+
+    return createDriver(desired: capabilities);
+  };
+
+  test_util.testPagePath =
+      Uri.parse(html.window.location.href).resolve('test_page.html').toString();
+
   alert.main();
   keyboard.main();
   logs.main();

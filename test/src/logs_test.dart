@@ -12,10 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-library webdriver_test.logs;
+library webdriver.logs_test;
 
 import 'package:unittest/unittest.dart';
-import 'package:webdriver/webdriver.dart';
+import 'package:webdriver/core.dart';
 
 import '../test_util.dart';
 
@@ -29,7 +29,7 @@ void main() {
       };
 
       driver = await createTestDriver(additionalCapabilities: capabilities);
-      await driver.get('http://www.google.com');
+      await driver.navigate.to('http://www.google.com');
     });
 
     tearDown(() => driver.quit());
