@@ -41,7 +41,7 @@ Installing
 
    ```Dart
    import 'package:webdriver/io.dart';
-   
+
    WebDriver driver = buildDriver(...);
    ```
 

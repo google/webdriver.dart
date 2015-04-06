@@ -42,13 +42,14 @@ abstract class _WebDriverBase {
 
   _WebDriverBase(this.driver, this._prefix);
 
-  Future _post(String command, [param]) => driver.post(resolve(command), param);
+  Future _post(String command, [param]) =>
+      driver.post(_resolve(command), param);
 
-  Future _get(String command) => driver.get(resolve(command));
+  Future _get(String command) => driver.get(_resolve(command));
 
-  Future _delete(String command) => driver.delete(resolve(command));
+  Future _delete(String command) => driver.delete(_resolve(command));
 
-  String resolve(command) {
+  String _resolve(command) {
     if (_prefix == null || _prefix.isEmpty) {
       return command;
     }
