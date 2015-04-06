@@ -9,4 +9,6 @@ abstract class CommandProcessor {
   Future<Object> get(Uri uri, {bool value: true});
 
   Future<Object> delete(Uri uri, {bool value: true});
+
+  Future close();
 }

@@ -32,6 +32,16 @@ Future<WebDriver> createDriver({Uri uri, Map<String, dynamic> desired}) async {
       new UnmodifiableMapView(response['value']));
 }
 
+Future<WebDriver> fromExistingSession(String sessionId, {Uri uri}) async {
+  if (uri == null) {
+    uri = defaultUri;
+  }
+
+  var commandProcessor = new _HtmlCommandProcessor();
+
+  return new WebDriver(commandProcessor, uri, sessionId, const {});
+}
+
 class _HtmlCommandProcessor implements CommandProcessor {
   Lock _lock = new Lock();
 
@@ -43,6 +53,8 @@ class _HtmlCommandProcessor implements CommandProcessor {
 
   Future<Object> delete(Uri uri, {bool value: true}) =>
       _request('DELETE', uri, null, value);
+
+  Future close() async {}
 
   Future<Object> _request(
       String method, Uri uri, dynamic params, bool value) async {
