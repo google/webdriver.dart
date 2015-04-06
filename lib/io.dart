@@ -38,6 +38,16 @@ Future<WebDriver> createDriver({Uri uri, Map<String, dynamic> desired}) async {
       new UnmodifiableMapView(response['value']));
 }
 
+Future<WebDriver> fromExistingSession(String sessionId, {Uri uri}) async {
+  if (uri == null) {
+    uri = defaultUri;
+  }
+
+  var commandProcessor = new _IOCommandProcessor();
+
+  return new WebDriver(commandProcessor, uri, sessionId, const {});
+}
+
 final ContentType _contentTypeJson =
     new ContentType("application", "json", charset: "utf-8");
 
@@ -73,6 +83,10 @@ class _IOCommandProcessor implements CommandProcessor {
     HttpClientRequest request = await client.deleteUrl(uri);
     _setUpRequest(request);
     return await _processResponse(await request.close(), value);
+  }
+
+  Future close() async {
+    await client.close(force: true);
   }
 
   _processResponse(HttpClientResponse response, bool value) async {
