@@ -62,8 +62,11 @@ class WebDriver implements SearchContext {
 
   /// Quit the browser.
   Future quit() async {
-    await _commandProcessor.delete(uri.resolve('session/$id'));
-    await _commandProcessor.close();
+    try {
+      await _commandProcessor.delete(uri.resolve('session/$id'));
+    } finally {
+      await _commandProcessor.close();
+    }
   }
 
   /// Handles for all of the currently displayed tabs/windows.
