@@ -49,4 +49,4 @@ Testing
 -------
 
 To run the tests, you need to first run selenium-server-standalone, which you
-can download from https://code.google.com/p/selenium/downloads.
+can download from http://www.seleniumhq.org/download/ or http://selenium-release.storage.googleapis.com/index.html.
