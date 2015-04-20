@@ -21,6 +21,10 @@ export 'package:webdriver/core.dart';
 final Uri defaultUri = Uri.parse('http://127.0.0.1:4444/wd/hub/');
 
 /// Creates a WebDriver instance connected to the specified WebDriver server.
+///
+/// Note: WebDriver endpoints will be constructed using [resolve] against
+/// [uri]. Therefore, if [uri] does not end with a trailing slash, the
+/// last path component will be dropped.
 Future<WebDriver> createDriver({Uri uri, Map<String, dynamic> desired}) async {
   if (uri == null) {
     uri = defaultUri;
