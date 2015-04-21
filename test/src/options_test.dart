@@ -25,7 +25,7 @@ void main() {
 
     setUp(() async {
       driver = await createTestDriver();
-      await driver.navigate.to('http://www.google.com');
+      await driver.get('http://www.google.com');
     });
 
     tearDown(() => driver.quit());

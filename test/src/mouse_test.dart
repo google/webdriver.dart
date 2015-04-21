@@ -26,7 +26,7 @@ void main() {
 
     setUp(() async {
       driver = await createTestDriver();
-      await driver.navigate.to(testPagePath);
+      await driver.get(testPagePath);
       button = await driver.findElement(const By.tagName('button'));
     });
 
