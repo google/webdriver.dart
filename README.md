@@ -50,3 +50,10 @@ Testing
 
 To run the tests, you need to first run selenium-server-standalone, which you
 can download from http://www.seleniumhq.org/download/ or http://selenium-release.storage.googleapis.com/index.html.
+
+If you're on Mac and use [homebrew][] you can install the required components via
+
+* `brew install selenium-server-standalone`
+* `brew install chromedriver`
+
+[homebrew]: http://brew.sh/
