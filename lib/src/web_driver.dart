@@ -27,15 +27,23 @@ class WebDriver implements SearchContext {
         this._prefix = uri.resolve('session/$id/');
 
   /// The current url.
-  Future<String> get currentUrl => get('url');
+  Future<String> get currentUrl => getRequest('url');
+
+  /// navigate to the specified url
+  Future get(/* Uri | String */ url) async {
+    if (url is Uri) {
+      url = url.toString();
+    }
+    await postRequest('url', {'url': url as String});
+  }
 
   /// The title of the current page.
-  Future<String> get title => get('title');
+  Future<String> get title => getRequest('title');
 
   /// Search for multiple elements within the entire current page.
   @override
   Stream<WebElement> findElements(By by) async* {
-    var elements = await post('elements', by);
+    var elements = await postRequest('elements', by);
     int i = 0;
 
     for (var element in elements) {
@@ -48,16 +56,16 @@ class WebDriver implements SearchContext {
   /// Throws [NoSuchElementException] if a matching element is not found.
   @override
   Future<WebElement> findElement(By by) async {
-    var element = await post('element', by);
+    var element = await postRequest('element', by);
     return new WebElement._(this, element[_element], this, by);
   }
 
   /// An artist's rendition of the current page's source.
-  Future<String> get pageSource => get('source');
+  Future<String> get pageSource => getRequest('source');
 
   /// Close the current window, quitting the browser if it is the last window.
   Future close() async {
-    await delete('window');
+    await deleteRequest('window');
   }
 
   /// Quit the browser.
@@ -71,7 +79,7 @@ class WebDriver implements SearchContext {
 
   /// Handles for all of the currently displayed tabs/windows.
   Stream<Window> get windows async* {
-    var handles = await get('window_handles');
+    var handles = await getRequest('window_handles');
 
     for (var handle in handles) {
       yield new Window._(this, handle);
@@ -80,14 +88,14 @@ class WebDriver implements SearchContext {
 
   /// Handle for the active tab/window.
   Future<Window> get window async {
-    var handle = await get('window_handle');
+    var handle = await getRequest('window_handle');
     return new Window._(this, handle);
   }
 
   /// The currently focused element, or the body element if no element has
   /// focus.
   Future<WebElement> get activeElement async {
-    var element = await post('element/active');
+    var element = await postRequest('element/active');
     if (element != null) {
       return new WebElement._(this, element[_element], this, 'activeElement');
     }
@@ -109,7 +117,7 @@ class WebDriver implements SearchContext {
   Mouse get mouse => new Mouse._(this);
 
   /// Take a screenshot of the current page as PNG.
-  Future<List<int>> captureScreenshot() => get('screenshot')
+  Future<List<int>> captureScreenshot() => getRequest('screenshot')
       .then((screenshot) => CryptoUtils.base64StringToBytes(screenshot));
 
   /// Inject a snippet of JavaScript into the page for execution in the context
@@ -130,7 +138,7 @@ class WebDriver implements SearchContext {
   /// Arguments may be any JSON-able object. WebElements will be converted to
   /// the corresponding DOM element. Likewise, any DOM Elements in the script
   /// result will be converted to WebElements.
-  Future executeAsync(String script, List args) => post(
+  Future executeAsync(String script, List args) => postRequest(
           'execute_async', {'script': script, 'args': args})
       .then(_recursiveElementify);
 
@@ -146,7 +154,7 @@ class WebDriver implements SearchContext {
   /// Arguments may be any JSON-able object. WebElements will be converted to
   /// the corresponding DOM element. Likewise, any DOM Elements in the script
   /// result will be converted to WebElements.
-  Future execute(String script, List args) => post(
+  Future execute(String script, List args) => postRequest(
       'execute', {'script': script, 'args': args}).then(_recursiveElementify);
 
   dynamic _recursiveElementify(result) {
@@ -167,12 +175,13 @@ class WebDriver implements SearchContext {
     }
   }
 
-  Future post(String command, [params]) =>
+  Future postRequest(String command, [params]) =>
       _commandProcessor.post(_prefix.resolve(command), params);
 
-  Future get(String command) => _commandProcessor.get(_prefix.resolve(command));
+  Future getRequest(String command) =>
+      _commandProcessor.get(_prefix.resolve(command));
 
-  Future delete(String command) =>
+  Future deleteRequest(String command) =>
       _commandProcessor.delete(_prefix.resolve(command));
 
   @override

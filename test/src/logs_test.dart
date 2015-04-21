@@ -29,7 +29,7 @@ void main() {
       };
 
       driver = await createTestDriver(additionalCapabilities: capabilities);
-      await driver.navigate.to('http://www.google.com');
+      await driver.get('http://www.google.com');
     });
 
     tearDown(() => driver.quit());

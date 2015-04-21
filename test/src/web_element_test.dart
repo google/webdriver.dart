@@ -32,7 +32,7 @@ void main() {
 
     setUp(() async {
       driver = await createTestDriver();
-      await driver.navigate.to(testPagePath);
+      await driver.get(testPagePath);
       table = await driver.findElement(new By.tagName('table'));
       button = await driver.findElement(new By.tagName('button'));
       form = await driver.findElement(new By.tagName('form'));

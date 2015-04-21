@@ -30,7 +30,7 @@ void main() {
 
     setUp(() async {
       driver = await createTestDriver();
-      await driver.navigate.to(testPagePath);
+      await driver.get(testPagePath);
       frame = await driver.findElement(new By.name('frame'));
     });
 

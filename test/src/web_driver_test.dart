@@ -24,7 +24,7 @@ void main() {
     group('create', () {
       test('default', () async {
         WebDriver driver = await createTestDriver();
-        await driver.navigate.to('http://www.google.com');
+        await driver.get('http://www.google.com');
         var element = await driver.findElement(new By.name('q'));
         expect(await element.name, 'input');
         await driver.quit();
@@ -32,7 +32,7 @@ void main() {
 
       test('chrome', () async {
         WebDriver driver = await createTestDriver();
-        await driver.navigate.to('http://www.google.com');
+        await driver.get('http://www.google.com');
         var element = await driver.findElement(new By.name('q'));
         expect(await element.name, 'input');
         await driver.quit();
@@ -44,7 +44,7 @@ void main() {
 
         WebDriver driver = await createTestDriver(
             additionalCapabilities: Capabilities.firefox);
-        await driver.navigate.to('http://www.google.com');
+        await driver.get('http://www.google.com');
         var element = await driver.findElement(new By.name('q'));
         expect(await element.name, 'input');
         await driver.quit();
@@ -56,15 +56,15 @@ void main() {
 
       setUp(() async {
         driver = await createTestDriver();
-        await driver.navigate.to(testPagePath);
+        await driver.get(testPagePath);
       });
 
       tearDown(() => driver.quit());
 
       test('get', () async {
-        await driver.navigate.to('http://www.google.com');
+        await driver.get('http://www.google.com');
         await driver.findElement(new By.name('q'));
-        await driver.navigate.to('http://www.yahoo.com');
+        await driver.get('http://www.yahoo.com');
         await driver.findElement(new By.name('p'));
       });
 
@@ -72,7 +72,7 @@ void main() {
         var url = await driver.currentUrl;
         expect(url, anyOf(startsWith('file:'), startsWith('http:')));
         expect(url, endsWith('test_page.html'));
-        await driver.navigate.to('http://www.google.com');
+        await driver.get('http://www.google.com');
         url = await driver.currentUrl;
         expect(url, contains('www.google.com'));
       });
