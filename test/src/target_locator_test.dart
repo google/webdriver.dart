@@ -31,7 +31,7 @@ void main() {
     setUp(() async {
       driver = await createTestDriver();
       await driver.get(testPagePath);
-      frame = await driver.findElement(new By.name('frame'));
+      frame = await driver.findElement(const By.name('frame'));
     });
 
     tearDown(() => driver.quit());
@@ -54,7 +54,7 @@ void main() {
     test('root frame', () async {
       await driver.switchTo.frame(frame);
       await driver.switchTo.frame();
-      await driver.findElement(new By.tagName('button'));
+      await driver.findElement(const By.tagName('button'));
     });
   });
 }

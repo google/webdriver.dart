@@ -47,17 +47,21 @@ Future<WebDriver> fromExistingSession(String sessionId, {Uri uri}) async {
 }
 
 class _HtmlCommandProcessor implements CommandProcessor {
-  Lock _lock = new Lock();
+  final Lock _lock = new Lock();
 
+  @override
   Future<Object> post(Uri uri, dynamic params, {bool value: true}) =>
       _request('POST', uri, params, value);
 
+  @override
   Future<Object> get(Uri uri, {bool value: true}) =>
       _request('GET', uri, null, value);
 
+  @override
   Future<Object> delete(Uri uri, {bool value: true}) =>
       _request('DELETE', uri, null, value);
 
+  @override
   Future close() async {}
 
   Future<Object> _request(

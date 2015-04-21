@@ -33,16 +33,16 @@ void main() {
     setUp(() async {
       driver = await createTestDriver();
       await driver.get(testPagePath);
-      table = await driver.findElement(new By.tagName('table'));
-      button = await driver.findElement(new By.tagName('button'));
-      form = await driver.findElement(new By.tagName('form'));
+      table = await driver.findElement(const By.tagName('table'));
+      button = await driver.findElement(const By.tagName('button'));
+      form = await driver.findElement(const By.tagName('form'));
       textInput =
-          await driver.findElement(new By.cssSelector('input[type=text]'));
+          await driver.findElement(const By.cssSelector('input[type=text]'));
       checkbox =
-          await driver.findElement(new By.cssSelector('input[type=checkbox]'));
+          await driver.findElement(const By.cssSelector('input[type=checkbox]'));
       disabled =
-          await driver.findElement(new By.cssSelector('input[type=password]'));
-      invisible = await driver.findElement(new By.tagName('div'));
+          await driver.findElement(const By.cssSelector('input[type=password]'));
+      invisible = await driver.findElement(const By.tagName('div'));
     });
 
     tearDown(() => driver.quit());
@@ -133,33 +133,33 @@ void main() {
     });
 
     test('findElement -- success', () async {
-      var element = await table.findElement(new By.tagName('tr'));
+      var element = await table.findElement(const By.tagName('tr'));
       expect(element, isWebElement);
     });
 
     test('findElement -- failure', () async {
       try {
-        await button.findElement(new By.tagName('tr'));
+        await button.findElement(const By.tagName('tr'));
         throw 'Expected NoSuchElementException';
       } on NoSuchElementException {}
     });
 
     test('findElements -- 1 found', () async {
       var elements = await form
-          .findElements(new By.cssSelector('input[type=text]'))
+          .findElements(const By.cssSelector('input[type=text]'))
           .toList();
       expect(elements, hasLength(1));
       expect(elements, everyElement(isWebElement));
     });
 
     test('findElements -- 4 found', () async {
-      var elements = await table.findElements(new By.tagName('td')).toList();
+      var elements = await table.findElements(const By.tagName('td')).toList();
       expect(elements, hasLength(4));
       expect(elements, everyElement(isWebElement));
     });
 
     test('findElements -- 0 found', () async {
-      var elements = await form.findElements(new By.tagName('td')).toList();
+      var elements = await form.findElements(const By.tagName('td')).toList();
       expect(elements, isEmpty);
     });
 
@@ -179,7 +179,7 @@ void main() {
 
     test('equals', () async {
       expect(await invisible.equals(disabled), isFalse);
-      var element = await driver.findElement(new By.cssSelector('table'));
+      var element = await driver.findElement(const By.cssSelector('table'));
       expect(await element.equals(table), isTrue);
     });
   });

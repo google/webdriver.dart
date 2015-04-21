@@ -25,7 +25,7 @@ void main() {
       test('default', () async {
         WebDriver driver = await createTestDriver();
         await driver.get('http://www.google.com');
-        var element = await driver.findElement(new By.name('q'));
+        var element = await driver.findElement(const By.name('q'));
         expect(await element.name, 'input');
         await driver.quit();
       });
@@ -33,7 +33,7 @@ void main() {
       test('chrome', () async {
         WebDriver driver = await createTestDriver();
         await driver.get('http://www.google.com');
-        var element = await driver.findElement(new By.name('q'));
+        var element = await driver.findElement(const By.name('q'));
         expect(await element.name, 'input');
         await driver.quit();
       });
@@ -45,7 +45,7 @@ void main() {
         WebDriver driver = await createTestDriver(
             additionalCapabilities: Capabilities.firefox);
         await driver.get('http://www.google.com');
-        var element = await driver.findElement(new By.name('q'));
+        var element = await driver.findElement(const By.name('q'));
         expect(await element.name, 'input');
         await driver.quit();
       });
@@ -63,9 +63,9 @@ void main() {
 
       test('get', () async {
         await driver.get('http://www.google.com');
-        await driver.findElement(new By.name('q'));
+        await driver.findElement(const By.name('q'));
         await driver.get('http://www.yahoo.com');
-        await driver.findElement(new By.name('p'));
+        await driver.findElement(const By.name('p'));
       });
 
       test('currentUrl', () async {
@@ -78,34 +78,34 @@ void main() {
       });
 
       test('findElement -- success', () async {
-        var element = await driver.findElement(new By.tagName('tr'));
+        var element = await driver.findElement(const By.tagName('tr'));
         expect(element, isWebElement);
       });
 
       test('findElement -- failure', () async {
         try {
-          await driver.findElement(new By.id('non-existent-id'));
+          await driver.findElement(const By.id('non-existent-id'));
           throw 'expected NoSuchElementException';
         } on NoSuchElementException {}
       });
 
       test('findElements -- 1 found', () async {
         var elements = await driver
-            .findElements(new By.cssSelector('input[type=text]'))
+            .findElements(const By.cssSelector('input[type=text]'))
             .toList();
         expect(elements, hasLength(1));
         expect(elements, everyElement(isWebElement));
       });
 
       test('findElements -- 4 found', () async {
-        var elements = await driver.findElements(new By.tagName('td')).toList();
+        var elements = await driver.findElements(const By.tagName('td')).toList();
         expect(elements, hasLength(4));
         expect(elements, everyElement(isWebElement));
       });
 
       test('findElements -- 0 found', () async {
         var elements =
-            await driver.findElements(new By.id('non-existent-id')).toList();
+            await driver.findElements(const By.id('non-existent-id')).toList();
         expect(elements, isEmpty);
       });
 
@@ -115,7 +115,7 @@ void main() {
 
       test('close/windows', () async {
         int numHandles = (await driver.windows.toList()).length;
-        await (await driver.findElement(new By.partialLinkText('Open copy')))
+        await (await driver.findElement(const By.partialLinkText('Open copy')))
             .click();
         expect(await driver.windows.toList(), hasLength(numHandles + 1));
         await driver.close();
@@ -126,7 +126,7 @@ void main() {
         Window orig = await driver.window;
         Window next;
 
-        await (await driver.findElement(new By.partialLinkText('Open copy')))
+        await (await driver.findElement(const By.partialLinkText('Open copy')))
             .click();
         await for (Window window in driver.windows) {
           if (window != orig) {
@@ -142,7 +142,7 @@ void main() {
       test('activeElement', () async {
         var element = await driver.activeElement;
         expect(await element.name, 'body');
-        await (await driver.findElement(new By.cssSelector('input[type=text]')))
+        await (await driver.findElement(const By.cssSelector('input[type=text]')))
             .click();
         element = await driver.activeElement;
         expect(await element.name, 'input');
@@ -155,7 +155,7 @@ void main() {
       });
 
       test('execute', () async {
-        WebElement button = await driver.findElement(new By.tagName('button'));
+        WebElement button = await driver.findElement(const By.tagName('button'));
         String script = '''
             arguments[1].textContent = arguments[0];
             return arguments[1];''';
@@ -164,7 +164,7 @@ void main() {
       });
 
       test('executeAsync', () async {
-        WebElement button = await driver.findElement(new By.tagName('button'));
+        WebElement button = await driver.findElement(const By.tagName('button'));
         String script = '''
             arguments[1].textContent = arguments[0];
             arguments[2](arguments[1]);''';

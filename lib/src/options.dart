@@ -64,7 +64,7 @@ class Cookie {
   /// (Optional) When the cookie expires.
   final DateTime expiry;
 
-  const Cookie(this.name, this.value,
+  Cookie(this.name, this.value,
       {this.path, this.domain, this.secure, this.expiry});
 
   factory Cookie.fromJson(Map<String, dynamic> json) {
