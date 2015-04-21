@@ -1,7 +1,8 @@
 language: dart
-
-dart: dev
-
+sudo: false
+dart:
+  - stable
+  - dev
 before_install:
   - export CHROMEDRIVER_BINARY=/usr/bin/chromium-browser
   - export CHROMEDRIVER_ARGS=--no-sandbox
