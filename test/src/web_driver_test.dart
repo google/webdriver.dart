@@ -98,7 +98,8 @@ void main() {
       });
 
       test('findElements -- 4 found', () async {
-        var elements = await driver.findElements(const By.tagName('td')).toList();
+        var elements =
+            await driver.findElements(const By.tagName('td')).toList();
         expect(elements, hasLength(4));
         expect(elements, everyElement(isWebElement));
       });
@@ -142,8 +143,8 @@ void main() {
       test('activeElement', () async {
         var element = await driver.activeElement;
         expect(await element.name, 'body');
-        await (await driver.findElement(const By.cssSelector('input[type=text]')))
-            .click();
+        await (await driver
+            .findElement(const By.cssSelector('input[type=text]'))).click();
         element = await driver.activeElement;
         expect(await element.name, 'input');
       });
@@ -155,7 +156,8 @@ void main() {
       });
 
       test('execute', () async {
-        WebElement button = await driver.findElement(const By.tagName('button'));
+        WebElement button =
+            await driver.findElement(const By.tagName('button'));
         String script = '''
             arguments[1].textContent = arguments[0];
             return arguments[1];''';
@@ -164,7 +166,8 @@ void main() {
       });
 
       test('executeAsync', () async {
-        WebElement button = await driver.findElement(const By.tagName('button'));
+        WebElement button =
+            await driver.findElement(const By.tagName('button'));
         String script = '''
             arguments[1].textContent = arguments[0];
             arguments[2](arguments[1]);''';

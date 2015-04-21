@@ -38,10 +38,10 @@ void main() {
       form = await driver.findElement(const By.tagName('form'));
       textInput =
           await driver.findElement(const By.cssSelector('input[type=text]'));
-      checkbox =
-          await driver.findElement(const By.cssSelector('input[type=checkbox]'));
-      disabled =
-          await driver.findElement(const By.cssSelector('input[type=password]'));
+      checkbox = await driver
+          .findElement(const By.cssSelector('input[type=checkbox]'));
+      disabled = await driver
+          .findElement(const By.cssSelector('input[type=password]'));
       invisible = await driver.findElement(const By.tagName('div'));
     });
 
