@@ -40,7 +40,7 @@ void main() {
     });
 
     test('refresh', () async {
-      var element = await driver.findElement(new By.name('q'));
+      var element = await driver.findElement(const By.name('q'));
       await driver.navigate.refresh();
       await waitFor(() async {
         try {

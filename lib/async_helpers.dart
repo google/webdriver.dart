@@ -74,9 +74,6 @@ class Lock {
       await _lock.future;
     }
     _lock = new Completer();
-    // This return should not be required, but has been added to make analyzer
-    // happy.
-    return null;
   }
 
   void release() {

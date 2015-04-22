@@ -58,8 +58,9 @@ final ContentType _contentTypeJson =
 class _IOCommandProcessor implements CommandProcessor {
   final HttpClient client = new HttpClient();
 
-  Lock _lock = new Lock();
+  final Lock _lock = new Lock();
 
+  @override
   Future<Object> post(Uri uri, dynamic params, {bool value: true}) async {
     await _lock.acquire();
     HttpClientRequest request = await client.postUrl(uri);
@@ -75,6 +76,7 @@ class _IOCommandProcessor implements CommandProcessor {
     return await _processResponse(await request.close(), value);
   }
 
+  @override
   Future<Object> get(Uri uri, {bool value: true}) async {
     await _lock.acquire();
     HttpClientRequest request = await client.getUrl(uri);
@@ -82,6 +84,7 @@ class _IOCommandProcessor implements CommandProcessor {
     return await _processResponse(await request.close(), value);
   }
 
+  @override
   Future<Object> delete(Uri uri, {bool value: true}) async {
     await _lock.acquire();
     HttpClientRequest request = await client.deleteUrl(uri);
@@ -89,6 +92,7 @@ class _IOCommandProcessor implements CommandProcessor {
     return await _processResponse(await request.close(), value);
   }
 
+  @override
   Future close() async {
     await client.close(force: true);
   }
