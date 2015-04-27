@@ -117,8 +117,10 @@ class WebDriver implements SearchContext {
   Mouse get mouse => new Mouse._(this);
 
   /// Take a screenshot of the current page as PNG.
-  Future<List<int>> captureScreenshot() => getRequest('screenshot')
-      .then((screenshot) => CryptoUtils.base64StringToBytes(screenshot));
+  Stream<int> captureScreenshot() async* {
+    var encoded = await getRequest('screenshot');
+    yield* new Stream.fromIterable(CryptoUtils.base64StringToBytes(encoded));
+  }
 
   /// Inject a snippet of JavaScript into the page for execution in the context
   /// of the currently selected frame. The executed script is assumed to be

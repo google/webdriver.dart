@@ -176,7 +176,7 @@ void main() {
       });
 
       test('captureScreenshot', () async {
-        var screenshot = await driver.captureScreenshot();
+        var screenshot = await driver.captureScreenshot().toList();
         expect(screenshot, hasLength(isPositive));
         expect(screenshot, everyElement(new isInstanceOf<int>()));
       });
