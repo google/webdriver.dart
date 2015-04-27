@@ -14,6 +14,7 @@
 
 part of webdriver.core;
 
+/// Capabilities constants.
 class Capabilities {
   static const String browserName = "browserName";
   static const String platform = "platform";
@@ -53,6 +54,7 @@ class Capabilities {
   static Map<String, dynamic> get empty => new Map<String, dynamic>();
 }
 
+/// Browser name constants.
 class Browser {
   static const String firefox = "firefox";
   static const String safari = "safari";
@@ -64,6 +66,7 @@ class Browser {
   static const String ipad = "iPad";
 }
 
+/// Browser operating system constants.
 class BrowserPlatform {
   static const String any = "ANY";
   static const String android = "ANDROID";

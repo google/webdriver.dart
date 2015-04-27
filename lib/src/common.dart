@@ -30,7 +30,7 @@ abstract class SearchContext {
   /// Searches for multiple elements within the context.
   Stream<WebElement> findElements(By by);
 
-  /// Searchs for an element within the context.
+  /// Searches for an element within the context.
   ///
   /// Throws [NoSuchElementException] if no matching element is found.
   Future<WebElement> findElement(By by);
