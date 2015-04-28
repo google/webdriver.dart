@@ -17,7 +17,9 @@ library webdriver.html_test;
 import 'dart:html' as html;
 
 import 'package:unittest/html_enhanced_config.dart';
-import 'package:webdriver/html.dart' show WebDriver, Capabilities, createDriver;
+import 'package:unittest/unittest.dart';
+import 'package:webdriver/html.dart'
+    show WebDriver, Capabilities, createDriver, fromExistingSession;
 
 import 'src/alert_test.dart' as alert;
 import 'src/keyboard_test.dart' as keyboard;
@@ -47,6 +49,28 @@ void main() {
 
   test_util.testPagePath =
       Uri.parse(html.window.location.href).resolve('test_page.html').toString();
+
+  group('html-specific tests', () {
+    WebDriver driver;
+    setUp(() async {
+      driver = await test_util.createTestDriver();
+      await driver.get(test_util.testPagePath);
+    });
+
+    tearDown(() => driver.quit());
+
+    test('fromExistingSession', () async {
+      WebDriver newDriver =
+          await fromExistingSession(driver.id, uri: driver.uri);
+      expect(newDriver.capabilities, driver.capabilities);
+      var url = await newDriver.currentUrl;
+      expect(url, startsWith('http:'));
+      expect(url, endsWith('test_page.html'));
+      await newDriver.get('http://www.google.com/ncr');
+      url = await driver.currentUrl;
+      expect(url, contains('www.google.com'));
+    });
+  });
 
   alert.main();
   keyboard.main();
