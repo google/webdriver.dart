@@ -15,6 +15,7 @@
 library webdriver.core;
 
 import 'dart:async' show Future, Stream;
+import 'dart:collection' show UnmodifiableMapView;
 import 'dart:math' show Point, Rectangle;
 
 import 'package:crypto/crypto.dart' show CryptoUtils;
@@ -35,3 +36,32 @@ part 'src/target_locator.dart';
 part 'src/web_driver.dart';
 part 'src/web_element.dart';
 part 'src/window.dart';
+
+final Uri defaultUri = Uri.parse('http://127.0.0.1:4444/wd/hub/');
+
+Future<WebDriver> createDriver(CommandProcessor processor,
+    {Uri uri, Map<String, dynamic> desired}) async {
+  if (uri == null) {
+    uri = defaultUri;
+  }
+
+  if (desired == null) {
+    desired = Capabilities.empty;
+  }
+
+  var response = await processor.post(
+      uri.resolve('session'), {'desiredCapabilities': desired}, value: false);
+  return new WebDriver(processor, uri, response['sessionId'],
+      new UnmodifiableMapView(response['value']));
+}
+
+Future<WebDriver> fromExistingSession(
+    CommandProcessor processor, String sessionId, {Uri uri}) async {
+  if (uri == null) {
+    uri = defaultUri;
+  }
+
+  var response = await processor.get(uri.resolve('session/$sessionId'));
+  return new WebDriver(
+      processor, uri, sessionId, new UnmodifiableMapView(response['value']));
+}

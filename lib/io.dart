@@ -1,7 +1,6 @@
 library webdriver.io;
 
 import 'dart:async' show Future;
-import 'dart:collection' show UnmodifiableMapView;
 import 'dart:convert' show JSON, UTF8;
 import 'dart:io'
     show
@@ -12,45 +11,28 @@ import 'dart:io'
         HttpHeaders;
 
 import 'package:webdriver/async_helpers.dart' show Lock;
-import 'package:webdriver/core.dart' show WebDriver, Capabilities;
+import 'package:webdriver/core.dart' as core
+    show createDriver, fromExistingSession, WebDriver;
 import 'package:webdriver/src/command_processor.dart' show CommandProcessor;
 import 'package:webdriver/src/exception.dart' show WebDriverException;
 
-export 'package:webdriver/core.dart';
-
-final Uri defaultUri = Uri.parse('http://127.0.0.1:4444/wd/hub/');
+export 'package:webdriver/core.dart' hide createDriver, fromExistingSession;
 
 /// Creates a WebDriver instance connected to the specified WebDriver server.
 ///
 /// Note: WebDriver endpoints will be constructed using [resolve] against
 /// [uri]. Therefore, if [uri] does not end with a trailing slash, the
 /// last path component will be dropped.
-Future<WebDriver> createDriver({Uri uri, Map<String, dynamic> desired}) async {
-  if (uri == null) {
-    uri = defaultUri;
-  }
+Future<core.WebDriver> createDriver({Uri uri, Map<String, dynamic> desired}) =>
+    core.createDriver(new _IOCommandProcessor(), uri: uri, desired: desired);
 
-  var commandProcessor = new _IOCommandProcessor();
-
-  if (desired == null) {
-    desired = Capabilities.empty;
-  }
-
-  var response = await commandProcessor.post(
-      uri.resolve('session'), {'desiredCapabilities': desired}, value: false);
-  return new WebDriver(commandProcessor, uri, response['sessionId'],
-      new UnmodifiableMapView(response['value']));
-}
-
-Future<WebDriver> fromExistingSession(String sessionId, {Uri uri}) async {
-  if (uri == null) {
-    uri = defaultUri;
-  }
-
-  var commandProcessor = new _IOCommandProcessor();
-
-  return new WebDriver(commandProcessor, uri, sessionId, const {});
-}
+/// Creates a WebDriver instance connected to an existing session.
+///
+/// Note: WebDriver endpoints will be constructed using [resolve] against
+/// [uri]. Therefore, if [uri] does not end with a trailing slash, the
+/// last path component will be dropped.
+Future<core.WebDriver> fromExistingSession(String sessionId, {Uri uri}) =>
+    core.fromExistingSession(new _IOCommandProcessor(), sessionId, uri: uri);
 
 final ContentType _contentTypeJson =
     new ContentType("application", "json", charset: "utf-8");
