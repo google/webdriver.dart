@@ -19,7 +19,8 @@ import 'dart:io' show FileSystemEntity, Platform;
 import 'package:path/path.dart' as path;
 import 'package:unittest/compact_vm_config.dart';
 import 'package:unittest/unittest.dart';
-import 'package:webdriver/io.dart' show WebDriver, Capabilities, createDriver, fromExistingSession;
+import 'package:webdriver/io.dart'
+    show WebDriver, Capabilities, createDriver, fromExistingSession;
 
 import 'src/alert_test.dart' as alert;
 import 'src/keyboard_test.dart' as keyboard;
@@ -72,7 +73,6 @@ void main() {
   test_util.testPagePath = path.toUri(testPagePath).toString();
 
   group('io-specific tests', () {
-
     WebDriver driver;
     setUp(() async {
       driver = await test_util.createTestDriver();
@@ -82,7 +82,8 @@ void main() {
     tearDown(() => driver.quit());
 
     test('fromExistingSession', () async {
-      WebDriver newDriver = await fromExistingSession(driver.id, uri: driver.uri);
+      WebDriver newDriver =
+          await fromExistingSession(driver.id, uri: driver.uri);
       expect(newDriver.capabilities, driver.capabilities);
       var url = await newDriver.currentUrl;
       expect(url, startsWith('file:'));
