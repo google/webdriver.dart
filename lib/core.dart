@@ -63,5 +63,5 @@ Future<WebDriver> fromExistingSession(
 
   var response = await processor.get(uri.resolve('session/$sessionId'));
   return new WebDriver(
-      processor, uri, sessionId, new UnmodifiableMapView(response['value']));
+      processor, uri, sessionId, new UnmodifiableMapView(response));
 }
