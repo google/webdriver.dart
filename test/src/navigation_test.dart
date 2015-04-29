@@ -14,13 +14,13 @@
 
 library webdriver.navigation_test;
 
-import 'package:unittest/unittest.dart';
+import 'package:test/test.dart';
 import 'package:webdriver/async_helpers.dart';
 import 'package:webdriver/core.dart';
 
 import '../test_util.dart';
 
-void main() {
+void runTests() {
   group('Navigation', () {
     WebDriver driver;
 
