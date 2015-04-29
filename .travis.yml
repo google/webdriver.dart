@@ -19,6 +19,5 @@ before_script:
   - wget http://chromedriver.storage.googleapis.com/2.12/chromedriver_linux64.zip
   - unzip chromedriver_linux64.zip
   - export PATH=$PATH:$PWD
-  - ln -s /usr/bin/chromium-browser google-chrome
 
 script: ./tool/travis.sh
