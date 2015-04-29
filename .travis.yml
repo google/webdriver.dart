@@ -1,6 +1,9 @@
 language: dart
+sudo: false
 
-dart: dev
+dart: 
+  - dev
+  - stable
 
 before_install:
   - export CHROMEDRIVER_BINARY=/usr/bin/chromium-browser
@@ -15,6 +18,7 @@ before_script:
 # version of chromium than is available on travis by default.
   - wget http://chromedriver.storage.googleapis.com/2.12/chromedriver_linux64.zip
   - unzip chromedriver_linux64.zip
-  - sudo mv chromedriver /usr/bin/
+  - export PATH=$PATH:$PWD
+  - ln -s /usr/bin/chromium-browser google-chrome
 
 script: ./tool/travis.sh
