@@ -28,7 +28,7 @@ dartanalyzer --fatal-warnings \
   test/io_test.dart
 
 # run test/async_helpers_test.dart
-pub run test test/async_helpers_test.dart -p vm -p chrome -r expanded
+pub run test test/async_helpers_test.dart -p vm -r expanded 
 
 # Start chromedriver.
 chromedriver --port=4444 --url-base=wd/hub &
