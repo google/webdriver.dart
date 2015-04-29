@@ -21,16 +21,16 @@ import 'package:test/test.dart';
 import 'package:webdriver/html.dart'
     show WebDriver, Capabilities, createDriver, fromExistingSession;
 
-import 'src/alert_test.dart' as alert;
-import 'src/keyboard_test.dart' as keyboard;
-import 'src/logs_test.dart' as logs;
-import 'src/mouse_test.dart' as mouse;
-import 'src/navigation_test.dart' as navigation;
-import 'src/options_test.dart' as options;
-import 'src/target_locator_test.dart' as target_locator;
-import 'src/web_driver_test.dart' as web_driver;
-import 'src/web_element_test.dart' as web_element;
-import 'src/window_test.dart' as window;
+import 'src/alert.dart' as alert;
+import 'src/keyboard.dart' as keyboard;
+import 'src/logs.dart' as logs;
+import 'src/mouse.dart' as mouse;
+import 'src/navigation.dart' as navigation;
+import 'src/options.dart' as options;
+import 'src/target_locator.dart' as target_locator;
+import 'src/web_driver.dart' as web_driver;
+import 'src/web_element.dart' as web_element;
+import 'src/window.dart' as window;
 import 'test_util.dart' as test_util;
 
 void main() {
