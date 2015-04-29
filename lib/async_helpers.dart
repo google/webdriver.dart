@@ -16,7 +16,7 @@ library webdriver.async_helpers;
 
 import 'dart:async' show Completer, Future;
 
-import 'package:test/test.dart' show expect, isNotNull;
+import 'package:matcher/matcher.dart';
 
 const defaultInterval = const Duration(milliseconds: 500);
 const defaultTimeout = const Duration(seconds: 5);
@@ -49,6 +49,31 @@ class Clock {
   Future waitFor(condition(), {matcher: isNotNull,
       Duration timeout: defaultTimeout,
       Duration interval: defaultInterval}) async {
+    expect(value, matcher) {
+      if (matcher is! Matcher) {
+        matcher = equals(matcher);
+      }
+
+      var matchState = {};
+      if (matcher.matches(value, matchState)) {
+        return;
+      }
+      var desc = new StringDescription()
+        ..add('Expected: ')
+        ..addDescriptionOf(matcher)
+        ..add('\n')
+        ..add('  Actual: ')
+        ..addDescriptionOf(value)
+        ..add('\n');
+
+      var mismatchDescription = new StringDescription();
+      matcher.describeMismatch(value, mismatchDescription, matchState);
+      if (mismatchDescription.length > 0) {
+        desc.add('   Which: ${mismatchDescription}\n');
+      }
+      throw new Exception(desc.toString());
+    }
+
     var endTime = now.add(timeout);
     while (true) {
       try {
