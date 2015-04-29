@@ -14,12 +14,12 @@
 
 library webdriver.web_driver_test;
 
-import 'package:unittest/unittest.dart';
+import 'package:test/test.dart';
 import 'package:webdriver/core.dart';
 
 import '../test_util.dart';
 
-void main() {
+void runTests() {
   group('WebDriver', () {
     group('create', () {
       test('default', () async {
@@ -39,16 +39,13 @@ void main() {
       });
 
       test('firefox', () async {
-        // Avoid this test on the bot; currently we just test against chromedriver.
-        if (runningOnTravis) return;
-
         WebDriver driver = await createTestDriver(
             additionalCapabilities: Capabilities.firefox);
         await driver.get('http://www.google.com');
         var element = await driver.findElement(const By.name('q'));
         expect(await element.name, 'input');
         await driver.quit();
-      });
+      }, skip: runningOnTravis);
     });
 
     group('methods', () {

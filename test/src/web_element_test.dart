@@ -14,12 +14,12 @@
 
 library webdriver.web_element_test;
 
-import 'package:unittest/unittest.dart';
+import 'package:test/test.dart';
 import 'package:webdriver/core.dart';
 
 import '../test_util.dart';
 
-void main() {
+void runTests() {
   group('WebElement', () {
     WebDriver driver;
     WebElement table;

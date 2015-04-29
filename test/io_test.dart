@@ -11,14 +11,13 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
+@TestOn("vm")
 library webdriver.io_test;
 
 import 'dart:io' show FileSystemEntity, Platform;
 
 import 'package:path/path.dart' as path;
-import 'package:unittest/compact_vm_config.dart';
-import 'package:unittest/unittest.dart';
+import 'package:test/test.dart';
 import 'package:webdriver/io.dart'
     show WebDriver, Capabilities, createDriver, fromExistingSession;
 
@@ -36,8 +35,6 @@ import 'src/window_test.dart' as window;
 import 'test_util.dart' as test_util;
 
 void main() {
-  useCompactVMConfiguration();
-
   test_util.runningOnTravis = Platform.environment['TRAVIS'] == 'true';
   test_util.createTestDriver = ({Map additionalCapabilities}) {
     Map capabilities = Capabilities.chrome;
@@ -94,14 +91,14 @@ void main() {
     });
   });
 
-  alert.main();
-  keyboard.main();
-  logs.main();
-  mouse.main();
-  navigation.main();
-  options.main();
-  target_locator.main();
-  web_driver.main();
-  web_element.main();
-  window.main();
+  alert.runTests();
+  keyboard.runTests();
+  logs.runTests();
+  mouse.runTests();
+  navigation.runTests();
+  options.runTests();
+  target_locator.runTests();
+  web_driver.runTests();
+  web_element.runTests();
+  window.runTests();
 }
