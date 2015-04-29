@@ -16,7 +16,7 @@ library webdriver.async_helpers;
 
 import 'dart:async' show Completer, Future;
 
-import 'package:test/test.dart' show expect, isNotNull;
+import 'package:matcher/matcher.dart' show expect, isNotNull;
 
 const defaultInterval = const Duration(milliseconds: 500);
 const defaultTimeout = const Duration(seconds: 5);
