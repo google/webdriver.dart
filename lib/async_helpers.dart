@@ -67,7 +67,7 @@ class Clock {
         ..add('\n');
 
       var mismatchDescription = new StringDescription();
-      matcher.describeMismatch(value, mismatchDescription, matchState);
+      matcher.describeMismatch(value, mismatchDescription, matchState, true);
       if (mismatchDescription.length > 0) {
         desc.add('   Which: ${mismatchDescription}\n');
       }
