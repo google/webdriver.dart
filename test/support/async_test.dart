@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-library webdriver.async_helpers_test;
+library webdriver.support.async_test;
 
 import 'dart:async' show Future;
 
 import 'package:test/test.dart';
-import 'package:webdriver/async_helpers.dart';
+import 'package:webdriver/support/async.dart';
 
 void main() {
   group('Lock', () {

@@ -15,12 +15,7 @@
 @TestOn("vm")
 library webdriver.io_test;
 
-import 'dart:io' show FileSystemEntity, Platform;
-
-import 'package:path/path.dart' as path;
 import 'package:test/test.dart';
-import 'package:webdriver/io.dart'
-    show WebDriver, Capabilities, createDriver, fromExistingSession;
 
 import 'src/alert.dart' as alert;
 import 'src/keyboard.dart' as keyboard;
@@ -33,64 +28,10 @@ import 'src/web_driver.dart' as web_driver;
 import 'src/web_element.dart' as web_element;
 import 'src/window.dart' as window;
 
-import 'test_util.dart' as test_util;
+import 'io_config.dart' as config;
 
 void main() {
-  test_util.runningOnTravis = Platform.environment['TRAVIS'] == 'true';
-  test_util.createTestDriver = ({Map additionalCapabilities}) {
-    Map capabilities = Capabilities.chrome;
-    Map env = Platform.environment;
-
-    Map chromeOptions = {};
-
-    if (env['CHROMEDRIVER_BINARY'] != null) {
-      chromeOptions['binary'] = env['CHROMEDRIVER_BINARY'];
-    }
-
-    if (env['CHROMEDRIVER_ARGS'] != null) {
-      chromeOptions['args'] = env['CHROMEDRIVER_ARGS'].split(' ');
-    }
-
-    if (chromeOptions.isNotEmpty) {
-      capabilities['chromeOptions'] = chromeOptions;
-    }
-
-    if (additionalCapabilities != null) {
-      capabilities.addAll(additionalCapabilities);
-    }
-
-    return createDriver(desired: capabilities);
-  };
-
-  var testPagePath = path.join(path.current, 'test', 'test_page.html');
-  testPagePath = path.absolute(testPagePath);
-  if (!FileSystemEntity.isFileSync(testPagePath)) {
-    throw new Exception('Could not find the test file at "$testPagePath".'
-        ' Make sure you are running tests from the root of the project.');
-  }
-  test_util.testPagePath = path.toUri(testPagePath).toString();
-
-  group('io-specific tests', () {
-    WebDriver driver;
-    setUp(() async {
-      driver = await test_util.createTestDriver();
-      await driver.get(test_util.testPagePath);
-    });
-
-    tearDown(() => driver.quit());
-
-    test('fromExistingSession', () async {
-      WebDriver newDriver =
-          await fromExistingSession(driver.id, uri: driver.uri);
-      expect(newDriver.capabilities, driver.capabilities);
-      var url = await newDriver.currentUrl;
-      expect(url, startsWith('file:'));
-      expect(url, endsWith('test_page.html'));
-      await newDriver.get('http://www.google.com/ncr');
-      url = await driver.currentUrl;
-      expect(url, contains('www.google.com'));
-    });
-  });
+  config.config();
 
   alert.runTests();
   keyboard.runTests();
