@@ -26,8 +26,8 @@ dartanalyzer --fatal-warnings \
   lib/support/forwarder.dart \
   test/html_test.dart \
   test/io_test.dart \
-  lib/support/async_test.dart \
-  lib/support/forwarder_test.dart
+  test/support/async_test.dart \
+  test/support/forwarder_test.dart
 
 
 # Start chromedriver.
