@@ -18,7 +18,7 @@
 set -e
 
 # Verify that the libraries are error free.
-grep -Rl --include "*.dart" --exclude-dir="packages" '^library .*;$' . | \
+grep -Rl --include "*.dart" --exclude-dir="packages" '^library .*;$' lib/ test/ | \
     xargs dartanalyzer --fatal-warnings
 
 # Start chromedriver.
