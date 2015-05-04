@@ -1,5 +1,5 @@
 name: webdriver
-version: 0.10.0-pre.7
+version: 0.10.0-pre.8
 author: Marc Fisher II <fisherii@google.com>
 description: >
   Provides WebDriver bindings for Dart. These use the WebDriver JSON interface,
