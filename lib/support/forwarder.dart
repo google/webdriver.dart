@@ -14,7 +14,7 @@
 
 library webdriver.support.forwarder;
 
-import 'dart:async' show Future;
+import 'dart:async' show Future, StreamConsumer;
 import 'dart:convert' show JSON, UTF8;
 import 'dart:io' show ContentType, Directory, File, HttpRequest, HttpStatus;
 
@@ -127,7 +127,7 @@ class WebDriverForwarder {
           // take a screenshot and save to file system
           var file =
               new File(path.join(outputDir.path, params['file'])).openWrite();
-          await driver.captureScreenshot().pipe(file);
+          await driver.captureScreenshot().pipe(file as StreamConsumer<int>);
           return null;
         }
         break;
