@@ -6,7 +6,6 @@ library test.runner.loader;
 
 import 'dart:async';
 import 'dart:io';
-import 'dart:isolate';
 
 import 'package:analyzer/analyzer.dart';
 import 'package:path/path.dart' as p;
@@ -15,15 +14,12 @@ import 'package:test/src/backend/invoker.dart';
 import 'package:test/src/backend/metadata.dart';
 import 'package:test/src/backend/suite.dart';
 import 'package:test/src/backend/test_platform.dart';
-import 'package:test/src/util/dart.dart';
 import 'package:test/src/util/io.dart';
 import 'package:test/src/util/isolate_wrapper.dart';
-import 'package:test/src/util/remote_exception.dart';
 import 'package:test/src/utils.dart';
 import 'server.dart';
 import 'package:test/src/runner/load_exception.dart';
 import 'package:test/src/runner/parse_metadata.dart';
-import 'package:test/src/runner/vm/isolate_test.dart';
 
 /// A class for finding test files and loading them into a runnable form.
 class Loader {
