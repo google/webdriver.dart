@@ -48,9 +48,10 @@ class BrowserServer {
   /// If [color] is true, console colors will be used when compiling Dart.
   ///
   /// If the package root doesn't exist, throws an [ApplicationException].
-  static Future<BrowserServer> start(
-      {String root, String packageRoot, Uri pubServeUrl, bool color: false, String configDir}) {
-    var server = new BrowserServer._(root, packageRoot, pubServeUrl, color, configDir);
+  static Future<BrowserServer> start({String root, String packageRoot,
+      Uri pubServeUrl, bool color: false, String configDir}) {
+    var server =
+        new BrowserServer._(root, packageRoot, pubServeUrl, color, configDir);
     return server._load().then((_) => server);
   }
 
@@ -131,7 +132,8 @@ class BrowserServer {
   /// per run, rather than one per browser per run.
   final _compileFutures = new Map<String, Future>();
 
-  BrowserServer._(String root, String packageRoot, Uri pubServeUrl, bool color, this._configDir)
+  BrowserServer._(String root, String packageRoot, Uri pubServeUrl, bool color,
+      this._configDir)
       : _root = root == null ? p.current : root,
         _packageRoot = packageRootFor(root, packageRoot),
         _pubServeUrl = pubServeUrl,
@@ -382,19 +384,19 @@ void main() {
             configFile: p.join(_configDir, 'dartium_cfg.json'));
       case TestPlatform.chrome:
         return new WebDriver(url,
-        configFile: p.join(_configDir, 'chrome_cfg.json'));
+            configFile: p.join(_configDir, 'chrome_cfg.json'));
       case TestPlatform.phantomJS:
         return new WebDriver(url,
-        configFile: p.join(_configDir, 'phantomjs_cfg.json'));
+            configFile: p.join(_configDir, 'phantomjs_cfg.json'));
       case TestPlatform.firefox:
         return new WebDriver(url,
-        configFile: p.join(_configDir, 'firefox_cfg.json'));
+            configFile: p.join(_configDir, 'firefox_cfg.json'));
       case TestPlatform.safari:
         return new WebDriver(url,
-        configFile: p.join(_configDir, 'safari_cfg.json'));
+            configFile: p.join(_configDir, 'safari_cfg.json'));
       case TestPlatform.internetExplorer:
         return new WebDriver(url,
-        configFile: p.join(_configDir, 'ie_cfg.json'));
+            configFile: p.join(_configDir, 'ie_cfg.json'));
       default:
         throw new ArgumentError("$browser is not a browser.");
     }

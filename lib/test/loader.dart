@@ -83,8 +83,8 @@ class Loader {
   /// If [color] is true, console colors will be used when compiling Dart.
   ///
   /// If the package root doesn't exist, throws an [ApplicationException].
-  Loader(Iterable<TestPlatform> platforms,
-      {String root, String packageRoot, Uri pubServeUrl, bool color: false, String configDir})
+  Loader(Iterable<TestPlatform> platforms, {String root, String packageRoot,
+      Uri pubServeUrl, bool color: false, String configDir})
       : _platforms = platforms.toList(),
         _pubServeUrl = pubServeUrl,
         _root = root == null ? p.current : root,
@@ -167,77 +167,6 @@ class Loader {
       String path, TestPlatform platform, Metadata metadata) => _browserServer
       .then(
           (browserServer) => browserServer.loadSuite(path, platform, metadata));
-
-  /// Load the test suite at [path] in VM isolate.
-  ///
-  /// [metadata] is the suite-level metadata for the test.
-  Future<Suite> _loadVmFile(String path, Metadata metadata) {
-    var receivePort = new ReceivePort();
-
-    return new Future.sync(() {
-      if (_pubServeUrl != null) {
-        var url = _pubServeUrl
-            .resolve(p.relative(path, from: 'test') + '.vm_test.dart');
-        return Isolate
-            .spawnUri(url, [], {
-          'reply': receivePort.sendPort,
-          'metadata': metadata.serialize()
-        })
-            .then((isolate) => new IsolateWrapper(isolate, () {}))
-            .catchError((error, stackTrace) {
-          if (error is! IsolateSpawnException) throw error;
-
-          if (error.message.contains("OS Error: Connection refused") ||
-              error.message.contains("The remote computer refused")) {
-            throw new LoadException(path,
-                "Error getting $url: Connection refused\n"
-                'Make sure "pub serve" is running.');
-          } else if (error.message.contains("404 Not Found")) {
-            throw new LoadException(path, "Error getting $url: 404 Not Found\n"
-                'Make sure "pub serve" is serving the test/ directory.');
-          }
-
-          throw new LoadException(path, error);
-        });
-      } else {
-        return runInIsolate('''
-import "package:test/src/backend/metadata.dart";
-import "package:test/src/runner/vm/isolate_listener.dart";
-
-import "${p.toUri(p.absolute(path))}" as test;
-
-void main(_, Map message) {
-  var sendPort = message['reply'];
-  var metadata = new Metadata.deserialize(message['metadata']);
-  IsolateListener.start(sendPort, metadata, () => test.main);
-}
-''', {
-          'reply': receivePort.sendPort,
-          'metadata': metadata.serialize()
-        }, packageRoot: p.toUri(_packageRoot));
-      }
-    }).catchError((error, stackTrace) {
-      receivePort.close();
-      if (error is LoadException) throw error;
-      return new Future.error(new LoadException(path, error), stackTrace);
-    }).then((isolate) {
-      _isolates.add(isolate);
-      return receivePort.first;
-    }).then((response) {
-      if (response["type"] == "loadException") {
-        return new Future.error(new LoadException(path, response["message"]));
-      } else if (response["type"] == "error") {
-        var asyncError = RemoteException.deserialize(response["error"]);
-        return new Future.error(
-            new LoadException(path, asyncError.error), asyncError.stackTrace);
-      }
-
-      return new Suite(response["tests"].map((test) {
-        var testMetadata = new Metadata.deserialize(test['metadata']);
-        return new IsolateTest(test['name'], testMetadata, test['sendPort']);
-      }), metadata: metadata, path: path, platform: "VM");
-    });
-  }
 
   /// Closes the loader and releases all resources allocated by it.
   Future close() {
