@@ -40,7 +40,6 @@ void main() {
 
     setUp(() async {
       driver = await test_util.createTestDriver();
-      ;
       forwarder =
           new WebDriverForwarder(driver, prefix: '/webdriver/session/1');
 
