@@ -27,5 +27,5 @@ chromedriver --port=4444 --url-base=wd/hub &
 # Run tests
 # TODO(DrMarcII) enable running tests in browser when chrome setuid problem
 # is fixed on travis.
-pub run test -r expanded -p vm
+pub run test:test -r expanded -p vm
 pub run webdriver:test -r expanded -p chrome test/support/async
