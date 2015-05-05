@@ -1,0 +1,9 @@
+{
+  "desired": {
+    "browserName": "chrome",
+    "chromeOptions": {
+      "binary": "$CHROMEDRIVER_BINARY",
+      "args": [ "--no-sandbox" ]
+    }
+  }
+}
