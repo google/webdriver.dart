@@ -24,7 +24,7 @@ import 'dart:io'
         HttpClientResponse,
         HttpHeaders;
 
-import 'package:webdriver/async_helpers.dart' show Lock;
+import 'package:webdriver/support/async.dart' show Lock;
 import 'package:webdriver/core.dart' as core
     show createDriver, fromExistingSession, WebDriver;
 import 'package:webdriver/src/command_processor.dart' show CommandProcessor;

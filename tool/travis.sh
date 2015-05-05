@@ -18,15 +18,8 @@
 set -e
 
 # Verify that the libraries are error free.
-dartanalyzer --fatal-warnings \
-  lib/async_helpers.dart \
-  lib/core.dart \
-  lib/html.dart \
-  lib/io.dart \
-  test/async_helpers_test.dart \
-  test/html_test.dart \
-  test/io_test.dart
-
+grep -Rl --include "*.dart" --exclude-dir="packages" '^library .*;$' lib/ test/ | \
+    xargs dartanalyzer --fatal-warnings
 
 # Start chromedriver.
 chromedriver --port=4444 --url-base=wd/hub &
@@ -35,4 +28,3 @@ chromedriver --port=4444 --url-base=wd/hub &
 # TODO(DrMarcII) enable running tests in browser when chrome setuid problem
 # is fixed on travis.
 pub run test -r expanded -p vm
-

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 
 <!--
-Copyright 2013 Google Inc. All Rights Reserved.
+Copyright 2015 Google Inc. All Rights Reserved.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -17,11 +17,20 @@ limitations under the License.
 -->
 
 <html>
-<head>
-    <title>frame</title>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
 </head>
-
 <body>
-<p id="text">this is a frame</p>
+
+<input type="button" wd-element-id="button" onclick="buttonClicked()" value="button">
+
+<div wd-element-id="div">Button not clicked</div>
+
+<script>
+    function buttonClicked() {
+        document.querySelector('[wd-element-id="div"]').textContent = 'Button clicked';
+    }
+</script>
 </body>
 </html>
