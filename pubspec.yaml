@@ -10,7 +10,6 @@ environment:
 dependencies:
   crypto: '^0.9.0'
   matcher: '^0.12.0'
-  test:
-    path: ../test
+  test: "^0.12.0"
 dev_dependencies:
   path: '^1.3.5'
