@@ -72,12 +72,17 @@ void main() {
       try {
         await forwardedDriver.quit();
       } catch (e) {
-        print('Error quitting forwardedDriver: $e');
+        print('Ignored error quitting forwardedDriver: $e');
       }
       try {
         await server.close(force: true);
       } catch (e) {
-        print('Error quitting server: $e');
+        print('Ignored error quitting server: $e');
+      }
+      try {
+        await driver.quit();
+      } catch (e) {
+        print('Ignored error quitting driver: $e');
       }
     });
 

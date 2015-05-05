@@ -178,13 +178,20 @@ class WebDriver implements SearchContext {
   }
 
   Future postRequest(String command, [params]) =>
-      _commandProcessor.post(_prefix.resolve(command), params);
+      _commandProcessor.post(_resolve(command), params);
 
-  Future getRequest(String command) =>
-      _commandProcessor.get(_prefix.resolve(command));
+  Future getRequest(String command) => _commandProcessor.get(_resolve(command));
 
   Future deleteRequest(String command) =>
-      _commandProcessor.delete(_prefix.resolve(command));
+      _commandProcessor.delete(_resolve(command));
+
+  Uri _resolve(String command) {
+    var uri = _prefix.resolve(command);
+    if (uri.path.endsWith('/')) {
+      uri = uri.replace(path: uri.path.substring(0, uri.path.length - 1));
+    }
+    return uri;
+  }
 
   @override
   WebDriver get driver => this;
