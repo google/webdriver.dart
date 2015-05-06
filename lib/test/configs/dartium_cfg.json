@@ -1,0 +1,9 @@
+{
+  "desired": {
+    "browserName": "chrome",
+    "chromeOptions": {
+      "binary": "/usr/lib/google-dartlang/bin/dartium",
+      "args": [ "--no-sandbox" ]
+    }
+  }
+}

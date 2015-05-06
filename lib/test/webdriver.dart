@@ -9,9 +9,12 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:webdriver/support/async.dart';
+import 'package:webdriver/support/forwarder.dart';
 import 'package:webdriver/io.dart' as wd;
 
+import 'package:test/src/backend/test_platform.dart';
 import 'package:test/src/runner/browser/browser.dart';
+import 'package:shelf/shelf.dart' as shelf;
 
 /// A class for running a browser via WebDriver.
 ///
@@ -21,6 +24,8 @@ import 'package:test/src/runner/browser/browser.dart';
 ///
 /// Any errors starting or running the process are reported through [onExit].
 class WebDriver extends Browser {
+  final TestPlatform browser;
+  Future<WebDriverForwarder> _forwarder;
 
   /// Starts a new WebDriver-provisioned open to the given [url], which may
   /// be a [Uri] or a [String].
@@ -35,7 +40,7 @@ class WebDriver extends Browser {
   ///   "address": <uri of the WebDriver server>,
   ///   "desired": <map of desired capabilities>
   /// }
-  WebDriver(url, {configFile: 'test/webdriver_cfg.json'}) {
+  WebDriver(url, {configFile: 'test/webdriver_cfg.json', this.browser}) {
     if (configFile is String) {
       configFile = new File(configFile);
     }
@@ -53,6 +58,8 @@ class WebDriver extends Browser {
     }
 
     _driver = wd.createDriver(uri: address, desired: desired);
+    _forwarder = _driver.then((driver) =>
+        new WebDriverForwarder(driver, prefix: 'webdriver/session/1'));
     _onExit = () async {
       var driver = await _driver;
       await driver.get(url.toString());
@@ -97,6 +104,9 @@ class WebDriver extends Browser {
 
   @override
   Future get onExit => _onExit;
+
+  Future<shelf.Response> handler(shelf.Request request) async =>
+      (await _forwarder).handler(request);
 
   @override
   Future close() async {

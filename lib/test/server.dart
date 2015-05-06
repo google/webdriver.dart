@@ -147,6 +147,7 @@ class BrowserServer {
 
     if (_pubServeUrl == null) {
       cascade = cascade
+          .add(_webDriverHandler)
           .add(_createPackagesHandler())
           .add(_jsHandler.handler)
           .add(createStaticHandler(_root))
@@ -160,6 +161,21 @@ class BrowserServer {
     return shelf_io.serve(pipeline, 'localhost', 0).then((server) {
       _server = server;
     });
+  }
+
+  _webDriverHandler(shelf.Request request) {
+    var cascade = new shelf.Cascade();
+    var atLeastOne = false;
+    for (var browser in _browsers.values) {
+      if (browser is WebDriver) {
+        atLeastOne = true;
+        cascade = cascade.add(browser.handler);
+      }
+    }
+    if (atLeastOne) {
+      return cascade.handler(request);
+    }
+    return new shelf.Response.notFound(null);
   }
 
   /// Returns a handler that serves the contents of the "packages/" directory
@@ -381,22 +397,27 @@ void main() {
     switch (browser) {
       case TestPlatform.dartium:
         return new WebDriver(url,
+            browser: browser,
             configFile: p.join(_configDir, 'dartium_cfg.json'));
       case TestPlatform.chrome:
         return new WebDriver(url,
+            browser: browser,
             configFile: p.join(_configDir, 'chrome_cfg.json'));
       case TestPlatform.phantomJS:
         return new WebDriver(url,
+            browser: browser,
             configFile: p.join(_configDir, 'phantomjs_cfg.json'));
       case TestPlatform.firefox:
         return new WebDriver(url,
+            browser: browser,
             configFile: p.join(_configDir, 'firefox_cfg.json'));
       case TestPlatform.safari:
         return new WebDriver(url,
+            browser: browser,
             configFile: p.join(_configDir, 'safari_cfg.json'));
       case TestPlatform.internetExplorer:
         return new WebDriver(url,
-            configFile: p.join(_configDir, 'ie_cfg.json'));
+            browser: browser, configFile: p.join(_configDir, 'ie_cfg.json'));
       default:
         throw new ArgumentError("$browser is not a browser.");
     }

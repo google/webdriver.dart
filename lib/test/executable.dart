@@ -29,12 +29,6 @@ import 'package:test/src/utils.dart';
 /// The argument parser used to parse the executable arguments.
 final _parser = new ArgParser(allowTrailingOptions: true);
 
-/// The default number of test suites to run at once.
-///
-/// This defaults to half the available processors, since presumably some of
-/// them will be used for the OS and other processes.
-final _defaultConcurrency = math.max(1, Platform.numberOfProcessors ~/ 2);
-
 /// A merged stream of all signals that tell the test runner to shut down
 /// gracefully.
 ///
@@ -90,13 +84,9 @@ void main(List<String> args) {
       help: 'A plain-text substring of the name of the test to run.');
   _parser.addOption("platform",
       abbr: 'p',
-      help: 'The platform(s) on which to run the tests.',
+      help: 'The platform on which to run the tests.',
       allowed: allPlatforms.map((platform) => platform.identifier).toList(),
-      defaultsTo: 'chrome',
-      allowMultiple: true);
-  _parser.addOption("concurrency",
-      abbr: 'j', help: 'The number of concurrent test suites run.\n'
-      '(defaults to $_defaultConcurrency)', valueHelp: 'threads');
+      defaultsTo: 'chrome');
   _parser.addOption("pub-serve",
       help: 'The port of a pub serve instance serving "test/".',
       hide: !supportsPubServe,
@@ -159,24 +149,19 @@ transformers:
     }
   }
 
-  var platforms = options["platform"].map(TestPlatform.find);
+  var platforms;
+  if (options["platform"] is List) {
+    platforms = options["platform"].map(TestPlatform.find);
+  } else {
+    platforms = [TestPlatform.find(options["platform"])];
+  }
   var loader = new Loader(platforms,
       pubServeUrl: pubServeUrl,
       packageRoot: options["package-root"],
       color: color,
       configDir: options["config-dir"]);
 
-  var concurrency = _defaultConcurrency;
-  if (options["concurrency"] != null) {
-    try {
-      concurrency = int.parse(options["concurrency"]);
-    } catch (error) {
-      _printUsage('Couldn\'t parse --concurrency "${options["concurrency"]}":'
-          ' ${error.message}');
-      exitCode = exit_codes.usage;
-      return;
-    }
-  }
+  var concurrency = 1;
 
   var paths = options.rest;
   if (paths.isEmpty) {
