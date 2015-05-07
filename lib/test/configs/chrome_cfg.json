@@ -1,0 +1,9 @@
+{
+  "address": "$WEBDRIVER_SERVER",
+  "desired": {
+    "browserName": "chrome",
+    "tunnelIdentifier": "$TRAVIS_JOB_NUMBER",
+    "build": "$TRAVIS_BUILD_NUMBER",
+    "tags": ["$TRAVIS_PULL_REQUEST"]
+  }
+}

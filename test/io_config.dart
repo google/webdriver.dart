@@ -14,7 +14,8 @@
 
 library webdriver.io_test;
 
-import 'dart:io' show FileSystemEntity, Platform;
+import 'dart:convert' show JSON;
+import 'dart:io' show File, FileSystemEntity, Platform;
 
 import 'package:path/path.dart' as path;
 import 'package:webdriver/io.dart' show WebDriver, Capabilities, createDriver;
@@ -23,29 +24,21 @@ import 'test_util.dart' as test_util;
 
 void config() {
   test_util.runningOnTravis = Platform.environment['TRAVIS'] == 'true';
+  var config = _readConfig(new File('lib/test/configs/chrome_cfg.json'));
+
   test_util.createTestDriver = ({Map additionalCapabilities}) {
-    Map capabilities = Capabilities.chrome;
-    Map env = Platform.environment;
-
-    Map chromeOptions = {};
-
-    if (env['CHROMEDRIVER_BINARY'] != null) {
-      chromeOptions['binary'] = env['CHROMEDRIVER_BINARY'];
+    Map capabilities = {};
+    if (config.containsKey('desired')) {
+      capabilities.addAll(config['desired']);
     }
-
-    if (env['CHROMEDRIVER_ARGS'] != null) {
-      chromeOptions['args'] = env['CHROMEDRIVER_ARGS'].split(' ');
-    }
-
-    if (chromeOptions.isNotEmpty) {
-      capabilities['chromeOptions'] = chromeOptions;
-    }
-
     if (additionalCapabilities != null) {
       capabilities.addAll(additionalCapabilities);
     }
-
-    return createDriver(desired: capabilities);
+    var address = null;
+    if (config.containsKey('address')) {
+      address = Uri.parse(config['address']);
+    }
+    return createDriver(uri: address, desired: capabilities);
   };
 
   var testPagePath = path.join(path.current, 'test', 'test_page.html');
@@ -55,4 +48,31 @@ void config() {
         ' Make sure you are running tests from the root of the project.');
   }
   test_util.testPagePath = path.toUri(testPagePath).toString();
+}
+
+Map<String, dynamic> _readConfig(File configFile) {
+  Map config = JSON.decode(configFile.readAsStringSync());
+  return _updateConfig(config);
+}
+
+_updateConfig(config) {
+  if (config is String && config.startsWith(r'$')) {
+    return Platform.environment[config.substring(1)];
+  }
+  if (config is Map) {
+    var result = {};
+    for (var key in config.keys) {
+      var value = config[key];
+      result[_updateConfig(key)] = _updateConfig(value);
+    }
+    return result;
+  }
+  if (config is Iterable) {
+    var result = [];
+    for (var value in config) {
+      result.add(_updateConfig(value));
+    }
+    return result;
+  }
+  return config;
 }
