@@ -17,13 +17,9 @@
 # Fast fail the script on failures.
 set -e
 
-printenv
-
 # Verify that the libraries are error free.
 grep -Rl --include "*.dart" --exclude-dir="packages" '^library .*;$' lib/ test/ bin/ | \
     xargs dartanalyzer --fatal-warnings
-
-export WEBDRIVER_SERVER=http://$SAUCE_USERNAME:$SAUCE_ACCESS_KEY@ondemand.saucelabs.com/wd/hub/
 
 # Run tests
 # TODO(DrMarcII) enable running tests in browser when chrome setuid problem
