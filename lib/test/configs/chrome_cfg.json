@@ -1,9 +1,9 @@
 {
+  "server": "$WEBDRIVER_SERVER",
   "desired": {
     "browserName": "chrome",
-    "chromeOptions": {
-      "binary": "$CHROMEDRIVER_BINARY",
-      "args": [ "--no-sandbox" ]
-    }
+    "tunnelIdentifier": "$TRAVIS_JOB_NUMBER",
+    "build": "$TRAVIS_BUILD_NUMBER",
+    "tags": ["$TRAVIS_PULL_REQUEST"]
   }
 }

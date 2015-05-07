@@ -18,11 +18,8 @@
 set -e
 
 # Verify that the libraries are error free.
-grep -Rl --include "*.dart" --exclude-dir="packages" '^library .*;$' lib/ test/ | \
+grep -Rl --include "*.dart" --exclude-dir="packages" '^library .*;$' lib/ test/ bin/ | \
     xargs dartanalyzer --fatal-warnings
-
-# Start chromedriver.
-chromedriver --port=4444 --url-base=wd/hub &
 
 # Run tests
 # TODO(DrMarcII) enable running tests in browser when chrome setuid problem
