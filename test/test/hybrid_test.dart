@@ -1,3 +1,4 @@
+@TestOn("browser")
 library webdriver.test.hybrid_test;
 
 import 'dart:html';
