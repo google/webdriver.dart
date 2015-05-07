@@ -167,6 +167,7 @@ class BrowserServer {
   }
 
   _webDriverHandler(shelf.Request request) {
+    print("MRF: ${request.url}");
     var cascade = new shelf.Cascade();
     var atLeastOne = false;
     for (var browser in _browsers.values) {
