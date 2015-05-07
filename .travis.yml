@@ -5,11 +5,6 @@ dart:
   - dev
   - stable
 
-env:
-  global:
-    - secure: dLk+dzk7izGGh01rovYUe2iqPfzmifwJlu+yrnbULt1RI2662NdKvouIRADl6y5x+/ArugHa8ryphbeydxL1IadlsHwkfDuCZNpfyR7U2+UCvHj4s+E9ETF9rsOYDZmT/1DUvrheS9u3Y9MO4U/UZPzdiurHzV616eAXAjRCyeg=
-    - secure: Ktrl2QjjkfOyTh53gHAq3IefJXZIFx46xLv7hwUsNNKrVKBGqw7aSgKDcFqhUOI7L9jco+qimJ05ub7lcqX6od2I9Yqh8GPnaibWuQXgBCJQWD0CzFJXH1VITThPJvUxcGCa1NU+XhlJGE7++M/Cia6E5YSwNVF2hIc8QJ7wEyk=
-
 addons:
   sauce_connect: true
 

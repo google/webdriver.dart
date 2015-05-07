@@ -38,7 +38,6 @@ void config() {
     if (config.containsKey('address')) {
       address = Uri.parse(config['address']);
     }
-    print("MRF: $address, $capabilities");
     return createDriver(uri: address, desired: capabilities);
   };
 
