@@ -2,6 +2,8 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+// TODO(DrMarcII) This is forked from server.dart in the 'test' package.
+// When 'test' supports more extension points, remove/replace this.
 library test.runner.browser.server;
 
 import 'dart:async';
@@ -27,6 +29,7 @@ import 'package:test/src/runner/load_exception.dart';
 import 'package:test/src/runner/browser/browser.dart';
 import 'package:test/src/runner/browser/browser_manager.dart';
 import 'package:test/src/runner/browser/compiler_pool.dart';
+
 import 'webdriver.dart';
 
 /// A server that serves JS-compiled tests to browsers.

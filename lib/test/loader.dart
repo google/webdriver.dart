@@ -2,6 +2,8 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+// TODO(DrMarcII) This is forked from loader.dart in the 'test' package.
+// When 'test' supports more extension points, remove/replace this.
 library test.runner.loader;
 
 import 'dart:async';
@@ -17,9 +19,10 @@ import 'package:test/src/backend/test_platform.dart';
 import 'package:test/src/util/io.dart';
 import 'package:test/src/util/isolate_wrapper.dart';
 import 'package:test/src/utils.dart';
-import 'server.dart';
 import 'package:test/src/runner/load_exception.dart';
 import 'package:test/src/runner/parse_metadata.dart';
+
+import 'server.dart';
 
 /// A class for finding test files and loading them into a runnable form.
 class Loader {
