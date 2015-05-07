@@ -14,6 +14,6 @@ addons:
   sauce_connect: true
 
 before_install:
-  - export WEBDRIVER_SERVER=http://$SAUCE_USERNAME:$SAUCE_ACCESS_KEY@ondemand.saucelabs.com/wd/hub
+  - export WEBDRIVER_SERVER=http://$SAUCE_USERNAME:$SAUCE_ACCESS_KEY@ondemand.saucelabs.com/wd/hub/
 
 script: ./tool/travis.sh
