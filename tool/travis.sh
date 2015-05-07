@@ -24,5 +24,5 @@ grep -Rl --include "*.dart" --exclude-dir="packages" '^library .*;$' lib/ test/ 
 # Run tests
 # TODO(DrMarcII) enable running tests in browser when chrome setuid problem
 # is fixed on travis.
-pub run test:test -r expanded -p vm test/support/forwarder_test.dart
+pub run test:test -r expanded -p vm -j 1 test/support/forwarder_test.dart
 pub run webdriver:test -r expanded -p chrome test/support/async_test.dart test/test/hybrid_test.dart
