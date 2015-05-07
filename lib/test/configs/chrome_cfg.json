@@ -1,5 +1,5 @@
 {
-  "server": "$WEBDRIVER_SERVER",
+  "address": "$WEBDRIVER_SERVER",
   "desired": {
     "browserName": "chrome",
     "tunnelIdentifier": "$TRAVIS_JOB_NUMBER",
