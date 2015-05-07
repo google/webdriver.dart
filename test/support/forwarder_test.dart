@@ -13,6 +13,7 @@
 // limitations under the License.
 
 @TestOn("vm")
+@Timeout(const Duration(minutes: 3))
 library webdriver.support.forwarder_test;
 
 import 'dart:io' show File, HttpServer, InternetAddress, sleep;
