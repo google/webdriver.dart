@@ -48,7 +48,7 @@ class TargetLocator extends _WebDriverBase {
   /// Switches to the currently active modal dialog for this particular driver
   /// instance.
   ///
-  /// Throws [NoAlertPresentException] if there is not currently an alert.
+  /// Throws [NoSuchAlertException] if there is not currently an alert.
   Future<Alert> get alert async {
     var text = await _get('alert_text');
     return new Alert._(text, driver);

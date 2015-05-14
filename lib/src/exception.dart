@@ -62,8 +62,8 @@ abstract class WebDriverException implements Exception {
           return new UnableToSetCookieException(status, message);
         case 26: // UnexpectedAlertOpen
           return new UnexpectedAlertOpenException(status, message);
-        case 27: // NoAlertOpenError
-          return new NoAlertOpenException(status, message);
+        case 27: // NoSuchAlert
+          return new NoSuchAlertException(status, message);
         case 29: // InvalidElementCoordinates
           return new InvalidElementCoordinatesException(status, message);
         case 30: // IMENotAvailable
@@ -184,8 +184,8 @@ class UnexpectedAlertOpenException extends WebDriverException {
       : super._(statusCode, message);
 }
 
-class NoAlertOpenException extends WebDriverException {
-  const NoAlertOpenException(statusCode, message)
+class NoSuchAlertException extends WebDriverException {
+  const NoSuchAlertException(statusCode, message)
       : super._(statusCode, message);
 }
 
