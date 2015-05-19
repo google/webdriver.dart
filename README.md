@@ -2,6 +2,7 @@ webdriver
 =========
 
 [![Build Status](https://travis-ci.org/google/webdriver.dart.svg?branch=master)](https://travis-ci.org/google/webdriver.dart)
+[![pub package](https://img.shields.io/pub/v/webdriver.svg)](https://pub.dartlang.org/packages/webdriver)
 
 Provides WebDriver bindings for Dart. These use the WebDriver JSON interface,
 and as such, require the use of the WebDriver remote server.
