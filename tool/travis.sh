@@ -18,8 +18,8 @@
 set -e
 
 # Verify that the libraries are error free.
-grep -Rl --include "*.dart" --exclude-dir="packages" '^library .*;$' lib/ test/ | \
-    xargs dartanalyzer --fatal-warnings
+pub global activate tuneup
+pub global run tuneup check
 
 # Start chromedriver.
 chromedriver --port=4444 --url-base=wd/hub &

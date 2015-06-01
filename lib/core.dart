@@ -14,11 +14,12 @@
 
 library webdriver.core;
 
-import 'dart:async' show Future, Stream;
+import 'dart:async' show Future, Stream, StreamController;
 import 'dart:collection' show UnmodifiableMapView;
 import 'dart:math' show Point, Rectangle;
 
 import 'package:crypto/crypto.dart' show CryptoUtils;
+import 'package:stack_trace/stack_trace.dart' show Trace;
 
 import 'src/command_processor.dart' show CommandProcessor;
 
@@ -26,6 +27,7 @@ export 'src/exception.dart';
 
 part 'src/alert.dart';
 part 'src/capabilities.dart';
+part 'src/command_event.dart';
 part 'src/common.dart';
 part 'src/keyboard.dart';
 part 'src/logs.dart';
