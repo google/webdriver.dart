@@ -21,10 +21,16 @@ class WebDriver implements SearchContext {
   final String id;
   final Uri uri;
 
+  final _afterCommandController =
+      new StreamController<WebDriverCommandEvent>.broadcast();
+
   WebDriver(this._commandProcessor, Uri uri, String id, this.capabilities)
       : this.uri = uri,
         this.id = id,
         this._prefix = uri.resolve('session/$id/');
+
+  Stream<WebDriverCommandEvent> get onAfterCommand =>
+      _afterCommandController.stream;
 
   /// The current url.
   Future<String> get currentUrl => getRequest('url');
@@ -177,13 +183,75 @@ class WebDriver implements SearchContext {
     }
   }
 
-  Future postRequest(String command, [params]) =>
-      _commandProcessor.post(_resolve(command), params);
+  Future postRequest(String command, [params]) async {
+    var startTime = new DateTime.now();
+    var trace = new Trace.current(1);
+    var result;
+    var exception;
+    try {
+      result = await _commandProcessor.post(_resolve(command), params);
+      return result;
+    } catch (e) {
+      exception = e;
+      rethrow;
+    } finally {
+      _afterCommandController.add(new WebDriverCommandEvent(
+          method: 'POST',
+          endPoint: command,
+          params: params,
+          startTime: startTime,
+          endTime: new DateTime.now(),
+          exception: exception,
+          result: result,
+          stackTrace: trace));
+    }
+  }
 
-  Future getRequest(String command) => _commandProcessor.get(_resolve(command));
+  Future getRequest(String command) async {
+    var startTime = new DateTime.now();
+    var trace = new Trace.current(1);
+    var result;
+    var exception;
+    try {
+      result = await _commandProcessor.get(_resolve(command));
+      return result;
+    } catch (e) {
+      exception = e;
+      rethrow;
+    } finally {
+      _afterCommandController.add(new WebDriverCommandEvent(
+          method: 'GET',
+          endPoint: command,
+          startTime: startTime,
+          endTime: new DateTime.now(),
+          exception: exception,
+          result: result,
+          stackTrace: trace));
+    }
+  }
 
-  Future deleteRequest(String command) =>
-      _commandProcessor.delete(_resolve(command));
+  Future deleteRequest(String command) async {
+    var startTime = new DateTime.now();
+    var trace = new Trace.current(1);
+    var result;
+    var exception;
+    try {
+      result = await _commandProcessor.delete(_resolve(command));
+      return result;
+    } catch (e) {
+      exception = e;
+      rethrow;
+    } finally {
+      _afterCommandController.add(new WebDriverCommandEvent(
+          method: 'DELETE',
+          endPoint: command,
+          startTime: startTime,
+          endTime: new DateTime.now(),
+          exception: exception,
+          result: result,
+          stackTrace: trace));
+    }
+  }
 
   Uri _resolve(String command) {
     var uri = _prefix.resolve(command);
