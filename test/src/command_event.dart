@@ -30,7 +30,7 @@ void runTests() {
 
     setUp(() async {
       driver = await createTestDriver();
-      sub = driver.onAfterCommand.listen(events.add);
+      sub = driver.onCommand.listen(events.add);
 
       await driver.get(testPagePath);
     });
