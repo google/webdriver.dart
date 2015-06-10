@@ -15,9 +15,11 @@
 @TestOn("vm")
 library webdriver.support.forwarder_test;
 
-import 'dart:io';
+import 'dart:io' show File, HttpServer, InternetAddress, sleep;
 
 import 'package:path/path.dart' as path;
+import 'package:shelf/shelf.dart' as shelf;
+import 'package:shelf/shelf_io.dart' as shelf_io;
 import 'package:test/test.dart';
 import 'package:webdriver/io.dart';
 import 'package:webdriver/support/forwarder.dart';
@@ -31,36 +33,34 @@ const buttonNotClicked = 'Button not clicked';
 void main() {
   config.config();
 
+  String testPage =
+      new File(path.join('test', 'support', 'forwarder_test_page.html'))
+          .readAsStringSync();
+
   group('WebDriverForwarder', () {
     WebDriver driver;
-    WebDriverForwarder forwarder;
     HttpServer server;
     WebDriver forwardedDriver;
     Uri address;
 
     setUp(() async {
       driver = await test_util.createTestDriver();
-      forwarder =
-          new WebDriverForwarder(driver, prefix: '/webdriver/session/1');
 
-      server = await HttpServer.bind(InternetAddress.ANY_IP_V4, 0);
-      server.listen((request) {
-        if (request.uri.path.startsWith('/webdriver')) {
-          forwarder.forward(request);
-        } else if (request.method == 'GET' &&
-            request.uri.path.endsWith('test_page.html')) {
-          File file = new File(
-              path.join('test', 'support', 'forwarder_test_page.html'));
-          request.response
-            ..statusCode = HttpStatus.OK
-            ..headers.set('Content-type', 'text/html');
-          file.openRead().pipe(request.response);
-        } else {
-          request.response
-            ..statusCode = HttpStatus.NOT_FOUND
-            ..close();
+      var cascade = new shelf.Cascade()
+          .add(new WebDriverForwarder(driver,
+              prefix: 'webdriver/session/1').handler)
+          .add((shelf.Request request) {
+        if (request.method == 'GET' &&
+            request.url.path.endsWith('test_page.html')) {
+          return new shelf.Response.ok(testPage,
+              headers: {"Content-Type": "text/html"});
         }
+        return new shelf.Response.notFound(null);
       });
+
+      server =
+          await shelf_io.serve(cascade.handler, InternetAddress.ANY_IP_V4, 0);
+
       address = new Uri.http('localhost:${server.port}', '/webdriver/');
       forwardedDriver = await fromExistingSession('1', uri: address);
 

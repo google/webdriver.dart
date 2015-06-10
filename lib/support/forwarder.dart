@@ -14,16 +14,14 @@
 
 library webdriver.support.forwarder;
 
-import 'dart:async' show Future, StreamConsumer;
+import 'dart:async' show Future, Stream, StreamConsumer;
 import 'dart:convert' show JSON, UTF8;
-import 'dart:io' show ContentType, Directory, File, HttpRequest, HttpStatus;
+import 'dart:io' show Directory, File;
 
 import 'package:path/path.dart' as path;
+import 'package:shelf/shelf.dart' as shelf;
 import 'package:webdriver/core.dart'
     show By, WebDriver, WebDriverException, WebElement;
-
-final _contentTypeJson =
-    new ContentType('application', 'json', charset: 'utf-8');
 
 /// Attribute on elements used to locate them on passed WebDriver commands.
 const wdElementIdAttribute = 'wd-element-id';
@@ -53,12 +51,19 @@ const wdElementIdAttribute = 'wd-element-id';
 ///   POST '/source': takes a 'file' arg and will capture the current page's
 ///     source and save it to the specified file name in [outputDir].
 ///
+/// Finally the forwarder support a command for switching to a specific
+/// frame:
+///   POST '/findframe/<id>': switches to  a frame that includes an element
+///     with wd-element-id="frame-id" and innerText equal to id.
+///     Only looks at the top-level context and any first-level iframes.
+///     All iframes in the top-level context will be made visible.
+///
 /// See https://code.google.com/p/selenium/wiki/JsonWireProtocol for
 /// documentation of other commands.
 class WebDriverForwarder {
   /// [WebDriver] instance to forward commands to.
   final WebDriver driver;
-  /// Path prefix that all forwarded commands will have.
+  /// Path prefix that all forwarded commands will have. Should be relative.
   final Pattern prefix;
   /// Directory to save screenshots and page source to.
   final Directory outputDir;
@@ -66,44 +71,51 @@ class WebDriverForwarder {
   bool useDeep;
 
   WebDriverForwarder(this.driver,
-      {this.prefix: '/webdriver', Directory outputDir, this.useDeep: false})
+      {this.prefix: 'webdriver', Directory outputDir, this.useDeep: false})
       : this.outputDir = outputDir == null
           ? Directory.systemTemp.createTempSync()
           : outputDir;
 
   /// Forward [request] to [driver] and respond to the request with the returned
   /// value or any thrown exceptions.
-  Future forward(HttpRequest request) async {
+  Future<shelf.Response> handler(shelf.Request request) async {
     try {
-      if (!request.uri.path.startsWith(prefix)) {
-        request.response.statusCode = HttpStatus.NOT_FOUND;
-        return;
+      if (!request.url.path.startsWith(prefix)) {
+        return new shelf.Response.notFound(null);
       }
-      request.response.statusCode = HttpStatus.OK;
-      request.response.headers.contentType = _contentTypeJson;
 
-      var endpoint = request.uri.path.replaceFirst(prefix, '');
+      var endpoint = request.url.path.replaceFirst(prefix, '');
       if (endpoint.startsWith('/')) {
         endpoint = endpoint.substring(1);
       }
       var params;
       if (request.method == 'POST') {
-        String requestBody = await UTF8.decodeStream(request);
+        String requestBody = await UTF8.decodeStream(request.read());
         if (requestBody != null && requestBody.isNotEmpty) {
           params = JSON.decode(requestBody);
         }
       }
       var value = await _forward(request.method, endpoint, params);
-      request.response
-          .add(UTF8.encode(JSON.encode({'status': 0, 'value': value})));
+      return new shelf.Response.ok(JSON.encode({'status': 0, 'value': value}),
+          headers: {
+        'Content-Type': 'application/json',
+        'Cache-Control': 'no-cache'
+      });
     } on WebDriverException catch (e) {
-      request.response.add(UTF8.encode(JSON
-          .encode({'status': e.statusCode, 'value': {'message': e.message}})));
+      return new shelf.Response.internalServerError(
+          body: JSON.encode(
+              {'status': e.statusCode, 'value': {'message': e.message}}),
+          headers: {
+        'Content-Type': 'application/json',
+        'Cache-Control': 'no-cache'
+      });
     } catch (e) {
-      request.response.add(UTF8.encode(
-          JSON.encode({'status': 13, 'value': {'message': e.toString()}})));
-    } finally {
-      await request.response.close();
+      return new shelf.Response.internalServerError(
+          body: JSON.encode({'status': 13, 'value': {'message': e.toString()}}),
+          headers: {
+        'Content-Type': 'application/json',
+        'Cache-Control': 'no-cache'
+      });
     }
   }
 
@@ -139,6 +151,9 @@ class WebDriverForwarder {
           return null;
         }
         break;
+      case 'findframe':
+        await _findFrame(endpointTokens[1]);
+        return null;
       case 'element':
         // process endpoints of the form /element/[id]/...
         if (endpointTokens.length >= 2) {
@@ -178,14 +193,44 @@ class WebDriverForwarder {
     }
   }
 
-  Future<String> _findElement(String id) async {
+  Future _findFrame(String id) async {
+    await driver.switchTo.frame();
+    if (await _isFrame(id)) {
+      return;
+    }
+    await for (WebElement element
+        in driver.findElements(const By.tagName('iframe'))) {
+      if (!await element.displayed) {
+        await driver.execute(
+            'arguments[0].style.display = "block";', [element]);
+      }
+      await driver.switchTo.frame(element);
+      if (await _isFrame(id)) {
+        return;
+      }
+      await driver.switchTo.frame();
+    }
+    throw 'Frame $id not found';
+  }
+
+  Future<bool> _isFrame(String id) async {
+    await for (WebElement element in _findElements('frame-id')) {
+      if ((await element.attributes['innerText']).trim() == id) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  Future<String> _findElement(String id) async =>
+      (await _findElements(id).toList()).single.id;
+
+  Stream<WebElement> _findElements(String id) async* {
     var selector = "[$wdElementIdAttribute='$id']";
     if (useDeep) {
       selector = '* /deep/ $selector';
     }
-    var elements =
-        await driver.findElements(new By.cssSelector(selector)).toList();
-    return elements.single.id;
+    yield* driver.findElements(new By.cssSelector(selector));
   }
 
   dynamic _deepCopy(dynamic source) async {
