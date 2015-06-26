@@ -20,11 +20,13 @@ class WebDriver implements SearchContext {
   final Map<String, dynamic> capabilities;
   final String id;
   final Uri uri;
+  final bool filterStackTraces;
 
   final _onCommandController =
       new StreamController<WebDriverCommandEvent>.broadcast();
 
-  WebDriver(this._commandProcessor, Uri uri, String id, this.capabilities)
+  WebDriver(this._commandProcessor, Uri uri, String id, this.capabilities,
+      {this.filterStackTraces: true})
       : this.uri = uri,
         this.id = id,
         this._prefix = uri.resolve('session/$id/');
@@ -74,9 +76,11 @@ class WebDriver implements SearchContext {
   }
 
   /// Quit the browser.
-  Future quit() async {
+  Future quit({bool closeSession: true}) async {
     try {
-      await _commandProcessor.delete(uri.resolve('session/$id'));
+      if (closeSession) {
+        await _commandProcessor.delete(uri.resolve('session/$id'));
+      }
     } finally {
       await _commandProcessor.close();
     }
@@ -196,7 +200,11 @@ class WebDriver implements SearchContext {
   Future _performRequest(
       Function fn, String method, String command, params) async {
     var startTime = new DateTime.now();
-    var trace = new Trace.current(1);
+    var trace = new Chain.current();
+    if (filterStackTraces) {
+      trace = trace.foldFrames(
+          (f) => f.library.startsWith('package:webdriver/'), terse: true);
+    }
     var result;
     var exception;
     try {
@@ -204,7 +212,7 @@ class WebDriver implements SearchContext {
       return result;
     } catch (e) {
       exception = e;
-      rethrow;
+      return new Future.error(e, trace);
     } finally {
       _onCommandController.add(new WebDriverCommandEvent(
           method: method,
