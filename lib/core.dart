@@ -19,7 +19,7 @@ import 'dart:collection' show UnmodifiableMapView;
 import 'dart:math' show Point, Rectangle;
 
 import 'package:crypto/crypto.dart' show CryptoUtils;
-import 'package:stack_trace/stack_trace.dart' show Trace;
+import 'package:stack_trace/stack_trace.dart' show Chain;
 
 import 'src/command_processor.dart' show CommandProcessor;
 
