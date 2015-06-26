@@ -44,7 +44,6 @@ void runTests() {
     });
 
     test('handles exceptions', () async {
-      var trace = new Trace.current(1);
       try {
         await driver.switchTo.alert;
       } catch (e) {}
@@ -54,11 +53,10 @@ void runTests() {
       expect(events[1].exception, new isInstanceOf<WebDriverException>());
       expect(events[1].result, isNull);
       expect(events[1].startTime.isBefore(events[1].endTime), isTrue);
-      compareTraces(events[1].stackTrace, trace);
+      expect(events[1].stackTrace, new isInstanceOf<Chain>());
     });
 
     test('handles normal operation', () async {
-      var trace = new Trace.current(1);
       await driver.findElements(const By.cssSelector('nosuchelement')).toList();
       await waitFor(() => events, matcher: hasLength(2));
       expect(events[1].method, 'POST');
@@ -66,20 +64,7 @@ void runTests() {
       expect(events[1].exception, isNull);
       expect(events[1].result, hasLength(0));
       expect(events[1].startTime.isBefore(events[1].endTime), isTrue);
-      compareTraces(events[1].stackTrace, trace);
+      expect(events[1].stackTrace, new isInstanceOf<Chain>());
     });
   }, testOn: '!js');
-}
-
-void compareTraces(Trace actual, Trace expected) {
-  expect(actual.frames.length, greaterThanOrEqualTo(expected.frames.length));
-  var index1 = actual.frames.length - 1;
-  var index2 = expected.frames.length - 1;
-
-  while (index2 >= 0) {
-    expect(
-        actual.frames[index1].toString(), expected.frames[index2].toString());
-    index1--;
-    index2--;
-  }
 }
