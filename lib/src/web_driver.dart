@@ -21,6 +21,7 @@ class WebDriver implements SearchContext {
   final String id;
   final Uri uri;
   final bool filterStackTraces;
+  Stepper stepper;
 
   final _onCommandController =
       new StreamController<WebDriverCommandEvent>.broadcast();
@@ -208,8 +209,13 @@ class WebDriver implements SearchContext {
     var result;
     var exception;
     try {
-      result = await fn();
-      return result;
+      if (stepper == null || await stepper.step(method, command, params)) {
+        result = await fn();
+        return result;
+      } else {
+        result = 'skipped';
+        return null;
+      }
     } catch (e) {
       exception = e;
       return new Future.error(e, trace);
