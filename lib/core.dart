@@ -22,6 +22,7 @@ import 'package:crypto/crypto.dart' show CryptoUtils;
 import 'package:stack_trace/stack_trace.dart' show Chain;
 
 import 'src/command_processor.dart' show CommandProcessor;
+import 'src/stepper.dart' show Stepper;
 
 export 'src/exception.dart';
 
