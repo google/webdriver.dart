@@ -19,7 +19,7 @@ set -e
 
 # Verify that the libraries are error free.
 pub global activate tuneup
-pub global run tuneup check
+pub global run tuneup check --ignore-infos
 
 # Start chromedriver.
 chromedriver --port=4444 --url-base=wd/hub &
