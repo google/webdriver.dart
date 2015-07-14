@@ -16,15 +16,15 @@ library webdriver.support.async;
 
 import 'dart:async' show Completer, Future;
 
-import 'package:matcher/matcher.dart';
+import 'package:matcher/matcher.dart' as m;
+import 'package:unittest/unittest.dart' as ut;
 
 const defaultInterval = const Duration(milliseconds: 500);
 const defaultTimeout = const Duration(seconds: 5);
 
 const clock = const Clock();
 
-Future waitFor(condition(), {matcher: isNotNull,
-    Duration timeout: defaultTimeout,
+Future waitFor(condition(), {matcher: null, Duration timeout: defaultTimeout,
     Duration interval: defaultInterval}) => clock.waitFor(condition,
         matcher: matcher, timeout: timeout, interval: interval);
 
@@ -46,39 +46,21 @@ class Clock {
   /// is returned. Otherwise, if [condition] throws, then that exception is
   /// rethrown. If [condition] doesn't throw then an [expect] exception is
   /// thrown.
-  Future waitFor(condition(), {matcher: isNotNull,
-      Duration timeout: defaultTimeout,
+  Future waitFor(condition(), {matcher: null, Duration timeout: defaultTimeout,
       Duration interval: defaultInterval}) async {
-    expect(value, matcher) {
-      if (matcher is! Matcher) {
-        matcher = equals(matcher);
-      }
-
-      var matchState = {};
-      if (matcher.matches(value, matchState)) {
-        return;
-      }
-      var desc = new StringDescription()
-        ..add('Expected: ')
-        ..addDescriptionOf(matcher)
-        ..add('\n')
-        ..add('  Actual: ')
-        ..addDescriptionOf(value)
-        ..add('\n');
-
-      var mismatchDescription = new StringDescription();
-      matcher.describeMismatch(value, mismatchDescription, matchState, true);
-      if (mismatchDescription.length > 0) {
-        desc.add('   Which: ${mismatchDescription}\n');
-      }
-      throw new Exception(desc.toString());
+    if (matcher != null && matcher is! ut.Matcher && matcher is! m.Matcher) {
+      matcher = m.equals(matcher);
     }
 
     var endTime = now.add(timeout);
     while (true) {
       try {
         var value = await condition();
-        expect(value, matcher);
+        if (matcher is m.Matcher) {
+          _matcherExpect(value, matcher);
+        } else if (matcher is ut.Matcher) {
+          _unittestExpect(value, matcher);
+        }
         return value;
       } catch (e) {
         if (now.isAfter(endTime)) {
@@ -89,6 +71,29 @@ class Clock {
       }
     }
   }
+}
+
+_unittestExpect(value, ut.Matcher matcher) => ut.expect(value, matcher);
+
+_matcherExpect(value, m.Matcher matcher) {
+  var matchState = {};
+  if (matcher.matches(value, matchState)) {
+    return;
+  }
+  var desc = new m.StringDescription()
+    ..add('Expected: ')
+    ..addDescriptionOf(matcher)
+    ..add('\n')
+    ..add('  Actual: ')
+    ..addDescriptionOf(value)
+    ..add('\n');
+
+  var mismatchDescription = new m.StringDescription();
+  matcher.describeMismatch(value, mismatchDescription, matchState, true);
+  if (mismatchDescription.length > 0) {
+    desc.add('   Which: ${mismatchDescription}\n');
+  }
+  throw new Exception(desc.toString());
 }
 
 class Lock {
