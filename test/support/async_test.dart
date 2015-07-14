@@ -17,6 +17,7 @@ library webdriver.support.async_test;
 import 'dart:async' show Future;
 
 import 'package:test/test.dart';
+import 'package:unittest/unittest.dart' as ut;
 import 'package:webdriver/support/async.dart';
 
 void main() {
@@ -92,23 +93,9 @@ void main() {
       var result = await clock.waitFor(() {
         if (count == 2) return 'Google';
         count++;
-        return null;
+        throw '';
       });
       expect(result, equals('Google'));
-    });
-
-    test('throws before successful', () async {
-      var count = 0;
-      var result = await clock.waitFor(() {
-        expect(count, lessThanOrEqualTo(2));
-        if (count == 2) {
-          count++;
-          return false;
-        }
-        count++;
-        return null;
-      });
-      expect(result, isFalse);
     });
 
     test('throws if condition throws and timeouts', () async {
@@ -125,11 +112,31 @@ void main() {
     test('throws if condition never matches', () async {
       var exception;
       try {
-        await clock.waitFor(() => null);
+        await clock.waitFor(() => null, matcher: isNotNull);
       } catch (e) {
         exception = e;
       }
       expect(exception, isNotNull);
+    });
+
+    test('throws if condition never matches unittest.Matcher', () async {
+      var exception;
+      try {
+        await clock.waitFor(() => null, matcher: ut.isNotNull);
+      } catch (e) {
+        exception = e;
+      }
+      expect(exception, isNotNull);
+    });
+
+    test('returns if condition matches unittest.Matcher', () async {
+      var count = 0;
+      var result = await clock.waitFor(() {
+        if (count == 2) return 'Google';
+        count++;
+        return null;
+      }, matcher: ut.isNotNull);
+      expect(result, isNotNull);
     });
 
     test('uses Future value', () async {
@@ -159,7 +166,7 @@ void main() {
         } else {
           return 'a value';
         }
-      });
+      }, matcher: isNotNull);
       expect(result, 'a value');
     });
 
@@ -178,7 +185,7 @@ void main() {
       var clock = new Clock();
       var exception;
       try {
-        await clock.waitFor(() => null);
+        await clock.waitFor(() => null, matcher: isNotNull);
       } catch (e) {
         exception = e;
       }
