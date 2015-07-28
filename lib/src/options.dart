@@ -53,14 +53,19 @@ class Cookies extends _WebDriverBase {
 class Cookie {
   /// The name of the cookie.
   final String name;
+
   /// The cookie value.
   final String value;
+
   /// (Optional) The cookie path.
   final String path;
+
   /// (Optional) The domain the cookie is visible to.
   final String domain;
+
   /// (Optional) Whether the cookie is a secure cookie.
   final bool secure;
+
   /// (Optional) When the cookie expires.
   final DateTime expiry;
 
@@ -71,7 +76,8 @@ class Cookie {
     var expiry;
     if (json['expiry'] is num) {
       expiry = new DateTime.fromMillisecondsSinceEpoch(
-          json['expiry'].toInt() * 1000, isUtc: true);
+          json['expiry'].toInt() * 1000,
+          isUtc: true);
     }
     return new Cookie(json['name'], json['value'],
         path: json['path'],

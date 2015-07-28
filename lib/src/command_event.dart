@@ -23,8 +23,14 @@ class WebDriverCommandEvent {
   final exception;
   final result;
 
-  WebDriverCommandEvent({this.method, this.endPoint, this.params,
-      this.startTime, this.endTime, this.exception, this.result,
+  WebDriverCommandEvent(
+      {this.method,
+      this.endPoint,
+      this.params,
+      this.startTime,
+      this.endTime,
+      this.exception,
+      this.result,
       this.stackTrace});
 
   String toString() => '[$startTime - $endTime] $method $endPoint($params) => '

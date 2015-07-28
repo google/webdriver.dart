@@ -19,8 +19,10 @@ class WebElement extends _WebDriverBase implements SearchContext {
 
   /// The context from which this element was found.
   final SearchContext context;
+
   /// How the element was located from the context.
   final dynamic /* String | Finder */ locator;
+
   /// The index of this element in the set of element founds. If the method
   /// used to find this element always returns one element, then this is null.
   final int index;
@@ -41,7 +43,9 @@ class WebElement extends _WebDriverBase implements SearchContext {
 
   /// Send [keysToSend] to this element.
   Future sendKeys(String keysToSend) async {
-    await _post('value', {'value': [keysToSend]});
+    await _post('value', {
+      'value': [keysToSend]
+    });
   }
 
   /// Clear the content of a text element.

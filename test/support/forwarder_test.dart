@@ -113,8 +113,11 @@ void main() {
       expect(await forwardedDriver.getRequest('element/div/text'),
           buttonNotClicked);
 
-      await forwardedDriver.execute(
-          'arguments[0].el.click();', [{'el': {'ELEMENT': 'button'}}]);
+      await forwardedDriver.execute('arguments[0].el.click();', [
+        {
+          'el': {'ELEMENT': 'button'}
+        }
+      ]);
 
       expect(
           await forwardedDriver.getRequest('element/div/text'), buttonClicked);

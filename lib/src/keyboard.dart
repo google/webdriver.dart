@@ -76,7 +76,9 @@ class Keyboard extends _WebDriverBase {
 
   /// Send [keysToSend] to the active element.
   Future sendKeys(String keysToSend) async {
-    await _post('keys', {'value': [keysToSend]});
+    await _post('keys', {
+      'value': [keysToSend]
+    });
   }
 
   @override
