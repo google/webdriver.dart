@@ -150,9 +150,9 @@ class WebDriver implements SearchContext {
   /// Arguments may be any JSON-able object. WebElements will be converted to
   /// the corresponding DOM element. Likewise, any DOM Elements in the script
   /// result will be converted to WebElements.
-  Future executeAsync(String script, List args) => postRequest(
-          'execute_async', {'script': script, 'args': args})
-      .then(_recursiveElementify);
+  Future executeAsync(String script, List args) =>
+      postRequest('execute_async', {'script': script, 'args': args})
+          .then(_recursiveElementify);
 
   /// Inject a snippet of JavaScript into the page for execution in the context
   /// of the currently selected frame. The executed script is assumed to be
@@ -166,8 +166,9 @@ class WebDriver implements SearchContext {
   /// Arguments may be any JSON-able object. WebElements will be converted to
   /// the corresponding DOM element. Likewise, any DOM Elements in the script
   /// result will be converted to WebElements.
-  Future execute(String script, List args) => postRequest(
-      'execute', {'script': script, 'args': args}).then(_recursiveElementify);
+  Future execute(String script, List args) =>
+      postRequest('execute', {'script': script, 'args': args})
+          .then(_recursiveElementify);
 
   dynamic _recursiveElementify(result) {
     if (result is Map) {
@@ -188,14 +189,18 @@ class WebDriver implements SearchContext {
   }
 
   Future postRequest(String command, [params]) => _performRequest(
-      () => _commandProcessor.post(_resolve(command), params), 'POST', command,
+      () => _commandProcessor.post(_resolve(command), params),
+      'POST',
+      command,
       params);
 
   Future getRequest(String command) => _performRequest(
       () => _commandProcessor.get(_resolve(command)), 'GET', command, null);
 
   Future deleteRequest(String command) => _performRequest(
-      () => _commandProcessor.delete(_resolve(command)), 'DELETE', command,
+      () => _commandProcessor.delete(_resolve(command)),
+      'DELETE',
+      command,
       null);
 
   Future _performRequest(
@@ -204,7 +209,8 @@ class WebDriver implements SearchContext {
     var trace = new Chain.current();
     if (filterStackTraces) {
       trace = trace.foldFrames(
-          (f) => f.library.startsWith('package:webdriver/'), terse: true);
+          (f) => f.library.startsWith('package:webdriver/'),
+          terse: true);
     }
     var result;
     var exception;

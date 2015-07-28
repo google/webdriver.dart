@@ -41,9 +41,12 @@ class LogEntry {
 
   const LogEntry(this.message, this.timestamp, this.level);
 
-  LogEntry.fromMap(Map map) : this(map['message'],
-          new DateTime.fromMillisecondsSinceEpoch(map['timestamp'].toInt(),
-              isUtc: true), map['level']);
+  LogEntry.fromMap(Map map)
+      : this(
+            map['message'],
+            new DateTime.fromMillisecondsSinceEpoch(map['timestamp'].toInt(),
+                isUtc: true),
+            map['level']);
 
   @override
   String toString() => '$level[$timestamp]: $message';

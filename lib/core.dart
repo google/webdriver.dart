@@ -53,13 +53,15 @@ Future<WebDriver> createDriver(CommandProcessor processor,
   }
 
   var response = await processor.post(
-      uri.resolve('session'), {'desiredCapabilities': desired}, value: false);
+      uri.resolve('session'), {'desiredCapabilities': desired},
+      value: false);
   return new WebDriver(processor, uri, response['sessionId'],
       new UnmodifiableMapView(response['value']));
 }
 
 Future<WebDriver> fromExistingSession(
-    CommandProcessor processor, String sessionId, {Uri uri}) async {
+    CommandProcessor processor, String sessionId,
+    {Uri uri}) async {
   if (uri == null) {
     uri = defaultUri;
   }

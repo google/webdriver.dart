@@ -58,18 +58,21 @@ const wdElementIdAttribute = 'wd-element-id';
 class WebDriverForwarder {
   /// [WebDriver] instance to forward commands to.
   final WebDriver driver;
+
   /// Path prefix that all forwarded commands will have.
   final Pattern prefix;
+
   /// Directory to save screenshots and page source to.
   final Directory outputDir;
+
   /// Search for elements in all shadow doms of the current document.
   bool useDeep;
 
   WebDriverForwarder(this.driver,
       {this.prefix: '/webdriver', Directory outputDir, this.useDeep: false})
       : this.outputDir = outputDir == null
-          ? Directory.systemTemp.createTempSync()
-          : outputDir;
+            ? Directory.systemTemp.createTempSync()
+            : outputDir;
 
   /// Forward [request] to [driver] and respond to the request with the returned
   /// value or any thrown exceptions.
@@ -97,11 +100,15 @@ class WebDriverForwarder {
       request.response
           .add(UTF8.encode(JSON.encode({'status': 0, 'value': value})));
     } on WebDriverException catch (e) {
-      request.response.add(UTF8.encode(JSON
-          .encode({'status': e.statusCode, 'value': {'message': e.message}})));
+      request.response.add(UTF8.encode(JSON.encode({
+        'status': e.statusCode,
+        'value': {'message': e.message}
+      })));
     } catch (e) {
-      request.response.add(UTF8.encode(
-          JSON.encode({'status': 13, 'value': {'message': e.toString()}})));
+      request.response.add(UTF8.encode(JSON.encode({
+        'status': 13,
+        'value': {'message': e.toString()}
+      })));
     } finally {
       await request.response.close();
     }
