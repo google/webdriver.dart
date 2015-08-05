@@ -134,7 +134,7 @@ class WebDriverForwarder {
           // take a screenshot and save to file system
           var file =
               new File(path.join(outputDir.path, params['file'])).openWrite();
-          await driver.captureScreenshot().pipe(file as StreamConsumer<int>);
+          await driver.captureScreenshot().map((b) => [b]).pipe(file);
           return null;
         }
         break;
