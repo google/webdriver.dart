@@ -19,6 +19,7 @@ import 'package:test/test.dart';
 
 import 'src/alert.dart' as alert;
 import 'src/command_event.dart' as command_event;
+import 'src/firefox_profile.dart' as firefox_profile;
 import 'src/keyboard.dart' as keyboard;
 import 'src/logs.dart' as logs;
 import 'src/mouse.dart' as mouse;
@@ -36,6 +37,7 @@ void main() {
 
   alert.runTests();
   command_event.runTests();
+  firefox_profile.runTests();
   keyboard.runTests();
   logs.runTests();
   mouse.runTests();
