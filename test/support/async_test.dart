@@ -52,6 +52,15 @@ void main() {
       await new Future.delayed(const Duration(seconds: 1));
       expect(secondLockAcquired, isTrue);
     });
+
+    test('awaitChecking throws exception on acquire of held lock', () async {
+      var lock = new Lock(awaitChecking: true);
+      await lock.acquire();
+      expect(lock.acquire(), throws);
+      lock.release();
+      await lock.acquire();
+      lock.release();
+    });
   });
 
   group('Clock.waitFor', () {

@@ -17,6 +17,7 @@ library webdriver.support.async;
 import 'dart:async' show Completer, Future;
 
 import 'package:matcher/matcher.dart' as m;
+import 'package:stack_trace/stack_trace.dart' show Chain;
 import 'package:unittest/unittest.dart' as ut;
 
 const defaultInterval = const Duration(milliseconds: 500);
@@ -103,12 +104,30 @@ _matcherExpect(value, m.Matcher matcher) {
 
 class Lock {
   Completer _lock;
+  Chain _stack;
 
-  Future acquire() async {
-    while (isHeld) {
-      await _lock.future;
+  final bool awaitChecking;
+
+  Lock({this.awaitChecking: false});
+
+  Future acquire() {
+    if (awaitChecking) {
+      if (isHeld) {
+        return new Future.error(new StateError(
+            'Maybe you missed an await? Lock is already held by:\n$_stack'));
+      } else {
+        _stack = new Chain.current().terse;
+        _lock = new Completer();
+        return new Future.value();
+      }
+    } else {
+      return () async {
+        while (isHeld) {
+          await _lock.future;
+        }
+        _lock = new Completer();
+      }();
     }
-    _lock = new Completer();
   }
 
   void release() {
@@ -117,6 +136,7 @@ class Lock {
     }
     _lock.complete();
     _lock = null;
+    _stack = null;
   }
 
   bool get isHeld => _lock != null;

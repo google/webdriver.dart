@@ -22,54 +22,49 @@ import 'package:webdriver/support/async.dart';
 import '../test_util.dart';
 
 void runTests() {
-  group(
-      'CommandEvent',
-      () {
-        WebDriver driver;
+  group('CommandEvent', () {
+    WebDriver driver;
 
-        var events = [];
-        var sub;
+    var events = [];
+    var sub;
 
-        setUp(() async {
-          driver = await createTestDriver();
-          sub = driver.onCommand.listen(events.add);
+    setUp(() async {
+      driver = await createTestDriver();
+      sub = driver.onCommand.listen(events.add);
 
-          await driver.get(testPagePath);
-        });
+      await driver.get(testPagePath);
+    });
 
-        tearDown(() async {
-          sub.cancel();
-          sub = null;
-          events.clear();
-          await driver.quit();
-          driver = null;
-        });
+    tearDown(() async {
+      sub.cancel();
+      sub = null;
+      events.clear();
+      await driver.quit();
+      driver = null;
+    });
 
-        test('handles exceptions', () async {
-          try {
-            await driver.switchTo.alert;
-          } catch (e) {}
-          await waitFor(() => events, matcher: hasLength(2));
-          expect(events[1].method, 'GET');
-          expect(events[1].endPoint, contains('alert'));
-          expect(events[1].exception, new isInstanceOf<WebDriverException>());
-          expect(events[1].result, isNull);
-          expect(events[1].startTime.isBefore(events[1].endTime), isTrue);
-          expect(events[1].stackTrace, new isInstanceOf<Chain>());
-        });
+    test('handles exceptions', () async {
+      try {
+        await driver.switchTo.alert;
+      } catch (e) {}
+      await waitFor(() => events, matcher: hasLength(2));
+      expect(events[1].method, 'GET');
+      expect(events[1].endPoint, contains('alert'));
+      expect(events[1].exception, new isInstanceOf<WebDriverException>());
+      expect(events[1].result, isNull);
+      expect(events[1].startTime.isBefore(events[1].endTime), isTrue);
+      expect(events[1].stackTrace, new isInstanceOf<Chain>());
+    });
 
-        test('handles normal operation', () async {
-          await driver
-              .findElements(const By.cssSelector('nosuchelement'))
-              .toList();
-          await waitFor(() => events, matcher: hasLength(2));
-          expect(events[1].method, 'POST');
-          expect(events[1].endPoint, contains('elements'));
-          expect(events[1].exception, isNull);
-          expect(events[1].result, hasLength(0));
-          expect(events[1].startTime.isBefore(events[1].endTime), isTrue);
-          expect(events[1].stackTrace, new isInstanceOf<Chain>());
-        });
-      },
-      testOn: '!js');
+    test('handles normal operation', () async {
+      await driver.findElements(const By.cssSelector('nosuchelement')).toList();
+      await waitFor(() => events, matcher: hasLength(2));
+      expect(events[1].method, 'POST');
+      expect(events[1].endPoint, contains('elements'));
+      expect(events[1].exception, isNull);
+      expect(events[1].result, hasLength(0));
+      expect(events[1].startTime.isBefore(events[1].endTime), isTrue);
+      expect(events[1].stackTrace, new isInstanceOf<Chain>());
+    });
+  }, testOn: '!js');
 }
