@@ -38,17 +38,14 @@ void runTests() {
         await driver.quit();
       });
 
-      test(
-          'firefox',
-          () async {
-            WebDriver driver = await createTestDriver(
-                additionalCapabilities: Capabilities.firefox);
-            await driver.get('http://www.google.com');
-            var element = await driver.findElement(const By.name('q'));
-            expect(await element.name, 'input');
-            await driver.quit();
-          },
-          skip: runningOnTravis);
+      test('firefox', () async {
+        WebDriver driver = await createTestDriver(
+            additionalCapabilities: Capabilities.firefox);
+        await driver.get('http://www.google.com');
+        var element = await driver.findElement(const By.name('q'));
+        expect(await element.name, 'input');
+        await driver.quit();
+      }, skip: runningOnTravis);
     });
 
     group('methods', () {
