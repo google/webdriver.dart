@@ -23,6 +23,9 @@ class WebDriver implements SearchContext {
   final bool filterStackTraces;
   Stepper stepper;
 
+  /// If true, WebDriver actions are recorded as [WebDriverCommandEvent]s.
+  bool notifyListeners = true;
+
   final _onCommandController =
       new StreamController<WebDriverCommandEvent>.broadcast();
 
@@ -226,15 +229,17 @@ class WebDriver implements SearchContext {
       exception = e;
       return new Future.error(e, trace);
     } finally {
-      _onCommandController.add(new WebDriverCommandEvent(
-          method: method,
-          endPoint: command,
-          params: params,
-          startTime: startTime,
-          endTime: new DateTime.now(),
-          exception: exception,
-          result: result,
-          stackTrace: trace));
+      if (notifyListeners) {
+        _onCommandController.add(new WebDriverCommandEvent(
+            method: method,
+            endPoint: command,
+            params: params,
+            startTime: startTime,
+            endTime: new DateTime.now(),
+            exception: exception,
+            result: result,
+            stackTrace: trace));
+      }
     }
   }
 
