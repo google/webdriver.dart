@@ -14,6 +14,8 @@
 
 part of webdriver.core;
 
+typedef Future WebDriverListener(WebDriverCommandEvent event);
+
 class WebDriver implements SearchContext {
   final CommandProcessor _commandProcessor;
   final Uri _prefix;
@@ -29,13 +31,22 @@ class WebDriver implements SearchContext {
   final _onCommandController =
       new StreamController<WebDriverCommandEvent>.broadcast();
 
+  final List _commandListeners = new List<WebDriverListener>();
+
   WebDriver(this._commandProcessor, Uri uri, String id, this.capabilities,
       {this.filterStackTraces: true})
       : this.uri = uri,
         this.id = id,
         this._prefix = uri.resolve('session/$id/');
 
+  /// Deprecated in favor of addEventListener.
+  @deprecated
   Stream<WebDriverCommandEvent> get onCommand => _onCommandController.stream;
+
+  /// Preferred method for registering listeners. Listeners are expected to
+  /// return a Future. Use new Future.value() for synchronous listeners.
+  void addEventListener(WebDriverListener listener) =>
+      _commandListeners.add(listener);
 
   /// The current url.
   Future<String> get currentUrl => getRequest('url');
@@ -230,7 +241,7 @@ class WebDriver implements SearchContext {
       return new Future.error(e, trace);
     } finally {
       if (notifyListeners) {
-        _onCommandController.add(new WebDriverCommandEvent(
+        var event = new WebDriverCommandEvent(
             method: method,
             endPoint: command,
             params: params,
@@ -238,7 +249,12 @@ class WebDriver implements SearchContext {
             endTime: new DateTime.now(),
             exception: exception,
             result: result,
-            stackTrace: trace));
+            stackTrace: trace);
+
+        _onCommandController.add(event);
+        for (WebDriverListener listener in _commandListeners) {
+          await listener(event);
+        }
       }
     }
   }
