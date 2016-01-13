@@ -25,7 +25,7 @@ void runTests() {
 
     setUp(() async {
       driver = await createTestDriver();
-      await driver.get('http://www.google.com');
+      await driver.get('http://www.google.com/ncr');
     });
 
     tearDown(() => driver.quit());

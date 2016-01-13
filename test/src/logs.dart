@@ -29,7 +29,7 @@ void runTests() {
       };
 
       driver = await createTestDriver(additionalCapabilities: capabilities);
-      await driver.get('http://www.google.com');
+      await driver.get('http://www.google.com/ncr');
     });
 
     tearDown(() => driver.quit());

@@ -24,7 +24,7 @@ void runTests() {
     group('create', () {
       test('default', () async {
         WebDriver driver = await createTestDriver();
-        await driver.get('http://www.google.com');
+        await driver.get('http://www.google.com/ncr');
         var element = await driver.findElement(const By.name('q'));
         expect(await element.name, 'input');
         await driver.quit();
@@ -32,7 +32,7 @@ void runTests() {
 
       test('chrome', () async {
         WebDriver driver = await createTestDriver();
-        await driver.get('http://www.google.com');
+        await driver.get('http://www.google.com/ncr');
         var element = await driver.findElement(const By.name('q'));
         expect(await element.name, 'input');
         await driver.quit();
@@ -41,7 +41,7 @@ void runTests() {
       test('firefox', () async {
         WebDriver driver = await createTestDriver(
             additionalCapabilities: Capabilities.firefox);
-        await driver.get('http://www.google.com');
+        await driver.get('http://www.google.com/ncr');
         var element = await driver.findElement(const By.name('q'));
         expect(await element.name, 'input');
         await driver.quit();
@@ -59,7 +59,7 @@ void runTests() {
       tearDown(() => driver.quit());
 
       test('get', () async {
-        await driver.get('http://www.google.com');
+        await driver.get('http://www.google.com/ncr');
         await driver.findElement(const By.name('q'));
         await driver.get('http://www.yahoo.com');
         await driver.findElement(const By.name('p'));
@@ -69,7 +69,7 @@ void runTests() {
         var url = await driver.currentUrl;
         expect(url, anyOf(startsWith('file:'), startsWith('http:')));
         expect(url, endsWith('test_page.html'));
-        await driver.get('http://www.google.com');
+        await driver.get('http://www.google.com/ncr');
         url = await driver.currentUrl;
         expect(url, contains('www.google.com'));
       });
