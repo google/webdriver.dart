@@ -74,6 +74,22 @@ class Keyboard extends _WebDriverBase {
 
   Keyboard._(driver) : super(driver, '');
 
+  /// Simulate pressing many keys at once as a 'chord'.
+  Future sendChord(Iterable<String> chordToSend) async {
+    await sendKeys(createChord(chordToSend));
+  }
+
+  /// Creates a string representation of a chord suitable for use in WebDriver.
+  String createChord(Iterable<String> chord) {
+    StringBuffer chordString = new StringBuffer();
+    for (String s in chord) {
+      chordString.write(s);
+    }
+    chordString.write(nullChar);
+
+    return chordString.toString();
+  }
+
   /// Send [keysToSend] to the active element.
   Future sendKeys(String keysToSend) async {
     await _post('keys', {

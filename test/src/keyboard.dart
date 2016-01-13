@@ -14,6 +14,8 @@
 
 library webdriver.keyboard_test;
 
+import 'dart:io';
+
 import 'package:test/test.dart';
 import 'package:webdriver/core.dart';
 
@@ -23,9 +25,20 @@ void runTests() {
   group('Keyboard', () {
     WebDriver driver;
     WebElement textInput;
+    String ctrlCmdKey = '';
 
     setUp(() async {
-      driver = await createTestDriver();
+      if (Platform.isMacOS) {
+        ctrlCmdKey = Keyboard.command;
+      } else {
+        ctrlCmdKey = Keyboard.control;
+      }
+
+      // Note: Firefox used as Chrome + Mac OSX prevents use of control/meta
+      // in chords.
+      // https://code.google.com/p/selenium/issues/detail?id=5919
+      driver = await createTestDriver(
+          additionalCapabilities: Capabilities.firefox);
       await driver.get(testPagePath);
       textInput =
           await driver.findElement(const By.cssSelector('input[type=text]'));
@@ -48,6 +61,15 @@ void runTests() {
     test('sendKeys -- with tab', () async {
       await driver.keyboard.sendKeys('abc${Keyboard.tab}def');
       expect(await textInput.attributes['value'], 'abc');
+    });
+
+    test('sendChord -- CTRL+X', () async {
+      await driver.keyboard.sendKeys('abcdef');
+      expect(await textInput.attributes['value'], 'abcdef');
+      await driver.keyboard.sendChord([ctrlCmdKey, 'a']);
+      await driver.keyboard.sendChord([ctrlCmdKey, 'x']);
+      await driver.keyboard.sendKeys('xxx');
+      expect(await textInput.attributes['value'], 'xxx');
     });
   });
 }
