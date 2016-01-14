@@ -36,7 +36,7 @@ void runTests() {
 
       // Note: Firefox used as Chrome + Mac OSX prevents use of control/meta
       // in chords.
-      // https://code.google.com/p/selenium/issues/detail?id=5919
+      // https://bugs.chromium.org/p/chromedriver/issues/detail?id=30
       driver = await createTestDriver(
           additionalCapabilities: Capabilities.firefox);
       await driver.get(testPagePath);
