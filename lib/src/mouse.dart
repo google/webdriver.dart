@@ -14,37 +14,54 @@
 
 part of webdriver.core;
 
-class Mouse extends _WebDriverBase {
-  static const int left = 0;
-  static const int middle = 1;
-  static const int right = 2;
+class MouseButton {
+  /// The primary button is usually the left button or the only button on
+  /// single-button devices, used to activate a user interface control or select
+  /// text.
+  static const MouseButton primary = const MouseButton._(0);
 
+  /// The auxiliary button is usually the middle button, often combined with a
+  /// mouse wheel.
+  static const MouseButton auxiliary = const MouseButton._(1);
+
+  /// The secondary button is usually the right button, often used to display a
+  /// context menu.
+  static const MouseButton secondary = const MouseButton._(2);
+
+  final int value;
+
+  /// [value] for a mouse button is defined in
+  /// https://w3c.github.io/uievents/#widl-MouseEvent-button
+  const MouseButton._(this.value);
+}
+
+class Mouse extends _WebDriverBase {
   Mouse._(driver) : super(driver, '');
 
   /// Click any mouse button (at the coordinates set by the last moveTo).
-  Future click([int button]) async {
+  Future click([MouseButton button]) async {
     var json = {};
-    if (button is num) {
-      json['button'] = button.clamp(0, 2).floor();
+    if (button is MouseButton) {
+      json['button'] = button.value;
     }
     await _post('click', json);
   }
 
   /// Click and hold any mouse button (at the coordinates set by the last
   /// moveTo command).
-  Future down([int button]) async {
+  Future down([MouseButton button]) async {
     var json = {};
-    if (button is num) {
-      json['button'] = button.clamp(0, 2).floor();
+    if (button is MouseButton) {
+      json['button'] = button.value;
     }
     await _post('buttondown', json);
   }
 
   /// Releases the mouse button previously held (where the mouse is currently at).
-  Future up([int button]) async {
+  Future up([MouseButton button]) async {
     var json = {};
-    if (button is num) {
-      json['button'] = button.clamp(0, 2).floor();
+    if (button is MouseButton) {
+      json['button'] = button.value;
     }
     await _post('buttonup', json);
   }
