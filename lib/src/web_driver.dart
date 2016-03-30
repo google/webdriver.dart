@@ -143,7 +143,7 @@ class WebDriver implements SearchContext {
   /// Take a screenshot of the current page as PNG.
   Stream<int> captureScreenshot() async* {
     var encoded = await getRequest('screenshot');
-    yield* new Stream.fromIterable(CryptoUtils.base64StringToBytes(encoded));
+    yield* new Stream.fromIterable(BASE64.decode(encoded));
   }
 
   /// Inject a snippet of JavaScript into the page for execution in the context
