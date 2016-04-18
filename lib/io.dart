@@ -38,7 +38,7 @@ export 'package:webdriver/core.dart' hide createDriver, fromExistingSession;
 /// [uri]. Therefore, if [uri] does not end with a trailing slash, the
 /// last path component will be dropped.
 Future<core.WebDriver> createDriver({Uri uri, Map<String, dynamic> desired}) =>
-    core.createDriver(new _IOCommandProcessor(), uri: uri, desired: desired);
+    core.createDriver(new IOCommandProcessor(), uri: uri, desired: desired);
 
 /// Creates a WebDriver instance connected to an existing session.
 ///
@@ -46,12 +46,12 @@ Future<core.WebDriver> createDriver({Uri uri, Map<String, dynamic> desired}) =>
 /// [uri]. Therefore, if [uri] does not end with a trailing slash, the
 /// last path component will be dropped.
 Future<core.WebDriver> fromExistingSession(String sessionId, {Uri uri}) =>
-    core.fromExistingSession(new _IOCommandProcessor(), sessionId, uri: uri);
+    core.fromExistingSession(new IOCommandProcessor(), sessionId, uri: uri);
 
 final ContentType _contentTypeJson =
     new ContentType("application", "json", charset: "utf-8");
 
-class _IOCommandProcessor implements CommandProcessor {
+class IOCommandProcessor implements CommandProcessor {
   final HttpClient client = new HttpClient();
 
   final Lock _lock = new Lock();
