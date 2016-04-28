@@ -141,7 +141,8 @@ class WebDriver implements SearchContext {
   Mouse get mouse => new Mouse._(this);
 
   /// Take a screenshot of the current page as PNG.
-  Future<String> captureScreenshotAsBase64() async => await getRequest('screenshot');
+  Future<String> captureScreenshotAsBase64() async =>
+      await getRequest('screenshot');
 
   /// Take a screenshot of the current page as PNG.
   Future<List<int>> captureScreenshotAsList() async {
