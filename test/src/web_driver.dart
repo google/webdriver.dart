@@ -177,6 +177,18 @@ void runTests() {
         expect(screenshot, hasLength(isPositive));
         expect(screenshot, everyElement(new isInstanceOf<int>()));
       });
+
+      test('captureScreenshotAsList', () async {
+        var screenshot = await driver.captureScreenshotAsList();
+        expect(screenshot, hasLength(isPositive));
+        expect(screenshot, everyElement(new isInstanceOf<int>()));
+      });
+
+      test('captureScreenshotAsBase64', () async {
+        var screenshot = await driver.captureScreenshotAsBase64();
+        expect(screenshot, hasLength(isPositive));
+        expect(screenshot, new isInstanceOf<String>());
+      });
     });
   });
 }
