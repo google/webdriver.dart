@@ -140,17 +140,23 @@ class WebDriver implements SearchContext {
 
   Mouse get mouse => new Mouse._(this);
 
-  /// Take a screenshot of the current page as PNG.
+  /// Take a screenshot of the current page as PNG and return it as
+  /// base64-encoded string.
   Future<String> captureScreenshotAsBase64() async =>
       await getRequest('screenshot');
 
-  /// Take a screenshot of the current page as PNG.
+  /// Take a screenshot of the current page as PNG as list of uint8.
   Future<List<int>> captureScreenshotAsList() async {
     var base64Encoded = captureScreenshotAsBase64();
     return BASE64.decode(await base64Encoded);
   }
-  /// Take a screenshot of the current page as PNG.
 
+  /// Take a screenshot of the current page as PNG as stream of uint8.
+  ///
+  /// Don't use this method. Prefer [captureScreenshotAsBase64] or
+  /// [captureScreenshotAsList]. Returning the data as Stream<int> can be very
+  /// slow.
+  @Deprecated('Use captureScreenshotAsBase64 or captureScreenshotAsList!')
   Stream<int> captureScreenshot() async* {
     yield* new Stream.fromIterable(await captureScreenshotAsList());
   }
