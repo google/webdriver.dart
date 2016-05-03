@@ -17,7 +17,7 @@ library webdriver.io_test;
 import 'dart:io' show FileSystemEntity, Platform;
 
 import 'package:path/path.dart' as path;
-import 'package:webdriver/io.dart' show WebDriver, Capabilities, createDriver;
+import 'package:webdriver/io.dart' show Capabilities, createDriver;
 
 import 'test_util.dart' as test_util;
 
