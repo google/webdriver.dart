@@ -15,7 +15,7 @@
 library webdriver.html;
 
 import 'dart:async' show Future;
-import 'dart:convert' show JSON, UTF8;
+import 'dart:convert' show JSON;
 import 'dart:html' show HttpRequest, ProgressEvent;
 
 import 'package:webdriver/support/async.dart' show Lock;

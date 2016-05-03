@@ -14,13 +14,13 @@
 
 library webdriver.support.forwarder;
 
-import 'dart:async' show Future, StreamConsumer;
+import 'dart:async' show Future;
 import 'dart:convert' show JSON, UTF8;
 import 'dart:io' show ContentType, Directory, File, HttpRequest, HttpStatus;
 
 import 'package:path/path.dart' as path;
 import 'package:webdriver/core.dart'
-    show By, WebDriver, WebDriverException, WebElement;
+    show By, WebDriver, WebDriverException;
 
 final _contentTypeJson =
     new ContentType('application', 'json', charset: 'utf-8');
@@ -133,8 +133,8 @@ class WebDriverForwarder {
         if (method == 'POST') {
           // take a screenshot and save to file system
           var file =
-              new File(path.join(outputDir.path, params['file'])).openWrite();
-          await driver.captureScreenshot().map((b) => [b]).pipe(file);
+              new File(path.join(outputDir.path, params['file']));
+          await file.writeAsBytes(await driver.captureScreenshotAsList());
           return null;
         }
         break;
