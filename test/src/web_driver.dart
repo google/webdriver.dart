@@ -195,8 +195,7 @@ void runTests() {
       test('future based event listeners work with script timeouts', () async {
         driver.addEventListener((WebDriverCommandEvent e) async {
           return await new Future.delayed(
-              new Duration(milliseconds: 1000),
-              (() {}));
+              new Duration(milliseconds: 1000), (() {}));
         });
 
         try {
@@ -213,7 +212,8 @@ void runTests() {
         int millisDelay = 2000;
         int current = 0;
         driver.addEventListener((WebDriverCommandEvent e) async {
-          return await new Future.delayed(new Duration(milliseconds: millisDelay),
+          return await new Future.delayed(
+              new Duration(milliseconds: millisDelay),
               (() {
                 eventList.add(current++);
                 millisDelay = (millisDelay / 2).round();
