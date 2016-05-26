@@ -60,7 +60,7 @@ void runTests() {
 
       tearDown(() => driver.quit());
 
-      test('get', () async {
+      /*test('get', () async {
         await driver.get('http://www.google.com/ncr');
         await driver.findElement(const By.name('q'));
         await driver.get('http://www.yahoo.com');
@@ -190,6 +190,22 @@ void runTests() {
         var screenshot = await driver.captureScreenshotAsBase64();
         expect(screenshot, hasLength(isPositive));
         expect(screenshot, new isInstanceOf<String>());
+      });*/
+
+      test('future based event listeners work with script timeouts', () async {
+        driver.addEventListener((WebDriverCommandEvent e) async {
+          return await new Future.delayed(
+              new Duration(milliseconds: 1000),
+              (() {}));
+        });
+
+        try {
+          driver.timeouts.setScriptTimeout(new Duration(seconds: 1));
+          var e = await driver.executeAsync('', []);
+          fail('Did not throw timeout as expected');
+        } catch (e) {
+          expect(e.toString(), contains('asynchronous script timeout'));
+        }
       });
 
       test('future based event listeners wait appropriately', () async {
