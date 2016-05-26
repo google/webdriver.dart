@@ -34,15 +34,15 @@ import 'io_config.dart' as config;
 void main() {
   config.config();
 
-  alert.runTests();
+  /*alert.runTests();
   command_event.runTests();
   keyboard.runTests();
   logs.runTests();
   mouse.runTests();
   navigation.runTests();
   options.runTests();
-  target_locator.runTests();
+  target_locator.runTests();*/
   web_driver.runTests();
-  web_element.runTests();
-  window.runTests();
+  /*web_element.runTests();
+  window.runTests();*/
 }
