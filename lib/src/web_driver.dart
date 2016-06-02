@@ -217,21 +217,45 @@ class WebDriver implements SearchContext {
     }
   }
 
-  Future postRequest(String command, [params]) => _performRequest(
+  Future postRequest(String command, [params]) => _performRequestWithLog(
       () => _commandProcessor.post(_resolve(command), params),
       'POST',
       command,
       params);
 
-  Future getRequest(String command) => _performRequest(
+  Future getRequest(String command) => _performRequestWithLog(
       () => _commandProcessor.get(_resolve(command)), 'GET', command, null);
 
-  Future deleteRequest(String command) => _performRequest(
+  Future deleteRequest(String command) => _performRequestWithLog(
       () => _commandProcessor.delete(_resolve(command)),
       'DELETE',
       command,
       null);
 
+  // Performs request and sends the result to listeners/onCommandController.
+  // This is typically always what you want to use.
+  Future _performRequestWithLog(
+      Function fn, String method, String command, params) async {
+    return await _performRequest(fn, method, command, params)
+        .whenComplete(() async {
+      if (notifyListeners) {
+        if (_previousEvent == null) {
+          throw new Error(); // This should be impossible.
+        }
+        _onCommandController.add(_previousEvent);
+        for (WebDriverListener listener in _commandListeners) {
+          await listener(_previousEvent);
+        }
+      }
+    });
+  }
+
+  // This is an ugly hack, I know, but I dunno how to cleanly do this.
+  var _previousEvent = null;
+
+  // Performs the request. This will not notify any listeners or
+  // onCommandController. This should only be called from
+  // _performRequestWithLog.
   Future _performRequest(
       Function fn, String method, String command, params) async {
     var startTime = new DateTime.now();
@@ -256,7 +280,7 @@ class WebDriver implements SearchContext {
       return new Future.error(e, trace);
     } finally {
       if (notifyListeners) {
-        var event = new WebDriverCommandEvent(
+        _previousEvent = new WebDriverCommandEvent(
             method: method,
             endPoint: command,
             params: params,
@@ -265,11 +289,6 @@ class WebDriver implements SearchContext {
             exception: exception,
             result: result,
             stackTrace: trace);
-
-        _onCommandController.add(event);
-        for (WebDriverListener listener in _commandListeners) {
-          await listener(event);
-        }
       }
     }
   }

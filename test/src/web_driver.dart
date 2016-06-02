@@ -14,6 +14,8 @@
 
 library webdriver.web_driver_test;
 
+import 'dart:async';
+
 import 'package:test/test.dart';
 import 'package:webdriver/core.dart';
 
@@ -188,6 +190,43 @@ void runTests() {
         var screenshot = await driver.captureScreenshotAsBase64();
         expect(screenshot, hasLength(isPositive));
         expect(screenshot, new isInstanceOf<String>());
+      });
+
+      test('future based event listeners work with script timeouts', () async {
+        driver.addEventListener((WebDriverCommandEvent e) async {
+          return await new Future.delayed(
+              new Duration(milliseconds: 1000), (() {}));
+        });
+
+        try {
+          driver.timeouts.setScriptTimeout(new Duration(seconds: 1));
+          await driver.executeAsync('', []);
+          fail('Did not throw timeout as expected');
+        } catch (e) {
+          expect(e.toString(), contains('asynchronous script timeout'));
+        }
+      });
+
+      test('future based event listeners ordered appropriately', () async {
+        var eventList = new List<int>();
+        int millisDelay = 2000;
+        int current = 0;
+        driver.addEventListener((WebDriverCommandEvent e) async {
+          return await new Future.delayed(
+              new Duration(milliseconds: millisDelay),
+              (() {
+                eventList.add(current++);
+                millisDelay = (millisDelay / 2).round();
+              }));
+        });
+
+        for (int i = 0; i < 10; i++) {
+          await driver.title; // GET request.
+        }
+        expect(eventList, hasLength(10));
+        for (int i = 0; i < 10; i++) {
+          expect(eventList[i], i);
+        }
       });
     });
   });
