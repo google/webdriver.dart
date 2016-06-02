@@ -232,6 +232,8 @@ class WebDriver implements SearchContext {
       command,
       null);
 
+  // Performs request and sends the result to listeners/onCommandController.
+  // This is typically always what you want to use.
   Future _performRequestWithLog(
       Function fn, String method, String command, params) async {
     return await _performRequest(fn, method, command, params)
@@ -251,6 +253,9 @@ class WebDriver implements SearchContext {
   // This is an ugly hack, I know, but I dunno how to cleanly do this.
   var _previousEvent = null;
 
+  // Performs the request. This will not notify any listeners or
+  // onCommandController. This should only be called from
+  // _performRequestWithLog.
   Future _performRequest(
       Function fn, String method, String command, params) async {
     var startTime = new DateTime.now();
