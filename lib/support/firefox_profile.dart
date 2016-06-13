@@ -12,17 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-library webdriver.src.firefox_profile;
+library webdriver.support.firefox_profile;
 
-import 'dart:io' as io;
-import 'package:path/path.dart' as path;
 import 'dart:collection';
-import 'dart:convert' show LineSplitter;
+import 'dart:convert' show LineSplitter, BASE64;
+import 'dart:io' as io;
 import 'package:archive/archive.dart' show Archive, ArchiveFile, ZipEncoder;
-import 'package:crypto/crypto.dart' show CryptoUtils;
+import 'package:path/path.dart' as path;
 
 /// Unmodifiable defaults for 'prefs.js' and 'user.js'.
-final lockedPrefs = [
+final List<PrefsOption> lockedPrefs = <PrefsOption>[
   new BooleanOption("app.update.auto", false),
   new BooleanOption("app.update.enabled", false),
   new IntegerOption("browser.displayedE10SNotice", 4),
@@ -80,7 +79,7 @@ final lockedPrefs = [
 ];
 
 /// Default values for 'user.js'.
-final defaultUserPrefs = [
+final List<PrefsOption> defaultUserPrefs = <PrefsOption>[
   new BooleanOption("browser.dom.window.dump.enabled", true),
   new StringOption("browser.newtab.url", "about:blank"),
   new BooleanOption("browser.newtabpage.enabled", false),
@@ -188,7 +187,7 @@ class FirefoxProfile {
     return false;
   }
 
-  /// Load a prefs file and parse the content into a set of [PrefOption].
+  /// Load a prefs file and parse the content into a set of [PrefsOption].
   /// For lines which can't be properly parsed a message is printed and the line
   /// is otherwise ignored.
   /// Comments, lines starting with `//` are silently ignored.
@@ -233,10 +232,11 @@ class FirefoxProfile {
           if (name == 'prefs.js' || name == 'user.js') {
             return;
           }
-          archiveFile = new ArchiveFile(
-              name, f.statSync().size, (f as io.File).readAsBytesSync());
+          archiveFile =
+              new ArchiveFile(name, f.statSync().size, (f).readAsBytesSync());
         } else {
-          throw 'Invalid file type for file "${f.path}" (${io.FileSystemEntity.typeSync(f.path)}).';
+          throw 'Invalid file type for file "${f.path}" '
+              '(${io.FileSystemEntity.typeSync(f.path)}).';
         }
         archive.addFile(archiveFile);
       });
@@ -252,7 +252,7 @@ class FirefoxProfile {
         new ArchiveFile('user.js', userJsContent.length, userJsContent));
 
     final zipData = new ZipEncoder().encode(archive);
-    return {'firefox_profile': CryptoUtils.bytesToBase64(zipData)};
+    return {'firefox_profile': BASE64.encode(zipData)};
   }
 }
 
@@ -280,6 +280,7 @@ abstract class PrefsOption<T> {
     } else if (value is String) {
       return new StringOption(name, value) as PrefsOption<T>;
     }
+    return null;
   }
 
   factory PrefsOption.parse(String prefs) {
@@ -314,9 +315,12 @@ abstract class PrefsOption<T> {
     assert(name.isNotEmpty);
   }
 
-  bool operator ==(other) {
-    if (other is! PrefsOption) return false;
-    return other.name == name;
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) {
+      return true;
+    }
+    return other is PrefsOption && this.name == other.name;
   }
 
   @override

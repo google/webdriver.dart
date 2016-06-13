@@ -19,7 +19,6 @@ import 'package:test/test.dart';
 
 import 'src/alert.dart' as alert;
 import 'src/command_event.dart' as command_event;
-import 'src/firefox_profile.dart' as firefox_profile;
 import 'src/keyboard.dart' as keyboard;
 import 'src/logs.dart' as logs;
 import 'src/mouse.dart' as mouse;
@@ -29,6 +28,7 @@ import 'src/target_locator.dart' as target_locator;
 import 'src/web_driver.dart' as web_driver;
 import 'src/web_element.dart' as web_element;
 import 'src/window.dart' as window;
+import 'support/firefox_profile.dart' as firefox_profile;
 
 import 'io_config.dart' as config;
 

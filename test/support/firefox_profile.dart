@@ -13,31 +13,31 @@
 // limitations under the License.
 
 @TestOn("vm")
-library webdriver.firefox_profile_test;
+library webdriver.support.firefox_profile_test;
 
+import 'dart:convert' show BASE64, Encoding, UTF8;
 import 'dart:io' as io;
+import 'package:archive/archive.dart' show Archive, ArchiveFile, ZipDecoder;
 import 'package:test/test.dart';
 import 'package:webdriver/core.dart';
-
-import 'package:webdriver/src/firefox_profile.dart';
-import 'package:archive/archive.dart' show Archive, ArchiveFile, ZipDecoder;
-import 'package:crypto/crypto.dart' show CryptoUtils;
-
-import 'dart:convert' show Encoding, UTF8;
+import 'package:webdriver/support/firefox_profile.dart';
 
 void runTests() {
   group('Firefox profile', () {
     test('parse and serialize string value with quotes', () {
       const value =
-          r'user_pref("extensions.xpiState", "{\"app-global\":{\"{972ce4c6-7e08-4474-a285-3208198ce6fd}\":{\"d\":\"/opt/firefox/browser/extensions/{972ce4c6-7e08-4474-a285-3208198ce6fd}\",\"e\":true,\"v\":\"40.0\",\"st\":1439535413000,\"mt\":1438968709000}}}");';
+          r'user_pref("extensions.xpiState", "{\"app-global\":{\"{972ce4c6-'
+          r'7e08-4474-a285-3208198ce6fd}\":{\"d\":\"/opt/firefox/browser/'
+          r'extensions/{972ce4c6-7e08-4474-a285-3208198ce6fd}\",\"e\":true,\'
+          r'"v\":\"40.0\",\"st\":1439535413000,\"mt\":1438968709000}}}");';
       var option = new PrefsOption.parse(value);
       expect(option, new isInstanceOf<StringOption>());
       expect(option.asPrefString, value);
     });
 
     test('parse and serialize string value with backslash', () {
-      const value =
-          r'user_pref("browser.cache.disk.parent_directory", "\\\\volume\\web\\cache\\mz");';
+      const value = r'user_pref("browser.cache.disk.parent_directory", '
+          r'"\\\\volume\\web\\cache\\mz");';
       var option = new PrefsOption.parse(value);
       expect(option, new isInstanceOf<StringOption>());
       expect(option.asPrefString, value);
@@ -88,8 +88,10 @@ void runTests() {
 
       expect(profile.setOption(option), true);
 
-      expect(profile.userPrefs,
-          anyElement((e) => e.name == option.name && e.value == option.value));
+      expect(
+          profile.userPrefs,
+          anyElement((PrefsOption e) =>
+              e.name == option.name && e.value == option.value));
     });
 
     test('overriding locked value should be ignored', () {
@@ -142,7 +144,7 @@ void runTests() {
 
     test('encode/decode profile directory from disk', () {
       var profile = new FirefoxProfile(
-          profileDirectory: new io.Directory('test/src/firefox_profile'));
+          profileDirectory: new io.Directory('test/support/firefox_profile'));
       profile.setOption(new PrefsOption(Capabilities.hasNativeEvents, true));
 
       var archive = unpackArchiveData(profile.toJson());
@@ -170,8 +172,7 @@ void runTests() {
 }
 
 Archive unpackArchiveData(Map profileData) {
-  var zipArchive =
-      CryptoUtils.base64StringToBytes(profileData['firefox_profile']);
+  var zipArchive = BASE64.decode(profileData['firefox_profile']);
   return new ZipDecoder().decodeBytes(zipArchive, verify: true);
 }
 
@@ -184,5 +185,6 @@ class MockFile implements io.File {
   @override
   String readAsStringSync({Encoding encoding: UTF8}) => content;
 
-  noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
+  @override
+  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 }
