@@ -28,6 +28,7 @@ import 'src/target_locator.dart' as target_locator;
 import 'src/web_driver.dart' as web_driver;
 import 'src/web_element.dart' as web_element;
 import 'src/window.dart' as window;
+import 'support/firefox_profile.dart' as firefox_profile;
 
 import 'io_config.dart' as config;
 
@@ -36,6 +37,7 @@ void main() {
 
   alert.runTests();
   command_event.runTests();
+  firefox_profile.runTests();
   keyboard.runTests();
   logs.runTests();
   mouse.runTests();
