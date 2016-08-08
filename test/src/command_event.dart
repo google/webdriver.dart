@@ -25,7 +25,7 @@ void runTests() {
   group('CommandEvent', () {
     WebDriver driver;
 
-    var events = [];
+    var events = <WebDriverCommandEvent>[];
     var sub;
 
     setUp(() async {

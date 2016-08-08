@@ -26,7 +26,8 @@ final Matcher isPoint = new isInstanceOf<Point<int>>();
 
 String testPagePath;
 
-typedef Future<WebDriver> createTestDriverFn({Map additionalCapabilities});
+typedef Future<WebDriver> createTestDriverFn(
+    {Map<String, dynamic> additionalCapabilities});
 
 createTestDriverFn createTestDriver;
 

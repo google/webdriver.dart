@@ -143,7 +143,8 @@ void runTests() {
         var element = await driver.activeElement;
         expect(await element.name, 'body');
         await (await driver
-            .findElement(const By.cssSelector('input[type=text]'))).click();
+                .findElement(const By.cssSelector('input[type=text]')))
+            .click();
         element = await driver.activeElement;
         expect(await element.name, 'input');
       });

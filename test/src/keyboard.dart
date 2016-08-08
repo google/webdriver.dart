@@ -37,8 +37,8 @@ void runTests() {
       // Note: Firefox used as Chrome + Mac OSX prevents use of control/meta
       // in chords.
       // https://bugs.chromium.org/p/chromedriver/issues/detail?id=30
-      driver = await createTestDriver(
-          additionalCapabilities: Capabilities.firefox);
+      driver =
+          await createTestDriver(additionalCapabilities: Capabilities.firefox);
       await driver.get(testPagePath);
       textInput =
           await driver.findElement(const By.cssSelector('input[type=text]'));

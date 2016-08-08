@@ -48,21 +48,21 @@ class _HtmlCommandProcessor implements CommandProcessor {
   final Lock _lock = new Lock();
 
   @override
-  Future<Object> post(Uri uri, dynamic params, {bool value: true}) =>
+  Future<dynamic> post(Uri uri, dynamic params, {bool value: true}) =>
       _request('POST', uri, params, value);
 
   @override
-  Future<Object> get(Uri uri, {bool value: true}) =>
+  Future<dynamic> get(Uri uri, {bool value: true}) =>
       _request('GET', uri, null, value);
 
   @override
-  Future<Object> delete(Uri uri, {bool value: true}) =>
+  Future<dynamic> delete(Uri uri, {bool value: true}) =>
       _request('DELETE', uri, null, value);
 
   @override
   Future close() async {}
 
-  Future<Object> _request(
+  Future<dynamic> _request(
       String method, Uri uri, dynamic params, bool value) async {
     await _lock.acquire();
     var sendData = null;

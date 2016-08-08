@@ -34,7 +34,7 @@ class Cookies extends _WebDriverBase {
 
   /// Retrieve all cookies visible to the current page.
   Stream<Cookie> get all async* {
-    var cookies = await _get('');
+    var cookies = await _get('') as List<Map<String, dynamic>>;
     for (var cookie in cookies) {
       yield new Cookie.fromJson(cookie);
     }

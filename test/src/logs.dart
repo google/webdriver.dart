@@ -24,7 +24,7 @@ void runTests() {
     WebDriver driver;
 
     setUp(() async {
-      Map capabilities = {
+      Map<String, dynamic> capabilities = {
         Capabilities.loggingPrefs: {LogType.performance: LogLevel.info}
       };
 

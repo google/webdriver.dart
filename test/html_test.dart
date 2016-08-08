@@ -36,8 +36,8 @@ import 'test_util.dart' as test_util;
 
 void main() {
   test_util.runningOnTravis = false;
-  test_util.createTestDriver = ({Map additionalCapabilities}) {
-    Map capabilities = Capabilities.chrome;
+  test_util.createTestDriver = ({Map<String, dynamic> additionalCapabilities}) {
+    var capabilities = Capabilities.chrome;
 
     if (additionalCapabilities != null) {
       capabilities.addAll(additionalCapabilities);

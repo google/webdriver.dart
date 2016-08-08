@@ -57,7 +57,7 @@ class IOCommandProcessor implements CommandProcessor {
   final Lock _lock = new Lock();
 
   @override
-  Future<Object> post(Uri uri, dynamic params, {bool value: true}) async {
+  Future<dynamic> post(Uri uri, dynamic params, {bool value: true}) async {
     await _lock.acquire();
     HttpClientRequest request = await client.postUrl(uri);
     _setUpRequest(request);
@@ -73,7 +73,7 @@ class IOCommandProcessor implements CommandProcessor {
   }
 
   @override
-  Future<Object> get(Uri uri, {bool value: true}) async {
+  Future<dynamic> get(Uri uri, {bool value: true}) async {
     await _lock.acquire();
     HttpClientRequest request = await client.getUrl(uri);
     _setUpRequest(request);
@@ -81,7 +81,7 @@ class IOCommandProcessor implements CommandProcessor {
   }
 
   @override
-  Future<Object> delete(Uri uri, {bool value: true}) async {
+  Future<dynamic> delete(Uri uri, {bool value: true}) async {
     await _lock.acquire();
     HttpClientRequest request = await client.deleteUrl(uri);
     _setUpRequest(request);

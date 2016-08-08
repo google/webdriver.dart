@@ -19,8 +19,7 @@ import 'dart:convert' show JSON, UTF8;
 import 'dart:io' show ContentType, Directory, File, HttpRequest, HttpStatus;
 
 import 'package:path/path.dart' as path;
-import 'package:webdriver/core.dart'
-    show By, WebDriver, WebDriverException;
+import 'package:webdriver/core.dart' show By, WebDriver, WebDriverException;
 
 final _contentTypeJson =
     new ContentType('application', 'json', charset: 'utf-8');
@@ -76,7 +75,7 @@ class WebDriverForwarder {
 
   /// Forward [request] to [driver] and respond to the request with the returned
   /// value or any thrown exceptions.
-  Future forward(HttpRequest request) async {
+  Future<Null> forward(HttpRequest request) async {
     try {
       if (!request.uri.path.startsWith(prefix)) {
         request.response.statusCode = HttpStatus.NOT_FOUND;
@@ -89,11 +88,11 @@ class WebDriverForwarder {
       if (endpoint.startsWith('/')) {
         endpoint = endpoint.substring(1);
       }
-      var params;
+      Map<String, dynamic> params;
       if (request.method == 'POST') {
         String requestBody = await UTF8.decodeStream(request);
         if (requestBody != null && requestBody.isNotEmpty) {
-          params = JSON.decode(requestBody);
+          params = JSON.decode(requestBody) as Map<String, dynamic>;
         }
       }
       var value = await _forward(request.method, endpoint, params);
@@ -114,7 +113,7 @@ class WebDriverForwarder {
     }
   }
 
-  Future _forward(String method, String endpoint,
+  Future<dynamic> _forward(String method, String endpoint,
       [Map<String, dynamic> params]) async {
     List<String> endpointTokens = path.split(endpoint);
     if (endpointTokens.isEmpty) {
@@ -132,8 +131,7 @@ class WebDriverForwarder {
       case 'screenshot':
         if (method == 'POST') {
           // take a screenshot and save to file system
-          var file =
-              new File(path.join(outputDir.path, params['file']));
+          var file = new File(path.join(outputDir.path, params['file']));
           await file.writeAsBytes(await driver.captureScreenshotAsList());
           return null;
         }
@@ -169,7 +167,7 @@ class WebDriverForwarder {
       case 'execute_async':
         // /execute and /execute_async allow arbitrary JSON objects with
         // embedded WebElememt ids.
-        params = await _deepCopy(params);
+        params = await _deepCopy(params) as Map<String, dynamic>;
         break;
     }
 
