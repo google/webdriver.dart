@@ -87,7 +87,7 @@ class Cookie {
   }
 
   Map<String, dynamic> toJson() {
-    var json = <String, dynamic>{'name': name, 'value': value};
+    var json = {'name': name, 'value': value};
     if (path is String) {
       json['path'] = path;
     }
