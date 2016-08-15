@@ -52,7 +52,7 @@ Future<WebDriver> createDriver(CommandProcessor processor,
     desired = Capabilities.empty;
   }
 
-  var response = await processor.post(
+  Map response = await processor.post(
       uri.resolve('session'), {'desiredCapabilities': desired},
       value: false);
   return new WebDriver(processor, uri, response['sessionId'],

@@ -94,10 +94,11 @@ class IOCommandProcessor implements CommandProcessor {
   }
 
   _processResponse(HttpClientResponse response, bool value) async {
-    var respBody = await UTF8.decodeStream(response);
+    var respDecoded = await UTF8.decodeStream(response);
     _lock.release();
+    Map respBody;
     try {
-      respBody = JSON.decode(respBody);
+      respBody = JSON.decode(respDecoded);
     } catch (e) {}
 
     if (response.statusCode < 200 ||
