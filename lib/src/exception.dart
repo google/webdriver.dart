@@ -93,7 +93,8 @@ abstract class WebDriverException implements Exception {
   String toString() => '$runtimeType ($statusCode): $message';
 
   @override
-  bool operator ==(other) => other != null &&
+  bool operator ==(other) =>
+      other != null &&
       other.runtimeType == this.runtimeType &&
       other.statusCode == this.statusCode &&
       other.message == this.message;

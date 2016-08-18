@@ -54,7 +54,8 @@ class Window extends _WebDriverBase {
   int get hashCode => handle.hashCode * 3 + driver.hashCode;
 
   @override
-  bool operator ==(other) => other is Window &&
+  bool operator ==(other) =>
+      other is Window &&
       other.driver == this.driver &&
       other.handle == this.handle;
 

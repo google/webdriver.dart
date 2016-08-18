@@ -31,7 +31,7 @@ class WebDriver implements SearchContext {
   final _onCommandController =
       new StreamController<WebDriverCommandEvent>.broadcast();
 
-  final List _commandListeners = new List<WebDriverListener>();
+  final _commandListeners = new List<WebDriverListener>();
 
   WebDriver(this._commandProcessor, Uri uri, String id, this.capabilities,
       {this.filterStackTraces: true})
@@ -49,7 +49,7 @@ class WebDriver implements SearchContext {
       _commandListeners.add(listener);
 
   /// The current url.
-  Future<String> get currentUrl => getRequest('url');
+  Future<String> get currentUrl => getRequest('url') as Future<String>;
 
   /// navigate to the specified url
   Future get(/* Uri | String */ url) async {
@@ -60,7 +60,7 @@ class WebDriver implements SearchContext {
   }
 
   /// The title of the current page.
-  Future<String> get title => getRequest('title');
+  Future<String> get title => getRequest('title') as Future<String>;
 
   /// Search for multiple elements within the entire current page.
   @override
@@ -83,7 +83,7 @@ class WebDriver implements SearchContext {
   }
 
   /// An artist's rendition of the current page's source.
-  Future<String> get pageSource => getRequest('source');
+  Future<String> get pageSource => getRequest('source') as Future<String>;
 
   /// Close the current window, quitting the browser if it is the last window.
   Future close() async {

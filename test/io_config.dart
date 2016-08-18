@@ -23,8 +23,8 @@ import 'test_util.dart' as test_util;
 
 void config() {
   test_util.runningOnTravis = Platform.environment['TRAVIS'] == 'true';
-  test_util.createTestDriver = ({Map additionalCapabilities}) {
-    Map capabilities = Capabilities.chrome;
+  test_util.createTestDriver = ({Map<String, dynamic> additionalCapabilities}) {
+    var capabilities = Capabilities.chrome;
     Map env = Platform.environment;
 
     Map chromeOptions = {};
