@@ -24,31 +24,14 @@ import 'test_util.dart' as test_util;
 void config() {
   test_util.runningOnTravis = Platform.environment['TRAVIS'] == 'true';
   test_util.createTestDriver = ({Map<String, dynamic> additionalCapabilities}) {
-    var capabilities = Capabilities.chrome;
-    Map env = Platform.environment;
+    var uri = Uri.parse("${Platform.environment["WEB_TEST_WEBDRIVER_SERVER"]}/");
 
-    Map chromeOptions = {};
+    print("MRF: ${uri}");
 
-    if (env['CHROMEDRIVER_BINARY'] != null) {
-      chromeOptions['binary'] = env['CHROMEDRIVER_BINARY'];
-    }
-
-    if (env['CHROMEDRIVER_ARGS'] != null) {
-      chromeOptions['args'] = env['CHROMEDRIVER_ARGS'].split(' ');
-    }
-
-    if (chromeOptions.isNotEmpty) {
-      capabilities['chromeOptions'] = chromeOptions;
-    }
-
-    if (additionalCapabilities != null) {
-      capabilities.addAll(additionalCapabilities);
-    }
-
-    return createDriver(desired: capabilities);
+    return createDriver(uri: uri, desired: additionalCapabilities);
   };
 
-  var testPagePath = path.join(path.current, 'test', 'test_page.html');
+  var testPagePath = path.join(Platform.environment["TEST_SRCDIR"], "com_github_google_webdriver_dart", 'test', 'test_page.html');
   testPagePath = path.absolute(testPagePath);
   if (!FileSystemEntity.isFileSync(testPagePath)) {
     throw new Exception('Could not find the test file at "$testPagePath".'

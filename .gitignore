@@ -7,3 +7,4 @@ pubspec.lock
 .buildlog
 .settings/
 .idea/
+bazel-*
