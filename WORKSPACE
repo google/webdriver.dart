@@ -1,16 +1,16 @@
 workspace(name = "com_github_google_webdriver_dart")
 
 # Include the Dart SDK and language extensions for Bazel.
-# git_repository(
-#     name = "io_bazel_rules_dart",
-#     remote = "https://github.com/dart-lang/rules_dart",
-#     tag = "v0.2.2",
-# )
-
-local_repository(
+git_repository(
     name = "io_bazel_rules_dart",
-    path = "/usr/local/google/home/fisherii/github/rules_dart",
+    remote = "https://github.com/dart-lang/rules_dart",
+    tag = "v0.2.2",
 )
+
+# local_repository(
+#     name = "io_bazel_rules_dart",
+#     path = "/usr/local/google/home/fisherii/github/rules_dart",
+# )
 
 load("@io_bazel_rules_dart//dart/build_rules:repositories.bzl", "dart_repositories")
 
