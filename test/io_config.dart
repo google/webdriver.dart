@@ -25,9 +25,6 @@ void config() {
   test_util.runningOnTravis = Platform.environment['TRAVIS'] == 'true';
   test_util.createTestDriver = ({Map<String, dynamic> additionalCapabilities}) {
     var uri = Uri.parse("${Platform.environment["WEB_TEST_WEBDRIVER_SERVER"]}/");
-
-    print("MRF: ${uri}");
-
     return createDriver(uri: uri, desired: additionalCapabilities);
   };
 

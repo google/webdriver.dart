@@ -1,16 +1,30 @@
+# Copyright 2016 Google Inc. All Rights Reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 workspace(name = "com_github_google_webdriver_dart")
 
 # Include the Dart SDK and language extensions for Bazel.
-git_repository(
-    name = "io_bazel_rules_dart",
-    remote = "https://github.com/dart-lang/rules_dart",
-    tag = "v0.2.2",
-)
-
-# local_repository(
+# git_repository(
 #     name = "io_bazel_rules_dart",
-#     path = "/usr/local/google/home/fisherii/github/rules_dart",
+#     remote = "https://github.com/dart-lang/rules_dart",
+#     tag = "v0.2.2",
 # )
+
+local_repository(
+    name = "io_bazel_rules_dart",
+    path = "/usr/local/google/home/fisherii/github/rules_dart",
+)
 
 load("@io_bazel_rules_dart//dart/build_rules:repositories.bzl", "dart_repositories")
 
@@ -37,8 +51,18 @@ load("@io_bazel_rules_webtesting//web:repositories.bzl", "web_test_repositories"
 
 web_test_repositories()
 
-browser_repositories(firefox = True)
-
 load(":repositories.bzl", "webdriver_dart_repositories")
 
 webdriver_dart_repositories()
+
+http_file(
+    name="org_chromium_chromedriver",
+    sha256="59e6b1b1656a20334d5731b3c5a7400f92a9c6f5043bb4ab67f1ccf1979ee486",
+    url=" http://chromedriver.storage.googleapis.com/2.26/chromedriver_linux64.zip",
+)
+
+http_file(
+    name = "org_chromium_chromium",
+    sha256="6966d205421dcafd5d873bd1d1a858fb5a025853bd87f9d5b4480dc3faff43c9",
+    url="https://commondatastorage.googleapis.com/chromium-browser-snapshots/Linux_x64/437067/chrome-linux.zip",
+)
