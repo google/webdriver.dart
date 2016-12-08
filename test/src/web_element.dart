@@ -109,7 +109,7 @@ void runTests() {
       expect(size, isRectangle);
       expect(size.width, isNonNegative);
       expect(size.height, isNonNegative);
-    }, skip: 'TODO(DrMarcII): fix test');
+    });
 
     test('size -- invisible', () async {
       var size = await invisible.size;
@@ -135,7 +135,7 @@ void runTests() {
     test('findElement -- success', () async {
       var element = await table.findElement(const By.tagName('tr'));
       expect(element, isWebElement);
-    }, skip: 'TODO(DrMarcII): fix test');
+    });
 
     test('findElement -- failure', () async {
       try {

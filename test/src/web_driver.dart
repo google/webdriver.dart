@@ -47,7 +47,7 @@ void runTests() {
         var element = await driver.findElement(const By.name('q'));
         expect(await element.name, 'input');
         await driver.quit();
-      }, skip: runningOnTravis);
+      });
     });
 
     group('methods', () {

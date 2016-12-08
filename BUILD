@@ -38,7 +38,10 @@ dart_vm_test(
     name = "io_test_wrapped",
     srcs = glob(
         ["test/**/*.dart"],
-        exclude = ["**/html_*.dart"],
+        exclude = [
+            "**/html_*.dart",
+            "test/support/async_test.dart",
+        ],
     ),
     data = glob(
         ["test/**"],
@@ -64,4 +67,16 @@ web_test_suite(
     ],
     local = True,
     test = ":io_test_wrapped",
+)
+
+dart_vm_test(
+    name = "async_test",
+    srcs = ["test/support/async_test.dart"],
+    script_file = "test/support/async_test.dart",
+    deps = [
+        ":webdriver",
+        "@org_dartlang_pub_async//:async",
+        "@org_dartlang_pub_test//:test",
+        "@org_dartlang_pub_unittest//:unittest",
+    ],
 )

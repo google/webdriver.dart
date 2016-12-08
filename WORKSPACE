@@ -16,9 +16,9 @@ workspace(name = "com_github_google_webdriver_dart")
 
 http_archive(
     name = "io_bazel_rules_dart",
-    sha256 = "5fb3c7dd8cbc81aa8724a7edad2d4c949c3047830a7053fa68da8494ac96a588",
-    strip_prefix = "rules_dart-82058d874a30d199ac617166b803c4d127ce369b",
-    url = "https://github.com/DrMarcII/rules_dart/archive/82058d874a30d199ac617166b803c4d127ce369b.tar.gz",
+    sha256 = "83220a6d89b2299887506911a4a12439190baa1633f6da2fd32a67c4442d6f33",
+    strip_prefix = "rules_dart-84052073c0c6fdb60013b65358d887bb808c6478",
+    url = "https://github.com/dart-lang/rules_dart/archive/84052073c0c6fdb60013b65358d887bb808c6478.tar.gz",
 )
 
 load("@io_bazel_rules_dart//dart/build_rules:repositories.bzl", "dart_repositories")
