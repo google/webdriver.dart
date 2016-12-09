@@ -24,11 +24,20 @@ import 'test_util.dart' as test_util;
 void config() {
   test_util.runningOnTravis = Platform.environment['TRAVIS'] == 'true';
   test_util.createTestDriver = ({Map<String, dynamic> additionalCapabilities}) {
-    var uri = Uri.parse("${Platform.environment["WEB_TEST_WEBDRIVER_SERVER"]}/");
+    var address = Platform.environment['WEB_TEST_WEBDRIVER_SERVER'];
+    if (!address.endsWith('/')) {
+      address += '/';
+    }
+    var uri = Uri.parse(address);
     return createDriver(uri: uri, desired: additionalCapabilities);
   };
-
-  var testPagePath = path.join(Platform.environment["TEST_SRCDIR"], "com_github_google_webdriver_dart", 'test', 'test_page.html');
+  var testSrcDir = Platform.environment['TEST_SRCDIR'];
+  String testPagePath;
+  if (testSrcDir != null) {
+    testPagePath = path.join(testSrcDir, 'com_github_google_webdriver_dart', 'test', 'test_page.html');
+  } else {
+    testPagePath = path.join('test', 'test_page.html');
+  }
   testPagePath = path.absolute(testPagePath);
   if (!FileSystemEntity.isFileSync(testPagePath)) {
     throw new Exception('Could not find the test file at "$testPagePath".'

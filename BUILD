@@ -14,7 +14,6 @@
 
 load("@io_bazel_rules_dart//dart/build_rules:core.bzl", "dart_library")
 load("@io_bazel_rules_dart//dart/build_rules:vm.bzl", "dart_vm_test")
-load("@io_bazel_rules_webtesting//web:web.bzl", "web_test_suite")
 
 licenses(["notice"])  # Apache 2.0
 
@@ -34,49 +33,5 @@ dart_library(
     ],
 )
 
-dart_vm_test(
-    name = "io_test_wrapped",
-    srcs = glob(
-        ["test/**/*.dart"],
-        exclude = [
-            "**/html_*.dart",
-            "test/support/async_test.dart",
-        ],
-    ),
-    data = glob(
-        ["test/**"],
-        exclude = ["**/*.dart"],
-    ),
-    script_file = "test/io_test.dart",
-    tags = [
-        "manual",
-        "noci",
-    ],
-    deps = [
-        ":webdriver",
-        "@org_dartlang_pub_matcher//:matcher",
-        "@org_dartlang_pub_path//:path",
-        "@org_dartlang_pub_test//:test",
-    ],
-)
-
-web_test_suite(
-    name = "io_test",
-    browsers = [
-        "//browsers:chrome-native",
-    ],
-    local = True,
-    test = ":io_test_wrapped",
-)
-
-dart_vm_test(
-    name = "async_test",
-    srcs = ["test/support/async_test.dart"],
-    script_file = "test/support/async_test.dart",
-    deps = [
-        ":webdriver",
-        "@org_dartlang_pub_async//:async",
-        "@org_dartlang_pub_test//:test",
-        "@org_dartlang_pub_unittest//:unittest",
-    ],
-)
+# Test BUILD rules are defined test/BUILD instead of here to prevent cyclic
+# dependency between this and rules_webtesting.

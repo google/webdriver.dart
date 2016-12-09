@@ -51,13 +51,13 @@ load(":repositories.bzl", "webdriver_dart_repositories")
 webdriver_dart_repositories()
 
 http_file(
-    name="org_chromium_chromedriver",
-    sha256="59e6b1b1656a20334d5731b3c5a7400f92a9c6f5043bb4ab67f1ccf1979ee486",
-    url=" http://chromedriver.storage.googleapis.com/2.26/chromedriver_linux64.zip",
+    name = "org_chromium_chromedriver",
+    sha256 = "d011749e76305b5591b5500897939b33fac460d705d9815b8c03c53b0e1ecc7c",
+    url = " http://chromedriver.storage.googleapis.com/2.25/chromedriver_linux64.zip",
 )
 
 http_file(
     name = "org_chromium_chromium",
-    sha256="6966d205421dcafd5d873bd1d1a858fb5a025853bd87f9d5b4480dc3faff43c9",
-    url="https://commondatastorage.googleapis.com/chromium-browser-snapshots/Linux_x64/437067/chrome-linux.zip",
+    sha256 = "e3c99954d6acce013174053534b72f47f67f18a0d75f79c794daaa8dd2ae8aaf",
+    url = "https://commondatastorage.googleapis.com/chromium-browser-snapshots/Linux_x64/423768/chrome-linux.zip",
 )
