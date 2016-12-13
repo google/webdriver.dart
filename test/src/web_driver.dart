@@ -39,15 +39,6 @@ void runTests() {
         expect(await element.name, 'input');
         await driver.quit();
       });
-
-      test('firefox', () async {
-        WebDriver driver = await createTestDriver(
-            additionalCapabilities: Capabilities.firefox);
-        await driver.get('http://www.google.com/ncr');
-        var element = await driver.findElement(const By.name('q'));
-        expect(await element.name, 'input');
-        await driver.quit();
-      });
     });
 
     group('methods', () {
@@ -58,13 +49,16 @@ void runTests() {
         await driver.get(testPagePath);
       });
 
-      tearDown(() => driver.quit());
+      tearDown(() async {
+        if (driver != null) {
+          await driver.quit();
+        }
+        driver = null;
+      });
 
       test('get', () async {
         await driver.get('http://www.google.com/ncr');
         await driver.findElement(const By.name('q'));
-        await driver.get('http://www.yahoo.com');
-        await driver.findElement(const By.name('p'));
       });
 
       test('currentUrl', () async {

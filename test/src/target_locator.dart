@@ -34,7 +34,12 @@ void runTests() {
       frame = await driver.findElement(const By.name('frame'));
     });
 
-    tearDown(() => driver.quit());
+    tearDown(() async {
+      if (driver != null) {
+        await driver.quit();
+      }
+      driver = null;
+    });
 
     test('frame index', () async {
       await driver.switchTo.frame(0);

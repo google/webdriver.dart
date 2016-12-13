@@ -45,7 +45,12 @@ void runTests() {
       await textInput.click();
     });
 
-    tearDown(() => driver.quit());
+    tearDown(() async {
+      if (driver != null) {
+        await driver.quit();
+      }
+      driver = null;
+    });
 
     test('sendKeys -- once', () async {
       await driver.keyboard.sendKeys('abcdef');

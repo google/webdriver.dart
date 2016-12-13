@@ -32,7 +32,12 @@ void runTests() {
       output = await driver.findElement(const By.id('settable'));
     });
 
-    tearDown(() => driver.quit());
+    tearDown(() async {
+      if (driver != null) {
+        await driver.quit();
+      }
+      driver = null;
+    });
 
     test('no alert', () {
       expect(driver.switchTo.alert, throws);

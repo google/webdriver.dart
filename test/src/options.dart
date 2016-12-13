@@ -28,7 +28,12 @@ void runTests() {
       await driver.get('http://www.google.com/ncr');
     });
 
-    tearDown(() => driver.quit());
+    tearDown(() async {
+      if (driver != null) {
+        await driver.quit();
+      }
+      driver = null;
+    });
 
     test('add simple cookie', () async {
       await driver.cookies.add(new Cookie('mycookie', 'myvalue'));
@@ -86,7 +91,12 @@ void runTests() {
       driver = await createTestDriver();
     });
 
-    tearDown(() => driver.quit());
+    tearDown(() async {
+      if (driver != null) {
+        await driver.quit();
+      }
+      driver = null;
+    });
 
     // TODO(DrMarcII): Figure out how to tell if timeouts are correctly set
     test('set all timeouts', () async {
