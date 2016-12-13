@@ -37,14 +37,14 @@ void runTests() {
       var size = const Rectangle<int>(0, 0, 600, 400);
       await window.setSize(size);
       expect(await window.size, size);
-    }, skip: true);
+    });
 
     test('location', () async {
       var window = await driver.window;
       var position = const Point<int>(100, 200);
       await window.setLocation(position);
       expect(await window.location, position);
-    }, skip: true);
+    });
 
     // May not work on some OS/browser combinations (notably Mac OS X).
     test('maximize', () async {
@@ -64,6 +64,6 @@ void runTests() {
       expect(location.y, lessThan(200));
       expect(size.height, greaterThan(200));
       expect(size.width, greaterThan(300));
-    }, skip: true);
+    }, skip: 'unreliable');
   });
 }

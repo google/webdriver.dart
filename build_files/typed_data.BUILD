@@ -1,7 +1,5 @@
-#!/bin/bash
-
-# Copyright 2013 Google Inc. All Rights Reserved.
-
+# Copyright 2016 Google Inc. All Rights Reserved.
+#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -14,17 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Fast fail the script on failures.
-set -e
+load("@io_bazel_rules_dart//dart/build_rules:core.bzl", "dart_library")
 
-# Verify that the libraries are error free.
-pub global activate tuneup
-pub global run tuneup check --ignore-infos
-
-# Start chromedriver.
-chromedriver --port=4444 --url-base=wd/hub &
-
-# Run tests
-# TODO(DrMarcII) enable running tests in browser when chrome setuid problem
-# is fixed on travis.
-pub run test -r expanded -p vm
+dart_library(
+    name = "typed_data",
+    srcs = glob(["lib/**"]),
+    pub_pkg_name = "typed_data",
+    visibility = ["//visibility:public"],
+)

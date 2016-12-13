@@ -37,7 +37,7 @@ void runTests() {
       await waitFor(() => driver.title, matcher: contains('Google'));
       await driver.navigate.forward();
       await waitFor(() => driver.title, matcher: contains('Yahoo'));
-    }, skip: 'TODO(DrMarcII): fix test');
+    });
 
     test('refresh', () async {
       var element = await driver.findElement(const By.name('q'));
