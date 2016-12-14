@@ -30,7 +30,12 @@ void runTests() {
       driver = await createTestDriver();
     });
 
-    tearDown(() => driver.quit());
+    tearDown(() async {
+      if (driver != null) {
+        await driver.quit();
+      }
+      driver = null;
+    });
 
     test('size', () async {
       var window = await driver.window;

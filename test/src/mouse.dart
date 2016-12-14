@@ -30,7 +30,12 @@ void runTests() {
       button = await driver.findElement(const By.tagName('button'));
     });
 
-    tearDown(() => driver.quit());
+    tearDown(() async {
+      if (driver != null) {
+        await driver.quit();
+      }
+      driver = null;
+    });
 
     test('moveTo element/click', () async {
       await driver.mouse.moveTo(element: button);

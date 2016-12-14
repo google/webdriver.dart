@@ -32,7 +32,12 @@ void runTests() {
       await driver.get('http://www.google.com/ncr');
     });
 
-    tearDown(() => driver.quit());
+    tearDown(() async {
+      if (driver != null) {
+        await driver.quit();
+      }
+      driver = null;
+    });
 
     test('get logs', () async {
       List<LogEntry> logs = await driver.logs.get(LogType.performance).toList();

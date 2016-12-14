@@ -45,7 +45,12 @@ void runTests() {
       invisible = await driver.findElement(const By.tagName('div'));
     });
 
-    tearDown(() => driver.quit());
+    tearDown(() async {
+      if (driver != null) {
+        await driver.quit();
+      }
+      driver = null;
+    });
 
     test('click', () async {
       await button.click();

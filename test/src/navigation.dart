@@ -29,14 +29,11 @@ void runTests() {
       await driver.get('http://www.google.com/ncr');
     });
 
-    tearDown(() => driver.quit());
-
-    test('forward/back', () async {
-      await driver.get('http://www.yahoo.com');
-      await driver.navigate.back();
-      await waitFor(() => driver.title, matcher: contains('Google'));
-      await driver.navigate.forward();
-      await waitFor(() => driver.title, matcher: contains('Yahoo'));
+    tearDown(() async {
+      if (driver != null) {
+        await driver.quit();
+      }
+      driver = null;
     });
 
     test('refresh', () async {
