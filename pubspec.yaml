@@ -6,7 +6,7 @@ description: >
   and as such, require the use of the WebDriver remote server.
 homepage: https://github.com/google/webdriver.dart
 environment:
-  sdk: '>=1.10.0 <2.0.0'
+  sdk: '>=1.21.0 <2.0.0'
 dependencies:
   archive: '^1.0.20'
   matcher: '^0.12.0+1'
