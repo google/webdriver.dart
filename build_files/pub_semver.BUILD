@@ -14,9 +14,14 @@
 
 load("@io_bazel_rules_dart//dart/build_rules:core.bzl", "dart_library")
 
+licenses(["notice"])  # New BSD
+
+exports_files(["LICENSE"])
+
 dart_library(
     name = "pub_semver",
     srcs = glob(["lib/**"]),
+    license_files = ["LICENSE"],
     pub_pkg_name = "pub_semver",
     visibility = ["//visibility:public"],
     deps = ["@org_dartlang_pub_collection//:collection"],

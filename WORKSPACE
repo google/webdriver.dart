@@ -38,8 +38,8 @@ go_repositories()
 
 http_archive(
     name = "io_bazel_rules_webtesting",
-    strip_prefix = "rules_webtesting-ed37b9f200cfb7eb86d51f8a91102a939aad35be",
-    url = "https://github.com/bazelbuild/rules_webtesting/archive/ed37b9f200cfb7eb86d51f8a91102a939aad35be.tar.gz",
+    strip_prefix = "rules_webtesting-f27ab1ce1bf42b3ef0fb4ca15b19507e27c28df9",
+    url = "https://github.com/bazelbuild/rules_webtesting/archive/f27ab1ce1bf42b3ef0fb4ca15b19507e27c28df9.tar.gz",
 )
 
 load("@io_bazel_rules_webtesting//web:repositories.bzl", "web_test_repositories", "browser_repositories")

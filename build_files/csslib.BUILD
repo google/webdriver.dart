@@ -15,9 +15,14 @@
 load("@io_bazel_rules_dart//dart/build_rules:core.bzl", "dart_library")
 load("@io_bazel_rules_dart//dart/build_rules:vm.bzl", "dart_vm_binary")
 
+licenses(["notice"])  # BSD (Google-authored with external contributions)
+
+exports_files(["LICENSE"])
+
 dart_library(
     name = "csslib",
     srcs = glob(["lib/**"]),
+    license_files = ["LICENSE"],
     pub_pkg_name = "csslib",
     visibility = ["//visibility:public"],
     deps = [

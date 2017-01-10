@@ -13,12 +13,12 @@
 # limitations under the License.
 
 load("@io_bazel_rules_dart//dart/build_rules:vm.bzl", "dart_vm_test")
-load("@io_bazel_rules_webtesting//web:web.bzl", "web_test_suite")
+load("@io_bazel_rules_webtesting//web:dart.bzl", "dart_web_test_suite")
 
-licenses(["notice"])  # Apache 2.0
+licenses(["notice"])  # Apache (Google-authored with external contributions)
 
-dart_vm_test(
-    name = "io_test_wrapped",
+dart_web_test_suite(
+    name = "io_test",
     srcs = glob(
         ["**/*.dart"],
         exclude = [
@@ -26,31 +26,20 @@ dart_vm_test(
             "support/async_test.dart",
         ],
     ),
+    browsers = ["//browsers:chromium-native"],
     data = glob(
         ["**"],
         exclude = ["**/*.dart"],
     ),
+    local = True,
     pub_pkg_name = "webdriver_test",
     script_file = "io_test.dart",
-    tags = [
-        "manual",
-        "noci",
-    ],
     deps = [
         "//:webdriver",
         "@org_dartlang_pub_matcher//:matcher",
         "@org_dartlang_pub_path//:path",
         "@org_dartlang_pub_test//:test",
     ],
-)
-
-web_test_suite(
-    name = "io_test",
-    browsers = [
-        "//browsers:chrome-native",
-    ],
-    local = True,
-    test = ":io_test_wrapped",
 )
 
 dart_vm_test(

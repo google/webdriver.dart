@@ -15,13 +15,14 @@
 load("@io_bazel_rules_dart//dart/build_rules:core.bzl", "dart_library")
 load("@io_bazel_rules_dart//dart/build_rules:vm.bzl", "dart_vm_test")
 
-licenses(["notice"])  # Apache 2.0
+licenses(["notice"])  # Apache (Google-authored with external contributions)
 
 exports_files(["LICENSE"])
 
 dart_library(
     name = "webdriver",
     srcs = glob(["lib/**"]),
+    license_files = ["LICENSE"],
     pub_pkg_name = "webdriver",
     visibility = ["//visibility:public"],
     deps = [
