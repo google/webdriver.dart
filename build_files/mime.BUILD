@@ -14,9 +14,14 @@
 
 load("@io_bazel_rules_dart//dart/build_rules:core.bzl", "dart_library")
 
+licenses(["notice"])  # New BSD
+
+exports_files(["LICENSE"])
+
 dart_library(
     name = "mime",
     srcs = glob(["lib/**"]),
+    license_files = ["LICENSE"],
     pub_pkg_name = "mime",
     visibility = ["//visibility:public"],
 )

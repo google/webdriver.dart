@@ -14,10 +14,14 @@
 
 load("@io_bazel_rules_dart//dart/build_rules:core.bzl", "dart_library")
 
-# Generated automatically for package:args
+licenses(["notice"])  # BSD (Google-authored with external contributions)
+
+exports_files(["LICENSE"])
+
 dart_library(
     name = "args",
     srcs = glob(["lib/**"]),
+    license_files = ["LICENSE"],
     pub_pkg_name = "args",
     visibility = ["//visibility:public"],
 )

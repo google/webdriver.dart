@@ -14,9 +14,14 @@
 
 load("@io_bazel_rules_dart//dart/build_rules:core.bzl", "dart_library")
 
+licenses(["notice"])  # MIT (Google-authored with external contributions)
+
+exports_files(["LICENSE"])
+
 dart_library(
     name = "html",
     srcs = glob(["lib/**"]),
+    license_files = ["LICENSE"],
     pub_pkg_name = "html",
     visibility = ["//visibility:public"],
     deps = [

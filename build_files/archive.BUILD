@@ -15,9 +15,14 @@
 load("@io_bazel_rules_dart//dart/build_rules:core.bzl", "dart_library")
 load("@io_bazel_rules_dart//dart/build_rules:vm.bzl", "dart_vm_binary")
 
+licenses(["notice"])  # Apache 2.0
+
+exports_files(["LICENSE"])
+
 dart_library(
     name = "archive",
     srcs = glob(["lib/**"]),
+    license_files = ["LICENSE"],
     pub_pkg_name = "archive",
     visibility = ["//visibility:public"],
     deps = ["@org_dartlang_pub_crypto//:crypto"],

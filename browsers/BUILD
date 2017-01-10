@@ -19,8 +19,8 @@ load("@io_bazel_rules_webtesting//web:web.bzl", "browser")
 licenses(["notice"])  # Apache 2.0
 
 browser(
-    name = "chrome-native",
-    metadata = "chrome-native.json",
+    name = "chromium-native",
+    metadata = "chromium-native.json",
     required_tags = ["local"],
     visibility = ["//visibility:public"],
     deps = [

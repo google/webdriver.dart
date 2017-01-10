@@ -14,9 +14,14 @@
 
 load("@io_bazel_rules_dart//dart/build_rules:core.bzl", "dart_library")
 
+licenses(["notice"])  # BSD
+
+exports_files(["LICENSE"])
+
 dart_library(
     name = "convert",
     srcs = glob(["lib/**"]),
+    license_files = ["LICENSE"],
     pub_pkg_name = "convert",
     visibility = ["//visibility:public"],
     deps = [

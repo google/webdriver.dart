@@ -14,9 +14,14 @@
 
 load("@io_bazel_rules_dart//dart/build_rules:core.bzl", "dart_library")
 
+licenses(["notice"])  # BSD
+
+exports_files(["LICENSE"])
+
 dart_library(
     name = "async",
     srcs = glob(["lib/**"]),
+    license_files = ["LICENSE"],
     pub_pkg_name = "async",
     visibility = ["//visibility:public"],
     deps = ["@org_dartlang_pub_collection//:collection"],

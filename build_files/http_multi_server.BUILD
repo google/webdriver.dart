@@ -14,9 +14,14 @@
 
 load("@io_bazel_rules_dart//dart/build_rules:core.bzl", "dart_library")
 
+licenses(["notice"])  # BSD (Google-authored with external contributions)
+
+exports_files(["LICENSE"])
+
 dart_library(
     name = "http_multi_server",
     srcs = glob(["lib/**"]),
+    license_files = ["LICENSE"],
     pub_pkg_name = "http_multi_server",
     visibility = ["//visibility:public"],
     deps = ["@org_dartlang_pub_async//:async"],
