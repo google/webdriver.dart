@@ -65,8 +65,8 @@ def webdriver_dart_repositories(
     native.new_http_archive(
         name="org_dartlang_pub_analyzer",
         build_file=str(Label("//build_files:analyzer.BUILD")),
-        sha256="9411ecbcc39275a78c59d0b205918433c8592413c966d63e67c5e3a87893a887",
-        url="https://storage.googleapis.com/pub.dartlang.org/packages/analyzer-0.29.1.tar.gz"
+        sha256="ee9bb36b3bc588b97d491a28ba5f9823ed1cd0eb99dabdcf5b8b52bf0d757f06",
+        url="https://storage.googleapis.com/pub.dartlang.org/packages/analyzer-0.29.3.tar.gz"
     )
     
   if not omit_org_dartlang_pub_archive:
@@ -121,8 +121,8 @@ def webdriver_dart_repositories(
     native.new_http_archive(
         name="org_dartlang_pub_collection",
         build_file=str(Label("//build_files:collection.BUILD")),
-        sha256="6b8d4ed7922b3734bacf82761eac0267c839d4647418f779c63d45c6fe6cc171",
-        url="https://storage.googleapis.com/pub.dartlang.org/packages/collection-1.12.0.tar.gz"
+        sha256="396abdd82b601422f21b3020392b45f8464b89c2c407082eaf8c038ef2b8306b",
+        url="https://storage.googleapis.com/pub.dartlang.org/packages/collection-1.13.0.tar.gz"
     )
     
   if not omit_org_dartlang_pub_convert:
@@ -185,8 +185,8 @@ def webdriver_dart_repositories(
     native.new_http_archive(
         name="org_dartlang_pub_http_parser",
         build_file=str(Label("//build_files:http_parser.BUILD")),
-        sha256="ec05c896b259f60296d92807b1231cf6b94bcf3e3d99e4e707b3e0ef82d36c2e",
-        url="https://storage.googleapis.com/pub.dartlang.org/packages/http_parser-3.1.0.tar.gz"
+        sha256="cdd2fbf11f37ada5d81ab55395a5f1a7be303beee4b2b73631192cc6fe46a34e",
+        url="https://storage.googleapis.com/pub.dartlang.org/packages/http_parser-3.1.1.tar.gz"
     )
 
   if not omit_org_dartlang_pub_isolate:
@@ -313,24 +313,24 @@ def webdriver_dart_repositories(
     native.new_http_archive(
         name="org_dartlang_pub_source_map_stack_trace",
         build_file=str(Label("//build_files:source_map_stack_trace.BUILD")),
-        sha256="7f457f6c378e1f325bad74793cb864ca9eab3875604b52632832cc59aeb74c95",
-        url="https://storage.googleapis.com/pub.dartlang.org/packages/source_map_stack_trace-1.1.3.tar.gz"
+        sha256="a9dde62354b0544f4c7e6ee00e7584e327c77dd6b380f18d7ec91aa72e07ebf2",
+        url="https://storage.googleapis.com/pub.dartlang.org/packages/source_map_stack_trace-1.1.4.tar.gz"
     )
 
   if not omit_org_dartlang_pub_source_maps:
     native.new_http_archive(
         name="org_dartlang_pub_source_maps",
         build_file=str(Label("//build_files:source_maps.BUILD")),
-        sha256="b42839ea0ba3245f429ba98ae57aeb5f0db957938ce914e96a40d1b860d6040f",
-        url="https://storage.googleapis.com/pub.dartlang.org/packages/source_maps-0.10.1+3.tar.gz"
+        sha256="1b77163b33baf614454ad34c79233754e120fbd03ac491dee70a2612a15eae85",
+        url="https://storage.googleapis.com/pub.dartlang.org/packages/source_maps-0.10.2.tar.gz"
     )
 
   if not omit_org_dartlang_pub_source_span:
     native.new_http_archive(
         name="org_dartlang_pub_source_span",
         build_file=str(Label("//build_files:source_span.BUILD")),
-        sha256="4f8990c5182821dd7632375ccbac47ccdf226b16a68bec356dbf46a3ecce19af",
-        url="https://storage.googleapis.com/pub.dartlang.org/packages/source_span-1.3.0.tar.gz"
+        sha256="32c891d21baa24013f1a516d367061862daa47039f052e322d83767cbe862725",
+        url="https://storage.googleapis.com/pub.dartlang.org/packages/source_span-1.3.1.tar.gz"
     )
 
   if not omit_org_dartlang_pub_stack_trace:
@@ -361,8 +361,8 @@ def webdriver_dart_repositories(
     native.new_http_archive(
         name="org_dartlang_pub_test",
         build_file=str(Label("//build_files:test.BUILD")),
-        sha256="5c56e194a30ac190e0e2ee91c84962bece8057e0560da922176c4f864b00221b",
-        url="https://storage.googleapis.com/pub.dartlang.org/packages/test-0.12.17+2.tar.gz"
+        sha256="064efe7993b3be3a1980f88c5d1e5573f3bae1808d45785238a445edb70638f4",
+        url="https://storage.googleapis.com/pub.dartlang.org/packages/test-0.12.18+1.tar.gz"
     )
 
   if not omit_org_dartlang_pub_typed_data:
@@ -377,8 +377,8 @@ def webdriver_dart_repositories(
     native.new_http_archive(
         name="org_dartlang_pub_unittest",
         build_file=str(Label("//build_files:unittest.BUILD")),
-        sha256="d6532a6e5cba4351fa07a46b5fba92c54bafa647cc9a6ef7ababcc68d31f9c2f",
-        url="https://storage.googleapis.com/pub.dartlang.org/packages/unittest-0.11.6+4.tar.gz"
+        sha256="96cd840fc210e876f6e9734ce2f95644c30c1b162a833b6015a6aa752b31ecf3",
+        url="https://storage.googleapis.com/pub.dartlang.org/packages/unittest-0.11.7.tar.gz"
     )
 
   if not omit_org_dartlang_pub_utf:

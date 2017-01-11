@@ -1,5 +1,5 @@
 name: webdriver
-version: 1.2.1
+version: 1.2.2
 author: Marc Fisher II <fisherii@google.com>
 description: >
   Provides WebDriver bindings for Dart. These use the WebDriver JSON interface,
@@ -8,11 +8,10 @@ homepage: https://github.com/google/webdriver.dart
 environment:
   sdk: '>=1.21.0 <2.0.0'
 dependencies:
-  archive: '^1.0.20'
-  matcher: '^0.12.0+1'
-  path: '^1.3.6'
-  stack_trace: '^1.3.4'
-  unittest: '^0.11.6+1'
+  archive: '^1.0.0'
+  matcher: '^0.12.0'
+  path: '^1.3.0'
+  stack_trace: '^1.3.0'
+  unittest: '^0.11.6'
 dev_dependencies:
-  test: '^0.12.3+8'
-
+  test: '^0.12.3'
