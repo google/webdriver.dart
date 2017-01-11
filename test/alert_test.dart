@@ -12,22 +12,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-library webdriver.mouse_test;
+library webdriver.alert_test;
 
 import 'package:test/test.dart';
 import 'package:webdriver/core.dart';
 
-import '../test_util.dart';
+import 'test_util.dart';
 
-void runTests() {
-  group('Mouse', () {
+void main() {
+  group('Alert', () {
     WebDriver driver;
     WebElement button;
+    WebElement output;
 
     setUp(() async {
       driver = await createTestDriver();
       await driver.get(testPagePath);
       button = await driver.findElement(const By.tagName('button'));
+      output = await driver.findElement(const By.id('settable'));
     });
 
     tearDown(() async {
@@ -37,43 +39,37 @@ void runTests() {
       driver = null;
     });
 
-    test('moveTo element/click', () async {
-      await driver.mouse.moveTo(element: button);
-      await driver.mouse.click();
+    test('no alert', () {
+      expect(driver.switchTo.alert, throws);
+    });
+
+    test('text', () async {
+      await button.click();
       var alert = await driver.switchTo.alert;
+      expect(alert.text, 'button clicked');
       await alert.dismiss();
     });
 
-    test('moveTo coordinates/click', () async {
-      var pos = await button.location;
-      await driver.mouse.moveTo(xOffset: pos.x + 5, yOffset: pos.y + 5);
-      await driver.mouse.click();
+    test('accept', () async {
+      await button.click();
       var alert = await driver.switchTo.alert;
-      await alert.dismiss();
+      await alert.accept();
+      expect(await output.text, startsWith('accepted'));
     });
 
-    test('moveTo element coordinates/click', () async {
-      await driver.mouse.moveTo(element: button, xOffset: 5, yOffset: 5);
-      await driver.mouse.click();
+    test('dismiss', () async {
+      await button.click();
       var alert = await driver.switchTo.alert;
       await alert.dismiss();
+      expect(await output.text, startsWith('dismissed'));
     });
 
-    // TODO(DrMarcII): Better up/down tests
-    test('down/up', () async {
-      await driver.mouse.moveTo(element: button);
-      await driver.mouse.down();
-      await driver.mouse.up();
-      var alert = await driver.switchTo.alert;
-      await alert.dismiss();
-    });
-
-    // TODO(DrMarcII): Better double click test
-    test('doubleClick', () async {
-      await driver.mouse.moveTo(element: button);
-      await driver.mouse.doubleClick();
-      var alert = await driver.switchTo.alert;
-      await alert.dismiss();
+    test('sendKeys', () async {
+      await button.click();
+      Alert alert = await driver.switchTo.alert;
+      await alert.sendKeys('some keys');
+      await alert.accept();
+      expect(await output.text, endsWith('some keys'));
     });
   });
 }

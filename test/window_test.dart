@@ -20,9 +20,9 @@ import 'package:test/test.dart';
 import 'package:webdriver/support/async.dart';
 import 'package:webdriver/core.dart';
 
-import '../test_util.dart';
+import 'test_util.dart';
 
-void runTests() {
+void main() {
   group('Window', () {
     WebDriver driver;
 

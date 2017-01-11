@@ -13,34 +13,47 @@
 # limitations under the License.
 
 load("@io_bazel_rules_dart//dart/build_rules:vm.bzl", "dart_vm_test")
+load("@io_bazel_rules_dart//dart/build_rules:code_gen.bzl", "dart_code_gen")
 load("@io_bazel_rules_webtesting//web:dart.bzl", "dart_web_test_suite")
 
 licenses(["notice"])  # Apache (Google-authored with external contributions)
 
-dart_web_test_suite(
-    name = "io_test",
-    srcs = glob(
-        ["**/*.dart"],
-        exclude = [
-            "**/html_*.dart",
-            "support/async_test.dart",
-        ],
-    ),
-    browsers = ["//browsers:chromium-native"],
-    data = glob(
-        ["**"],
-        exclude = ["**/*.dart"],
-    ),
-    local = True,
-    pub_pkg_name = "webdriver_test",
-    script_file = "io_test.dart",
-    deps = [
-        "//:webdriver",
-        "@org_dartlang_pub_matcher//:matcher",
-        "@org_dartlang_pub_path//:path",
-        "@org_dartlang_pub_test//:test",
-    ],
+# TODO(DrMarcII) Add support html webdriver tests when rules_dart support dart_web_test
+
+dart_code_gen(
+    name = "generate_io_tests",
+    srcs = glob(["*_test.dart"]),
+    generator = "//:transform_tests",
+    generator_args = ["--test_util_import=io_test_util.dart"],
+    out_extensions = [".io.dart"],
 )
+
+[
+    dart_web_test_suite(
+        name = dart_file[:-5] + "_io",
+        srcs = [
+            dart_file[:-5] + ".io.dart",
+            "io_test_util.dart",
+            "test_util.dart",
+        ],
+        browsers = ["//browsers:chromium-native"],
+        data = [
+            "frame.html",
+            "test_page.html",
+        ],
+        flaky = True,
+        local = True,
+        pub_pkg_name = "webdriver_test",
+        script_file = dart_file[:-5] + ".io.dart",
+        deps = [
+            "//:webdriver",
+            "@org_dartlang_pub_matcher//:matcher",
+            "@org_dartlang_pub_path//:path",
+            "@org_dartlang_pub_test//:test",
+        ],
+    )
+    for dart_file in glob(["*_test.dart"])
+]
 
 dart_vm_test(
     name = "async_test",
