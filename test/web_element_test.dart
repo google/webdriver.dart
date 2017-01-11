@@ -17,9 +17,9 @@ library webdriver.web_element_test;
 import 'package:test/test.dart';
 import 'package:webdriver/core.dart';
 
-import '../test_util.dart';
+import 'test_util.dart';
 
-void runTests() {
+void main() {
   group('WebElement', () {
     WebDriver driver;
     WebElement table;

@@ -13,7 +13,7 @@
 # limitations under the License.
 
 load("@io_bazel_rules_dart//dart/build_rules:core.bzl", "dart_library")
-load("@io_bazel_rules_dart//dart/build_rules:vm.bzl", "dart_vm_test")
+load("@io_bazel_rules_dart//dart/build_rules:vm.bzl", "dart_vm_binary", "dart_vm_test")
 
 licenses(["notice"])  # Apache (Google-authored with external contributions)
 
@@ -22,6 +22,7 @@ exports_files(["LICENSE"])
 dart_library(
     name = "webdriver",
     srcs = glob(["lib/**"]),
+    enable_ddc = False,
     license_files = ["LICENSE"],
     pub_pkg_name = "webdriver",
     visibility = ["//visibility:public"],
@@ -32,6 +33,13 @@ dart_library(
         "@org_dartlang_pub_stack_trace//:stack_trace",
         "@org_dartlang_pub_unittest//:unittest",
     ],
+)
+
+dart_vm_binary(
+    name = "transform_tests",
+    srcs = ["bin/transform_tests.dart"],
+    script_file = "bin/transform_tests.dart",
+    visibility = ["//test:__subpackages__"],
 )
 
 # Test BUILD rules are defined test/BUILD instead of here to prevent cyclic

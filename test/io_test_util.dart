@@ -1,4 +1,4 @@
-// Copyright 2015 Google Inc. All Rights Reserved.
+// Copyright 2017 Google Inc. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,25 +12,26 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-library webdriver.io_test;
+library io_test_util;
 
 import 'dart:io' show FileSystemEntity, Platform;
 
 import 'package:path/path.dart' as path;
-import 'package:webdriver/io.dart' show Capabilities, createDriver;
+import 'package:webdriver/core.dart' show WebDriver;
+import 'package:webdriver/io.dart' as wdio;
 
-import 'test_util.dart' as test_util;
+export 'test_util.dart' show isWebElement, isRectangle, isPoint;
 
-void config() {
-  test_util.runningOnTravis = Platform.environment['TRAVIS'] == 'true';
-  test_util.createTestDriver = ({Map<String, dynamic> additionalCapabilities}) {
+Future<WebDriver> createTestDriver({Map<String, dynamic> additionalCapabilities}) {
     var address = Platform.environment['WEB_TEST_WEBDRIVER_SERVER'];
     if (!address.endsWith('/')) {
       address += '/';
     }
     var uri = Uri.parse(address);
-    return createDriver(uri: uri, desired: additionalCapabilities);
-  };
+    return wdio.createDriver(uri: uri, desired: additionalCapabilities);
+}
+
+String get testPagePath {
   var testSrcDir = Platform.environment['TEST_SRCDIR'];
   String testPagePath;
   if (testSrcDir != null) {
@@ -43,5 +44,5 @@ void config() {
     throw new Exception('Could not find the test file at "$testPagePath".'
         ' Make sure you are running tests from the root of the project.');
   }
-  test_util.testPagePath = path.toUri(testPagePath).toString();
+  return path.toUri(testPagePath).toString();
 }

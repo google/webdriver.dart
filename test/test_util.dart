@@ -24,11 +24,10 @@ final Matcher isWebElement = new isInstanceOf<WebElement>();
 final Matcher isRectangle = new isInstanceOf<Rectangle<int>>();
 final Matcher isPoint = new isInstanceOf<Point<int>>();
 
-String testPagePath;
+Future<WebDriver> createTestDriver({Map<String, dynamic> additionalCapabilities}) async {
+    throw new Exception("createTestDriverFn is not implemented.");
+}
 
-typedef Future<WebDriver> createTestDriverFn(
-    {Map<String, dynamic> additionalCapabilities});
-
-createTestDriverFn createTestDriver;
-
-bool runningOnTravis;
+String get testPagePath {
+   throw new Exception("testPagePath is not implemented."); 
+}
