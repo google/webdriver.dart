@@ -1,3 +1,9 @@
+## v1.2.2
+
+*  Refactor tests.
+*  Make project buildable and testable with Bazel.
+*  Enable generics for waitFor.
+
 ## v1.2.1
 
 * Enable redirects to handle 303 responses from Selenium.

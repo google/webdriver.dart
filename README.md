@@ -46,26 +46,9 @@ and as such, require the use of the WebDriver remote server.
 
 ## Testing
 
-You can run the tests either with bazel (only supported on Linux) or with pub.
-
-To run the tests with bazel:
+You can run the tests either with bazel (only supported on Linux).
 
 ```shell
 
 bazel test ...
-```
-
-To run the tests with pub, you will need to first download
-[chromedriver](https://sites.google.com/a/chromium.org/chromedriver/downloads)
-and start it:
-
-```shell
-chromedriver
-```
-
-Then in another terminal you can run:
-
-```shell
-pub install
-WEB_TEST_WEBDRIVER_SERVER=http://localhost:9515/ pub run test:test
 ```
