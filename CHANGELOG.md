@@ -1,5 +1,9 @@
 ## v1.2.2
 
+* Disable generics for waitFor.
+
+## v1.2.2
+
 *  Refactor tests.
 *  Make project buildable and testable with Bazel.
 *  Enable generics for waitFor.
