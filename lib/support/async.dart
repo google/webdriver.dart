@@ -25,11 +25,11 @@ const defaultTimeout = const Duration(seconds: 5);
 
 const clock = const Clock();
 
-Future<T> waitFor<T>(T condition(),
+Future/*<T>*/ waitFor/*<T>*/(/*=T*/ condition(),
         {matcher: null,
         Duration timeout: defaultTimeout,
         Duration interval: defaultInterval}) =>
-    clock.waitFor<T>(condition,
+    clock.waitFor/*<T>*/(condition,
         matcher: matcher, timeout: timeout, interval: interval);
 
 class Clock {
@@ -50,7 +50,7 @@ class Clock {
   /// is returned. Otherwise, if [condition] throws, then that exception is
   /// rethrown. If [condition] doesn't throw then an [expect] exception is
   /// thrown.
-  Future<T> waitFor<T>(T condition(),
+  Future/*<T>*/ waitFor/*<T>*/(/*=T*/ condition(),
       {matcher: null,
       Duration timeout: defaultTimeout,
       Duration interval: defaultInterval}) async {
