@@ -14,6 +14,7 @@
 
 library io_test_util;
 
+import 'dart:async' show Future;
 import 'dart:io' show FileSystemEntity, Platform;
 
 import 'package:path/path.dart' as path;
@@ -22,27 +23,26 @@ import 'package:webdriver/io.dart' as wdio;
 
 export 'test_util.dart' show isWebElement, isRectangle, isPoint;
 
-Future<WebDriver> createTestDriver({Map<String, dynamic> additionalCapabilities}) {
-    var address = Platform.environment['WEB_TEST_WEBDRIVER_SERVER'];
-    if (!address.endsWith('/')) {
-      address += '/';
-    }
-    var uri = Uri.parse(address);
-    return wdio.createDriver(uri: uri, desired: additionalCapabilities);
+Future<WebDriver> createTestDriver(
+    {Map<String, dynamic> additionalCapabilities}) {
+  var address = Platform.environment['WEB_TEST_WEBDRIVER_SERVER'];
+  if (!address.endsWith('/')) {
+    address += '/';
+  }
+  var uri = Uri.parse(address);
+  return wdio.createDriver(uri: uri, desired: additionalCapabilities);
 }
 
 String get testPagePath {
-  var testSrcDir = Platform.environment['TEST_SRCDIR'];
-  String testPagePath;
-  if (testSrcDir != null) {
-    testPagePath = path.join(testSrcDir, 'com_github_google_webdriver_dart', 'test', 'test_page.html');
-  } else {
-    testPagePath = path.join('test', 'test_page.html');
-  }
-  testPagePath = path.absolute(testPagePath);
+  String testPagePath = runfile(path.join('test', 'test_page.html'));
   if (!FileSystemEntity.isFileSync(testPagePath)) {
     throw new Exception('Could not find the test file at "$testPagePath".'
         ' Make sure you are running tests from the root of the project.');
   }
   return path.toUri(testPagePath).toString();
 }
+
+String runfile(String p) => path.absolute(path.join(
+    Platform.environment['TEST_SRCDIR'],
+    'com_github_google_webdriver_dart',
+    p));

@@ -26,17 +26,9 @@ void main() {
     group('create', () {
       test('default', () async {
         WebDriver driver = await createTestDriver();
-        await driver.get('http://www.google.com/ncr');
-        var element = await driver.findElement(const By.name('q'));
-        expect(await element.name, 'input');
-        await driver.quit();
-      });
-
-      test('chrome', () async {
-        WebDriver driver = await createTestDriver();
-        await driver.get('http://www.google.com/ncr');
-        var element = await driver.findElement(const By.name('q'));
-        expect(await element.name, 'input');
+        await driver.get(testPagePath);
+        var element = await driver.findElement(const By.tagName('button'));
+        expect(await element.name, 'button');
         await driver.quit();
       });
     });
@@ -57,17 +49,15 @@ void main() {
       });
 
       test('get', () async {
-        await driver.get('http://www.google.com/ncr');
-        await driver.findElement(const By.name('q'));
+        await driver.get(testPagePath);
+        await driver.findElement(const By.tagName('button'));
+        ;
       });
 
       test('currentUrl', () async {
         var url = await driver.currentUrl;
         expect(url, anyOf(startsWith('file:'), startsWith('http:')));
         expect(url, endsWith('test_page.html'));
-        await driver.get('http://www.google.com/ncr');
-        url = await driver.currentUrl;
-        expect(url, contains('www.google.com'));
       });
 
       test('findElement -- success', () async {

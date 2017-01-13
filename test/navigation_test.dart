@@ -26,7 +26,7 @@ void main() {
 
     setUp(() async {
       driver = await createTestDriver();
-      await driver.get('http://www.google.com/ncr');
+      await driver.get(testPagePath);
     });
 
     tearDown(() async {
@@ -37,7 +37,7 @@ void main() {
     });
 
     test('refresh', () async {
-      var element = await driver.findElement(const By.name('q'));
+      var element = await driver.findElement(const By.tagName('button'));
       await driver.navigate.refresh();
       await waitFor(() async {
         try {
