@@ -22,15 +22,12 @@ import 'package:test/test.dart';
 import 'package:webdriver/io.dart';
 import 'package:webdriver/support/forwarder.dart';
 
-import '../io_config.dart' as config;
-import '../test_util.dart' as test_util;
+import 'test_util.dart' as test_util;
 
 const buttonClicked = 'Button clicked';
 const buttonNotClicked = 'Button not clicked';
 
 void main() {
-  config.config();
-
   group('WebDriverForwarder', () {
     WebDriver driver;
     WebDriverForwarder forwarder;
@@ -49,8 +46,8 @@ void main() {
           forwarder.forward(request);
         } else if (request.method == 'GET' &&
             request.uri.path.endsWith('test_page.html')) {
-          File file = new File(
-              path.join('test', 'support', 'forwarder_test_page.html'));
+          File file = new File(test_util.runfile(
+              path.join('test', 'support', 'forwarder_test_page.html')));
           request.response
             ..statusCode = HttpStatus.OK
             ..headers.set('Content-type', 'text/html');

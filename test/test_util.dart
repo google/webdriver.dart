@@ -24,10 +24,15 @@ final Matcher isWebElement = new isInstanceOf<WebElement>();
 final Matcher isRectangle = new isInstanceOf<Rectangle<int>>();
 final Matcher isPoint = new isInstanceOf<Point<int>>();
 
-Future<WebDriver> createTestDriver({Map<String, dynamic> additionalCapabilities}) async {
-    throw new Exception("createTestDriverFn is not implemented.");
+Future<WebDriver> createTestDriver(
+    {Map<String, dynamic> additionalCapabilities}) async {
+  throw new Exception("createTestDriverFn is not implemented.");
 }
 
 String get testPagePath {
-   throw new Exception("testPagePath is not implemented."); 
+  throw new Exception("testPagePath is not implemented.");
+}
+
+String runfile(String p) {
+  throw new Exception("runfile is not implemented.");
 }

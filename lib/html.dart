@@ -102,5 +102,7 @@ class _HtmlCommandProcessor implements CommandProcessor {
     return respBody;
   }
 
-  Map<String, String> get _headers => {'Accept': 'application/json',};
+  Map<String, String> get _headers => {
+        'Accept': 'application/json',
+      };
 }
