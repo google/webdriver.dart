@@ -13,8 +13,8 @@
 # limitations under the License.
 
 load("@io_bazel_rules_dart//dart/build_rules:vm.bzl", "dart_vm_test")
-load("@io_bazel_rules_dart//dart/build_rules:code_gen.bzl", "dart_code_gen")
 load("@io_bazel_rules_webtesting//web:dart.bzl", "dart_web_test_suite")
+load("//:_generate_io_tests.bzl", "generate_io_tests")
 
 licenses(["notice"])  # Apache (Google-authored with external contributions)
 
@@ -22,12 +22,9 @@ licenses(["notice"])  # Apache (Google-authored with external contributions)
 
 _TESTS_TO_RUN = glob(["*_test.dart"])
 
-dart_code_gen(
+generate_io_tests(
     name = "generate_io_tests",
     srcs = _TESTS_TO_RUN,
-    generator = "//:transform_tests",
-    generator_args = ["--test_util_import=io_test_util.dart"],
-    out_extensions = [".io.dart"],
 )
 
 [
