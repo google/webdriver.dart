@@ -65,8 +65,8 @@ def webdriver_dart_repositories(
     native.new_http_archive(
         name="org_dartlang_pub_analyzer",
         build_file=str(Label("//build_files:analyzer.BUILD")),
-        sha256="ee9bb36b3bc588b97d491a28ba5f9823ed1cd0eb99dabdcf5b8b52bf0d757f06",
-        url="https://storage.googleapis.com/pub.dartlang.org/packages/analyzer-0.29.3.tar.gz"
+        sha256="7249fc31827063a154b8d9f4232cf778713cd3cc29074abf19e42d9f0a5572c7",
+        url="https://storage.googleapis.com/pub.dartlang.org/packages/analyzer-0.29.5.tar.gz"
     )
     
   if not omit_org_dartlang_pub_archive:
@@ -89,8 +89,8 @@ def webdriver_dart_repositories(
     native.new_http_archive(
         name="org_dartlang_pub_async",
         build_file=str(Label("//build_files:async.BUILD")),
-        sha256="32f0274fbb1ef81316c7bb6dc33f7b596e25c3dda5b8550163a6f0a89712cdc0",
-        url="https://storage.googleapis.com/pub.dartlang.org/packages/async-1.11.3.tar.gz"
+        sha256="78eda22375d22c73ebfa349d425e8795b375f28a021ee2b14a50827605120213",
+        url="https://storage.googleapis.com/pub.dartlang.org/packages/async-1.12.0.tar.gz"
     )
     
   if not omit_org_dartlang_pub_barback:
@@ -345,8 +345,8 @@ def webdriver_dart_repositories(
     native.new_http_archive(
         name="org_dartlang_pub_stream_channel",
         build_file=str(Label("//build_files:stream_channel.BUILD")),
-        sha256="3cbe42486c5bdb01a366da46bc41903f650018a54825b69ff5ec63a991b8fa72",
-        url="https://storage.googleapis.com/pub.dartlang.org/packages/stream_channel-1.5.0.tar.gz"
+        sha256="e22242ac461247618190a50342c3cd93a2466746637e55201375ccb4654cd420",
+        url="https://storage.googleapis.com/pub.dartlang.org/packages/stream_channel-1.6.0.tar.gz"
     )
 
   if not omit_org_dartlang_pub_string_scanner:
