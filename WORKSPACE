@@ -16,9 +16,9 @@ workspace(name = "com_github_google_webdriver_dart")
 
 http_archive(
     name = "io_bazel_rules_dart",
-    sha256 = "45abe3e3fb908f7792bc747b380aa5fdf8f9e66a4f86623ed68acbe1042b1e7e",
-    strip_prefix = "rules_dart-11bca9e70b42470a909782e6369194af38898551",
-    url = "https://github.com/dart-lang/rules_dart/archive/11bca9e70b42470a909782e6369194af38898551.tar.gz",
+    sha256 = "db80bb1dd03485c959424dba8ea1aa4014fa0dbd22d57b069d14e5647f98b04e",
+    strip_prefix = "rules_dart-66d7cd37696b6ee2397e8075da3c6d90812b65ba",
+    url = "https://github.com/dart-lang/rules_dart/archive/66d7cd37696b6ee2397e8075da3c6d90812b65ba.tar.gz",
 )
 
 load("@io_bazel_rules_dart//dart/build_rules:repositories.bzl", "dart_repositories")
@@ -38,11 +38,12 @@ go_repositories()
 
 http_archive(
     name = "io_bazel_rules_webtesting",
-    strip_prefix = "rules_webtesting-f27ab1ce1bf42b3ef0fb4ca15b19507e27c28df9",
-    url = "https://github.com/bazelbuild/rules_webtesting/archive/f27ab1ce1bf42b3ef0fb4ca15b19507e27c28df9.tar.gz",
+    sha256 = "602bd1fd4e2b756baa636c3815ef6686c111b3e30eab534c0fc84e6c8c9a14c3",    
+    strip_prefix = "rules_webtesting-b875457028e38511d76e067378dacc1ffcb6c75b",
+    url = "https://github.com/bazelbuild/rules_webtesting/archive/b875457028e38511d76e067378dacc1ffcb6c75b.tar.gz",
 )
 
-load("@io_bazel_rules_webtesting//web:repositories.bzl", "web_test_repositories", "browser_repositories")
+load("@io_bazel_rules_webtesting//web:repositories.bzl", "web_test_repositories")
 
 web_test_repositories()
 
