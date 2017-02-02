@@ -17,20 +17,22 @@ library webdriver.target_locator_test;
 import 'package:test/test.dart';
 import 'package:webdriver/core.dart';
 
-import 'test_util.dart';
+import 'test_util.dart' as test_util;
 
 /**
  * Tests for switchTo.frame(). switchTo.window() and switchTo.alert are tested
  * in other classes.
  */
 void main() {
+  tearDownAll(test_util.tearDown);
+
   group('TargetLocator', () {
     WebDriver driver;
     WebElement frame;
 
     setUp(() async {
-      driver = await createTestDriver();
-      await driver.get(testPagePath);
+      driver = await test_util.createTestDriver();
+      await driver.get(await test_util.testPagePath);
       frame = await driver.findElement(const By.name('frame'));
     });
 

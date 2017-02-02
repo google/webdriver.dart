@@ -15,7 +15,7 @@
 library io_test_util;
 
 import 'dart:async' show Future;
-import 'dart:io' show FileSystemEntity, Platform;
+import 'dart:io';
 
 import 'package:path/path.dart' as path;
 import 'package:webdriver/core.dart' show WebDriver;
@@ -33,16 +33,46 @@ Future<WebDriver> createTestDriver(
   return wdio.createDriver(uri: uri, desired: additionalCapabilities);
 }
 
-String get testPagePath {
-  String testPagePath = runfile(path.join('test', 'test_page.html'));
-  if (!FileSystemEntity.isFileSync(testPagePath)) {
-    throw new Exception('Could not find the test file at "$testPagePath".'
-        ' Make sure you are running tests from the root of the project.');
+String _testPagePath;
+HttpServer _server;
+
+Future<String> get testPagePath async {
+  if (_testPagePath == null) {
+    _server = await HttpServer.bind(InternetAddress.ANY_IP_V4, 0);
+    _server.listen((request) {
+      if (request.method == 'GET') {
+        File file = new File(runfile(path.joinAll(request.uri.pathSegments)));
+        if (!file.existsSync()) {
+          request.response
+            ..statusCode = HttpStatus.NOT_FOUND
+            ..close();
+          return;
+        }
+        request.response
+          ..statusCode = HttpStatus.OK
+          ..headers.set('Content-type', 'text/html');
+        file.openRead().pipe(request.response);
+        return;
+      }
+      request.response
+        ..statusCode = HttpStatus.NOT_FOUND
+        ..close();
+    });
+    _testPagePath =
+        new Uri.http('localhost:${_server.port}', '/test/test_page.html');
   }
-  return path.toUri(testPagePath).toString();
+
+  return _testPagePath;
 }
 
 String runfile(String p) => path.absolute(path.join(
     Platform.environment['TEST_SRCDIR'],
     'com_github_google_webdriver_dart',
     p));
+
+Future tearDown() async {
+  if (_server != null) {
+    await _server.close(force: true);
+  }
+  _server = null;
+}

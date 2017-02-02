@@ -19,9 +19,11 @@ import 'package:test/test.dart';
 import 'package:webdriver/core.dart';
 import 'package:webdriver/support/async.dart';
 
-import 'test_util.dart';
+import 'test_util.dart' as test_util;
 
 void main() {
+  tearDownAll(test_util.tearDown);
+
   group('CommandEvent', () {
     WebDriver driver;
 
@@ -29,10 +31,10 @@ void main() {
     var sub;
 
     setUp(() async {
-      driver = await createTestDriver();
+      driver = await test_util.createTestDriver();
       sub = driver.onCommand.listen(events.add);
 
-      await driver.get(testPagePath);
+      await driver.get(await test_util.testPagePath);
     });
 
     tearDown(() async {

@@ -29,10 +29,12 @@ Future<WebDriver> createTestDriver(
   throw new Exception("createTestDriverFn is not implemented.");
 }
 
-String get testPagePath {
+Future<String> get testPagePath async {
   throw new Exception("testPagePath is not implemented.");
 }
 
 String runfile(String p) {
   throw new Exception("runfile is not implemented.");
 }
+
+Future tearDown() async {}

@@ -1,0 +1,9 @@
+{
+    "environment": "sauce",
+    "capabilities": {
+        "browserName": "chrome",
+        "platform": "Windows 10",
+        "version": "55.0",
+        "tunnel-identifier": "${TRAVIS_JOB_NUMBER}"
+    }
+}
