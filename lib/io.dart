@@ -103,7 +103,7 @@ class IOCommandProcessor implements CommandProcessor {
 
     if (response.statusCode < 200 ||
         response.statusCode > 299 ||
-        (respBody is Map && respBody['status'] != 0)) {
+        (respBody is Map && respBody['status'] != null && respBody['status'] != 0)) {
       throw new WebDriverException(
           httpStatusCode: response.statusCode,
           httpReasonPhrase: response.reasonPhrase,
