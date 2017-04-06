@@ -14,7 +14,7 @@
 
 library webdriver.support.async;
 
-import 'dart:async' show Completer, Future;
+import 'dart:async' show Completer, Future, FutureOr;
 
 import 'package:matcher/matcher.dart' as m;
 import 'package:stack_trace/stack_trace.dart' show Chain;
@@ -25,7 +25,7 @@ const defaultTimeout = const Duration(seconds: 5);
 
 const clock = const Clock();
 
-Future<T> waitFor<T>(T condition(),
+Future<T> waitFor<T>(FutureOr<T> condition(),
         {matcher: null,
         Duration timeout: defaultTimeout,
         Duration interval: defaultInterval}) =>
@@ -50,7 +50,7 @@ class Clock {
   /// is returned. Otherwise, if [condition] throws, then that exception is
   /// rethrown. If [condition] doesn't throw then an [expect] exception is
   /// thrown.
-  Future<T> waitFor<T>(T condition(),
+  Future<T> waitFor<T>(FutureOr<T> condition(),
       {matcher: null,
       Duration timeout: defaultTimeout,
       Duration interval: defaultInterval}) async {
