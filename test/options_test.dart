@@ -17,14 +17,16 @@ library webdriver.options_test;
 import 'package:test/test.dart';
 import 'package:webdriver/core.dart';
 
-import 'test_util.dart';
+import 'test_util.dart' as test_util;
 
 void main() {
+  tearDownAll(test_util.tearDown);
+
   group('Cookies', () {
     WebDriver driver;
 
     setUp(() async {
-      driver = await createTestDriver();
+      driver = await test_util.createTestDriver();
       await driver.get('http://www.google.com/ncr');
     });
 
@@ -88,7 +90,7 @@ void main() {
     WebDriver driver;
 
     setUp(() async {
-      driver = await createTestDriver();
+      driver = await test_util.createTestDriver();
     });
 
     tearDown(() async {

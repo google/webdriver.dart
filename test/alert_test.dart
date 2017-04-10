@@ -17,17 +17,19 @@ library webdriver.alert_test;
 import 'package:test/test.dart';
 import 'package:webdriver/core.dart';
 
-import 'test_util.dart';
+import 'test_util.dart' as test_util;
 
 void main() {
+  tearDownAll(test_util.tearDown);
+
   group('Alert', () {
     WebDriver driver;
     WebElement button;
     WebElement output;
 
     setUp(() async {
-      driver = await createTestDriver();
-      await driver.get(testPagePath);
+      driver = await test_util.createTestDriver();
+      await driver.get(await test_util.testPagePath);
       button = await driver.findElement(const By.tagName('button'));
       output = await driver.findElement(const By.id('settable'));
     });

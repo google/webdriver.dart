@@ -28,6 +28,8 @@ const buttonClicked = 'Button clicked';
 const buttonNotClicked = 'Button not clicked';
 
 void main() {
+  tearDownAll(test_util.tearDown);
+
   group('WebDriverForwarder', () {
     WebDriver driver;
     WebDriverForwarder forwarder;

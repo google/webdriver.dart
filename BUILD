@@ -20,18 +20,18 @@ licenses(["notice"])  # Apache (Google-authored with external contributions)
 exports_files(["LICENSE"])
 
 dart_library(
-    name = "webdriver",
+    name = "com_github_google_webdriver_dart",
     srcs = glob(["lib/**"]),
     enable_ddc = False,
     license_files = ["LICENSE"],
     pub_pkg_name = "webdriver",
     visibility = ["//visibility:public"],
     deps = [
-        "@org_dartlang_pub_archive//:archive",
-        "@org_dartlang_pub_matcher//:matcher",
-        "@org_dartlang_pub_path//:path",
-        "@org_dartlang_pub_stack_trace//:stack_trace",
-        "@org_dartlang_pub_unittest//:unittest",
+        "@org_dartlang_pub_archive",
+        "@org_dartlang_pub_matcher",
+        "@org_dartlang_pub_path",
+        "@org_dartlang_pub_stack_trace",
+        "@org_dartlang_pub_unittest",
     ],
 )
 

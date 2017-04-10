@@ -35,21 +35,31 @@ generate_io_tests(
             "io_test_util.dart",
             "test_util.dart",
         ],
-        browsers = ["//browsers:chromium-native"],
+        browser_overrides = {
+            "//browsers:chrome55-win10-sauce": {
+                "tags": ["requires-network"],
+            },
+            "//browsers:chromium-native": {
+                "local": True,
+            },
+        },
+        browsers = [
+            "//browsers:chrome55-win10-sauce",
+            "//browsers:chromium-native",
+        ],
         data = [
             "frame.html",
             "support/forwarder_test_page.html",
             "test_page.html",
         ],
         flaky = True,
-        local = True,
         pub_pkg_name = "webdriver_test",
         script_file = dart_file[:-5] + ".io.dart",
         deps = [
-            "//:webdriver",
-            "@org_dartlang_pub_matcher//:matcher",
-            "@org_dartlang_pub_path//:path",
-            "@org_dartlang_pub_test//:test",
+            "//:com_github_google_webdriver_dart",
+            "@org_dartlang_pub_matcher",
+            "@org_dartlang_pub_path",
+            "@org_dartlang_pub_test",
         ],
     )
     for dart_file in _TESTS_TO_RUN
@@ -61,10 +71,10 @@ dart_vm_test(
     pub_pkg_name = "webdriver_test",
     script_file = "support/async_test.dart",
     deps = [
-        "//:webdriver",
-        "@org_dartlang_pub_async//:async",
-        "@org_dartlang_pub_test//:test",
-        "@org_dartlang_pub_unittest//:unittest",
+        "//:com_github_google_webdriver_dart",
+        "@org_dartlang_pub_async",
+        "@org_dartlang_pub_test",
+        "@org_dartlang_pub_unittest",
     ],
 )
 
@@ -79,10 +89,10 @@ dart_vm_test(
     pub_pkg_name = "webdriver_test",
     script_file = "support/firefox_profile_test.dart",
     deps = [
-        "//:webdriver",
-        "@org_dartlang_pub_archive//:archive",
-        "@org_dartlang_pub_matcher//:matcher",
-        "@org_dartlang_pub_path//:path",
-        "@org_dartlang_pub_test//:test",
+        "//:com_github_google_webdriver_dart",
+        "@org_dartlang_pub_archive",
+        "@org_dartlang_pub_matcher",
+        "@org_dartlang_pub_path",
+        "@org_dartlang_pub_test",
     ],
 )

@@ -19,9 +19,11 @@ import 'dart:io';
 import 'package:test/test.dart';
 import 'package:webdriver/core.dart';
 
-import 'test_util.dart';
+import 'test_util.dart' as test_util;
 
 void main() {
+  tearDownAll(test_util.tearDown);
+
   group('Keyboard', () {
     WebDriver driver;
     WebElement textInput;
@@ -34,8 +36,8 @@ void main() {
         ctrlCmdKey = Keyboard.control;
       }
 
-      driver = await createTestDriver();
-      await driver.get(testPagePath);
+      driver = await test_util.createTestDriver();
+      await driver.get(await test_util.testPagePath);
       textInput =
           await driver.findElement(const By.cssSelector('input[type=text]'));
       await textInput.click();

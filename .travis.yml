@@ -7,10 +7,11 @@ addons:
     packages:
       - wget
       - pkg-config
+  sauce_connect: true      
 
 before_install:
-  - wget https://github.com/bazelbuild/bazel/releases/download/0.4.3/bazel_0.4.3-linux-x86_64.deb
-  - sudo dpkg -i bazel_0.4.3-linux-x86_64.deb
+  - wget https://github.com/bazelbuild/bazel/releases/download/0.4.4/bazel_0.4.4-linux-x86_64.deb
+  - sudo dpkg -i bazel_0.4.4-linux-x86_64.deb
 
 script:
   - bazel test --test_output=streamed --keep_going ...

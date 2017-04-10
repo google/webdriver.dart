@@ -1,0 +1,7 @@
+# Use the current display by default if it exists.
+test --test_env=DISPLAY
+
+# For running sauce-based configs.
+test --test_env=SAUCE_USERNAME
+test --test_env=SAUCE_ACCESS_KEY
+test --test_env=TRAVIS_JOB_NUMBER
