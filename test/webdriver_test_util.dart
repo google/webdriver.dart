@@ -15,7 +15,7 @@
 library webdriver_test_util;
 
 import 'dart:async';
-import 'dart:io' show FileSystemEntity, Platform;
+import 'dart:io' show Platform;
 import 'dart:math' show Point, Rectangle;
 
 import 'package:matcher/matcher.dart';

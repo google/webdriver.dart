@@ -14,7 +14,7 @@
 
 library webdriver_test_util;
 
-import 'dart:io' show FileSystemEntity, Platform;
+import 'dart:io' show FileSystemEntity;
 import 'package:path/path.dart' as path;
 
 export 'webdriver_test_util.dart' show isWebElement, isRectangle, isPoint, createTestDriver;
