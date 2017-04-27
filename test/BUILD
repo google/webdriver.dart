@@ -34,6 +34,7 @@ generate_io_tests(
             dart_file[:-5] + ".io.dart",
             "io_test_util.dart",
             "test_util.dart",
+            "webdriver_test_util.dart"
         ],
         browsers = ["//browsers:chromium-native"],
         data = [
@@ -50,6 +51,38 @@ generate_io_tests(
             "@org_dartlang_pub_matcher//:matcher",
             "@org_dartlang_pub_path//:path",
             "@org_dartlang_pub_test//:test",
+        ],
+    )
+    for dart_file in _TESTS_TO_RUN
+]
+
+# Workaround if dart_web_test_suite target is broken. (E.g. on Mac.)
+#
+# To use:
+# 1) Start an instance of Selenium/ChromeDriver/SafariDriver and note the port.
+# 2) bazel test test:<test_name> \
+#      --action_env=WEB_TEST_WEBDRIVER_SERVER=http://localhost:<port>
+[
+    dart_vm_test(
+        name = dart_file[:-5],
+        srcs = [
+            dart_file,
+            "io_test_util.dart",
+            "test_util.dart",
+            "webdriver_test_util.dart"
+        ],
+        data = [
+            "frame.html",
+            "support/forwarder_test_page.html",
+            "test_page.html",
+        ],
+        pub_pkg_name = "webdriver_test",
+        script_file = dart_file,
+        deps = [
+            "//:webdriver",
+            "@org_dartlang_pub_async//:async",
+            "@org_dartlang_pub_test//:test",
+            "@org_dartlang_pub_unittest//:unittest",
         ],
     )
     for dart_file in _TESTS_TO_RUN

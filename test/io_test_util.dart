@@ -14,24 +14,11 @@
 
 library io_test_util;
 
-import 'dart:async' show Future;
 import 'dart:io' show FileSystemEntity, Platform;
-
 import 'package:path/path.dart' as path;
-import 'package:webdriver/core.dart' show WebDriver;
-import 'package:webdriver/io.dart' as wdio;
 
-export 'test_util.dart' show isWebElement, isRectangle, isPoint;
-
-Future<WebDriver> createTestDriver(
-    {Map<String, dynamic> additionalCapabilities}) {
-  var address = Platform.environment['WEB_TEST_WEBDRIVER_SERVER'];
-  if (!address.endsWith('/')) {
-    address += '/';
-  }
-  var uri = Uri.parse(address);
-  return wdio.createDriver(uri: uri, desired: additionalCapabilities);
-}
+export 'webdriver_test_util.dart'
+    show isWebElement, isRectangle, isPoint, createTestDriver;
 
 String get testPagePath {
   String testPagePath = runfile(path.join('test', 'test_page.html'));

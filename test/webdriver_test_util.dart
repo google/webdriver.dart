@@ -14,18 +14,24 @@
 
 library webdriver_test_util;
 
+import 'dart:async';
 import 'dart:io' show FileSystemEntity, Platform;
-import 'package:path/path.dart' as path;
+import 'dart:math' show Point, Rectangle;
 
-export 'webdriver_test_util.dart' show isWebElement, isRectangle, isPoint, createTestDriver;
+import 'package:matcher/matcher.dart';
+import 'package:webdriver/core.dart' show WebDriver;
+import 'package:webdriver/io.dart' as wdio;
 
-String get testPagePath {
-  String testPagePath = runfile(path.join('test', 'test_page.html'));
-  if (!FileSystemEntity.isFileSync(testPagePath)) {
-    throw new Exception('Could not find the test file at "$testPagePath".'
-        ' Make sure you are running tests from the root of the project.');
+final Matcher isWebElement = new isInstanceOf<wdio.WebElement>();
+final Matcher isRectangle = new isInstanceOf<Rectangle<int>>();
+final Matcher isPoint = new isInstanceOf<Point<int>>();
+
+Future<WebDriver> createTestDriver(
+    {Map<String, dynamic> additionalCapabilities}) {
+  var address = Platform.environment['WEB_TEST_WEBDRIVER_SERVER'];
+  if (!address.endsWith('/')) {
+    address += '/';
   }
-  return path.toUri(testPagePath).toString();
+  var uri = Uri.parse(address);
+  return wdio.createDriver(uri: uri, desired: additionalCapabilities);
 }
-
-String runfile(String p) => path.absolute(p);
