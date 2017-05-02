@@ -52,6 +52,7 @@ def webdriver_dart_repositories(
     omit_org_dartlang_pub_stack_trace=False,
     omit_org_dartlang_pub_stream_channel=False,
     omit_org_dartlang_pub_string_scanner=False,
+    omit_org_dartlang_pub_sync_http=False,
     omit_org_dartlang_pub_test=False,
     omit_org_dartlang_pub_typed_data=False,
     omit_org_dartlang_pub_unittest=False,
