@@ -15,7 +15,7 @@
 library webdriver.mouse_test;
 
 import 'package:test/test.dart';
-import 'package:webdriver/core.dart';
+import 'package:webdriver/async_core.dart';
 
 import 'test_util.dart';
 

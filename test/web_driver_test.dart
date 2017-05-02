@@ -17,7 +17,7 @@ library webdriver.web_driver_test;
 import 'dart:async';
 
 import 'package:test/test.dart';
-import 'package:webdriver/core.dart';
+import 'package:webdriver/async_core.dart';
 
 import 'test_util.dart';
 

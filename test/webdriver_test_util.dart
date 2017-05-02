@@ -19,8 +19,8 @@ import 'dart:io' show Platform;
 import 'dart:math' show Point, Rectangle;
 
 import 'package:matcher/matcher.dart';
-import 'package:webdriver/core.dart' show WebDriver;
-import 'package:webdriver/io.dart' as wdio;
+import 'package:webdriver/async_core.dart' show WebDriver;
+import 'package:webdriver/async_io.dart' as wdio;
 
 final Matcher isWebElement = new isInstanceOf<wdio.WebElement>();
 final Matcher isRectangle = new isInstanceOf<Rectangle<int>>();

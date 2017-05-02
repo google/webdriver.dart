@@ -19,7 +19,7 @@ import 'dart:io';
 
 import 'package:path/path.dart' as path;
 import 'package:test/test.dart';
-import 'package:webdriver/io.dart';
+import 'package:webdriver/async_io.dart';
 import 'package:webdriver/support/forwarder.dart';
 
 import 'test_util.dart' as test_util;

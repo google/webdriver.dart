@@ -18,7 +18,7 @@ import 'dart:async' show Future, Stream, StreamController;
 import 'dart:convert' show Encoding, JSON;
 import 'dart:io' show exit, Stdin, stdin, SYSTEM_ENCODING;
 
-import 'package:webdriver/src/stepper.dart';
+import 'package:webdriver/src/async/stepper.dart';
 
 LineReader _stdinLineReader;
 

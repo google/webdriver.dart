@@ -1,4 +1,4 @@
-// Copyright 2015 Google Inc. All Rights Reserved.
+// Copyright 2017 Google Inc. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,24 +12,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-library webdriver.logs_test;
+library webdriver.support.async_test;
+
+import 'dart:async';
 
 import 'package:test/test.dart';
-import 'package:webdriver/async_core.dart';
+import 'package:webdriver/sync_io.dart';
 
 import 'test_util.dart';
 
 void main() {
-  group('Logs', () {
+  group('Sync IO', () {
     WebDriver driver;
 
     setUp(() async {
-      Map<String, dynamic> capabilities = {
-        Capabilities.loggingPrefs: {LogType.performance: LogLevel.info}
-      };
-
-      driver = await createTestDriver(additionalCapabilities: capabilities);
-      await driver.get(testPagePath);
+      driver = await createTestDriver();
     });
 
     tearDown(() async {
@@ -39,12 +36,16 @@ void main() {
       driver = null;
     });
 
-    test('get logs', () async {
-      List<LogEntry> logs = await driver.logs.get(LogType.performance).toList();
-      expect(logs.length, greaterThan(0));
-      logs.forEach((entry) {
-        expect(entry.level, equals(LogLevel.info));
-      });
+    test('can do basic post', () async {
+      await driver.get(testPagePath); // This is POST to WebDriver.
+    });
+
+    test('can do basic get', () async {
+      await driver.title; // This is a GET request.
+    });
+
+    test('can do basic delete', () async {
+      await driver.close(); // This is a DELETE request.
     });
   });
 }

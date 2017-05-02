@@ -16,7 +16,7 @@ library webdriver.command_event_test;
 
 import 'package:stack_trace/stack_trace.dart';
 import 'package:test/test.dart';
-import 'package:webdriver/core.dart';
+import 'package:webdriver/async_core.dart';
 import 'package:webdriver/support/async.dart';
 
 import 'test_util.dart';

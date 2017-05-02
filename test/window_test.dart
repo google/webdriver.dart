@@ -18,7 +18,7 @@ import 'dart:math' show Point, Rectangle;
 
 import 'package:test/test.dart';
 import 'package:webdriver/support/async.dart';
-import 'package:webdriver/core.dart';
+import 'package:webdriver/async_core.dart';
 
 import 'test_util.dart';
 

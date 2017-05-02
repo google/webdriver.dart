@@ -19,7 +19,7 @@ import 'dart:convert' show BASE64, Encoding, UTF8;
 import 'dart:io' as io;
 import 'package:archive/archive.dart' show Archive, ArchiveFile, ZipDecoder;
 import 'package:test/test.dart';
-import 'package:webdriver/core.dart';
+import 'package:webdriver/async_core.dart';
 import 'package:webdriver/support/firefox_profile.dart';
 
 import '../io_test_util.dart' as test_util;
