@@ -19,14 +19,17 @@ import 'dart:io' show Platform;
 import 'dart:math' show Point, Rectangle;
 
 import 'package:matcher/matcher.dart';
-import 'package:webdriver/async_core.dart' show WebDriver;
+import 'package:webdriver/async_core.dart' as core;
 import 'package:webdriver/async_io.dart' as wdio;
+
+import 'package:webdriver/sync_core.dart' as sync_core;
+import 'package:webdriver/sync_io.dart' as wdio_sync;
 
 final Matcher isWebElement = new isInstanceOf<wdio.WebElement>();
 final Matcher isRectangle = new isInstanceOf<Rectangle<int>>();
 final Matcher isPoint = new isInstanceOf<Point<int>>();
 
-Future<WebDriver> createTestDriver(
+Future<core.WebDriver> createTestDriver(
     {Map<String, dynamic> additionalCapabilities}) {
   var address = Platform.environment['WEB_TEST_WEBDRIVER_SERVER'];
   if (!address.endsWith('/')) {
@@ -34,4 +37,14 @@ Future<WebDriver> createTestDriver(
   }
   var uri = Uri.parse(address);
   return wdio.createDriver(uri: uri, desired: additionalCapabilities);
+}
+
+sync_core.WebDriver createSyncTestDriver(
+    {Map<String, dynamic> additionalCapabilities}) {
+  var address = Platform.environment['WEB_TEST_WEBDRIVER_SERVER'];
+  if (!address.endsWith('/')) {
+    address += '/';
+  }
+  var uri = Uri.parse(address);
+  return wdio_sync.createDriver(uri: uri, desired: additionalCapabilities);
 }

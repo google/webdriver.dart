@@ -14,8 +14,6 @@
 
 library webdriver.support.async_test;
 
-import 'dart:async';
-
 import 'package:test/test.dart';
 import 'package:webdriver/sync_io.dart';
 
@@ -25,27 +23,27 @@ void main() {
   group('Sync IO', () {
     WebDriver driver;
 
-    setUp(() async {
-      driver = await createTestDriver();
+    setUp(() {
+      driver = createSyncTestDriver();
     });
 
-    tearDown(() async {
+    tearDown(()  {
       if (driver != null) {
-        await driver.quit();
+         driver.quit();
       }
       driver = null;
     });
 
-    test('can do basic post', () async {
-      await driver.get(testPagePath); // This is POST to WebDriver.
+    test('can do basic post', ()  {
+       driver.get(testPagePath); // This is POST to WebDriver.
     });
 
-    test('can do basic get', () async {
-      await driver.title; // This is a GET request.
+    test('can do basic get', ()  {
+       driver.title; // This is a GET request.
     });
 
-    test('can do basic delete', () async {
-      await driver.close(); // This is a DELETE request.
+    test('can do basic delete', ()  {
+       driver.close(); // This is a DELETE request.
     });
   });
 }

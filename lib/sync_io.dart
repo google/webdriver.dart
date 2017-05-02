@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-library webdriver.io;
+library webdriver.sync_io;
 
 import 'dart:async' show Future;
 import 'dart:convert' show JSON;
@@ -23,20 +23,19 @@ import 'dart:io'
 
 import 'package:sync_http/sync_http.dart';
 
-import 'package:webdriver/support/async.dart' show Lock;
-import 'package:webdriver/async_core.dart' as core
+import 'package:webdriver/sync_core.dart' as core
     show createDriver, fromExistingSession, WebDriver;
-import 'package:webdriver/src/async/command_processor.dart' show CommandProcessor;
+import 'package:webdriver/src/sync/command_processor.dart' show CommandProcessor;
 import 'package:webdriver/src/async/exception.dart' show WebDriverException;
 
-export 'package:webdriver/async_core.dart' hide createDriver, fromExistingSession;
+export 'package:webdriver/sync_core.dart' hide createDriver, fromExistingSession;
 
 /// Creates a WebDriver instance connected to the specified WebDriver server.
 ///
 /// Note: WebDriver endpoints will be constructed using [resolve] against
 /// [uri]. Therefore, if [uri] does not end with a trailing slash, the
 /// last path component will be dropped.
-Future<core.WebDriver> createDriver({Uri uri, Map<String, dynamic> desired}) =>
+core.WebDriver createDriver({Uri uri, Map<String, dynamic> desired}) =>
     core.createDriver(new IOCommandProcessor(), uri: uri, desired: desired);
 
 /// Creates a WebDriver instance connected to an existing session.
@@ -44,7 +43,7 @@ Future<core.WebDriver> createDriver({Uri uri, Map<String, dynamic> desired}) =>
 /// Note: WebDriver endpoints will be constructed using [resolve] against
 /// [uri]. Therefore, if [uri] does not end with a trailing slash, the
 /// last path component will be dropped.
-Future<core.WebDriver> fromExistingSession(String sessionId, {Uri uri}) =>
+core.WebDriver fromExistingSession(String sessionId, {Uri uri}) =>
     core.fromExistingSession(new IOCommandProcessor(), sessionId, uri: uri);
 
 final ContentType _contentTypeJson =
@@ -52,11 +51,8 @@ new ContentType("application", "json", charset: "utf-8");
 
 class IOCommandProcessor implements CommandProcessor {
 
-  final Lock _lock = new Lock();
-
   @override
-  Future<dynamic> post(Uri uri, dynamic params, {bool value: true}) async {
-    await _lock.acquire();
+  dynamic post(Uri uri, dynamic params, {bool value: true}) {
     final request =  SyncHttpClient.postUrl(uri);
     _setUpRequest(request);
     request.headers.contentType = _contentTypeJson;
@@ -68,28 +64,24 @@ class IOCommandProcessor implements CommandProcessor {
   }
 
   @override
-  Future<dynamic> get(Uri uri, {bool value: true}) async {
-    await _lock.acquire();
+  dynamic get(Uri uri, {bool value: true}) {
     final request = SyncHttpClient.getUrl(uri);
     _setUpRequest(request);
-    return await _processResponse( request.close(), value);
+    return _processResponse( request.close(), value);
   }
 
   @override
-  Future<dynamic> delete(Uri uri, {bool value: true}) async {
-    await _lock.acquire();
+  dynamic delete(Uri uri, {bool value: true}) {
     final request =  SyncHttpClient.deleteUrl(uri);
     _setUpRequest(request);
-    return await _processResponse( request.close(), value);
+    return _processResponse( request.close(), value);
   }
 
   @override
-  Future close() async {
-  }
+  void close() {}
 
-  _processResponse(SyncHttpClientResponse response, bool value) async {
+  _processResponse(SyncHttpClientResponse response, bool value) {
     final respDecoded = response.body;
-    _lock.release();
     Map respBody;
     try {
       respBody = JSON.decode(respDecoded);

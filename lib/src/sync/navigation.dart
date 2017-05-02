@@ -12,20 +12,32 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-library webdriver_test_util;
+part of webdriver.sync_core;
 
-import 'dart:io' show FileSystemEntity;
-import 'package:path/path.dart' as path;
+class Navigation extends _WebDriverBase {
+  Navigation._(driver) : super(driver, '');
 
-export 'webdriver_test_util.dart' show isWebElement, isRectangle, isPoint, createTestDriver, createSyncTestDriver;
-
-String get testPagePath {
-  String testPagePath = runfile(path.join('test', 'test_page.html'));
-  if (!FileSystemEntity.isFileSync(testPagePath)) {
-    throw new Exception('Could not find the test file at "$testPagePath".'
-        ' Make sure you are running tests from the root of the project.');
+  ///  Navigate forwards in the browser history, if possible.
+  void forward() {
+    _post('forward');
   }
-  return path.toUri(testPagePath).toString();
-}
 
-String runfile(String p) => path.absolute(p);
+  /// Navigate backwards in the browser history, if possible.
+  void back() {
+    _post('back');
+  }
+
+  /// Refresh the current page.
+  void refresh() {
+    _post('refresh');
+  }
+
+  @override
+  String toString() => '$driver.navigate';
+
+  @override
+  int get hashCode => driver.hashCode;
+
+  @override
+  bool operator ==(other) => other is Navigation && other.driver == driver;
+}

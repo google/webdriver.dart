@@ -24,7 +24,7 @@ http_archive(
 load("@io_bazel_rules_dart//dart/build_rules:repositories.bzl", "dart_repositories")
 
 # Update this to develop and test against your local SDK.
-dart_repositories(local_sdk=None)
+dart_repositories(local_sdk="/Users/staats/homebrew/opt/dart/libexec")
 
 http_archive(
     name = "io_bazel_rules_go",
