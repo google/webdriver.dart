@@ -16,14 +16,15 @@ workspace(name = "com_github_google_webdriver_dart")
 
 http_archive(
     name = "io_bazel_rules_dart",
-    sha256 = "db80bb1dd03485c959424dba8ea1aa4014fa0dbd22d57b069d14e5647f98b04e",
-    strip_prefix = "rules_dart-66d7cd37696b6ee2397e8075da3c6d90812b65ba",
-    url = "https://github.com/dart-lang/rules_dart/archive/66d7cd37696b6ee2397e8075da3c6d90812b65ba.tar.gz",
+    sha256 = "9575099b50f672befa3906be049ed1156618575a693214224675fd2b25448301",
+    strip_prefix = "rules_dart-0.4.3",
+    url = "https://github.com/dart-lang/rules_dart/archive/v0.4.3.tar.gz",
 )
 
 load("@io_bazel_rules_dart//dart/build_rules:repositories.bzl", "dart_repositories")
 
-dart_repositories()
+# Update this to develop and test against your local SDK.
+dart_repositories(local_sdk=None)
 
 http_archive(
     name = "io_bazel_rules_go",
