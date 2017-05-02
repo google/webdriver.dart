@@ -21,24 +21,24 @@ import 'dart:math' show Point, Rectangle;
 
 import 'package:stack_trace/stack_trace.dart' show Chain;
 
-import 'src/command_processor.dart' show CommandProcessor;
-import 'src/stepper.dart' show Stepper;
+import 'package:webdriver/src/async/command_processor.dart' show CommandProcessor;
+import 'package:webdriver/src/async/stepper.dart' show Stepper;
 
-export 'src/exception.dart';
+export 'package:webdriver/src/async/exception.dart';
 
-part 'src/alert.dart';
-part 'src/capabilities.dart';
-part 'src/command_event.dart';
-part 'src/common.dart';
-part 'src/keyboard.dart';
-part 'src/logs.dart';
-part 'src/mouse.dart';
-part 'src/navigation.dart';
-part 'src/options.dart';
-part 'src/target_locator.dart';
-part 'src/web_driver.dart';
-part 'src/web_element.dart';
-part 'src/window.dart';
+part 'package:webdriver/src/async/alert.dart';
+part 'package:webdriver/src/async/capabilities.dart';
+part 'package:webdriver/src/async/command_event.dart';
+part 'package:webdriver/src/async/common.dart';
+part 'package:webdriver/src/async/keyboard.dart';
+part 'package:webdriver/src/async/logs.dart';
+part 'package:webdriver/src/async/mouse.dart';
+part 'package:webdriver/src/async/navigation.dart';
+part 'package:webdriver/src/async/options.dart';
+part 'package:webdriver/src/async/target_locator.dart';
+part 'package:webdriver/src/async/web_driver.dart';
+part 'package:webdriver/src/async/web_element.dart';
+part 'package:webdriver/src/async/window.dart';
 
 final Uri defaultUri = Uri.parse('http://127.0.0.1:4444/wd/hub/');
 
