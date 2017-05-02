@@ -357,6 +357,14 @@ def webdriver_dart_repositories(
         url="https://storage.googleapis.com/pub.dartlang.org/packages/string_scanner-1.0.1.tar.gz"
     )
 
+  if not omit_org_dartlang_pub_sync_http:
+    native.new_http_archive(
+        name="org_dartlang_pub_sync_http",
+        build_file=str(Label("//build_files:sync_http.BUILD")),
+        sha256="e535198a521c937537cd0ba8b8466c8d05691bd9e0f565be6b6e7204bcc8ba4e",
+        url="https://storage.googleapis.com/pub-packages/packages/sync_http-0.1.1.tar.gz"
+    )
+
   if not omit_org_dartlang_pub_test:
     native.new_http_archive(
         name="org_dartlang_pub_test",

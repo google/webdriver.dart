@@ -1,4 +1,4 @@
-# Copyright 2016 Google Inc. All Rights Reserved.
+# Copyright 2017 Google Inc. All Rights Reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,28 +13,16 @@
 # limitations under the License.
 
 load("@io_bazel_rules_dart//dart/build_rules:core.bzl", "dart_library")
-load("@io_bazel_rules_dart//dart/build_rules:vm.bzl", "dart_vm_test")
 
-licenses(["notice"])  # Apache (Google-authored with external contributions)
+licenses(["notice"])  # New BSD
 
 exports_files(["LICENSE"])
 
 dart_library(
-    name = "webdriver",
+    name = "sync_http",
     srcs = glob(["lib/**"]),
-    enable_ddc = False,
     license_files = ["LICENSE"],
-    pub_pkg_name = "webdriver",
+    pub_pkg_name = "sync_http",
     visibility = ["//visibility:public"],
-    deps = [
-        "@org_dartlang_pub_archive//:archive",
-        "@org_dartlang_pub_matcher//:matcher",
-        "@org_dartlang_pub_path//:path",
-        "@org_dartlang_pub_stack_trace//:stack_trace",
-        "@org_dartlang_pub_sync_http//:sync_http",
-        "@org_dartlang_pub_unittest//:unittest",
-    ],
+    deps = [],
 )
-
-# Test BUILD rules are defined test/BUILD instead of here to prevent cyclic
-# dependency between this and rules_webtesting.
