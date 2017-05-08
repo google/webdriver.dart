@@ -216,18 +216,7 @@ class WebDriver implements SearchContext {
   void _performRequestWithLog(
       Function fn, String method, String command, params) {
     final result =  _performRequest(fn, method, command, params);
-    if (notifyListeners) {
-      if (_previousEvent == null) {
-        throw new Error(); // This should be impossible.
-      }
-      for (WebDriverListener listener in _commandListeners) {
-        listener(_previousEvent);
-      }
-    }
   }
-
-  // This is an ugly hack, I know, but I dunno how to cleanly do this.
-  var _previousEvent = null;
 
   // Performs the request. This will not notify any listeners or
   // onCommandController. This should only be called from
