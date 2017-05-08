@@ -16,7 +16,8 @@ library webdriver.command_event_test;
 
 import 'package:stack_trace/stack_trace.dart';
 import 'package:test/test.dart';
-import 'package:webdriver/sync_core.dart';
+import 'package:webdriver/async_core.dart';
+import 'package:webdriver/support/async.dart';
 
 import 'test_util.dart';
 
@@ -25,34 +26,43 @@ void main() {
     WebDriver driver;
 
     var events = <WebDriverCommandEvent>[];
+    var sub;
 
-    setUp(() {
-      driver = createSyncTestDriver();
-      driver.addEventListener(events.add);
-      driver.get(testPagePath);
+    setUp(() async {
+      driver = await createTestDriver();
+      sub = driver.onCommand.listen(events.add);
+
+      await driver.get(testPagePath);
     });
 
-    tearDown(() {
+    tearDown(() async {
+      sub.cancel();
+      sub = null;
       events.clear();
-      driver.quit();
+      await driver.quit();
       driver = null;
     });
 
-    test('handles exceptions', () {
+    test('handles exceptions', () async {
       try {
-        driver.switchTo.alert;
-        fail('Expected exception on no alert');
-      } catch (NoSuchAlertException) {}
+        await driver.switchTo.alert;
+      } catch (e) {}
+      print('handling!!!');
+      print(events);
+      await waitFor(() => events, matcher: hasLength(2));
       expect(events[1].method, 'GET');
       expect(events[1].endPoint, contains('alert'));
+      print(events[1].endPoint);
+      print(events[1].exception);
       expect(events[1].exception, new isInstanceOf<WebDriverException>());
       expect(events[1].result, isNull);
       expect(events[1].startTime.isBefore(events[1].endTime), isTrue);
       expect(events[1].stackTrace, new isInstanceOf<Chain>());
     });
 
-    test('handles normal operation', () {
-      driver.findElements(const By.cssSelector('nosuchelement')).toList();
+    test('handles normal operation', () async {
+      await driver.findElements(const By.cssSelector('nosuchelement')).toList();
+      await waitFor(() => events, matcher: hasLength(2));
       expect(events[1].method, 'POST');
       expect(events[1].endPoint, contains('elements'));
       expect(events[1].exception, isNull);

@@ -26,7 +26,7 @@ import 'package:sync_http/sync_http.dart';
 import 'package:webdriver/sync_core.dart' as core
     show createDriver, fromExistingSession, WebDriver;
 import 'package:webdriver/src/sync/command_processor.dart' show CommandProcessor;
-import 'package:webdriver/src/async/exception.dart' show WebDriverException;
+import 'package:webdriver/src/sync/exception.dart' show WebDriverException;
 
 export 'package:webdriver/sync_core.dart' hide createDriver, fromExistingSession;
 

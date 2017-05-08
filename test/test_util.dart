@@ -17,7 +17,7 @@ library webdriver_test_util;
 import 'dart:io' show FileSystemEntity;
 import 'package:path/path.dart' as path;
 
-export 'webdriver_test_util.dart' show isWebElement, isRectangle, isPoint, createTestDriver, createSyncTestDriver;
+export 'webdriver_test_util.dart' show isWebElement, isSyncWebElement, isRectangle, isPoint, createTestDriver, createSyncTestDriver;
 
 String get testPagePath {
   String testPagePath = runfile(path.join('test', 'test_page.html'));

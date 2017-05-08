@@ -15,7 +15,8 @@
 library webdriver.navigation_test;
 
 import 'package:test/test.dart';
-import 'package:webdriver/sync_core.dart';
+import 'package:webdriver/support/async.dart';
+import 'package:webdriver/async_core.dart';
 
 import 'test_util.dart';
 
@@ -23,27 +24,29 @@ void main() {
   group('Navigation', () {
     WebDriver driver;
 
-    setUp(() {
-      driver = createSyncTestDriver();
-      driver.get(testPagePath);
+    setUp(() async {
+      driver = await createTestDriver();
+      await driver.get(testPagePath);
     });
 
-    tearDown(() {
+    tearDown(() async {
       if (driver != null) {
-        driver.quit();
+        await driver.quit();
       }
       driver = null;
     });
 
-    test('refresh', () {
-      var element = driver.findElement(const By.tagName('button'));
-      driver.navigate.refresh();
-      try {
-        element.name;
-      } on StaleElementReferenceException {
-        return true;
-      }
-      return 'expected StaleElementReferenceException';
+    test('refresh', () async {
+      var element = await driver.findElement(const By.tagName('button'));
+      await driver.navigate.refresh();
+      await waitFor(() async {
+        try {
+          await element.name;
+        } on StaleElementReferenceException {
+          return true;
+        }
+        return 'expected StaleElementReferenceException';
+      });
     });
   });
 }

@@ -26,6 +26,7 @@ import 'package:webdriver/sync_core.dart' as sync_core;
 import 'package:webdriver/sync_io.dart' as wdio_sync;
 
 final Matcher isWebElement = new isInstanceOf<wdio.WebElement>();
+final Matcher isSyncWebElement = new isInstanceOf<wdio_sync.WebElement>();
 final Matcher isRectangle = new isInstanceOf<Rectangle<int>>();
 final Matcher isPoint = new isInstanceOf<Point<int>>();
 

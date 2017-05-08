@@ -15,7 +15,7 @@
 library webdriver.web_element_test;
 
 import 'package:test/test.dart';
-import 'package:webdriver/async_core.dart';
+import 'package:webdriver/sync_core.dart';
 
 import 'test_util.dart';
 
@@ -30,162 +30,162 @@ void main() {
     WebElement disabled;
     WebElement invisible;
 
-    setUp(() async {
-      driver = await createTestDriver();
-      await driver.get(testPagePath);
-      table = await driver.findElement(const By.tagName('table'));
-      button = await driver.findElement(const By.tagName('button'));
-      form = await driver.findElement(const By.tagName('form'));
+    setUp(() {
+      driver = createSyncTestDriver();
+      driver.get(testPagePath);
+      table = driver.findElement(const By.tagName('table'));
+      button = driver.findElement(const By.tagName('button'));
+      form = driver.findElement(const By.tagName('form'));
       textInput =
-          await driver.findElement(const By.cssSelector('input[type=text]'));
-      checkbox = await driver
+          driver.findElement(const By.cssSelector('input[type=text]'));
+      checkbox = driver
           .findElement(const By.cssSelector('input[type=checkbox]'));
-      disabled = await driver
+      disabled = driver
           .findElement(const By.cssSelector('input[type=password]'));
-      invisible = await driver.findElement(const By.tagName('div'));
+      invisible = driver.findElement(const By.tagName('div'));
     });
 
-    tearDown(() async {
+    tearDown(() {
       if (driver != null) {
-        await driver.quit();
+        driver.quit();
       }
       driver = null;
     });
 
-    test('click', () async {
-      await button.click();
-      var alert = await driver.switchTo.alert;
-      await alert.accept();
+    test('click', () {
+      button.click();
+      var alert = driver.switchTo.alert;
+      alert.accept();
     });
 
-    test('submit', () async {
-      await form.submit();
-      var alert = await driver.switchTo.alert;
+    test('submit', () {
+      form.submit();
+      var alert = driver.switchTo.alert;
       expect(alert.text, 'form submitted');
-      await alert.accept();
+      alert.accept();
     });
 
-    test('sendKeys', () async {
-      await textInput.sendKeys('some keys');
-      expect(await textInput.attributes['value'], 'some keys');
+    test('sendKeys', () {
+      textInput.sendKeys('some keys');
+      expect(textInput.attributes['value'], 'some keys');
     });
 
-    test('clear', () async {
-      await textInput.sendKeys('some keys');
-      await textInput.clear();
-      expect(await textInput.attributes['value'], '');
+    test('clear', () {
+      textInput.sendKeys('some keys');
+      textInput.clear();
+      expect(textInput.attributes['value'], '');
     });
 
-    test('enabled', () async {
-      expect(await table.enabled, isTrue);
-      expect(await button.enabled, isTrue);
-      expect(await form.enabled, isTrue);
-      expect(await textInput.enabled, isTrue);
-      expect(await checkbox.enabled, isTrue);
-      expect(await disabled.enabled, isFalse);
+    test('enabled', () {
+      expect(table.enabled, isTrue);
+      expect(button.enabled, isTrue);
+      expect(form.enabled, isTrue);
+      expect(textInput.enabled, isTrue);
+      expect(checkbox.enabled, isTrue);
+      expect(disabled.enabled, isFalse);
     });
 
-    test('displayed', () async {
-      expect(await table.displayed, isTrue);
-      expect(await button.displayed, isTrue);
-      expect(await form.displayed, isTrue);
-      expect(await textInput.displayed, isTrue);
-      expect(await checkbox.displayed, isTrue);
-      expect(await disabled.displayed, isTrue);
-      expect(await invisible.displayed, isFalse);
+    test('displayed', () {
+      expect(table.displayed, isTrue);
+      expect(button.displayed, isTrue);
+      expect(form.displayed, isTrue);
+      expect(textInput.displayed, isTrue);
+      expect(checkbox.displayed, isTrue);
+      expect(disabled.displayed, isTrue);
+      expect(invisible.displayed, isFalse);
     });
 
-    test('location -- table', () async {
-      var location = await table.location;
+    test('location -- table', () {
+      var location = table.location;
       expect(location, isPoint);
       expect(location.x, isNonNegative);
       expect(location.y, isNonNegative);
     });
 
-    test('location -- invisible', () async {
-      var location = await invisible.location;
+    test('location -- invisible', () {
+      var location = invisible.location;
       expect(location, isPoint);
       expect(location.x, 0);
       expect(location.y, 0);
     });
 
-    test('size -- table', () async {
-      var size = await table.size;
+    test('size -- table', () {
+      var size = table.size;
       expect(size, isRectangle);
       expect(size.width, isNonNegative);
       expect(size.height, isNonNegative);
     });
 
-    test('size -- invisible', () async {
-      var size = await invisible.size;
+    test('size -- invisible', () {
+      var size = invisible.size;
       expect(size, isRectangle);
       // TODO(DrMarcII): I thought these should be 0
       expect(size.width, isNonNegative);
       expect(size.height, isNonNegative);
     });
 
-    test('name', () async {
-      expect(await table.name, 'table');
-      expect(await button.name, 'button');
-      expect(await form.name, 'form');
-      expect(await textInput.name, 'input');
+    test('name', () {
+      expect(table.name, 'table');
+      expect(button.name, 'button');
+      expect(form.name, 'form');
+      expect(textInput.name, 'input');
     });
 
-    test('text', () async {
-      expect(await table.text, 'r1c1 r1c2\nr2c1 r2c2');
-      expect(await button.text, 'button');
-      expect(await invisible.text, '');
+    test('text', () {
+      expect(table.text, 'r1c1 r1c2\nr2c1 r2c2');
+      expect(button.text, 'button');
+      expect(invisible.text, '');
     });
 
-    test('findElement -- success', () async {
-      var element = await table.findElement(const By.tagName('tr'));
-      expect(element, isWebElement);
+    test('findElement -- success', () {
+      var element = table.findElement(const By.tagName('tr'));
+      expect(element, isSyncWebElement);
     });
 
-    test('findElement -- failure', () async {
+    test('findElement -- failure', () {
       try {
-        await button.findElement(const By.tagName('tr'));
+        button.findElement(const By.tagName('tr'));
         throw 'Expected NoSuchElementException';
       } on NoSuchElementException {}
     });
 
-    test('findElements -- 1 found', () async {
-      var elements = await form
+    test('findElements -- 1 found', () {
+      var elements = form
           .findElements(const By.cssSelector('input[type=text]'))
           .toList();
       expect(elements, hasLength(1));
-      expect(elements, everyElement(isWebElement));
+      expect(elements, everyElement(isSyncWebElement));
     });
 
-    test('findElements -- 4 found', () async {
-      var elements = await table.findElements(const By.tagName('td')).toList();
+    test('findElements -- 4 found', () {
+      var elements = table.findElements(const By.tagName('td')).toList();
       expect(elements, hasLength(4));
-      expect(elements, everyElement(isWebElement));
+      expect(elements, everyElement(isSyncWebElement));
     });
 
-    test('findElements -- 0 found', () async {
-      var elements = await form.findElements(const By.tagName('td')).toList();
+    test('findElements -- 0 found', () {
+      var elements = form.findElements(const By.tagName('td')).toList();
       expect(elements, isEmpty);
     });
 
-    test('attributes', () async {
-      expect(await table.attributes['id'], 'table1');
-      expect(await table.attributes['non-standard'], 'a non standard attr');
-      expect(await table.attributes['disabled'], isNull);
-      expect(await disabled.attributes['disabled'], 'true');
+    test('attributes', () {
+      expect(table.attributes['id'], 'table1');
+      expect(table.attributes['non-standard'], 'a non standard attr');
+      expect(table.attributes['disabled'], isNull);
+      expect(disabled.attributes['disabled'], 'true');
     });
 
-    test('cssProperties', () async {
-      expect(await invisible.cssProperties['display'], 'none');
-      expect(await invisible.cssProperties['background-color'],
+    test('cssProperties', () {
+      expect(invisible.cssProperties['display'], 'none');
+      expect(invisible.cssProperties['background-color'],
           'rgba(255, 0, 0, 1)');
-      expect(await invisible.cssProperties['direction'], 'ltr');
+      expect(invisible.cssProperties['direction'], 'ltr');
     });
 
-    test('equals', () async {
-      expect(await invisible.equals(disabled), isFalse);
-      var element = await driver.findElement(const By.cssSelector('table'));
-      expect(await element.equals(table), isTrue);
+    test('equals', () {
+      expect(invisible.equals(disabled), isFalse);
+      var element = driver.findElement(const By.cssSelector('table'));
+      expect(element.equals(table), isTrue);
     });
   });
 }

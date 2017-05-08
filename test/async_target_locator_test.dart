@@ -15,7 +15,7 @@
 library webdriver.target_locator_test;
 
 import 'package:test/test.dart';
-import 'package:webdriver/sync_core.dart';
+import 'package:webdriver/async_core.dart';
 
 import 'test_util.dart';
 
@@ -28,38 +28,38 @@ void main() {
     WebDriver driver;
     WebElement frame;
 
-    setUp(() {
-      driver = createSyncTestDriver();
-      driver.get(testPagePath);
-      frame = driver.findElement(const By.name('frame'));
+    setUp(() async {
+      driver = await createTestDriver();
+      await driver.get(testPagePath);
+      frame = await driver.findElement(const By.name('frame'));
     });
 
-    tearDown(() {
+    tearDown(() async {
       if (driver != null) {
-        driver.quit();
+        await driver.quit();
       }
       driver = null;
     });
 
-    test('frame index', () {
-      driver.switchTo.frame(0);
-      expect(driver.pageSource, contains('this is a frame'));
+    test('frame index', () async {
+      await driver.switchTo.frame(0);
+      expect(await driver.pageSource, contains('this is a frame'));
     });
 
-    test('frame name', () {
-      driver.switchTo.frame('frame');
-      expect(driver.pageSource, contains('this is a frame'));
+    test('frame name', () async {
+      await driver.switchTo.frame('frame');
+      expect(await driver.pageSource, contains('this is a frame'));
     });
 
-    test('frame element', () {
-      driver.switchTo.frame(frame);
-      expect(driver.pageSource, contains('this is a frame'));
+    test('frame element', () async {
+      await driver.switchTo.frame(frame);
+      expect(await driver.pageSource, contains('this is a frame'));
     });
 
-    test('root frame', () {
-      driver.switchTo.frame(frame);
-      driver.switchTo.frame();
-      driver.findElement(const By.tagName('button'));
+    test('root frame', () async {
+      await driver.switchTo.frame(frame);
+      await driver.switchTo.frame();
+      await driver.findElement(const By.tagName('button'));
     });
   });
 }

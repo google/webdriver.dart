@@ -15,7 +15,7 @@
 library webdriver.alert_test;
 
 import 'package:test/test.dart';
-import 'package:webdriver/async_core.dart';
+import 'package:webdriver/sync_core.dart';
 
 import 'test_util.dart';
 
@@ -25,51 +25,54 @@ void main() {
     WebElement button;
     WebElement output;
 
-    setUp(() async {
-      driver = await createTestDriver();
-      await driver.get(testPagePath);
-      button = await driver.findElement(const By.tagName('button'));
-      output = await driver.findElement(const By.id('settable'));
+    setUp(() {
+      driver = createSyncTestDriver();
+      driver.get(testPagePath);
+      button = driver.findElement(const By.tagName('button'));
+      output = driver.findElement(const By.id('settable'));
     });
 
-    tearDown(() async {
+    tearDown(() {
       if (driver != null) {
-        await driver.quit();
+        driver.quit();
       }
       driver = null;
     });
 
     test('no alert', () {
-      expect(driver.switchTo.alert, throws);
+      try {
+        driver.switchTo.alert;
+        fail('Expected exception on no alert');
+      } on NoSuchAlertException {}
     });
 
-    test('text', () async {
-      await button.click();
-      var alert = await driver.switchTo.alert;
+    test('text', () {
+      button.click();
+      var alert = driver.switchTo.alert;
       expect(alert.text, 'button clicked');
-      await alert.dismiss();
+      alert.dismiss();
     });
 
-    test('accept', () async {
-      await button.click();
-      var alert = await driver.switchTo.alert;
-      await alert.accept();
-      expect(await output.text, startsWith('accepted'));
+    test('accept', () {
+      button.click();
+      var alert = driver.switchTo.alert;
+      alert.accept();
+      expect(output.text, startsWith('accepted'));
     });
 
-    test('dismiss', () async {
-      await button.click();
-      var alert = await driver.switchTo.alert;
-      await alert.dismiss();
-      expect(await output.text, startsWith('dismissed'));
+    test('dismiss', () {
+      button.click();
+      var alert = driver.switchTo.alert;
+      alert.dismiss();
+      expect(output.text, startsWith('dismissed'));
     });
 
-    test('sendKeys', () async {
-      await button.click();
-      Alert alert = await driver.switchTo.alert;
-      await alert.sendKeys('some keys');
-      await alert.accept();
-      expect(await output.text, endsWith('some keys'));
+    test('sendKeys', () {
+      button.click();
+      Alert alert = driver.switchTo.alert;
+      alert.sendKeys('some keys');
+      alert.accept();
+      expect(output.text, endsWith('some keys'));
     });
   });
 }

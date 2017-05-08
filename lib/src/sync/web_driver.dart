@@ -27,7 +27,6 @@ class WebDriver implements SearchContext {
   /// If true, WebDriver actions are recorded as [WebDriverCommandEvent]s.
   bool notifyListeners = true;
 
-
   final _commandListeners = new List<WebDriverListener>();
 
   WebDriver(this._commandProcessor, Uri uri, String id, this.capabilities,
@@ -213,15 +212,15 @@ class WebDriver implements SearchContext {
 
   // Performs request and sends the result to listeners/onCommandController.
   // This is typically always what you want to use.
-  void _performRequestWithLog(
+  dynamic _performRequestWithLog(
       Function fn, String method, String command, params) {
-    final result =  _performRequest(fn, method, command, params);
+    return _performRequest(fn, method, command, params);
   }
 
   // Performs the request. This will not notify any listeners or
   // onCommandController. This should only be called from
   // _performRequestWithLog.
-  void _performRequest(
+  dynamic _performRequest(
       Function fn, String method, String command, params) {
     var startTime = new DateTime.now();
     var trace = new Chain.current();
@@ -235,6 +234,9 @@ class WebDriver implements SearchContext {
     try {
         result = fn();
         return result;
+    } catch (e) {
+      exception = e;
+      rethrow;
     } finally {
       if (notifyListeners) {
         for (WebDriverListener listener in _commandListeners) {

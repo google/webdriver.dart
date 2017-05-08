@@ -15,7 +15,7 @@
 library webdriver.logs_test;
 
 import 'package:test/test.dart';
-import 'package:webdriver/async_core.dart';
+import 'package:webdriver/sync_core.dart';
 
 import 'test_util.dart';
 
@@ -23,24 +23,24 @@ void main() {
   group('Logs', () {
     WebDriver driver;
 
-    setUp(() async {
+    setUp(() {
       Map<String, dynamic> capabilities = {
         Capabilities.loggingPrefs: {LogType.performance: LogLevel.info}
       };
 
-      driver = await createTestDriver(additionalCapabilities: capabilities);
-      await driver.get(testPagePath);
+      driver = createSyncTestDriver(additionalCapabilities: capabilities);
+      driver.get(testPagePath);
     });
 
-    tearDown(() async {
+    tearDown(() {
       if (driver != null) {
-        await driver.quit();
+        driver.quit();
       }
       driver = null;
     });
 
-    test('get logs', () async {
-      List<LogEntry> logs = await driver.logs.get(LogType.performance).toList();
+    test('get logs', () {
+      List<LogEntry> logs = driver.logs.get(LogType.performance).toList();
       expect(logs.length, greaterThan(0));
       logs.forEach((entry) {
         expect(entry.level, equals(LogLevel.info));
