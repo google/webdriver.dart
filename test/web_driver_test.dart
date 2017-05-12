@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+@TestOn("vm")
 library webdriver.web_driver_test;
 
 import 'dart:async';
@@ -19,22 +20,23 @@ import 'dart:async';
 import 'package:test/test.dart';
 import 'package:webdriver/core.dart';
 
-import 'config.dart'
-    if (dart.library.io) 'io_config.dart'
-    if (dart.library.html) 'html_config.dart' as config;
+import 'io_config.dart' as config;
 import 'test_util.dart';
 
 void main() {
   group('WebDriver', () {
-    group('create', () {
-      test('default', () async {
-        WebDriver driver = await config.createTestDriver();
-        await driver.get(config.testPagePath);
-        var element = await driver.findElement(const By.tagName('button'));
-        expect(await element.name, 'button');
-        await driver.quit();
-      });
-    });
+    group(
+      'create',
+      () {
+        test('default', () async {
+          WebDriver driver = await config.createTestDriver();
+          await driver.get(config.testPagePath);
+          var element = await driver.findElement(const By.tagName('button'));
+          expect(await element.name, 'button');
+          await driver.quit();
+        });
+      },
+    );
 
     group('methods', () {
       WebDriver driver;

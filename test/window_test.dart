@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+@TestOn("vm")
 library webdriver.window_test;
 
 import 'dart:math' show Point, Rectangle;
@@ -20,9 +21,7 @@ import 'package:test/test.dart';
 import 'package:webdriver/core.dart';
 import 'package:webdriver/support/async.dart';
 
-import 'config.dart'
-    if (dart.library.io) 'io_config.dart'
-    if (dart.library.html) 'html_config.dart' as config;
+import 'io_config.dart' as config;
 
 void main() {
   group('Window', () {
