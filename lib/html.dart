@@ -18,11 +18,11 @@ import 'dart:async' show Future;
 import 'dart:convert' show JSON;
 import 'dart:html' show HttpRequest, ProgressEvent;
 
-import 'package:webdriver/support/async.dart' show Lock;
 import 'package:webdriver/core.dart' as core
     show createDriver, fromExistingSession, WebDriver;
 import 'package:webdriver/src/command_processor.dart' show CommandProcessor;
 import 'package:webdriver/src/exception.dart' show WebDriverException;
+import 'package:webdriver/support/async.dart' show Lock;
 
 export 'package:webdriver/core.dart' hide createDriver, fromExistingSession;
 

@@ -1,16 +1,23 @@
-dist: trusty
 language: dart
-addons:
-  apt:
-    sources:
-      - ubuntu-toolchain-r-test
-    packages:
-      - wget
-      - pkg-config
+sudo: false
+
+dart: 
+  - dev
+  - stable
 
 before_install:
-  - wget https://github.com/bazelbuild/bazel/releases/download/0.4.3/bazel_0.4.3-linux-x86_64.deb
-  - sudo dpkg -i bazel_0.4.3-linux-x86_64.deb
+  - export CHROMEDRIVER_BINARY=/usr/bin/chromium-browser
+  - export CHROMEDRIVER_ARGS=--no-sandbox
+  - /usr/bin/chromium-browser --version
 
-script:
-  - bazel test --test_output=streamed --keep_going ...
+  - export DISPLAY=:99.0
+  - sh -e /etc/init.d/xvfb start
+
+before_script:
+# We use a slightly older version of chromedriver; the newer ones require a later
+# version of chromium than is available on travis by default.
+  - wget http://chromedriver.storage.googleapis.com/2.12/chromedriver_linux64.zip
+  - unzip chromedriver_linux64.zip
+  - export PATH=$PATH:$PWD
+
+script: ./tool/travis.sh

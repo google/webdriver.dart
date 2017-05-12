@@ -17,14 +17,16 @@ library webdriver.options_test;
 import 'package:test/test.dart';
 import 'package:webdriver/core.dart';
 
-import 'test_util.dart';
+import 'config.dart'
+    if (dart.library.io) 'io_config.dart'
+    if (dart.library.html) 'html_config.dart' as config;
 
 void main() {
   group('Cookies', () {
     WebDriver driver;
 
     setUp(() async {
-      driver = await createTestDriver();
+      driver = await config.createTestDriver();
       await driver.get('http://www.google.com/ncr');
     });
 
@@ -81,14 +83,14 @@ void main() {
     test('delete all cookies', () async {
       await driver.cookies.deleteAll();
       expect(await driver.cookies.all.toList(), isEmpty);
-    });
+    }, skip: 'ureliable');
   });
 
   group('TimeOuts', () {
     WebDriver driver;
 
     setUp(() async {
-      driver = await createTestDriver();
+      driver = await config.createTestDriver();
     });
 
     tearDown(() async {

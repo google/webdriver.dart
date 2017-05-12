@@ -14,22 +14,44 @@
 
 library io_test_util;
 
+import 'dart:async' show Future;
 import 'dart:io' show FileSystemEntity, Platform;
-import 'package:path/path.dart' as path;
 
-export 'webdriver_test_util.dart'
-    show isWebElement, isRectangle, isPoint, createTestDriver;
+import 'package:path/path.dart' as path;
+import 'package:webdriver/core.dart' show Capabilities, WebDriver;
+import 'package:webdriver/io.dart' show createDriver;
+
+Future<WebDriver> createTestDriver(
+    {Map<String, dynamic> additionalCapabilities}) {
+  var capabilities = Capabilities.chrome;
+  Map env = Platform.environment;
+
+  Map chromeOptions = {};
+
+  if (env['CHROMEDRIVER_BINARY'] != null) {
+    chromeOptions['binary'] = env['CHROMEDRIVER_BINARY'];
+  }
+
+  if (env['CHROMEDRIVER_ARGS'] != null) {
+    chromeOptions['args'] = env['CHROMEDRIVER_ARGS'].split(' ');
+  }
+
+  if (chromeOptions.isNotEmpty) {
+    capabilities['chromeOptions'] = chromeOptions;
+  }
+
+  if (additionalCapabilities != null) {
+    capabilities.addAll(additionalCapabilities);
+  }
+
+  return createDriver(desired: capabilities);
+}
 
 String get testPagePath {
-  String testPagePath = runfile(path.join('test', 'test_page.html'));
+  String testPagePath = path.absolute('test', 'test_page.html');
   if (!FileSystemEntity.isFileSync(testPagePath)) {
     throw new Exception('Could not find the test file at "$testPagePath".'
         ' Make sure you are running tests from the root of the project.');
   }
   return path.toUri(testPagePath).toString();
 }
-
-String runfile(String p) => path.absolute(path.join(
-    Platform.environment['TEST_SRCDIR'],
-    'com_github_google_webdriver_dart',
-    p));

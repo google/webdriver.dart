@@ -14,18 +14,11 @@
 
 library webdriver_test_util;
 
-import 'dart:io' show FileSystemEntity;
-import 'package:path/path.dart' as path;
+import 'dart:math' show Point, Rectangle;
 
-export 'webdriver_test_util.dart' show isWebElement, isRectangle, isPoint, createTestDriver;
+import 'package:matcher/matcher.dart' show isInstanceOf, Matcher;
+import 'package:webdriver/core.dart' show WebElement;
 
-String get testPagePath {
-  String testPagePath = runfile(path.join('test', 'test_page.html'));
-  if (!FileSystemEntity.isFileSync(testPagePath)) {
-    throw new Exception('Could not find the test file at "$testPagePath".'
-        ' Make sure you are running tests from the root of the project.');
-  }
-  return path.toUri(testPagePath).toString();
-}
-
-String runfile(String p) => path.absolute(p);
+final Matcher isWebElement = new isInstanceOf<WebElement>();
+final Matcher isRectangle = new isInstanceOf<Rectangle<int>>();
+final Matcher isPoint = new isInstanceOf<Point<int>>();

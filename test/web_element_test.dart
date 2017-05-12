@@ -17,6 +17,9 @@ library webdriver.web_element_test;
 import 'package:test/test.dart';
 import 'package:webdriver/core.dart';
 
+import 'config.dart'
+    if (dart.library.io) 'io_config.dart'
+    if (dart.library.html) 'html_config.dart' as config;
 import 'test_util.dart';
 
 void main() {
@@ -31,8 +34,8 @@ void main() {
     WebElement invisible;
 
     setUp(() async {
-      driver = await createTestDriver();
-      await driver.get(testPagePath);
+      driver = await config.createTestDriver();
+      await driver.get(config.testPagePath);
       table = await driver.findElement(const By.tagName('table'));
       button = await driver.findElement(const By.tagName('button'));
       form = await driver.findElement(const By.tagName('form'));

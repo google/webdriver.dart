@@ -12,26 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-library webdriver_test_util;
+library config;
 
-import 'dart:async';
-import 'dart:io' show Platform;
-import 'dart:math' show Point, Rectangle;
+import 'dart:async' show Future;
 
-import 'package:matcher/matcher.dart';
 import 'package:webdriver/core.dart' show WebDriver;
-import 'package:webdriver/io.dart' as wdio;
-
-final Matcher isWebElement = new isInstanceOf<wdio.WebElement>();
-final Matcher isRectangle = new isInstanceOf<Rectangle<int>>();
-final Matcher isPoint = new isInstanceOf<Point<int>>();
 
 Future<WebDriver> createTestDriver(
     {Map<String, dynamic> additionalCapabilities}) {
-  var address = Platform.environment['WEB_TEST_WEBDRIVER_SERVER'];
-  if (!address.endsWith('/')) {
-    address += '/';
-  }
-  var uri = Uri.parse(address);
-  return wdio.createDriver(uri: uri, desired: additionalCapabilities);
+  throw new UnimplementedError("createTestDriver is abstract");
+}
+
+String get testPagePath {
+  throw new UnimplementedError("createTestDriver is abstract");
 }
