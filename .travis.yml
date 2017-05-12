@@ -1,9 +1,15 @@
 language: dart
 sudo: false
 
-dart: 
+dart:
   - dev
   - stable
+
+with_content_shell: true
+
+matrix:
+  allow_failures:
+    - dart: dev
 
 before_install:
   - export CHROMEDRIVER_BINARY=/usr/bin/chromium-browser
@@ -19,5 +25,7 @@ before_script:
   - wget http://chromedriver.storage.googleapis.com/2.12/chromedriver_linux64.zip
   - unzip chromedriver_linux64.zip
   - export PATH=$PATH:$PWD
+  - ./tool/travis-setup.sh
 
-script: ./tool/travis.sh
+script:
+  - ./tool/travis.sh
