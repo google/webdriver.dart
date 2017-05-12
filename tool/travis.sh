@@ -18,8 +18,9 @@ STATUS=0
 
 # Analyze package.
 dartanalyzer .
-if [[ $? -ne 0 ]]; then
-  STATUS=$?
+ANALYSIS_STATUS=$?
+if [[ $ANALYSIS_STATUS -ne 0 ]]; then
+  STATUS=$ANALYSIS_STATUS
 fi
 
 # Start chromedriver.
@@ -28,8 +29,9 @@ PID=$!
 
 # Run tests.
 pub run test -r expanded -p vm,content-shell -j 1
-if [[ $? -ne 0 ]]; then
-  STATUS=$?
+TEST_STATUS=$?
+if [[ $TEST_STATUS -ne 0 ]]; then
+  STATUS=$TEST_STATUS
 fi
 
 # Exit chromedriver.
