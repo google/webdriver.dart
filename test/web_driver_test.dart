@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+@TestOn("vm")
 library webdriver.web_driver_test;
 
 import 'dart:async';
@@ -19,26 +20,30 @@ import 'dart:async';
 import 'package:test/test.dart';
 import 'package:webdriver/core.dart';
 
+import 'io_config.dart' as config;
 import 'test_util.dart';
 
 void main() {
   group('WebDriver', () {
-    group('create', () {
-      test('default', () async {
-        WebDriver driver = await createTestDriver();
-        await driver.get(testPagePath);
-        var element = await driver.findElement(const By.tagName('button'));
-        expect(await element.name, 'button');
-        await driver.quit();
-      });
-    });
+    group(
+      'create',
+      () {
+        test('default', () async {
+          WebDriver driver = await config.createTestDriver();
+          await driver.get(config.testPagePath);
+          var element = await driver.findElement(const By.tagName('button'));
+          expect(await element.name, 'button');
+          await driver.quit();
+        });
+      },
+    );
 
     group('methods', () {
       WebDriver driver;
 
       setUp(() async {
-        driver = await createTestDriver();
-        await driver.get(testPagePath);
+        driver = await config.createTestDriver();
+        await driver.get(config.testPagePath);
       });
 
       tearDown(() async {
@@ -49,7 +54,7 @@ void main() {
       });
 
       test('get', () async {
-        await driver.get(testPagePath);
+        await driver.get(config.testPagePath);
         await driver.findElement(const By.tagName('button'));
         ;
       });
@@ -198,11 +203,10 @@ void main() {
         int current = 0;
         driver.addEventListener((WebDriverCommandEvent e) async {
           return await new Future.delayed(
-              new Duration(milliseconds: millisDelay),
-              (() {
-                eventList.add(current++);
-                millisDelay = (millisDelay / 2).round();
-              }));
+              new Duration(milliseconds: millisDelay), (() {
+            eventList.add(current++);
+            millisDelay = (millisDelay / 2).round();
+          }));
         });
 
         for (int i = 0; i < 10; i++) {

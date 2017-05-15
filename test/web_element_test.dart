@@ -12,11 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+@TestOn("vm")
 library webdriver.web_element_test;
 
 import 'package:test/test.dart';
 import 'package:webdriver/core.dart';
 
+import 'io_config.dart' as config;
 import 'test_util.dart';
 
 void main() {
@@ -31,8 +33,8 @@ void main() {
     WebElement invisible;
 
     setUp(() async {
-      driver = await createTestDriver();
-      await driver.get(testPagePath);
+      driver = await config.createTestDriver();
+      await driver.get(config.testPagePath);
       table = await driver.findElement(const By.tagName('table'));
       button = await driver.findElement(const By.tagName('button'));
       form = await driver.findElement(const By.tagName('form'));

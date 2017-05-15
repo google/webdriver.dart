@@ -17,6 +17,7 @@ library webdriver.support.firefox_profile;
 import 'dart:collection';
 import 'dart:convert' show LineSplitter, BASE64;
 import 'dart:io' as io;
+
 import 'package:archive/archive.dart' show Archive, ArchiveFile, ZipEncoder;
 import 'package:path/path.dart' as path;
 

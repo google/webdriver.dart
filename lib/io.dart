@@ -24,11 +24,11 @@ import 'dart:io'
         HttpClientResponse,
         HttpHeaders;
 
-import 'package:webdriver/support/async.dart' show Lock;
 import 'package:webdriver/core.dart' as core
     show createDriver, fromExistingSession, WebDriver;
 import 'package:webdriver/src/command_processor.dart' show CommandProcessor;
 import 'package:webdriver/src/exception.dart' show WebDriverException;
+import 'package:webdriver/support/async.dart' show Lock;
 
 export 'package:webdriver/core.dart' hide createDriver, fromExistingSession;
 
@@ -103,9 +103,9 @@ class IOCommandProcessor implements CommandProcessor {
 
     if (response.statusCode < 200 ||
         response.statusCode > 299 ||
-        (respBody is Map 
-          && respBody['status'] != null 
-          && respBody['status'] != 0)) {
+        (respBody is Map &&
+            respBody['status'] != null &&
+            respBody['status'] != 0)) {
       throw new WebDriverException(
           httpStatusCode: response.statusCode,
           httpReasonPhrase: response.reasonPhrase,

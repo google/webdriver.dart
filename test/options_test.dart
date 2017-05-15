@@ -12,19 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+@TestOn("vm")
 library webdriver.options_test;
 
 import 'package:test/test.dart';
 import 'package:webdriver/core.dart';
 
-import 'test_util.dart';
+import 'io_config.dart' as config;
 
 void main() {
   group('Cookies', () {
     WebDriver driver;
 
     setUp(() async {
-      driver = await createTestDriver();
+      driver = await config.createTestDriver();
       await driver.get('http://www.google.com/ncr');
     });
 
@@ -81,14 +82,14 @@ void main() {
     test('delete all cookies', () async {
       await driver.cookies.deleteAll();
       expect(await driver.cookies.all.toList(), isEmpty);
-    });
+    }, skip: 'ureliable');
   });
 
   group('TimeOuts', () {
     WebDriver driver;
 
     setUp(() async {
-      driver = await createTestDriver();
+      driver = await config.createTestDriver();
     });
 
     tearDown(() async {

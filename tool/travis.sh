@@ -1,5 +1,7 @@
-# Copyright 2016 Google Inc. All Rights Reserved.
-#
+#!/bin/bash
+
+# Copyright 2013 Google Inc. All Rights Reserved.
+
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -12,21 +14,27 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-load("@io_bazel_rules_dart//dart/build_rules:core.bzl", "dart_library")
+STATUS=0
 
-licenses(["notice"])  # New BSD
+# Analyze package.
+dartanalyzer .
+ANALYSIS_STATUS=$?
+if [[ $ANALYSIS_STATUS -ne 0 ]]; then
+  STATUS=$ANALYSIS_STATUS
+fi
 
-exports_files(["LICENSE"])
+# Start chromedriver.
+chromedriver --port=4444 --url-base=wd/hub &
+PID=$!
 
-dart_library(
-    name = "watcher",
-    srcs = glob(["lib/**"]),
-    license_files = ["LICENSE"],
-    pub_pkg_name = "watcher",
-    visibility = ["//visibility:public"],
-    deps = [
-        "@org_dartlang_pub_async//:async",
-        "@org_dartlang_pub_collection//:collection",
-        "@org_dartlang_pub_path//:path",
-    ],
-)
+# Run tests.
+pub run test -r expanded -p vm,content-shell -j 1
+TEST_STATUS=$?
+if [[ $TEST_STATUS -ne 0 ]]; then
+  STATUS=$TEST_STATUS
+fi
+
+# Exit chromedriver.
+kill $PID
+
+exit $STATUS

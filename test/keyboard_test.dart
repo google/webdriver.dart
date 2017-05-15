@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+@TestOn("vm")
 library webdriver.keyboard_test;
 
 import 'dart:io';
@@ -19,7 +20,7 @@ import 'dart:io';
 import 'package:test/test.dart';
 import 'package:webdriver/core.dart';
 
-import 'test_util.dart';
+import 'io_config.dart' as config;
 
 void main() {
   group('Keyboard', () {
@@ -34,8 +35,8 @@ void main() {
         ctrlCmdKey = Keyboard.control;
       }
 
-      driver = await createTestDriver();
-      await driver.get(testPagePath);
+      driver = await config.createTestDriver();
+      await driver.get(config.testPagePath);
       textInput =
           await driver.findElement(const By.cssSelector('input[type=text]'));
       await textInput.click();
