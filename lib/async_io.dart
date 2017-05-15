@@ -18,19 +18,19 @@ import 'dart:async' show Future;
 import 'dart:convert' show JSON, UTF8;
 import 'dart:io'
     show
-        ContentType,
-        HttpClient,
-        HttpClientRequest,
-        HttpClientResponse,
-        HttpHeaders;
+    ContentType,
+    HttpClient,
+    HttpClientRequest,
+    HttpClientResponse,
+    HttpHeaders;
 
-import 'package:webdriver/support/async.dart' show Lock;
-import 'package:webdriver/async_core.dart' as core
+import 'package:webdriver/core.dart' as core
     show createDriver, fromExistingSession, WebDriver;
 import 'package:webdriver/src/async/command_processor.dart' show CommandProcessor;
 import 'package:webdriver/src/async/exception.dart' show WebDriverException;
+import 'package:webdriver/support/async.dart' show Lock;
 
-export 'package:webdriver/async_core.dart' hide createDriver, fromExistingSession;
+export 'package:webdriver/core.dart' hide createDriver, fromExistingSession;
 
 /// Creates a WebDriver instance connected to the specified WebDriver server.
 ///
@@ -49,7 +49,7 @@ Future<core.WebDriver> fromExistingSession(String sessionId, {Uri uri}) =>
     core.fromExistingSession(new IOCommandProcessor(), sessionId, uri: uri);
 
 final ContentType _contentTypeJson =
-    new ContentType("application", "json", charset: "utf-8");
+new ContentType("application", "json", charset: "utf-8");
 
 class IOCommandProcessor implements CommandProcessor {
   final HttpClient client = new HttpClient();
@@ -103,9 +103,9 @@ class IOCommandProcessor implements CommandProcessor {
 
     if (response.statusCode < 200 ||
         response.statusCode > 299 ||
-        (respBody is Map 
-          && respBody['status'] != null 
-          && respBody['status'] != 0)) {
+        (respBody is Map &&
+            respBody['status'] != null &&
+            respBody['status'] != 0)) {
       throw new WebDriverException(
           httpStatusCode: response.statusCode,
           httpReasonPhrase: response.reasonPhrase,

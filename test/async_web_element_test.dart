@@ -17,7 +17,7 @@ library webdriver.web_element_test;
 import 'package:test/test.dart';
 import 'package:webdriver/async_core.dart';
 
-import 'test_util.dart';
+import 'io_config.dart' as config;
 
 void main() {
   group('WebElement', () {
@@ -31,8 +31,8 @@ void main() {
     WebElement invisible;
 
     setUp(() async {
-      driver = await createTestDriver();
-      await driver.get(testPagePath);
+      driver = await config.createTestDriver();
+      await driver.get(config.testPagePath);
       table = await driver.findElement(const By.tagName('table'));
       button = await driver.findElement(const By.tagName('button'));
       form = await driver.findElement(const By.tagName('form'));
@@ -97,28 +97,28 @@ void main() {
 
     test('location -- table', () async {
       var location = await table.location;
-      expect(location, isPoint);
+      expect(location, config.isPoint);
       expect(location.x, isNonNegative);
       expect(location.y, isNonNegative);
     });
 
     test('location -- invisible', () async {
       var location = await invisible.location;
-      expect(location, isPoint);
+      expect(location, config.isPoint);
       expect(location.x, 0);
       expect(location.y, 0);
     });
 
     test('size -- table', () async {
       var size = await table.size;
-      expect(size, isRectangle);
+      expect(size, config.isRectangle);
       expect(size.width, isNonNegative);
       expect(size.height, isNonNegative);
     });
 
     test('size -- invisible', () async {
       var size = await invisible.size;
-      expect(size, isRectangle);
+      expect(size, config.isRectangle);
       // TODO(DrMarcII): I thought these should be 0
       expect(size.width, isNonNegative);
       expect(size.height, isNonNegative);
@@ -139,7 +139,7 @@ void main() {
 
     test('findElement -- success', () async {
       var element = await table.findElement(const By.tagName('tr'));
-      expect(element, isWebElement);
+      expect(element, config.isWebElement);
     });
 
     test('findElement -- failure', () async {
@@ -154,13 +154,13 @@ void main() {
           .findElements(const By.cssSelector('input[type=text]'))
           .toList();
       expect(elements, hasLength(1));
-      expect(elements, everyElement(isWebElement));
+      expect(elements, everyElement(config.isWebElement));
     });
 
     test('findElements -- 4 found', () async {
       var elements = await table.findElements(const By.tagName('td')).toList();
       expect(elements, hasLength(4));
-      expect(elements, everyElement(isWebElement));
+      expect(elements, everyElement(config.isWebElement));
     });
 
     test('findElements -- 0 found', () async {

@@ -19,14 +19,14 @@ import 'dart:async';
 import 'package:test/test.dart';
 import 'package:webdriver/core.dart';
 
-import 'test_util.dart';
+import 'io_config.dart' as config;
 
 void main() {
   group('WebDriver', () {
     group('create', () {
       test('default', () async {
-        WebDriver driver = await createTestDriver();
-        await driver.get(testPagePath);
+        WebDriver driver = await config.createTestDriver();
+        await driver.get(config.testPagePath);
         var element = await driver.findElement(const By.tagName('button'));
         expect(await element.name, 'button');
         await driver.quit();
@@ -37,8 +37,8 @@ void main() {
       WebDriver driver;
 
       setUp(() async {
-        driver = await createTestDriver();
-        await driver.get(testPagePath);
+        driver = await config.createTestDriver();
+        await driver.get(config.testPagePath);
       });
 
       tearDown(() async {
@@ -49,7 +49,7 @@ void main() {
       });
 
       test('get', () async {
-        await driver.get(testPagePath);
+        await driver.get(config.testPagePath);
         await driver.findElement(const By.tagName('button'));
         ;
       });
@@ -62,7 +62,7 @@ void main() {
 
       test('findElement -- success', () async {
         var element = await driver.findElement(const By.tagName('tr'));
-        expect(element, isWebElement);
+        expect(element, config.isWebElement);
       });
 
       test('findElement -- failure', () async {
@@ -77,14 +77,14 @@ void main() {
             .findElements(const By.cssSelector('input[type=text]'))
             .toList();
         expect(elements, hasLength(1));
-        expect(elements, everyElement(isWebElement));
+        expect(elements, everyElement(config.isWebElement));
       });
 
       test('findElements -- 4 found', () async {
         var elements =
             await driver.findElements(const By.tagName('td')).toList();
         expect(elements, hasLength(4));
-        expect(elements, everyElement(isWebElement));
+        expect(elements, everyElement(config.isWebElement));
       });
 
       test('findElements -- 0 found', () async {

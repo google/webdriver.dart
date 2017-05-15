@@ -12,12 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+@TestOn("vm")
 library webdriver.logs_test;
 
 import 'package:test/test.dart';
 import 'package:webdriver/sync_core.dart';
 
-import 'test_util.dart';
+import 'sync_io_config.dart' as config;
 
 void main() {
   group('Logs', () {
@@ -28,8 +29,8 @@ void main() {
         Capabilities.loggingPrefs: {LogType.performance: LogLevel.info}
       };
 
-      driver = createSyncTestDriver(additionalCapabilities: capabilities);
-      driver.get(testPagePath);
+      driver = config.createTestDriver(additionalCapabilities: capabilities);
+      driver.get(config.testPagePath);
     });
 
     tearDown(() {

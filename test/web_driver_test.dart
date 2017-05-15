@@ -12,19 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+@TestOn("vm")
 library webdriver.web_driver_test;
 
 import 'package:test/test.dart';
 import 'package:webdriver/sync_core.dart';
 
-import 'test_util.dart';
+import 'sync_io_config.dart' as config;
 
 void main() {
   group('WebDriver', () {
     group('create', () {
       test('default', () {
-        WebDriver driver = createSyncTestDriver();
-        driver.get(testPagePath);
+        WebDriver driver = config.createTestDriver();
+        driver.get(config.testPagePath);
         var element = driver.findElement(const By.tagName('button'));
         expect(element.name, 'button');
         driver.quit();
@@ -35,8 +36,8 @@ void main() {
       WebDriver driver;
 
       setUp(() {
-        driver = createSyncTestDriver();
-        driver.get(testPagePath);
+        driver = config.createTestDriver();
+        driver.get(config.testPagePath);
       });
 
       tearDown(() {
@@ -47,7 +48,7 @@ void main() {
       });
 
       test('get', () {
-        driver.get(testPagePath);
+        driver.get(config.testPagePath);
         driver.findElement(const By.tagName('button'));
         ;
       });
@@ -60,7 +61,7 @@ void main() {
 
       test('findElement -- success', () {
         var element = driver.findElement(const By.tagName('tr'));
-        expect(element, isSyncWebElement);
+        expect(element, config.isSyncWebElement);
       });
 
       test('findElement -- failure', () {
@@ -75,13 +76,13 @@ void main() {
             .findElements(const By.cssSelector('input[type=text]'))
             .toList();
         expect(elements, hasLength(1));
-        expect(elements, everyElement(isSyncWebElement));
+        expect(elements, everyElement(config.isSyncWebElement));
       });
 
       test('findElements -- 4 found', () {
         var elements = driver.findElements(const By.tagName('td')).toList();
         expect(elements, hasLength(4));
-        expect(elements, everyElement(isSyncWebElement));
+        expect(elements, everyElement(config.isSyncWebElement));
       });
 
       test('findElements -- 0 found', () {

@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+@TestOn("vm")
 library webdriver.web_element_test;
 
 import 'package:test/test.dart';
 import 'package:webdriver/sync_core.dart';
 
-import 'test_util.dart';
-
+import 'sync_io_config.dart' as config;
 void main() {
   group('WebElement', () {
     WebDriver driver;
@@ -31,8 +31,8 @@ void main() {
     WebElement invisible;
 
     setUp(() {
-      driver = createSyncTestDriver();
-      driver.get(testPagePath);
+      driver = config.createTestDriver();
+      driver.get(config.testPagePath);
       table = driver.findElement(const By.tagName('table'));
       button = driver.findElement(const By.tagName('button'));
       form = driver.findElement(const By.tagName('form'));
@@ -97,28 +97,28 @@ void main() {
 
     test('location -- table', () {
       var location = table.location;
-      expect(location, isPoint);
+      expect(location, config.isPoint);
       expect(location.x, isNonNegative);
       expect(location.y, isNonNegative);
     });
 
     test('location -- invisible', () {
       var location = invisible.location;
-      expect(location, isPoint);
+      expect(location, config.isPoint);
       expect(location.x, 0);
       expect(location.y, 0);
     });
 
     test('size -- table', () {
       var size = table.size;
-      expect(size, isRectangle);
+      expect(size, config.isRectangle);
       expect(size.width, isNonNegative);
       expect(size.height, isNonNegative);
     });
 
     test('size -- invisible', () {
       var size = invisible.size;
-      expect(size, isRectangle);
+      expect(size, config.isRectangle);
       // TODO(DrMarcII): I thought these should be 0
       expect(size.width, isNonNegative);
       expect(size.height, isNonNegative);
@@ -139,7 +139,7 @@ void main() {
 
     test('findElement -- success', () {
       var element = table.findElement(const By.tagName('tr'));
-      expect(element, isSyncWebElement);
+      expect(element, config.isSyncWebElement);
     });
 
     test('findElement -- failure', () {
@@ -154,13 +154,13 @@ void main() {
           .findElements(const By.cssSelector('input[type=text]'))
           .toList();
       expect(elements, hasLength(1));
-      expect(elements, everyElement(isSyncWebElement));
+      expect(elements, everyElement(config.isSyncWebElement));
     });
 
     test('findElements -- 4 found', () {
       var elements = table.findElements(const By.tagName('td')).toList();
       expect(elements, hasLength(4));
-      expect(elements, everyElement(isSyncWebElement));
+      expect(elements, everyElement(config.isSyncWebElement));
     });
 
     test('findElements -- 0 found', () {

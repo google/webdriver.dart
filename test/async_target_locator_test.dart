@@ -17,7 +17,7 @@ library webdriver.target_locator_test;
 import 'package:test/test.dart';
 import 'package:webdriver/async_core.dart';
 
-import 'test_util.dart';
+import 'io_config.dart' as config;
 
 /**
  * Tests for switchTo.frame(). switchTo.window() and switchTo.alert are tested
@@ -29,8 +29,8 @@ void main() {
     WebElement frame;
 
     setUp(() async {
-      driver = await createTestDriver();
-      await driver.get(testPagePath);
+      driver = await config.createTestDriver();
+      await driver.get(config.testPagePath);
       frame = await driver.findElement(const By.name('frame'));
     });
 

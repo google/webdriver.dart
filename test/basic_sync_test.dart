@@ -17,14 +17,14 @@ library webdriver.support.async_test;
 import 'package:test/test.dart';
 import 'package:webdriver/sync_io.dart';
 
-import 'test_util.dart';
+import 'sync_io_config.dart' as config;
 
 void main() {
   group('Sync IO', () {
     WebDriver driver;
 
     setUp(() {
-      driver = createSyncTestDriver();
+      driver = config.createTestDriver();
     });
 
     tearDown(()  {
@@ -35,7 +35,7 @@ void main() {
     });
 
     test('can do basic post', ()  {
-       driver.get(testPagePath); // This is POST to WebDriver.
+       driver.get(config.testPagePath); // This is POST to WebDriver.
     });
 
     test('can do basic get', ()  {

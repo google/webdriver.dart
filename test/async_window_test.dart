@@ -20,14 +20,14 @@ import 'package:test/test.dart';
 import 'package:webdriver/support/async.dart';
 import 'package:webdriver/async_core.dart';
 
-import 'test_util.dart';
+import 'io_config.dart' as config;
 
 void main() {
   group('Window', () {
     WebDriver driver;
 
     setUp(() async {
-      driver = await createTestDriver();
+      driver = await config.createTestDriver();
     });
 
     tearDown(() async {

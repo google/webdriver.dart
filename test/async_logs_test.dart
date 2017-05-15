@@ -17,7 +17,7 @@ library webdriver.logs_test;
 import 'package:test/test.dart';
 import 'package:webdriver/async_core.dart';
 
-import 'test_util.dart';
+import 'io_config.dart' as config;
 
 void main() {
   group('Logs', () {
@@ -28,8 +28,8 @@ void main() {
         Capabilities.loggingPrefs: {LogType.performance: LogLevel.info}
       };
 
-      driver = await createTestDriver(additionalCapabilities: capabilities);
-      await driver.get(testPagePath);
+      driver = await config.createTestDriver(additionalCapabilities: capabilities);
+      await driver.get(config.testPagePath);
     });
 
     tearDown(() async {

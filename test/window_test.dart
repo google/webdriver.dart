@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+@TestOn("vm")
 library webdriver.window_test;
 
 import 'dart:math' show Point, Rectangle;
@@ -19,14 +20,14 @@ import 'dart:math' show Point, Rectangle;
 import 'package:test/test.dart';
 import 'package:webdriver/sync_core.dart';
 
-import 'test_util.dart';
+import 'sync_io_config.dart' as config;
 
 void main() {
   group('Window', () {
     WebDriver driver;
 
     setUp(() {
-      driver = createSyncTestDriver();
+      driver = config.createTestDriver();
     });
 
     tearDown(() {
@@ -48,7 +49,7 @@ void main() {
       var position = const Point<int>(100, 200);
       window.setLocation(position);
       expect(window.location, position);
-    });
+    }, skip: 'unreliable');
 
     // May not work on some OS/browser combinations (notably Mac OS X).
     test('maximize', () {

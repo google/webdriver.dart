@@ -17,12 +17,11 @@ library webdriver.support.firefox_profile_test;
 
 import 'dart:convert' show BASE64, Encoding, UTF8;
 import 'dart:io' as io;
+
 import 'package:archive/archive.dart' show Archive, ArchiveFile, ZipDecoder;
 import 'package:test/test.dart';
 import 'package:webdriver/async_core.dart';
 import 'package:webdriver/support/firefox_profile.dart';
-
-import '../io_test_util.dart' as test_util;
 
 void main() {
   group('Firefox profile', () {
@@ -146,8 +145,7 @@ void main() {
 
     test('encode/decode profile directory from disk', () {
       var profile = new FirefoxProfile(
-          profileDirectory: new io.Directory(
-              test_util.runfile('test/support/firefox_profile')));
+          profileDirectory: new io.Directory('test/support/firefox_profile'));
       profile.setOption(new PrefsOption(Capabilities.hasNativeEvents, true));
 
       var archive = unpackArchiveData(profile.toJson());

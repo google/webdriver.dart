@@ -19,10 +19,10 @@ import 'dart:io';
 
 import 'package:path/path.dart' as path;
 import 'package:test/test.dart';
-import 'package:webdriver/async_io.dart';
+import 'package:webdriver/io.dart';
 import 'package:webdriver/support/forwarder.dart';
 
-import 'io_config.dart' as config;
+import '../io_config.dart' as config;
 
 const buttonClicked = 'Button clicked';
 const buttonNotClicked = 'Button not clicked';

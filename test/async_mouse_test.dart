@@ -17,7 +17,7 @@ library webdriver.mouse_test;
 import 'package:test/test.dart';
 import 'package:webdriver/async_core.dart';
 
-import 'test_util.dart';
+import 'io_config.dart' as config;
 
 void main() {
   group('Mouse', () {
@@ -25,8 +25,8 @@ void main() {
     WebElement button;
 
     setUp(() async {
-      driver = await createTestDriver();
-      await driver.get(testPagePath);
+      driver = await config.createTestDriver();
+      await driver.get(config.testPagePath);
       button = await driver.findElement(const By.tagName('button'));
     });
 

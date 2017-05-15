@@ -19,7 +19,7 @@ import 'dart:io';
 import 'package:test/test.dart';
 import 'package:webdriver/async_core.dart';
 
-import 'test_util.dart';
+import 'io_config.dart' as config;
 
 void main() {
   group('Keyboard', () {
@@ -34,8 +34,8 @@ void main() {
         ctrlCmdKey = Keyboard.control;
       }
 
-      driver = await createTestDriver();
-      await driver.get(testPagePath);
+      driver = await config.createTestDriver();
+      await driver.get(config.testPagePath);
       textInput =
           await driver.findElement(const By.cssSelector('input[type=text]'));
       await textInput.click();
