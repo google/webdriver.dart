@@ -64,6 +64,7 @@ void main() {
       expect(await textInput.attributes['value'], 'abc');
     });
 
+    // NOTE: does not work on Mac.
     test('sendChord -- CTRL+X', () async {
       await driver.keyboard.sendKeys('abcdef');
       expect(await textInput.attributes['value'], 'abcdef');
