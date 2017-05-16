@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-part of webdriver.sync_core;
+import 'common.dart';
 
-class Keyboard extends _WebDriverBase {
+class Keyboard extends WebDriverBase {
   static const String nullChar = '\uE000';
   static const String cancel = '\uE001';
   static const String help = '\uE002';
@@ -38,7 +38,7 @@ class Keyboard extends _WebDriverBase {
   static const String right = '\uE014';
   static const String down = '\uE015';
   static const String insert = '\uE016';
-  static const String delete = '\uE017';
+  static const String deleteChar = '\uE017';
   static const String semicolon = '\uE018';
   static const String equals = '\uE019';
   static const String numpad0 = '\uE01A';
@@ -72,7 +72,7 @@ class Keyboard extends _WebDriverBase {
   static const String command = '\uE03D';
   static const String meta = command;
 
-  Keyboard._(driver) : super(driver, '');
+  Keyboard(driver) : super(driver, '');
 
   /// Simulate pressing many keys at once as a 'chord'.
   void sendChord(Iterable<String> chordToSend) {
@@ -92,7 +92,7 @@ class Keyboard extends _WebDriverBase {
 
   /// Send [keysToSend] to the active element.
   void sendKeys(String keysToSend) {
-    _post('keys', {
+    post('keys', {
       'value': [keysToSend]
     });
   }

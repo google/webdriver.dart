@@ -12,29 +12,29 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-part of webdriver.sync_core;
+import 'common.dart';
 
-class Cookies extends _WebDriverBase {
-  Cookies._(driver) : super(driver, 'cookie');
+class Cookies extends WebDriverBase {
+  Cookies(driver) : super(driver, 'cookie');
 
   /// Set a cookie.
   void add(Cookie cookie) {
-    _post('', {'cookie': cookie});
+    post('', {'cookie': cookie});
   }
 
   /// Delete the cookie with the given [name].
   void delete(String name) {
-    _delete('$name');
+    delete('$name');
   }
 
   /// Delete all cookies visible to the current page.
   void deleteAll() {
-    _delete('');
+    delete('');
   }
 
   /// Retrieve all cookies visible to the current page.
   List<Cookie> get all {
-    var cookies = _get('') as List<Map<String, dynamic>>;
+    var cookies = get('') as List<Map<String, dynamic>>;
     return cookies.map((c) => new Cookie.fromJson(c));
 
   }
@@ -106,11 +106,11 @@ class Cookie {
   String toString() => 'Cookie${toJson()}';
 }
 
-class Timeouts extends _WebDriverBase {
-  Timeouts._(driver) : super(driver, 'timeouts');
+class Timeouts extends WebDriverBase {
+  Timeouts(driver) : super(driver, 'timeouts');
 
   void _set(String type, Duration duration) {
-    _post('', {'type': type, 'ms': duration.inMilliseconds});
+    post('', {'type': type, 'ms': duration.inMilliseconds});
   }
 
   /// Set the script timeout.

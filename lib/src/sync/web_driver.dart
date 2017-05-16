@@ -12,7 +12,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-part of webdriver.sync_core;
+import 'dart:convert' show BASE64;
+import 'package:stack_trace/stack_trace.dart' show Chain;
+
+import 'command_event.dart';
+import 'command_processor.dart';
+import 'common.dart';
+import 'exception.dart';
+import 'keyboard.dart';
+import 'logs.dart';
+import 'mouse.dart';
+import 'navigation.dart';
+import 'options.dart';
+import 'target_locator.dart';
+import 'window.dart';
+import 'web_element.dart';
 
 typedef void WebDriverListener(WebDriverCommandEvent event);
 
@@ -62,7 +76,7 @@ class WebDriver implements SearchContext {
 
     final webElements = new List<WebElement>();
     for (var element in elements) {
-      webElements.add(new WebElement._(this, element[_element], this, by, i++));
+      webElements.add(new WebElement(this, element[elementStr], this, by, i++));
     }
     return webElements;
   }
@@ -72,7 +86,7 @@ class WebDriver implements SearchContext {
   @override
   WebElement findElement(By by) {
     var element = postRequest('element', by);
-    return new WebElement._(this, element[_element], this, by);
+    return new WebElement(this, element[elementStr], this, by);
   }
 
   /// An artist's rendition of the current page's source.
@@ -97,13 +111,13 @@ class WebDriver implements SearchContext {
   /// Handles for all of the currently displayed tabs/windows.
   List<Window> get windows {
     var handles = getRequest('window_handles') as List<String>;
-    return handles.map((h) => new Window._(this, h)).toList();
+    return handles.map((h) => new Window(this, h)).toList();
   }
 
   /// Handle for the active tab/window.
   Window get window {
     var handle = getRequest('window_handle');
-    return new Window._(this, handle);
+    return new Window(this, handle);
   }
 
   /// The currently focused element, or the body element if no element has
@@ -111,24 +125,24 @@ class WebDriver implements SearchContext {
   WebElement get activeElement {
     var element = postRequest('element/active');
     if (element != null) {
-      return new WebElement._(this, element[_element], this, 'activeElement');
+      return new WebElement(this, element[elementStr], this, 'activeElement');
     }
     return null;
   }
 
-  TargetLocator get switchTo => new TargetLocator._(this);
+  TargetLocator get switchTo => new TargetLocator(this);
 
-  Navigation get navigate => new Navigation._(this);
+  Navigation get navigate => new Navigation(this);
 
-  Cookies get cookies => new Cookies._(this);
+  Cookies get cookies => new Cookies(this);
 
-  Logs get logs => new Logs._(this);
+  Logs get logs => new Logs(this);
 
-  Timeouts get timeouts => new Timeouts._(this);
+  Timeouts get timeouts => new Timeouts(this);
 
-  Keyboard get keyboard => new Keyboard._(this);
+  Keyboard get keyboard => new Keyboard(this);
 
-  Mouse get mouse => new Mouse._(this);
+  Mouse get mouse => new Mouse(this);
 
   /// Take a screenshot of the current page as PNG and return it as
   /// base64-encoded string.
@@ -179,8 +193,8 @@ class WebDriver implements SearchContext {
 
   dynamic _recursiveElementify(result) {
     if (result is Map) {
-      if (result.length == 1 && result.containsKey(_element)) {
-        return new WebElement._(this, result[_element], this, 'javascript');
+      if (result.length == 1 && result.containsKey(elementStr)) {
+        return new WebElement(this, result[elementStr], this, 'javascript');
       } else {
         var newResult = {};
         result.forEach((key, value) {

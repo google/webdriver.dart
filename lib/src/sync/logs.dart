@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-part of webdriver.sync_core;
+import 'common.dart';
 
-class Logs extends _WebDriverBase {
-  Logs._(driver) : super(driver, 'log');
+class Logs extends WebDriverBase {
+  Logs(driver) : super(driver, 'log');
 
   List<LogEntry> get(String logType) {
-    var entries = _post('', {'type': logType}) as List<Map>;
+    var entries = post('', {'type': logType}) as List<Map>;
     return entries.map((e) => new LogEntry.fromMap(e));
   }
 

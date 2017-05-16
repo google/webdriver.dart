@@ -12,24 +12,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-part of webdriver.sync_core;
+import 'common.dart';
 
-class Navigation extends _WebDriverBase {
-  Navigation._(driver) : super(driver, '');
+class Navigation extends WebDriverBase {
+  Navigation(driver) : super(driver, '');
 
   ///  Navigate forwards in the browser history, if possible.
   void forward() {
-    _post('forward');
+    post('forward');
   }
 
   /// Navigate backwards in the browser history, if possible.
   void back() {
-    _post('back');
+    post('back');
   }
 
   /// Refresh the current page.
   void refresh() {
-    _post('refresh');
+    post('refresh');
   }
 
   @override

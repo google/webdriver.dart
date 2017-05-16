@@ -12,21 +12,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-part of webdriver.sync_core;
+import 'common.dart';
 
 /// A JavaScript alert(), confirm(), or prompt() dialog
-class Alert extends _WebDriverBase {
+class Alert extends WebDriverBase {
   /// The text of the JavaScript alert(), confirm(), or prompt() dialog.
   final String text;
 
-  Alert._(this.text, driver) : super(driver, '');
+  Alert(this.text, driver) : super(driver, '');
 
   /// Accepts the currently displayed alert (may not be the alert for which this
   /// object was created).
   ///
   ///  Throws [NoSuchAlertException] if there isn't currently an alert.
   void accept() {
-    _post('accept_alert');
+    post('accept_alert');
   }
 
   /// Dismisses the currently displayed alert (may not be the alert for which
@@ -34,7 +34,7 @@ class Alert extends _WebDriverBase {
   ///
   ///  Throws [NoSuchAlertException] if there isn't currently an alert.
   void dismiss() {
-    _post('dismiss_alert');
+    post('dismiss_alert');
   }
 
   /// Sends keys to the currently displayed alert (may not be the alert for
@@ -42,7 +42,7 @@ class Alert extends _WebDriverBase {
   ///
   /// Throws [NoSuchAlertException] if there isn't currently an alert
   void sendKeys(String keysToSend) {
-    _post('alert_text', {'text': keysToSend});
+    post('alert_text', {'text': keysToSend});
   }
 
   @override

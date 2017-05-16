@@ -12,31 +12,32 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-part of webdriver.sync_core;
+import 'common.dart';
+import 'web_element.dart';
 
 class MouseButton {
   /// The primary button is usually the left button or the only button on
   /// single-button devices, used to activate a user interface control or select
   /// text.
-  static const MouseButton primary = const MouseButton._(0);
+  static const MouseButton primary = const MouseButton(0);
 
   /// The auxiliary button is usually the middle button, often combined with a
   /// mouse wheel.
-  static const MouseButton auxiliary = const MouseButton._(1);
+  static const MouseButton auxiliary = const MouseButton(1);
 
   /// The secondary button is usually the right button, often used to display a
   /// context menu.
-  static const MouseButton secondary = const MouseButton._(2);
+  static const MouseButton secondary = const MouseButton(2);
 
   final int value;
 
   /// [value] for a mouse button is defined in
   /// https://w3c.github.io/uievents/#widl-MouseEvent-button
-  const MouseButton._(this.value);
+  const MouseButton(this.value);
 }
 
-class Mouse extends _WebDriverBase {
-  Mouse._(driver) : super(driver, '');
+class Mouse extends WebDriverBase {
+  Mouse(driver) : super(driver, '');
 
   /// Click any mouse button (at the coordinates set by the last moveTo).
   void click([MouseButton button]) {
@@ -44,7 +45,7 @@ class Mouse extends _WebDriverBase {
     if (button is MouseButton) {
       json['button'] = button.value;
     }
-    _post('click', json);
+    post('click', json);
   }
 
   /// Click and hold any mouse button (at the coordinates set by the last
@@ -54,7 +55,7 @@ class Mouse extends _WebDriverBase {
     if (button is MouseButton) {
       json['button'] = button.value;
     }
-    _post('buttondown', json);
+    post('buttondown', json);
   }
 
   /// Releases the mouse button previously held (where the mouse is currently at).
@@ -63,12 +64,12 @@ class Mouse extends _WebDriverBase {
     if (button is MouseButton) {
       json['button'] = button.value;
     }
-    _post('buttonup', json);
+    post('buttonup', json);
   }
 
   /// Double-clicks at the current mouse coordinates (set by moveTo).
   void doubleClick() {
-    _post('doubleclick');
+    post('doubleclick');
   }
 
   /// Move the mouse.
@@ -91,7 +92,7 @@ class Mouse extends _WebDriverBase {
       json['xoffset'] = xOffset.floor();
       json['yoffset'] = yOffset.floor();
     }
-    _post('moveto', json);
+    post('moveto', json);
   }
 
   @override

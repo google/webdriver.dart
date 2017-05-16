@@ -12,42 +12,43 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-part of webdriver.sync_core;
+import 'common.dart';
+import 'dart:math' show Point, Rectangle;
 
-class Window extends _WebDriverBase {
+class Window extends WebDriverBase {
   final String handle;
 
-  Window._(driver, handle)
+  Window(driver, handle)
       : this.handle = handle,
         super(driver, 'window/$handle');
 
   /// The size of this window.
   Rectangle<int> get size {
-    var size = _get('size');
+    var size = get('size');
     return new Rectangle<int>(
         0, 0, size['width'].toInt(), size['height'].toInt());
   }
 
   /// The location of this window.
   Point<int> get location {
-    var point = _get('position');
+    var point = get('position');
     return new Point<int>(point['x'].toInt(), point['y'].toInt());
   }
 
   /// Maximize this window.
   void maximize() {
-    _post('maximize');
+    post('maximize');
   }
 
   /// Set this window size.
   void setSize(Rectangle<int> size) {
-    _post(
+    post(
         'size', {'width': size.width.toInt(), 'height': size.height.toInt()});
   }
 
   /// Set this window location.
   void setLocation(Point<int> point) {
-    _post('position', {'x': point.x.toInt(), 'y': point.y.toInt()});
+    post('position', {'x': point.x.toInt(), 'y': point.y.toInt()});
   }
 
   @override

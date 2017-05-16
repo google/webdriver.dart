@@ -15,28 +15,26 @@
 library webdriver.sync_core;
 
 import 'dart:collection' show UnmodifiableMapView;
-import 'dart:convert' show BASE64;
-import 'dart:math' show Point, Rectangle;
 
-import 'package:stack_trace/stack_trace.dart' show Chain;
-
+import 'package:webdriver/src/sync/capabilities.dart' show Capabilities;
 import 'package:webdriver/src/sync/command_processor.dart' show CommandProcessor;
+import 'package:webdriver/src/sync/web_driver.dart' show WebDriver;
 
+export 'package:webdriver/src/sync/alert.dart';
+export 'package:webdriver/src/sync/capabilities.dart';
+export 'package:webdriver/src/sync/command_event.dart';
+export 'package:webdriver/src/sync/command_processor.dart';
+export 'package:webdriver/src/sync/common.dart';
 export 'package:webdriver/src/sync/exception.dart';
-
-part 'package:webdriver/src/sync/alert.dart';
-part 'package:webdriver/src/sync/capabilities.dart';
-part 'package:webdriver/src/sync/command_event.dart';
-part 'package:webdriver/src/sync/common.dart';
-part 'package:webdriver/src/sync/keyboard.dart';
-part 'package:webdriver/src/sync/logs.dart';
-part 'package:webdriver/src/sync/mouse.dart';
-part 'package:webdriver/src/sync/navigation.dart';
-part 'package:webdriver/src/sync/options.dart';
-part 'package:webdriver/src/sync/target_locator.dart';
-part 'package:webdriver/src/sync/web_driver.dart';
-part 'package:webdriver/src/sync/web_element.dart';
-part 'package:webdriver/src/sync/window.dart';
+export 'package:webdriver/src/sync/keyboard.dart';
+export 'package:webdriver/src/sync/logs.dart';
+export 'package:webdriver/src/sync/mouse.dart';
+export 'package:webdriver/src/sync/navigation.dart';
+export 'package:webdriver/src/sync/options.dart';
+export 'package:webdriver/src/sync/target_locator.dart';
+export 'package:webdriver/src/sync/web_driver.dart';
+export 'package:webdriver/src/sync/web_element.dart';
+export 'package:webdriver/src/sync/window.dart';
 
 final Uri defaultUri = Uri.parse('http://127.0.0.1:4444/wd/hub/');
 

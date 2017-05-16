@@ -14,7 +14,6 @@
 
 library webdriver.sync_io;
 
-import 'dart:async' show Future;
 import 'dart:convert' show JSON;
 import 'dart:io'
     show

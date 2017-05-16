@@ -12,10 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-part of webdriver.sync_core;
+import 'common.dart';
+import 'window.dart';
+import 'alert.dart';
 
-class TargetLocator extends _WebDriverBase {
-  TargetLocator._(driver) : super(driver, '');
+class TargetLocator extends WebDriverBase {
+  TargetLocator(driver) : super(driver, '');
 
   /// Change focus to another frame on the page.
   /// If [frame] is a:
@@ -28,7 +30,7 @@ class TargetLocator extends _WebDriverBase {
   ///
   ///   Throws [NoSuchFrameException] if the specified frame can't be found.
   void frame([frame]) {
-     _post('frame', {'id': frame});
+     post('frame', {'id': frame});
   }
 
   /// Switch the focus of void commands for this driver to the window with the
@@ -37,9 +39,9 @@ class TargetLocator extends _WebDriverBase {
   /// Throws [NoSuchWindowException] if the specified window can't be found.
   void window(dynamic window) {
     if (window is Window) {
-       _post('window', {'name': window.handle});
+       post('window', {'name': window.handle});
     } else if (window is String) {
-       _post('window', {'name': window});
+       post('window', {'name': window});
     } else {
       throw 'Unsupported type: ${window.runtimeType}';
     }
@@ -50,8 +52,8 @@ class TargetLocator extends _WebDriverBase {
   ///
   /// Throws [NoSuchAlertException] if there is not currently an alert.
   Alert get alert {
-    var text =  _get('alert_text');
-    return new Alert._(text, driver);
+    var text =  get('alert_text');
+    return new Alert(text, driver);
   }
 
   @override

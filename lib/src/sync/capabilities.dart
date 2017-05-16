@@ -12,8 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-part of webdriver.sync_core;
-
 /// Capabilities constants.
 class Capabilities {
   static const String browserName = "browserName";

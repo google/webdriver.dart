@@ -12,9 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-part of webdriver.sync_core;
+import 'common.dart';
+import 'dart:math' show Point, Rectangle;
 
-class WebElement extends _WebDriverBase implements SearchContext {
+class WebElement extends WebDriverBase implements SearchContext {
   final String id;
 
   /// The context from which this element was found.
@@ -27,75 +28,75 @@ class WebElement extends _WebDriverBase implements SearchContext {
   /// used to find this element always returns one element, then this is null.
   final int index;
 
-  WebElement._(driver, id, [this.context, this.locator, this.index])
+  WebElement(driver, id, [this.context, this.locator, this.index])
       : this.id = id,
         super(driver, 'element/$id');
 
   /// Click on this element.
   void click() {
-    _post('click');
+    post('click');
   }
 
   /// Submit this element if it is part of a form.
   void submit() {
-    _post('submit');
+    post('submit');
   }
 
   /// Send [keysToSend] to this element.
   void sendKeys(String keysToSend) {
-    _post('value', {
+    post('value', {
       'value': [keysToSend]
     });
   }
 
   /// Clear the content of a text element.
   void clear() {
-    _post('clear');
+    post('clear');
   }
 
   /// Is this radio button/checkbox selected?
-  bool get selected => _get('selected') as bool;
+  bool get selected => get('selected') as bool;
 
   /// Is this form element enabled?
-  bool get enabled => _get('enabled') as bool;
+  bool get enabled => get('enabled') as bool;
 
   /// Is this element visible in the page?
-  bool get displayed => _get('displayed') as bool;
+  bool get displayed => get('displayed') as bool;
 
   /// The location within the document of this element.
   Point get location {
-    var point = _get('location');
+    var point = get('location');
     return new Point<int>(point['x'].toInt(), point['y'].toInt());
   }
 
   /// The size of this element.
   Rectangle<int> get size {
-    var size = _get('size');
+    var size = get('size');
     return new Rectangle<int>(
         0, 0, size['width'].toInt(), size['height'].toInt());
   }
 
   /// The tag name for this element.
-  String get name => _get('name') as String;
+  String get name => get('name') as String;
 
   ///  Visible text within this element.
-  String get text => _get('text') as String;
+  String get text => get('text') as String;
 
   ///Find an element nested within this element.
   ///
   /// Throws [NoSuchElementException] if matching element is not found.
   WebElement findElement(By by) {
-    var element = _post('element', by);
-    return new WebElement._(driver, element[_element], this, by);
+    var element = post('element', by);
+    return new WebElement(driver, element[elementStr], this, by);
   }
 
   /// Find multiple elements nested within this element.
   List<WebElement> findElements(By by) {
-    var elements = _post('elements', by) as Iterable;
+    var elements = post('elements', by) as Iterable;
     int i = 0;
     final webElements = new List<WebElement>();
     for (var element in elements) {
-      webElements.add(new WebElement._(driver, element[_element], this, by, i++));
+      webElements.add(new WebElement(driver, element[elementStr], this, by, i++));
     }
     return webElements;
   }
@@ -103,20 +104,20 @@ class WebElement extends _WebDriverBase implements SearchContext {
   /// Access to the HTML attributes of this tag.
   ///
   /// TODO(DrMarcII): consider special handling of boolean attributes.
-  Attributes get attributes => new Attributes._(driver, '$_prefix/attribute');
+  Attributes get attributes => new Attributes(driver, '$prefix/attribute');
 
   /// Access to the cssProperties of this element.
   ///
   /// TODO(DrMarcII): consider special handling of color and possibly other
   /// properties.
-  Attributes get cssProperties => new Attributes._(driver, '$_prefix/css');
+  Attributes get cssProperties => new Attributes(driver, '$prefix/css');
 
   /// Does this element represent the same element as another element?
   /// Not the same as ==
   bool equals(WebElement other) =>
-      _get('equals/${other.id}') as bool;
+      get('equals/${other.id}') as bool;
 
-  Map<String, String> toJson() => {_element: id};
+  Map<String, String> toJson() => {elementStr: id};
 
   @override
   int get hashCode => driver.hashCode * 3 + id.hashCode;

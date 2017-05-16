@@ -12,16 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-part of webdriver.sync_core;
+import 'web_driver.dart';
+import 'web_element.dart';
 
-const String _element = 'ELEMENT';
+const String elementStr = 'ELEMENT';
 
 /// Simple class to provide access to indexed properties such as WebElement
 /// attributes or css styles.
-class Attributes extends _WebDriverBase {
-  Attributes._(driver, command) : super(driver, command);
+class Attributes extends WebDriverBase {
+  Attributes(driver, command) : super(driver, command);
 
-  String operator [](String name) => _get(name) as String;
+  String operator [](String name) => get(name) as String;
 }
 
 abstract class SearchContext {
@@ -36,27 +37,27 @@ abstract class SearchContext {
   WebElement findElement(By by);
 }
 
-abstract class _WebDriverBase {
-  final String _prefix;
+abstract class WebDriverBase {
+  final String prefix;
   final WebDriver driver;
 
-  _WebDriverBase(this.driver, this._prefix);
+  WebDriverBase(this.driver, this.prefix);
 
-  dynamic _post(String command, [param]) =>
+  dynamic post(String command, [param]) =>
       driver.postRequest(_resolve(command), param);
 
-  dynamic _get(String command) => driver.getRequest(_resolve(command));
+  dynamic get(String command) => driver.getRequest(_resolve(command));
 
-  dynamic _delete(String command) => driver.deleteRequest(_resolve(command));
+  dynamic delete(String command) => driver.deleteRequest(_resolve(command));
 
   String _resolve(command) {
-    if (_prefix == null || _prefix.isEmpty) {
+    if (prefix == null || prefix.isEmpty) {
       return command;
     }
     if (command == null || command.isEmpty) {
-      return _prefix;
+      return prefix;
     }
-    return '$_prefix/$command';
+    return '$prefix/$command';
   }
 }
 
@@ -64,37 +65,37 @@ class By {
   final String _using;
   final String _value;
 
-  const By._(this._using, this._value);
+  const By(this._using, this._value);
 
   /// Returns an element whose ID attribute matches the search value.
-  const By.id(String id) : this._('id', id);
+  const By.id(String id) : this('id', id);
 
   /// Returns an element matching an XPath expression.
-  const By.xpath(String xpath) : this._('xpath', xpath);
+  const By.xpath(String xpath) : this('xpath', xpath);
 
   /// Returns an anchor element whose visible text matches the search value.
-  const By.linkText(String linkText) : this._('link text', linkText);
+  const By.linkText(String linkText) : this('link text', linkText);
 
   /// Returns an anchor element whose visible text partially matches the search
   /// value.
   const By.partialLinkText(String partialLinkText)
-      : this._('partial link text', partialLinkText);
+      : this('partial link text', partialLinkText);
 
   /// Returns an element whose NAME attribute matches the search value.
-  const By.name(String name) : this._('name', name);
+  const By.name(String name) : this('name', name);
 
   /// Returns an element whose tag name matches the search value.
-  const By.tagName(String tagName) : this._('tag name', tagName);
+  const By.tagName(String tagName) : this('tag name', tagName);
 
   /**
    * Returns an element whose class name contains the search value; compound
    * class names are not permitted
    */
-  const By.className(String className) : this._('class name', className);
+  const By.className(String className) : this('class name', className);
 
   /// Returns an element matching a CSS selector.
   const By.cssSelector(String cssSelector)
-      : this._('css selector', cssSelector);
+      : this('css selector', cssSelector);
 
   Map<String, String> toJson() => {'using': _using, 'value': _value};
 
