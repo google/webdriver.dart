@@ -35,7 +35,7 @@ class Cookies extends WebDriverBase {
   /// Retrieve all cookies visible to the current page.
   List<Cookie> get all {
     var cookies = get('') as List<Map<String, dynamic>>;
-    return cookies.map((c) => new Cookie.fromJson(c));
+    return cookies.map((c) => new Cookie.fromJson(c)).toList();
 
   }
 

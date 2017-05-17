@@ -19,7 +19,7 @@ class Logs extends WebDriverBase {
 
   List<LogEntry> get(String logType) {
     var entries = post('', {'type': logType}) as List<Map>;
-    return entries.map((e) => new LogEntry.fromMap(e));
+    return entries.map((e) => new LogEntry.fromMap(e)).toList();
   }
 
   @override
