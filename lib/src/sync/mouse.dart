@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import 'common.dart';
+import 'web_driver.dart';
 import 'web_element.dart';
 
 class MouseButton {
@@ -36,8 +37,11 @@ class MouseButton {
   const MouseButton(this.value);
 }
 
-class Mouse extends WebDriverBase {
-  Mouse(driver) : super(driver, '');
+class Mouse {
+  final WebDriver _driver;
+  final WebDriverBase _resolver;
+
+  Mouse(this._driver) : _resolver = new WebDriverBase(_driver, '');
 
   /// Click any mouse button (at the coordinates set by the last moveTo).
   void click([MouseButton button]) {
@@ -45,7 +49,7 @@ class Mouse extends WebDriverBase {
     if (button is MouseButton) {
       json['button'] = button.value;
     }
-    post('click', json);
+    _resolver.post('click', json);
   }
 
   /// Click and hold any mouse button (at the coordinates set by the last
@@ -55,7 +59,7 @@ class Mouse extends WebDriverBase {
     if (button is MouseButton) {
       json['button'] = button.value;
     }
-    post('buttondown', json);
+    _resolver.post('buttondown', json);
   }
 
   /// Releases the mouse button previously held (where the mouse is currently at).
@@ -64,12 +68,12 @@ class Mouse extends WebDriverBase {
     if (button is MouseButton) {
       json['button'] = button.value;
     }
-    post('buttonup', json);
+    _resolver.post('buttonup', json);
   }
 
   /// Double-clicks at the current mouse coordinates (set by moveTo).
   void doubleClick() {
-    post('doubleclick');
+    _resolver.post('doubleclick');
   }
 
   /// Move the mouse.
@@ -92,15 +96,15 @@ class Mouse extends WebDriverBase {
       json['xoffset'] = xOffset.floor();
       json['yoffset'] = yOffset.floor();
     }
-    post('moveto', json);
+    _resolver.post('moveto', json);
   }
 
   @override
-  String toString() => '$driver.mouse';
+  String toString() => '$_driver.mouse';
 
   @override
-  int get hashCode => driver.hashCode;
+  int get hashCode => _driver.hashCode;
 
   @override
-  bool operator ==(other) => other is Mouse && other.driver == driver;
+  bool operator ==(other) => other is Mouse && other._driver == _driver;
 }

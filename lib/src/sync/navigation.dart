@@ -13,31 +13,35 @@
 // limitations under the License.
 
 import 'common.dart';
+import 'web_driver.dart';
 
-class Navigation extends WebDriverBase {
-  Navigation(driver) : super(driver, '');
+class Navigation {
+  final WebDriver _driver;
+  final WebDriverBase _resolver;
+
+  Navigation(this._driver) : _resolver = new WebDriverBase(_driver, '');
 
   ///  Navigate forwards in the browser history, if possible.
   void forward() {
-    post('forward');
+    _resolver.post('forward');
   }
 
   /// Navigate backwards in the browser history, if possible.
   void back() {
-    post('back');
+    _resolver.post('back');
   }
 
   /// Refresh the current page.
   void refresh() {
-    post('refresh');
+    _resolver.post('refresh');
   }
 
   @override
-  String toString() => '$driver.navigate';
+  String toString() => '$_driver.navigate';
 
   @override
-  int get hashCode => driver.hashCode;
+  int get hashCode => _driver.hashCode;
 
   @override
-  bool operator ==(other) => other is Navigation && other.driver == driver;
+  bool operator ==(other) => other is Navigation && other._driver == _driver;
 }

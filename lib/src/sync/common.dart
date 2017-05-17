@@ -19,10 +19,11 @@ const String elementStr = 'ELEMENT';
 
 /// Simple class to provide access to indexed properties such as WebElement
 /// attributes or css styles.
-class Attributes extends WebDriverBase {
-  Attributes(driver, command) : super(driver, command);
+class Attributes  {
+  final WebDriverBase _resolver;
+  Attributes(driver, command) : _resolver = new WebDriverBase(driver, command);
 
-  String operator [](String name) => get(name) as String;
+  String operator [](String name) => _resolver.get(name) as String;
 }
 
 abstract class SearchContext {
@@ -37,7 +38,7 @@ abstract class SearchContext {
   WebElement findElement(By by);
 }
 
-abstract class WebDriverBase {
+class WebDriverBase {
   final String prefix;
   final WebDriver driver;
 

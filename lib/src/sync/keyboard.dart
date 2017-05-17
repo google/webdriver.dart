@@ -13,8 +13,9 @@
 // limitations under the License.
 
 import 'common.dart';
+import 'web_driver.dart';
 
-class Keyboard extends WebDriverBase {
+class Keyboard {
   static const String nullChar = '\uE000';
   static const String cancel = '\uE001';
   static const String help = '\uE002';
@@ -72,7 +73,10 @@ class Keyboard extends WebDriverBase {
   static const String command = '\uE03D';
   static const String meta = command;
 
-  Keyboard(driver) : super(driver, '');
+  final WebDriver _driver;
+  final WebDriverBase _resolver;
+
+  Keyboard(this._driver) : _resolver = new WebDriverBase(_driver, '');
 
   /// Simulate pressing many keys at once as a 'chord'.
   void sendChord(Iterable<String> chordToSend) {
@@ -92,17 +96,17 @@ class Keyboard extends WebDriverBase {
 
   /// Send [keysToSend] to the active element.
   void sendKeys(String keysToSend) {
-    post('keys', {
+    _resolver.post('keys', {
       'value': [keysToSend]
     });
   }
 
   @override
-  String toString() => '$driver.keyboard';
+  String toString() => '$_driver.keyboard';
 
   @override
-  int get hashCode => driver.hashCode;
+  int get hashCode => _driver.hashCode;
 
   @override
-  bool operator ==(other) => other is Keyboard && other.driver == driver;
+  bool operator ==(other) => other is Keyboard && other._driver == _driver;
 }

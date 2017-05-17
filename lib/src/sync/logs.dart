@@ -13,23 +13,27 @@
 // limitations under the License.
 
 import 'common.dart';
+import 'web_driver.dart';
 
-class Logs extends WebDriverBase {
-  Logs(driver) : super(driver, 'log');
+class Logs {
+  final WebDriver _driver;
+  final WebDriverBase _resolver;
+
+  Logs(this._driver) : _resolver = new WebDriverBase(_driver, 'log');
 
   List<LogEntry> get(String logType) {
-    var entries = post('', {'type': logType}) as List<Map>;
+    var entries = _resolver.post('', {'type': logType}) as List<Map>;
     return entries.map((e) => new LogEntry.fromMap(e)).toList();
   }
 
   @override
-  String toString() => '$driver.logs';
+  String toString() => '$_driver.logs';
 
   @override
-  int get hashCode => driver.hashCode;
+  int get hashCode => _driver.hashCode;
 
   @override
-  bool operator ==(other) => other is Logs && other.driver == driver;
+  bool operator ==(other) => other is Logs && other._driver == _driver;
 }
 
 class LogEntry {

@@ -13,39 +13,43 @@
 // limitations under the License.
 
 import 'common.dart';
+import 'web_driver.dart';
 
-class Cookies extends WebDriverBase {
-  Cookies(driver) : super(driver, 'cookie');
+class Cookies {
+  final WebDriver _driver;
+  final WebDriverBase _resolver;
+
+  Cookies(this._driver) : _resolver = new WebDriverBase(_driver, 'cookie');
 
   /// Set a cookie.
   void add(Cookie cookie) {
-    post('', {'cookie': cookie});
+    _resolver.post('', {'cookie': cookie});
   }
 
   /// Delete the cookie with the given [name].
   void delete(String name) {
-    super.delete('$name');
+    _resolver.delete('$name');
   }
 
   /// Delete all cookies visible to the current page.
   void deleteAll() {
-    super.delete('');
+    _resolver.delete('');
   }
 
   /// Retrieve all cookies visible to the current page.
   List<Cookie> get all {
-    var cookies = get('') as List<Map<String, dynamic>>;
+    var cookies = _resolver.get('') as List<Map<String, dynamic>>;
     return cookies.map((c) => new Cookie.fromJson(c)).toList();
   }
 
   @override
-  String toString() => '$driver.cookies';
+  String toString() => '$_driver.cookies';
 
   @override
-  int get hashCode => driver.hashCode;
+  int get hashCode => _driver.hashCode;
 
   @override
-  bool operator ==(other) => other is Cookies && other.driver == driver;
+  bool operator ==(other) => other is Cookies && other._driver == _driver;
 }
 
 class Cookie {
@@ -105,11 +109,14 @@ class Cookie {
   String toString() => 'Cookie${toJson()}';
 }
 
-class Timeouts extends WebDriverBase {
-  Timeouts(driver) : super(driver, 'timeouts');
+class Timeouts {
+  final WebDriver _driver;
+  final WebDriverBase _resolver;
+
+  Timeouts(this._driver) : _resolver = new WebDriverBase(_driver, 'timeouts');
 
   void _set(String type, Duration duration) {
-    post('', {'type': type, 'ms': duration.inMilliseconds});
+    _resolver.post('', {'type': type, 'ms': duration.inMilliseconds});
   }
 
   /// Set the script timeout.
@@ -122,11 +129,11 @@ class Timeouts extends WebDriverBase {
   void setPageLoadTimeout(Duration duration) => _set('page load', duration);
 
   @override
-  String toString() => '$driver.timeouts';
+  String toString() => '$_driver.timeouts';
 
   @override
-  int get hashCode => driver.hashCode;
+  int get hashCode => _driver.hashCode;
 
   @override
-  bool operator ==(other) => other is Timeouts && other.driver == driver;
+  bool operator ==(other) => other is Timeouts && other._driver == _driver;
 }

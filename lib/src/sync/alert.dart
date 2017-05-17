@@ -13,20 +13,23 @@
 // limitations under the License.
 
 import 'common.dart';
+import 'web_driver.dart';
 
 /// A JavaScript alert(), confirm(), or prompt() dialog
-class Alert extends WebDriverBase {
+class Alert {
   /// The text of the JavaScript alert(), confirm(), or prompt() dialog.
   final String text;
+  final WebDriver _driver;
+  final WebDriverBase _resolver;
 
-  Alert(this.text, driver) : super(driver, '');
+  Alert(this.text, this._driver) : _resolver = new WebDriverBase(_driver, '');
 
   /// Accepts the currently displayed alert (may not be the alert for which this
   /// object was created).
   ///
   ///  Throws [NoSuchAlertException] if there isn't currently an alert.
   void accept() {
-    post('accept_alert');
+    _resolver.post('accept_alert');
   }
 
   /// Dismisses the currently displayed alert (may not be the alert for which
@@ -34,7 +37,7 @@ class Alert extends WebDriverBase {
   ///
   ///  Throws [NoSuchAlertException] if there isn't currently an alert.
   void dismiss() {
-    post('dismiss_alert');
+    _resolver.post('dismiss_alert');
   }
 
   /// Sends keys to the currently displayed alert (may not be the alert for
@@ -42,9 +45,9 @@ class Alert extends WebDriverBase {
   ///
   /// Throws [NoSuchAlertException] if there isn't currently an alert
   void sendKeys(String keysToSend) {
-    post('alert_text', {'text': keysToSend});
+    _resolver.post('alert_text', {'text': keysToSend});
   }
 
   @override
-  String toString() => '$driver.switchTo.alert[$text]';
+  String toString() => '$_driver.switchTo.alert[$text]';
 }

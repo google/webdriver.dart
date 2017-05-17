@@ -12,53 +12,57 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import 'common.dart';
 import 'dart:math' show Point, Rectangle;
 
-class Window extends WebDriverBase {
+import 'common.dart';
+import 'web_driver.dart';
+
+class Window {
+  final WebDriver _driver;
+  final WebDriverBase _resolver;
+
   final String handle;
 
-  Window(driver, handle)
-      : this.handle = handle,
-        super(driver, 'window/$handle');
+  Window(this._driver, this.handle) :
+        _resolver = new WebDriverBase(_driver, 'window/$handle');
 
   /// The size of this window.
   Rectangle<int> get size {
-    var size = get('size');
+    var size = _resolver.get('size');
     return new Rectangle<int>(
         0, 0, size['width'].toInt(), size['height'].toInt());
   }
 
   /// The location of this window.
   Point<int> get location {
-    var point = get('position');
+    var point = _resolver.get('position');
     return new Point<int>(point['x'].toInt(), point['y'].toInt());
   }
 
   /// Maximize this window.
   void maximize() {
-    post('maximize');
+    _resolver.post('maximize');
   }
 
   /// Set this window size.
   void setSize(Rectangle<int> size) {
-    post('size', {'width': size.width.toInt(), 'height': size.height.toInt()});
+    _resolver.post('size', {'width': size.width.toInt(), 'height': size.height.toInt()});
   }
 
   /// Set this window location.
   void setLocation(Point<int> point) {
-    post('position', {'x': point.x.toInt(), 'y': point.y.toInt()});
+    _resolver.post('position', {'x': point.x.toInt(), 'y': point.y.toInt()});
   }
 
   @override
-  int get hashCode => handle.hashCode * 3 + driver.hashCode;
+  int get hashCode => handle.hashCode * 3 + _driver.hashCode;
 
   @override
   bool operator ==(other) =>
       other is Window &&
-      other.driver == this.driver &&
+      other._driver == this._driver &&
       other.handle == this.handle;
 
   @override
-  String toString() => '$driver.windows[$handle]';
+  String toString() => '$_driver.windows[$handle]';
 }

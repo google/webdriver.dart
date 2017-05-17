@@ -12,12 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import 'common.dart';
-import 'window.dart';
 import 'alert.dart';
+import 'common.dart';
+import 'web_driver.dart';
+import 'window.dart';
 
-class TargetLocator extends WebDriverBase {
-  TargetLocator(driver) : super(driver, '');
+class TargetLocator {
+  final WebDriver _driver;
+  final WebDriverBase _resolver;
+
+  TargetLocator(this._driver) : _resolver = new WebDriverBase(_driver, '');
 
   /// Change focus to another frame on the page.
   /// If [frame] is a:
@@ -30,7 +34,7 @@ class TargetLocator extends WebDriverBase {
   ///
   ///   Throws [NoSuchFrameException] if the specified frame can't be found.
   void frame([frame]) {
-    post('frame', {'id': frame});
+    _resolver.post('frame', {'id': frame});
   }
 
   /// Switch the focus of void commands for this driver to the window with the
@@ -39,9 +43,9 @@ class TargetLocator extends WebDriverBase {
   /// Throws [NoSuchWindowException] if the specified window can't be found.
   void window(dynamic window) {
     if (window is Window) {
-      post('window', {'name': window.handle});
+      _resolver.post('window', {'name': window.handle});
     } else if (window is String) {
-      post('window', {'name': window});
+      _resolver.post('window', {'name': window});
     } else {
       throw 'Unsupported type: ${window.runtimeType}';
     }
@@ -52,16 +56,16 @@ class TargetLocator extends WebDriverBase {
   ///
   /// Throws [NoSuchAlertException] if there is not currently an alert.
   Alert get alert {
-    var text = get('alert_text');
-    return new Alert(text, driver);
+    var text = _resolver.get('alert_text');
+    return new Alert(text, _driver);
   }
 
   @override
-  String toString() => '$driver.switchTo';
+  String toString() => '$_driver.switchTo';
 
   @override
-  int get hashCode => driver.hashCode;
+  int get hashCode => _driver.hashCode;
 
   @override
-  bool operator ==(other) => other is TargetLocator && other.driver == driver;
+  bool operator ==(other) => other is TargetLocator && other._driver == _driver;
 }
