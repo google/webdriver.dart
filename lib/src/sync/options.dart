@@ -24,12 +24,12 @@ class Cookies extends WebDriverBase {
 
   /// Delete the cookie with the given [name].
   void delete(String name) {
-    delete('$name');
+    super.delete('$name');
   }
 
   /// Delete all cookies visible to the current page.
   void deleteAll() {
-    delete('');
+    super.delete('');
   }
 
   /// Retrieve all cookies visible to the current page.
