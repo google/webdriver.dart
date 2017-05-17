@@ -39,9 +39,9 @@ class MouseButton {
 
 class Mouse {
   final WebDriver _driver;
-  final WebDriverBase _resolver;
+  final Resolver _resolver;
 
-  Mouse(this._driver) : _resolver = new WebDriverBase(_driver, '');
+  Mouse(this._driver) : _resolver = new Resolver(_driver, '');
 
   /// Click any mouse button (at the coordinates set by the last moveTo).
   void click([MouseButton button]) {

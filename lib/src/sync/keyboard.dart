@@ -74,9 +74,9 @@ class Keyboard {
   static const String meta = command;
 
   final WebDriver _driver;
-  final WebDriverBase _resolver;
+  final Resolver _resolver;
 
-  Keyboard(this._driver) : _resolver = new WebDriverBase(_driver, '');
+  Keyboard(this._driver) : _resolver = new Resolver(_driver, '');
 
   /// Simulate pressing many keys at once as a 'chord'.
   void sendChord(Iterable<String> chordToSend) {

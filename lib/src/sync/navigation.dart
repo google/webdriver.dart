@@ -17,9 +17,9 @@ import 'web_driver.dart';
 
 class Navigation {
   final WebDriver _driver;
-  final WebDriverBase _resolver;
+  final Resolver _resolver;
 
-  Navigation(this._driver) : _resolver = new WebDriverBase(_driver, '');
+  Navigation(this._driver) : _resolver = new Resolver(_driver, '');
 
   ///  Navigate forwards in the browser history, if possible.
   void forward() {

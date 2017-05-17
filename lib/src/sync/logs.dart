@@ -17,9 +17,9 @@ import 'web_driver.dart';
 
 class Logs {
   final WebDriver _driver;
-  final WebDriverBase _resolver;
+  final Resolver _resolver;
 
-  Logs(this._driver) : _resolver = new WebDriverBase(_driver, 'log');
+  Logs(this._driver) : _resolver = new Resolver(_driver, 'log');
 
   List<LogEntry> get(String logType) {
     var entries = _resolver.post('', {'type': logType}) as List<Map>;

@@ -19,9 +19,9 @@ import 'window.dart';
 
 class TargetLocator {
   final WebDriver _driver;
-  final WebDriverBase _resolver;
+  final Resolver _resolver;
 
-  TargetLocator(this._driver) : _resolver = new WebDriverBase(_driver, '');
+  TargetLocator(this._driver) : _resolver = new Resolver(_driver, '');
 
   /// Change focus to another frame on the page.
   /// If [frame] is a:

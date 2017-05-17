@@ -19,12 +19,12 @@ import 'web_driver.dart';
 
 class Window {
   final WebDriver _driver;
-  final WebDriverBase _resolver;
+  final Resolver _resolver;
 
   final String handle;
 
   Window(this._driver, this.handle) :
-        _resolver = new WebDriverBase(_driver, 'window/$handle');
+        _resolver = new Resolver(_driver, 'window/$handle');
 
   /// The size of this window.
   Rectangle<int> get size {

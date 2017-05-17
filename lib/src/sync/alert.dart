@@ -20,9 +20,9 @@ class Alert {
   /// The text of the JavaScript alert(), confirm(), or prompt() dialog.
   final String text;
   final WebDriver _driver;
-  final WebDriverBase _resolver;
+  final Resolver _resolver;
 
-  Alert(this.text, this._driver) : _resolver = new WebDriverBase(_driver, '');
+  Alert(this.text, this._driver) : _resolver = new Resolver(_driver, '');
 
   /// Accepts the currently displayed alert (may not be the alert for which this
   /// object was created).

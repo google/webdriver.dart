@@ -17,9 +17,9 @@ import 'web_driver.dart';
 
 class Cookies {
   final WebDriver _driver;
-  final WebDriverBase _resolver;
+  final Resolver _resolver;
 
-  Cookies(this._driver) : _resolver = new WebDriverBase(_driver, 'cookie');
+  Cookies(this._driver) : _resolver = new Resolver(_driver, 'cookie');
 
   /// Set a cookie.
   void add(Cookie cookie) {
@@ -111,9 +111,9 @@ class Cookie {
 
 class Timeouts {
   final WebDriver _driver;
-  final WebDriverBase _resolver;
+  final Resolver _resolver;
 
-  Timeouts(this._driver) : _resolver = new WebDriverBase(_driver, 'timeouts');
+  Timeouts(this._driver) : _resolver = new Resolver(_driver, 'timeouts');
 
   void _set(String type, Duration duration) {
     _resolver.post('', {'type': type, 'ms': duration.inMilliseconds});

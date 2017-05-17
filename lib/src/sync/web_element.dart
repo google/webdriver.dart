@@ -19,7 +19,7 @@ import 'web_driver.dart';
 
 class WebElement implements SearchContext {
   final String _elementPrefix;
-  final WebDriverBase _resolver;
+  final Resolver _resolver;
 
   final String id;
 
@@ -38,7 +38,7 @@ class WebElement implements SearchContext {
   WebElement(this.driver, id, [this.context, this.locator, this.index])
       : this.id = id,
         _elementPrefix = 'element/$id',
-        _resolver = new WebDriverBase(driver, 'element/$id');
+        _resolver = new Resolver(driver, 'element/$id');
 
   /// Click on this element.
   void click() {
