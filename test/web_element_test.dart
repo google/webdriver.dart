@@ -19,6 +19,7 @@ import 'package:test/test.dart';
 import 'package:webdriver/sync_core.dart';
 
 import 'sync_io_config.dart' as config;
+
 void main() {
   group('WebElement', () {
     WebDriver driver;
@@ -36,12 +37,11 @@ void main() {
       table = driver.findElement(const By.tagName('table'));
       button = driver.findElement(const By.tagName('button'));
       form = driver.findElement(const By.tagName('form'));
-      textInput =
-          driver.findElement(const By.cssSelector('input[type=text]'));
-      checkbox = driver
-          .findElement(const By.cssSelector('input[type=checkbox]'));
-      disabled = driver
-          .findElement(const By.cssSelector('input[type=password]'));
+      textInput = driver.findElement(const By.cssSelector('input[type=text]'));
+      checkbox =
+          driver.findElement(const By.cssSelector('input[type=checkbox]'));
+      disabled =
+          driver.findElement(const By.cssSelector('input[type=password]'));
       invisible = driver.findElement(const By.tagName('div'));
     });
 
@@ -150,9 +150,8 @@ void main() {
     });
 
     test('findElements -- 1 found', () {
-      var elements = form
-          .findElements(const By.cssSelector('input[type=text]'))
-          .toList();
+      var elements =
+          form.findElements(const By.cssSelector('input[type=text]')).toList();
       expect(elements, hasLength(1));
       expect(elements, everyElement(config.isSyncWebElement));
     });
@@ -177,8 +176,7 @@ void main() {
 
     test('cssProperties', () {
       expect(invisible.cssProperties['display'], 'none');
-      expect(invisible.cssProperties['background-color'],
-          'rgba(255, 0, 0, 1)');
+      expect(invisible.cssProperties['background-color'], 'rgba(255, 0, 0, 1)');
       expect(invisible.cssProperties['direction'], 'ltr');
     });
 

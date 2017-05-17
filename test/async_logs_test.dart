@@ -29,7 +29,8 @@ void main() {
         Capabilities.loggingPrefs: {LogType.performance: LogLevel.info}
       };
 
-      driver = await config.createTestDriver(additionalCapabilities: capabilities);
+      driver =
+          await config.createTestDriver(additionalCapabilities: capabilities);
       await driver.get(config.testPagePath);
     });
 

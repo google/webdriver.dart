@@ -96,7 +96,8 @@ class WebElement extends WebDriverBase implements SearchContext {
     int i = 0;
     final webElements = new List<WebElement>();
     for (var element in elements) {
-      webElements.add(new WebElement(driver, element[elementStr], this, by, i++));
+      webElements
+          .add(new WebElement(driver, element[elementStr], this, by, i++));
     }
     return webElements;
   }
@@ -114,8 +115,7 @@ class WebElement extends WebDriverBase implements SearchContext {
 
   /// Does this element represent the same element as another element?
   /// Not the same as ==
-  bool equals(WebElement other) =>
-      get('equals/${other.id}') as bool;
+  bool equals(WebElement other) => get('equals/${other.id}') as bool;
 
   Map<String, String> toJson() => {elementStr: id};
 

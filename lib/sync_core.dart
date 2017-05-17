@@ -17,7 +17,8 @@ library webdriver.sync_core;
 import 'dart:collection' show UnmodifiableMapView;
 
 import 'package:webdriver/src/sync/capabilities.dart' show Capabilities;
-import 'package:webdriver/src/sync/command_processor.dart' show CommandProcessor;
+import 'package:webdriver/src/sync/command_processor.dart'
+    show CommandProcessor;
 import 'package:webdriver/src/sync/web_driver.dart' show WebDriver;
 
 export 'package:webdriver/src/sync/alert.dart';
@@ -39,7 +40,7 @@ export 'package:webdriver/src/sync/window.dart';
 final Uri defaultUri = Uri.parse('http://127.0.0.1:4444/wd/hub/');
 
 WebDriver createDriver(CommandProcessor processor,
-    {Uri uri, Map<String, dynamic> desired})  {
+    {Uri uri, Map<String, dynamic> desired}) {
   if (uri == null) {
     uri = defaultUri;
   }
@@ -55,15 +56,14 @@ WebDriver createDriver(CommandProcessor processor,
       new UnmodifiableMapView(response['value'] as Map<String, dynamic>));
 }
 
-WebDriver fromExistingSession(
-    CommandProcessor processor, String sessionId,
+WebDriver fromExistingSession(CommandProcessor processor, String sessionId,
     {Uri uri}) {
   if (uri == null) {
     uri = defaultUri;
   }
 
-  var response = processor.get(uri.resolve('session/$sessionId'))
-      as Map<String, dynamic>;
+  var response =
+      processor.get(uri.resolve('session/$sessionId')) as Map<String, dynamic>;
   return new WebDriver(
       processor, uri, sessionId, new UnmodifiableMapView(response));
 }

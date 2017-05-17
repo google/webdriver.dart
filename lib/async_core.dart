@@ -21,7 +21,8 @@ import 'dart:math' show Point, Rectangle;
 
 import 'package:stack_trace/stack_trace.dart' show Chain;
 
-import 'package:webdriver/src/async/command_processor.dart' show CommandProcessor;
+import 'package:webdriver/src/async/command_processor.dart'
+    show CommandProcessor;
 import 'package:webdriver/src/async/stepper.dart' show Stepper;
 
 export 'package:webdriver/src/async/exception.dart';

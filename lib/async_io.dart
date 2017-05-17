@@ -18,15 +18,16 @@ import 'dart:async' show Future;
 import 'dart:convert' show JSON, UTF8;
 import 'dart:io'
     show
-    ContentType,
-    HttpClient,
-    HttpClientRequest,
-    HttpClientResponse,
-    HttpHeaders;
+        ContentType,
+        HttpClient,
+        HttpClientRequest,
+        HttpClientResponse,
+        HttpHeaders;
 
 import 'package:webdriver/core.dart' as core
     show createDriver, fromExistingSession, WebDriver;
-import 'package:webdriver/src/async/command_processor.dart' show CommandProcessor;
+import 'package:webdriver/src/async/command_processor.dart'
+    show CommandProcessor;
 import 'package:webdriver/src/async/exception.dart' show WebDriverException;
 import 'package:webdriver/support/async.dart' show Lock;
 
@@ -49,7 +50,7 @@ Future<core.WebDriver> fromExistingSession(String sessionId, {Uri uri}) =>
     core.fromExistingSession(new IOCommandProcessor(), sessionId, uri: uri);
 
 final ContentType _contentTypeJson =
-new ContentType("application", "json", charset: "utf-8");
+    new ContentType("application", "json", charset: "utf-8");
 
 class IOCommandProcessor implements CommandProcessor {
   final HttpClient client = new HttpClient();

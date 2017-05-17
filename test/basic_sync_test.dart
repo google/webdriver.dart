@@ -27,23 +27,23 @@ void main() {
       driver = config.createTestDriver();
     });
 
-    tearDown(()  {
+    tearDown(() {
       if (driver != null) {
-         driver.quit();
+        driver.quit();
       }
       driver = null;
     });
 
-    test('can do basic post', ()  {
-       driver.get(config.testPagePath); // This is POST to WebDriver.
+    test('can do basic post', () {
+      driver.get(config.testPagePath); // This is POST to WebDriver.
     });
 
-    test('can do basic get', ()  {
-       driver.title; // This is a GET request.
+    test('can do basic get', () {
+      driver.title; // This is a GET request.
     });
 
-    test('can do basic delete', ()  {
-       driver.close(); // This is a DELETE request.
+    test('can do basic delete', () {
+      driver.close(); // This is a DELETE request.
     });
   });
 }

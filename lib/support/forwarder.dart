@@ -19,7 +19,8 @@ import 'dart:convert' show JSON, UTF8;
 import 'dart:io' show ContentType, Directory, File, HttpRequest, HttpStatus;
 
 import 'package:path/path.dart' as path;
-import 'package:webdriver/async_core.dart' show By, WebDriver, WebDriverException;
+import 'package:webdriver/async_core.dart'
+    show By, WebDriver, WebDriverException;
 
 final _contentTypeJson =
     new ContentType('application', 'json', charset: 'utf-8');

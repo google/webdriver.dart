@@ -30,7 +30,7 @@ class TargetLocator extends WebDriverBase {
   ///
   ///   Throws [NoSuchFrameException] if the specified frame can't be found.
   void frame([frame]) {
-     post('frame', {'id': frame});
+    post('frame', {'id': frame});
   }
 
   /// Switch the focus of void commands for this driver to the window with the
@@ -39,9 +39,9 @@ class TargetLocator extends WebDriverBase {
   /// Throws [NoSuchWindowException] if the specified window can't be found.
   void window(dynamic window) {
     if (window is Window) {
-       post('window', {'name': window.handle});
+      post('window', {'name': window.handle});
     } else if (window is String) {
-       post('window', {'name': window});
+      post('window', {'name': window});
     } else {
       throw 'Unsupported type: ${window.runtimeType}';
     }
@@ -52,7 +52,7 @@ class TargetLocator extends WebDriverBase {
   ///
   /// Throws [NoSuchAlertException] if there is not currently an alert.
   Alert get alert {
-    var text =  get('alert_text');
+    var text = get('alert_text');
     return new Alert(text, driver);
   }
 

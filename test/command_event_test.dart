@@ -31,7 +31,7 @@ void main() {
       driver = config.createTestDriver();
       driver.addEventListener(events.add);
       driver.get(config.testPagePath);
-});
+    });
 
     tearDown(() {
       events.clear();

@@ -47,4 +47,3 @@ Future<WebDriver> createTestDriver(
 
   return createDriver(desired: capabilities);
 }
-

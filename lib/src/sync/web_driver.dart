@@ -146,8 +146,7 @@ class WebDriver implements SearchContext {
 
   /// Take a screenshot of the current page as PNG and return it as
   /// base64-encoded string.
-  String captureScreenshotAsBase64() =>
-      getRequest('screenshot');
+  String captureScreenshotAsBase64() => getRequest('screenshot');
 
   /// Take a screenshot of the current page as PNG as list of uint8.
   List<int> captureScreenshotAsList() {
@@ -173,8 +172,8 @@ class WebDriver implements SearchContext {
   /// Arguments may be any JSON-able object. WebElements will be converted to
   /// the corresponding DOM element. Likewise, any DOM Elements in the script
   /// result will be converted to WebElements.
-  dynamic executeAsync(String script, List args) =>
-      _recursiveElementify(postRequest('execute_async', {'script': script, 'args': args}));
+  dynamic executeAsync(String script, List args) => _recursiveElementify(
+      postRequest('execute_async', {'script': script, 'args': args}));
 
   /// Inject a snippet of JavaScript into the page for execution in the context
   /// of the currently selected frame. The executed script is assumed to be
@@ -188,8 +187,8 @@ class WebDriver implements SearchContext {
   /// Arguments may be any JSON-able object. WebElements will be converted to
   /// the corresponding DOM element. Likewise, any DOM Elements in the script
   /// result will be converted to WebElements.
-  dynamic execute(String script, List args) =>
-      _recursiveElementify(postRequest('execute', {'script': script, 'args': args}));
+  dynamic execute(String script, List args) => _recursiveElementify(
+      postRequest('execute', {'script': script, 'args': args}));
 
   dynamic _recursiveElementify(result) {
     if (result is Map) {
@@ -234,8 +233,7 @@ class WebDriver implements SearchContext {
   // Performs the request. This will not notify any listeners or
   // onCommandController. This should only be called from
   // _performRequestWithLog.
-  dynamic _performRequest(
-      Function fn, String method, String command, params) {
+  dynamic _performRequest(Function fn, String method, String command, params) {
     var startTime = new DateTime.now();
     var trace = new Chain.current();
     if (filterStackTraces) {
@@ -246,8 +244,8 @@ class WebDriver implements SearchContext {
     var result;
     var exception;
     try {
-        result = fn();
-        return result;
+      result = fn();
+      return result;
     } catch (e) {
       exception = e;
       rethrow;

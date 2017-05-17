@@ -94,8 +94,7 @@ class By {
   const By.className(String className) : this('class name', className);
 
   /// Returns an element matching a CSS selector.
-  const By.cssSelector(String cssSelector)
-      : this('css selector', cssSelector);
+  const By.cssSelector(String cssSelector) : this('css selector', cssSelector);
 
   Map<String, String> toJson() => {'using': _using, 'value': _value};
 

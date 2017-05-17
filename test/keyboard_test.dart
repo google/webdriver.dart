@@ -37,8 +37,7 @@ void main() {
 
       driver = config.createTestDriver();
       driver.get(config.testPagePath);
-      textInput =
-          driver.findElement(const By.cssSelector('input[type=text]'));
+      textInput = driver.findElement(const By.cssSelector('input[type=text]'));
       textInput.click();
     });
 

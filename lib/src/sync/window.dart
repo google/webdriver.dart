@@ -42,8 +42,7 @@ class Window extends WebDriverBase {
 
   /// Set this window size.
   void setSize(Rectangle<int> size) {
-    post(
-        'size', {'width': size.width.toInt(), 'height': size.height.toInt()});
+    post('size', {'width': size.width.toInt(), 'height': size.height.toInt()});
   }
 
   /// Set this window location.
