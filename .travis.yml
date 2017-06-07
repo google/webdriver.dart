@@ -22,7 +22,7 @@ before_install:
 before_script:
 # We use a slightly older version of chromedriver; the newer ones require a later
 # version of chromium than is available on travis by default.
-  - wget http://chromedriver.storage.googleapis.com/2.12/chromedriver_linux64.zip
+  - wget http://chromedriver.storage.googleapis.com/2.29/chromedriver_linux64.zip
   - unzip chromedriver_linux64.zip
   - export PATH=$PATH:$PWD
   - ./tool/travis-setup.sh

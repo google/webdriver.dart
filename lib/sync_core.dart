@@ -37,7 +37,7 @@ export 'package:webdriver/src/sync/web_driver.dart';
 export 'package:webdriver/src/sync/web_element.dart';
 export 'package:webdriver/src/sync/window.dart';
 
-final Uri defaultUri = Uri.parse('http://127.0.0.1:4444/wd/hub/');
+final Uri defaultUri = Uri.parse('http://127.0.0.1:4444/');
 
 WebDriver createDriver(CommandProcessor processor,
     {Uri uri, Map<String, dynamic> desired}) {
