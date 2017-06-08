@@ -25,6 +25,7 @@ import 'json_wire_spec/mouse.dart';
 import 'common_spec/navigation.dart';
 import 'common_spec/cookies.dart';
 import 'json_wire_spec/timeouts.dart';
+import 'json_wire_spec/web_element.dart';
 import 'timeouts.dart';
 import 'target_locator.dart';
 import 'window.dart';
@@ -78,7 +79,7 @@ class WebDriver implements SearchContext {
 
     final webElements = new List<WebElement>();
     for (var element in elements) {
-      webElements.add(new WebElement(this, element[elementStr], this, by, i++));
+      webElements.add(new JsonWireWebElement(this, element[elementStr], this, by, i++));
     }
     return webElements;
   }
@@ -88,7 +89,7 @@ class WebDriver implements SearchContext {
   @override
   WebElement findElement(By by) {
     var element = postRequest('element', by);
-    return new WebElement(this, element[elementStr], this, by);
+    return new JsonWireWebElement(this, element[elementStr], this, by);
   }
 
   /// An artist's rendition of the current page's source.
@@ -127,7 +128,7 @@ class WebDriver implements SearchContext {
   WebElement get activeElement {
     var element = postRequest('element/active');
     if (element != null) {
-      return new WebElement(this, element[elementStr], this, 'activeElement');
+      return new JsonWireWebElement(this, element[elementStr], this, 'activeElement');
     }
     return null;
   }
@@ -195,7 +196,7 @@ class WebDriver implements SearchContext {
   dynamic _recursiveElementify(result) {
     if (result is Map) {
       if (result.length == 1 && result.containsKey(elementStr)) {
-        return new WebElement(this, result[elementStr], this, 'javascript');
+        return new JsonWireWebElement(this, result[elementStr], this, 'javascript');
       } else {
         var newResult = {};
         result.forEach((key, value) {
