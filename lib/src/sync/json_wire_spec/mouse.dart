@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import 'common.dart';
-import 'web_driver.dart';
-import 'web_element.dart';
+import '../common.dart';
+import '../web_driver.dart';
+import '../web_element.dart';
 
 class MouseButton {
   /// The primary button is usually the left button or the only button on
