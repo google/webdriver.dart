@@ -28,7 +28,7 @@ chromedriver --port=4444 --url-base=wd/hub &
 PID=$!
 
 # Run tests.
-pub run test -r expanded -p vm,content-shell -j 1
+pub run test -r expanded -p vm -j 1
 TEST_STATUS=$?
 if [[ $TEST_STATUS -ne 0 ]]; then
   STATUS=$TEST_STATUS

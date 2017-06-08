@@ -14,7 +14,7 @@ dart:
   - dev
   - stable
 
-with_content_shell: true
+with_content_shell: false
 
 matrix:
   allow_failures:
