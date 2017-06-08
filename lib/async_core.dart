@@ -41,7 +41,7 @@ part 'package:webdriver/src/async/web_driver.dart';
 part 'package:webdriver/src/async/web_element.dart';
 part 'package:webdriver/src/async/window.dart';
 
-final Uri defaultUri = Uri.parse('http://127.0.0.1:4444/');
+final Uri defaultUri = Uri.parse('http://127.0.0.1:4444/wd/hub/');
 
 Future<WebDriver> createDriver(CommandProcessor processor,
     {Uri uri, Map<String, dynamic> desired}) async {
