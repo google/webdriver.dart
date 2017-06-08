@@ -26,6 +26,7 @@ import 'common_spec/navigation.dart';
 import 'common_spec/cookies.dart';
 import 'json_wire_spec/timeouts.dart';
 import 'json_wire_spec/web_element.dart';
+import 'json_wire_spec/window.dart';
 import 'timeouts.dart';
 import 'target_locator.dart';
 import 'window.dart';
@@ -112,16 +113,10 @@ class WebDriver implements SearchContext {
   }
 
   /// Handles for all of the currently displayed tabs/windows.
-  List<Window> get windows {
-    var handles = getRequest('window_handles') as List<String>;
-    return handles.map((h) => new Window(this, h)).toList();
-  }
+  List<Window> get windows => new JsonWireWindows(this).allWindows;
 
   /// Handle for the active tab/window.
-  Window get window {
-    var handle = getRequest('window_handle');
-    return new Window(this, handle);
-  }
+  Window get window => new JsonWireWindows(this).activeWindow;
 
   /// The currently focused element, or the body element if no element has
   /// focus.

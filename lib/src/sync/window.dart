@@ -17,52 +17,51 @@ import 'dart:math' show Point, Rectangle;
 import 'common.dart';
 import 'web_driver.dart';
 
-class Window {
-  final WebDriver _driver;
-  final Resolver _resolver;
+/// Interacts with windows.
+abstract class Windows {
 
-  final String handle;
+  /// Get the current active window.
+  Window get activeWindow;
 
-  Window(this._driver, this.handle) :
-        _resolver = new Resolver(_driver, 'window/$handle');
+  /// Get all windows.
+  List<Window> get allWindows;
 
-  /// The size of this window.
-  Rectangle<int> get size {
-    var size = _resolver.get('size');
-    return new Rectangle<int>(
-        0, 0, size['width'].toInt(), size['height'].toInt());
-  }
+}
 
-  /// The location of this window.
-  Point<int> get location {
-    var point = _resolver.get('position');
-    return new Point<int>(point['x'].toInt(), point['y'].toInt());
-  }
+/// Handle to window.
+///
+/// Upon use, the window will automatically be set as active.
+abstract class Window {
 
-  /// Maximize this window.
-  void maximize() {
-    _resolver.post('maximize');
-  }
+  /// The size of the window.
+  @Deprecated('JSON wire legacy support, emulated for newer browsers')
+  Rectangle<int> get size;
 
-  /// Set this window size.
-  void setSize(Rectangle<int> size) {
-    _resolver.post('size', {'width': size.width.toInt(), 'height': size.height.toInt()});
-  }
+  /// The location of the window.
+  @Deprecated('JSON wire legacy support, emulated for newer browsers')
+  Point<int> get location;
 
-  /// Set this window location.
-  void setLocation(Point<int> point) {
-    _resolver.post('position', {'x': point.x.toInt(), 'y': point.y.toInt()});
-  }
+  /// The location and size of the window.
+  Rectangle<int> get rect;
 
-  @override
-  int get hashCode => handle.hashCode * 3 + _driver.hashCode;
+  /// The location and size of the window.
+  void set rect(Rectangle<int> location);
 
-  @override
-  bool operator ==(other) =>
-      other is Window &&
-      other._driver == this._driver &&
-      other.handle == this.handle;
+  /// Maximize the window.
+  void maximize();
+
+  /// Set the window size.
+  @Deprecated('JSON wire legacy support, emulated for newer browsers')
+  void setSize(Rectangle<int> size);
+
+  /// Set the window location.
+  @Deprecated('JSON wire legacy support, emulated for newer browsers')
+  void setLocation(Point<int> point);
+
+  /// Sets the window as active.
+  void setAsActive();
 
   @override
-  String toString() => '$_driver.windows[$handle]';
+  bool operator ==(other);
+
 }

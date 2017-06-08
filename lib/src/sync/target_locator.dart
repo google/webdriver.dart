@@ -44,7 +44,7 @@ class TargetLocator {
   /// Throws [NoSuchWindowException] if the specified window can't be found.
   void window(dynamic window) {
     if (window is Window) {
-      _resolver.post('window', {'name': window.handle});
+      window.setAsActive();
     } else if (window is String) {
       _resolver.post('window', {'name': window});
     } else {
