@@ -48,13 +48,9 @@ void main() {
       try {
         await driver.switchTo.alert;
       } catch (e) {}
-      print('handling!!!');
-      print(events);
       await waitFor(() => events, matcher: hasLength(2));
       expect(events[1].method, 'GET');
       expect(events[1].endPoint, contains('alert'));
-      print(events[1].endPoint);
-      print(events[1].exception);
       expect(events[1].exception, new isInstanceOf<WebDriverException>());
       expect(events[1].result, isNull);
       expect(events[1].startTime.isBefore(events[1].endTime), isTrue);
