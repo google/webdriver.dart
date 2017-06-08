@@ -77,13 +77,6 @@ class WebElement implements SearchContext {
     return new Point<int>(point['x'].toInt(), point['y'].toInt());
   }
 
-  /// The size of this element.
-  Rectangle<int> get size {
-    var size = _resolver.get('size');
-    return new Rectangle<int>(
-        0, 0, size['width'].toInt(), size['height'].toInt());
-  }
-
   /// The tag name for this element.
   String get name => _resolver.get('name') as String;
 

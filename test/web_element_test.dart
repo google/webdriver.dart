@@ -109,21 +109,6 @@ void main() {
       expect(location.y, 0);
     });
 
-    test('size -- table', () {
-      var size = table.size;
-      expect(size, config.isRectangle);
-      expect(size.width, isNonNegative);
-      expect(size.height, isNonNegative);
-    });
-
-    test('size -- invisible', () {
-      var size = invisible.size;
-      expect(size, config.isRectangle);
-      // TODO(DrMarcII): I thought these should be 0
-      expect(size.width, isNonNegative);
-      expect(size.height, isNonNegative);
-    });
-
     test('name', () {
       expect(table.name, 'table');
       expect(button.name, 'button');
