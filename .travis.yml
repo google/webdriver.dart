@@ -1,4 +1,5 @@
 language: dart
+xvfb: false
 # This is necessary to use proper Chrome. Travis's version of chromium is from
 # 2014.
 sudo: required
