@@ -22,8 +22,10 @@ import 'exception.dart';
 import 'json_wire_spec/keyboard.dart';
 import 'json_wire_spec/logs.dart';
 import 'json_wire_spec/mouse.dart';
-import 'navigation.dart';
-import 'options.dart';
+import 'common_spec/navigation.dart';
+import 'common_spec/cookies.dart';
+import 'json_wire_spec/timeouts.dart';
+import 'timeouts.dart';
 import 'target_locator.dart';
 import 'window.dart';
 import 'web_element.dart';
@@ -138,7 +140,7 @@ class WebDriver implements SearchContext {
 
   Logs get logs => new Logs(this);
 
-  Timeouts get timeouts => new Timeouts(this);
+  Timeouts get timeouts => new JsonWireTimeouts(this);
 
   Keyboard get keyboard => new Keyboard(this);
 

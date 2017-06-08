@@ -12,9 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import 'common.dart';
-import 'web_driver.dart';
+import '../common.dart';
+import '../web_driver.dart';
 
+/// Browser navigation actions.
 class Navigation {
   final WebDriver _driver;
   final Resolver _resolver;

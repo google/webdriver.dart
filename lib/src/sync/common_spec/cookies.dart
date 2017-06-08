@@ -12,9 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import 'common.dart';
-import 'web_driver.dart';
+import '../common.dart';
+import '../web_driver.dart';
 
+/// Interacts with browser's cookies.
 class Cookies {
   final WebDriver _driver;
   final Resolver _resolver;
@@ -52,6 +53,7 @@ class Cookies {
   bool operator ==(other) => other is Cookies && other._driver == _driver;
 }
 
+/// Browser cookie.
 class Cookie {
   /// The name of the cookie.
   final String name;
@@ -107,33 +109,4 @@ class Cookie {
 
   @override
   String toString() => 'Cookie${toJson()}';
-}
-
-class Timeouts {
-  final WebDriver _driver;
-  final Resolver _resolver;
-
-  Timeouts(this._driver) : _resolver = new Resolver(_driver, 'timeouts');
-
-  void _set(String type, Duration duration) {
-    _resolver.post('', {'type': type, 'ms': duration.inMilliseconds});
-  }
-
-  /// Set the script timeout.
-  void setScriptTimeout(Duration duration) => _set('script', duration);
-
-  /// Set the implicit timeout.
-  void setImplicitTimeout(Duration duration) => _set('implicit', duration);
-
-  /// Set the page load timeout.
-  void setPageLoadTimeout(Duration duration) => _set('page load', duration);
-
-  @override
-  String toString() => '$_driver.timeouts';
-
-  @override
-  int get hashCode => _driver.hashCode;
-
-  @override
-  bool operator ==(other) => other is Timeouts && other._driver == _driver;
 }
