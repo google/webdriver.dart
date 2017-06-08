@@ -27,7 +27,7 @@ export 'package:webdriver/src/sync/command_event.dart';
 export 'package:webdriver/src/sync/command_processor.dart';
 export 'package:webdriver/src/sync/common.dart';
 export 'package:webdriver/src/sync/exception.dart';
-export 'package:webdriver/src/sync/keyboard.dart';
+export 'package:webdriver/src/sync/json_wire_spec/keyboard.dart';
 export 'package:webdriver/src/sync/logs.dart';
 export 'package:webdriver/src/sync/mouse.dart';
 export 'package:webdriver/src/sync/navigation.dart';

@@ -19,7 +19,7 @@ import 'command_event.dart';
 import 'command_processor.dart';
 import 'common.dart';
 import 'exception.dart';
-import 'keyboard.dart';
+import 'package:webdriver/src/sync/json_wire_spec/keyboard.dart';
 import 'logs.dart';
 import 'mouse.dart';
 import 'navigation.dart';

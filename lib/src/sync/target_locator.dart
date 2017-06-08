@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import 'json_wire_spec/alert.dart';
 import 'alert.dart';
 import 'common.dart';
 import 'web_driver.dart';
@@ -57,7 +58,7 @@ class TargetLocator {
   /// Throws [NoSuchAlertException] if there is not currently an alert.
   Alert get alert {
     var text = _resolver.get('alert_text');
-    return new Alert(text, _driver);
+    return new JsonWireAlert(text, _driver);
   }
 
   @override

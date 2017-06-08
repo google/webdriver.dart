@@ -21,6 +21,7 @@ const String elementStr = 'ELEMENT';
 /// attributes or css styles.
 class Attributes  {
   final Resolver _resolver;
+
   Attributes(driver, command) : _resolver = new Resolver(driver, command);
 
   String operator [](String name) => _resolver.get(name) as String;
