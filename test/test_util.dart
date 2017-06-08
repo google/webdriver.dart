@@ -15,10 +15,23 @@
 library webdriver_test_util;
 
 import 'dart:math' show Point, Rectangle;
+import 'dart:io' show FileSystemEntity;
 
 import 'package:matcher/matcher.dart' show isInstanceOf, Matcher;
-import 'package:webdriver/core.dart' show WebElement;
+import 'package:path/path.dart' as path;
+import 'package:webdriver/async_core.dart' as async_core;
+import 'package:webdriver/sync_core.dart' as sync_core;
 
-final Matcher isWebElement = new isInstanceOf<WebElement>();
+final Matcher isWebElement = new isInstanceOf<async_core.WebElement>();
+final Matcher isSyncWebElement = new isInstanceOf<sync_core.WebElement>();
 final Matcher isRectangle = new isInstanceOf<Rectangle<int>>();
 final Matcher isPoint = new isInstanceOf<Point<int>>();
+
+String get testPagePath {
+  String testPagePath = path.absolute('test', 'test_page.html');
+  if (!FileSystemEntity.isFileSync(testPagePath)) {
+    throw new Exception('Could not find the test file at "$testPagePath".'
+        ' Make sure you are running tests from the root of the project.');
+  }
+  return path.toUri(testPagePath).toString();
+}

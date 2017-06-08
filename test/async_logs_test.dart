@@ -13,38 +13,40 @@
 // limitations under the License.
 
 @TestOn("vm")
-library webdriver.navigation_test;
+library webdriver.logs_test;
 
 import 'package:test/test.dart';
-import 'package:webdriver/sync_core.dart';
+import 'package:webdriver/async_core.dart';
 
-import 'sync_io_config.dart' as config;
+import 'io_config.dart' as config;
 
 void main() {
-  group('Navigation', () {
+  group('Logs', () {
     WebDriver driver;
 
-    setUp(() {
-      driver = config.createTestDriver();
-      driver.get(config.testPagePath);
+    setUp(() async {
+      Map<String, dynamic> capabilities = {
+        Capabilities.loggingPrefs: {LogType.performance: LogLevel.info}
+      };
+
+      driver =
+          await config.createTestDriver(additionalCapabilities: capabilities);
+      await driver.get(config.testPagePath);
     });
 
-    tearDown(() {
+    tearDown(() async {
       if (driver != null) {
-        driver.quit();
+        await driver.quit();
       }
       driver = null;
     });
 
-    test('refresh', () {
-      var element = driver.findElement(const By.tagName('button'));
-      driver.navigate.refresh();
-      try {
-        element.name;
-      } on StaleElementReferenceException {
-        return true;
-      }
-      return 'expected StaleElementReferenceException';
+    test('get logs', () async {
+      List<LogEntry> logs = await driver.logs.get(LogType.performance).toList();
+      expect(logs.length, greaterThan(0));
+      logs.forEach((entry) {
+        expect(entry.level, equals(LogLevel.info));
+      });
     });
   }, timeout: new Timeout(new Duration(minutes: 1)));
 }

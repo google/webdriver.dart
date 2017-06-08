@@ -16,31 +16,31 @@
 library webdriver.options_test;
 
 import 'package:test/test.dart';
-import 'package:webdriver/sync_core.dart';
+import 'package:webdriver/async_core.dart';
 
-import 'sync_io_config.dart' as config;
+import 'io_config.dart' as config;
 
 void main() {
   group('Cookies', () {
     WebDriver driver;
 
-    setUp(() {
-      driver = config.createTestDriver();
-      driver.get('http://www.google.com/ncr');
+    setUp(() async {
+      driver = await config.createTestDriver();
+      await driver.get('http://www.google.com/ncr');
     });
 
-    tearDown(() {
+    tearDown(() async {
       if (driver != null) {
-        driver.quit();
+        await driver.quit();
       }
       driver = null;
     });
 
-    test('add simple cookie', () {
-      driver.cookies.add(new Cookie('mycookie', 'myvalue'));
+    test('add simple cookie', () async {
+      await driver.cookies.add(new Cookie('mycookie', 'myvalue'));
 
       bool found = false;
-      for (var cookie in driver.cookies.all) {
+      await for (var cookie in driver.cookies.all) {
         if (cookie.name == 'mycookie') {
           found = true;
           expect(cookie.value, 'myvalue');
@@ -50,12 +50,12 @@ void main() {
       expect(found, isTrue);
     });
 
-    test('add complex cookie', () {
+    test('add complex cookie', () async {
       var date = new DateTime.utc(2020);
-      driver.cookies.add(new Cookie('mycookie', 'myvalue',
+      await driver.cookies.add(new Cookie('mycookie', 'myvalue',
           path: '/', domain: '.google.com', secure: false, expiry: date));
       bool found = false;
-      for (var cookie in driver.cookies.all) {
+      await for (var cookie in driver.cookies.all) {
         if (cookie.name == 'mycookie') {
           found = true;
           expect(cookie.value, 'myvalue');
@@ -66,11 +66,11 @@ void main() {
       expect(found, isTrue);
     });
 
-    test('delete cookie', () {
-      driver.cookies.add(new Cookie('mycookie', 'myvalue'));
-      driver.cookies.delete('mycookie');
+    test('delete cookie', () async {
+      await driver.cookies.add(new Cookie('mycookie', 'myvalue'));
+      await driver.cookies.delete('mycookie');
       bool found = false;
-      for (var cookie in driver.cookies.all) {
+      await for (var cookie in driver.cookies.all) {
         if (cookie.name == 'mycookie') {
           found = true;
           break;
@@ -79,31 +79,31 @@ void main() {
       expect(found, isFalse);
     });
 
-    test('delete all cookies', () {
-      driver.cookies.deleteAll();
-      expect(driver.cookies.all.toList(), isEmpty);
-    }, skip: 'unreliable');
+    test('delete all cookies', () async {
+      await driver.cookies.deleteAll();
+      expect(await driver.cookies.all.toList(), isEmpty);
+    });
   });
 
   group('TimeOuts', () {
     WebDriver driver;
 
-    setUp(() {
-      driver = config.createTestDriver();
+    setUp(() async {
+      driver = await config.createTestDriver();
     });
 
-    tearDown(() {
+    tearDown(() async {
       if (driver != null) {
-        driver.quit();
+        await driver.quit();
       }
       driver = null;
     });
 
     // TODO(DrMarcII): Figure out how to tell if timeouts are correctly set
-    test('set all timeouts', () {
-      driver.timeouts.setScriptTimeout(new Duration(seconds: 5));
-      driver.timeouts.setImplicitTimeout(new Duration(seconds: 1));
-      driver.timeouts.setPageLoadTimeout(new Duration(seconds: 10));
+    test('set all timeouts', () async {
+      await driver.timeouts.setScriptTimeout(new Duration(seconds: 5));
+      await driver.timeouts.setImplicitTimeout(new Duration(seconds: 1));
+      await driver.timeouts.setPageLoadTimeout(new Duration(seconds: 10));
     });
   }, timeout: new Timeout(new Duration(minutes: 1)));
 }

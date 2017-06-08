@@ -11,9 +11,26 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+class WebDriverCommandEvent {
+  final String method;
+  final String endPoint;
+  final params;
+  final StackTrace stackTrace;
+  final DateTime startTime;
+  final DateTime endTime;
+  final exception;
+  final result;
 
-library webdriver.io;
+  WebDriverCommandEvent(
+      {this.method,
+      this.endPoint,
+      this.params,
+      this.startTime,
+      this.endTime,
+      this.exception,
+      this.result,
+      this.stackTrace});
 
-/// Consider this file as deprecated. This exists as an alias to async_io.dart
-/// for backward compatibility.
-export 'package:webdriver/async_io.dart';
+  String toString() => '[$startTime - $endTime] $method $endPoint($params) => '
+      '${exception != null ? exception : result}';
+}

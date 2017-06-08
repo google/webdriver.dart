@@ -15,202 +15,179 @@
 @TestOn("vm")
 library webdriver.web_driver_test;
 
-import 'dart:async';
-
 import 'package:test/test.dart';
-import 'package:webdriver/core.dart';
+import 'package:webdriver/sync_core.dart';
 
-import 'io_config.dart' as config;
-import 'test_util.dart';
+import 'sync_io_config.dart' as config;
 
 void main() {
   group('WebDriver', () {
-    group(
-      'create',
-      () {
-        test('default', () async {
-          WebDriver driver = await config.createTestDriver();
-          await driver.get(config.testPagePath);
-          var element = await driver.findElement(const By.tagName('button'));
-          expect(await element.name, 'button');
-          await driver.quit();
-        });
-      },
-    );
+    group('create', () {
+      test('default', () {
+        WebDriver driver = config.createTestDriver();
+        driver.get(config.testPagePath);
+        var element = driver.findElement(const By.tagName('button'));
+        expect(element.name, 'button');
+        driver.quit();
+      });
+    });
 
     group('methods', () {
       WebDriver driver;
 
-      setUp(() async {
-        driver = await config.createTestDriver();
-        await driver.get(config.testPagePath);
+      setUp(() {
+        driver = config.createTestDriver();
+        driver.get(config.testPagePath);
       });
 
-      tearDown(() async {
+      tearDown(() {
         if (driver != null) {
-          await driver.quit();
+          driver.quit();
         }
         driver = null;
       });
 
-      test('get', () async {
-        await driver.get(config.testPagePath);
-        await driver.findElement(const By.tagName('button'));
+      test('get', () {
+        driver.get(config.testPagePath);
+        driver.findElement(const By.tagName('button'));
         ;
       });
 
-      test('currentUrl', () async {
-        var url = await driver.currentUrl;
+      test('currentUrl', () {
+        var url = driver.currentUrl;
         expect(url, anyOf(startsWith('file:'), startsWith('http:')));
         expect(url, endsWith('test_page.html'));
       });
 
-      test('findElement -- success', () async {
-        var element = await driver.findElement(const By.tagName('tr'));
-        expect(element, isWebElement);
+      test('findElement -- success', () {
+        var element = driver.findElement(const By.tagName('tr'));
+        expect(element, config.isSyncWebElement);
       });
 
-      test('findElement -- failure', () async {
+      test('findElement -- failure', () {
         try {
-          await driver.findElement(const By.id('non-existent-id'));
+          driver.findElement(const By.id('non-existent-id'));
           throw 'expected NoSuchElementException';
         } on NoSuchElementException {}
       });
 
-      test('findElements -- 1 found', () async {
-        var elements = await driver
+      test('findElements -- 1 found', () {
+        var elements = driver
             .findElements(const By.cssSelector('input[type=text]'))
             .toList();
         expect(elements, hasLength(1));
-        expect(elements, everyElement(isWebElement));
+        expect(elements, everyElement(config.isSyncWebElement));
       });
 
-      test('findElements -- 4 found', () async {
-        var elements =
-            await driver.findElements(const By.tagName('td')).toList();
+      test('findElements -- 4 found', () {
+        var elements = driver.findElements(const By.tagName('td')).toList();
         expect(elements, hasLength(4));
-        expect(elements, everyElement(isWebElement));
+        expect(elements, everyElement(config.isSyncWebElement));
       });
 
-      test('findElements -- 0 found', () async {
+      test('findElements -- 0 found', () {
         var elements =
-            await driver.findElements(const By.id('non-existent-id')).toList();
+            driver.findElements(const By.id('non-existent-id')).toList();
         expect(elements, isEmpty);
       });
 
-      test('pageSource', () async {
-        expect(await driver.pageSource, contains('<title>test_page</title>'));
+      test('pageSource', () {
+        expect(driver.pageSource, contains('<title>test_page</title>'));
       });
 
-      test('close/windows', () async {
-        int numHandles = (await driver.windows.toList()).length;
-        await (await driver.findElement(const By.partialLinkText('Open copy')))
-            .click();
-        expect(await driver.windows.toList(), hasLength(numHandles + 1));
-        await driver.close();
-        expect(await driver.windows.toList(), hasLength(numHandles));
+      test('close/windows', () {
+        int numHandles = (driver.windows.toList()).length;
+        (driver.findElement(const By.partialLinkText('Open copy'))).click();
+        expect(driver.windows.toList(), hasLength(numHandles + 1));
+        driver.close();
+        expect(driver.windows.toList(), hasLength(numHandles));
       });
 
-      test('window', () async {
-        Window orig = await driver.window;
+      test('window', () {
+        Window orig = driver.window;
         Window next;
 
-        await (await driver.findElement(const By.partialLinkText('Open copy')))
-            .click();
-        await for (Window window in driver.windows) {
+        (driver.findElement(const By.partialLinkText('Open copy'))).click();
+        for (Window window in driver.windows) {
           if (window != orig) {
             next = window;
-            await driver.switchTo.window(window);
+            driver.switchTo.window(window);
             break;
           }
         }
-        expect(await driver.window, equals(next));
-        await driver.close();
+        expect(driver.window, equals(next));
+        driver.close();
       });
 
-      test('activeElement', () async {
-        var element = await driver.activeElement;
-        expect(await element.name, 'body');
-        await (await driver
-                .findElement(const By.cssSelector('input[type=text]')))
-            .click();
-        element = await driver.activeElement;
-        expect(await element.name, 'input');
+      test('activeElement', () {
+        var element = driver.activeElement;
+        expect(element.name, 'body');
+        (driver.findElement(const By.cssSelector('input[type=text]'))).click();
+        element = driver.activeElement;
+        expect(element.name, 'input');
       });
 
-      test('windows', () async {
-        var windows = await driver.windows.toList();
+      test('windows', () {
+        var windows = driver.windows.toList();
         expect(windows, hasLength(isPositive));
         expect(windows, everyElement(new isInstanceOf<Window>()));
       });
 
-      test('execute', () async {
-        WebElement button =
-            await driver.findElement(const By.tagName('button'));
+      test('execute', () {
+        WebElement button = driver.findElement(const By.tagName('button'));
         String script = '''
             arguments[1].textContent = arguments[0];
             return arguments[1];''';
-        var e = await driver.execute(script, ['new text', button]);
-        expect(await e.text, 'new text');
+        var e = driver.execute(script, ['new text', button]);
+        expect(e.text, 'new text');
       });
 
-      test('executeAsync', () async {
-        WebElement button =
-            await driver.findElement(const By.tagName('button'));
+      test('executeAsync', () {
+        WebElement button = driver.findElement(const By.tagName('button'));
         String script = '''
             arguments[1].textContent = arguments[0];
             arguments[2](arguments[1]);''';
-        var e = await driver.executeAsync(script, ['new text', button]);
-        expect(await e.text, 'new text');
+        var e = driver.executeAsync(script, ['new text', button]);
+        expect(e.text, 'new text');
       });
 
-      test('captureScreenshot', () async {
-        var screenshot = await driver.captureScreenshot().toList();
+      test('captureScreenshot', () {
+        var screenshot = driver.captureScreenshotAsList().toList();
         expect(screenshot, hasLength(isPositive));
         expect(screenshot, everyElement(new isInstanceOf<int>()));
       });
 
-      test('captureScreenshotAsList', () async {
-        var screenshot = await driver.captureScreenshotAsList();
+      test('captureScreenshotAsList', () {
+        var screenshot = driver.captureScreenshotAsList();
         expect(screenshot, hasLength(isPositive));
         expect(screenshot, everyElement(new isInstanceOf<int>()));
       });
 
-      test('captureScreenshotAsBase64', () async {
-        var screenshot = await driver.captureScreenshotAsBase64();
+      test('captureScreenshotAsBase64', () {
+        var screenshot = driver.captureScreenshotAsBase64();
         expect(screenshot, hasLength(isPositive));
         expect(screenshot, new isInstanceOf<String>());
       });
 
-      test('future based event listeners work with script timeouts', () async {
-        driver.addEventListener((WebDriverCommandEvent e) async {
-          return await new Future.delayed(
-              new Duration(milliseconds: 1000), (() {}));
-        });
-
+      test('event listeners work with script timeouts', () {
         try {
           driver.timeouts.setScriptTimeout(new Duration(seconds: 1));
-          await driver.executeAsync('', []);
+          driver.executeAsync('', []);
           fail('Did not throw timeout as expected');
         } catch (e) {
           expect(e.toString(), contains('asynchronous script timeout'));
         }
       });
 
-      test('future based event listeners ordered appropriately', () async {
+      test('event listeners ordered appropriately', () {
         var eventList = new List<int>();
-        int millisDelay = 2000;
         int current = 0;
-        driver.addEventListener((WebDriverCommandEvent e) async {
-          return await new Future.delayed(
-              new Duration(milliseconds: millisDelay), (() {
-            eventList.add(current++);
-            millisDelay = (millisDelay / 2).round();
-          }));
+        driver.addEventListener((WebDriverCommandEvent e) {
+          eventList.add(current++);
         });
 
         for (int i = 0; i < 10; i++) {
-          await driver.title; // GET request.
+          driver.title; // GET request.
         }
         expect(eventList, hasLength(10));
         for (int i = 0; i < 10; i++) {
@@ -218,5 +195,5 @@ void main() {
         }
       });
     });
-  });
+  }, timeout: new Timeout(new Duration(minutes: 1)));
 }

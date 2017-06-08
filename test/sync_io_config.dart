@@ -14,16 +14,14 @@
 
 library io_test_util;
 
-import 'dart:async' show Future;
 import 'dart:io' show Platform;
 
-import 'package:webdriver/async_core.dart' show Capabilities, WebDriver;
-import 'package:webdriver/async_io.dart' show createDriver;
+import 'package:webdriver/sync_core.dart' show Capabilities, WebDriver;
+import 'package:webdriver/sync_io.dart' show createDriver;
 
 export 'test_util.dart';
 
-Future<WebDriver> createTestDriver(
-    {Map<String, dynamic> additionalCapabilities}) {
+WebDriver createTestDriver({Map<String, dynamic> additionalCapabilities}) {
   var capabilities = Capabilities.chrome;
   Map env = Platform.environment;
 
@@ -45,5 +43,5 @@ Future<WebDriver> createTestDriver(
     capabilities.addAll(additionalCapabilities);
   }
 
-  return createDriver(desired: capabilities);
+  return createDriver(desired: additionalCapabilities);
 }

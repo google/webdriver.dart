@@ -17,33 +17,38 @@ library webdriver.command_event_test;
 
 import 'package:stack_trace/stack_trace.dart';
 import 'package:test/test.dart';
-import 'package:webdriver/sync_core.dart';
+import 'package:webdriver/async_core.dart';
+import 'package:webdriver/support/async.dart';
 
-import 'sync_io_config.dart' as config;
+import 'io_config.dart' as config;
 
 void main() {
   group('CommandEvent', () {
     WebDriver driver;
 
     var events = <WebDriverCommandEvent>[];
+    var sub;
 
-    setUp(() {
-      driver = config.createTestDriver();
-      driver.addEventListener(events.add);
-      driver.get(config.testPagePath);
+    setUp(() async {
+      driver = await config.createTestDriver();
+      sub = driver.onCommand.listen(events.add);
+
+      await driver.get(config.testPagePath);
     });
 
-    tearDown(() {
+    tearDown(() async {
+      sub.cancel();
+      sub = null;
       events.clear();
-      driver.quit();
+      await driver.quit();
       driver = null;
     });
 
-    test('handles exceptions', () {
+    test('handles exceptions', () async {
       try {
-        driver.switchTo.alert;
-        fail('Expected exception on no alert');
-      } catch (NoSuchAlertException) {}
+        await driver.switchTo.alert;
+      } catch (e) {}
+      await waitFor(() => events, matcher: hasLength(2));
       expect(events[1].method, 'GET');
       expect(events[1].endPoint, contains('alert'));
       expect(events[1].exception, new isInstanceOf<WebDriverException>());
@@ -52,8 +57,9 @@ void main() {
       expect(events[1].stackTrace, new isInstanceOf<Chain>());
     });
 
-    test('handles normal operation', () {
-      driver.findElements(const By.cssSelector('nosuchelement')).toList();
+    test('handles normal operation', () async {
+      await driver.findElements(const By.cssSelector('nosuchelement')).toList();
+      await waitFor(() => events, matcher: hasLength(2));
       expect(events[1].method, 'POST');
       expect(events[1].endPoint, contains('elements'));
       expect(events[1].exception, isNull);
@@ -61,5 +67,5 @@ void main() {
       expect(events[1].startTime.isBefore(events[1].endTime), isTrue);
       expect(events[1].stackTrace, new isInstanceOf<Chain>());
     });
-  }, timeout: new Timeout(new Duration(minutes: 1)));
+  }, testOn: '!js');
 }

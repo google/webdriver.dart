@@ -20,7 +20,7 @@ import 'dart:io' as io;
 
 import 'package:archive/archive.dart' show Archive, ArchiveFile, ZipDecoder;
 import 'package:test/test.dart';
-import 'package:webdriver/core.dart';
+import 'package:webdriver/async_core.dart';
 import 'package:webdriver/support/firefox_profile.dart';
 
 void main() {
@@ -169,7 +169,7 @@ void main() {
           anyElement((PrefsOption o) =>
               o.name == Capabilities.hasNativeEvents && o.value == true));
     });
-  });
+  }, timeout: new Timeout(new Duration(minutes: 1)));
 }
 
 Archive unpackArchiveData(Map profileData) {

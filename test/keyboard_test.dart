@@ -18,9 +18,9 @@ library webdriver.keyboard_test;
 import 'dart:io';
 
 import 'package:test/test.dart';
-import 'package:webdriver/core.dart';
+import 'package:webdriver/sync_core.dart';
 
-import 'io_config.dart' as config;
+import 'sync_io_config.dart' as config;
 
 void main() {
   group('Keyboard', () {
@@ -28,50 +28,50 @@ void main() {
     WebElement textInput;
     String ctrlCmdKey = '';
 
-    setUp(() async {
+    setUp(() {
       if (Platform.isMacOS) {
         ctrlCmdKey = Keyboard.command;
       } else {
         ctrlCmdKey = Keyboard.control;
       }
 
-      driver = await config.createTestDriver();
-      await driver.get(config.testPagePath);
-      textInput =
-          await driver.findElement(const By.cssSelector('input[type=text]'));
-      await textInput.click();
+      driver = config.createTestDriver();
+      driver.get(config.testPagePath);
+      textInput = driver.findElement(const By.cssSelector('input[type=text]'));
+      textInput.click();
     });
 
-    tearDown(() async {
+    tearDown(() {
       if (driver != null) {
-        await driver.quit();
+        driver.quit();
       }
       driver = null;
     });
 
-    test('sendKeys -- once', () async {
-      await driver.keyboard.sendKeys('abcdef');
-      expect(await textInput.attributes['value'], 'abcdef');
+    test('sendKeys -- once', () {
+      driver.keyboard.sendKeys('abcdef');
+      expect(textInput.attributes['value'], 'abcdef');
     });
 
-    test('sendKeys -- twice', () async {
-      await driver.keyboard.sendKeys('abc');
-      await driver.keyboard.sendKeys('def');
-      expect(await textInput.attributes['value'], 'abcdef');
+    test('sendKeys -- twice', () {
+      driver.keyboard.sendKeys('abc');
+      driver.keyboard.sendKeys('def');
+      expect(textInput.attributes['value'], 'abcdef');
     });
 
-    test('sendKeys -- with tab', () async {
-      await driver.keyboard.sendKeys('abc${Keyboard.tab}def');
-      expect(await textInput.attributes['value'], 'abc');
+    test('sendKeys -- with tab', () {
+      driver.keyboard.sendKeys('abc${Keyboard.tab}def');
+      expect(textInput.attributes['value'], 'abc');
     });
 
-    test('sendChord -- CTRL+X', () async {
-      await driver.keyboard.sendKeys('abcdef');
-      expect(await textInput.attributes['value'], 'abcdef');
-      await driver.keyboard.sendChord([ctrlCmdKey, 'a']);
-      await driver.keyboard.sendChord([ctrlCmdKey, 'x']);
-      await driver.keyboard.sendKeys('xxx');
-      expect(await textInput.attributes['value'], 'xxx');
+    // NOTE: does not work on Mac.
+    test('sendChord -- CTRL+X', () {
+      driver.keyboard.sendKeys('abcdef');
+      expect(textInput.attributes['value'], 'abcdef');
+      driver.keyboard.sendChord([ctrlCmdKey, 'a']);
+      driver.keyboard.sendChord([ctrlCmdKey, 'x']);
+      driver.keyboard.sendKeys('xxx');
+      expect(textInput.attributes['value'], 'xxx');
     });
-  });
+  }, timeout: new Timeout(new Duration(minutes: 1)));
 }

@@ -12,17 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-library config;
+library webdriver.command_processor;
 
-import 'dart:async' show Future;
+/// Interface for synchronous HTTP access.
+abstract class CommandProcessor {
+  Object post(Uri uri, dynamic params, {bool value: true});
 
-import 'package:webdriver/core.dart' show WebDriver;
+  Object get(Uri uri, {bool value: true});
 
-Future<WebDriver> createTestDriver(
-    {Map<String, dynamic> additionalCapabilities}) {
-  throw new UnimplementedError("createTestDriver is abstract");
-}
+  Object delete(Uri uri, {bool value: true});
 
-String get testPagePath {
-  throw new UnimplementedError("createTestDriver is abstract");
+  void close();
 }
