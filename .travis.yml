@@ -1,4 +1,6 @@
 language: dart
+# This is necessary to use proper Chrome. Travis's version of chromium is from
+# 2014.
 sudo: required
 dist: trusty
 addons:
@@ -27,8 +29,6 @@ before_install:
   - sh -e /etc/init.d/xvfb start
 
 before_script:
-# We use a slightly older version of chromedriver; the newer ones require a later
-# version of chromium than is available on travis by default.
   - wget http://chromedriver.storage.googleapis.com/2.29/chromedriver_linux64.zip
   - unzip chromedriver_linux64.zip
   - export PATH=$PATH:$PWD
