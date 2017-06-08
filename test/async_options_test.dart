@@ -105,5 +105,5 @@ void main() {
       await driver.timeouts.setImplicitTimeout(new Duration(seconds: 1));
       await driver.timeouts.setPageLoadTimeout(new Duration(seconds: 10));
     });
-  });
+  }, timeout: new Timeout(new Duration(minutes: 1)));
 }

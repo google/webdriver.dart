@@ -73,5 +73,5 @@ void main() {
       driver.keyboard.sendKeys('xxx');
       expect(textInput.attributes['value'], 'xxx');
     });
-  });
+  }, timeout: new Timeout(new Duration(minutes: 1)));
 }

@@ -195,5 +195,5 @@ void main() {
         }
       });
     });
-  });
+  }, timeout: new Timeout(new Duration(minutes: 1)));
 }

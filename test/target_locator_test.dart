@@ -62,5 +62,5 @@ void main() {
       driver.switchTo.frame();
       driver.findElement(const By.tagName('button'));
     });
-  });
+  }, timeout: new Timeout(new Duration(minutes: 1)));
 }

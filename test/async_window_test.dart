@@ -71,5 +71,5 @@ void main() {
       expect(size.height, greaterThan(200));
       expect(size.width, greaterThan(300));
     }, skip: 'unreliable');
-  });
+  }, timeout: new Timeout(new Duration(minutes: 1)));
 }

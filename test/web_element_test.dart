@@ -185,5 +185,5 @@ void main() {
       var element = driver.findElement(const By.cssSelector('table'));
       expect(element.equals(table), isTrue);
     });
-  });
+  }, timeout: new Timeout(new Duration(minutes: 1)));
 }

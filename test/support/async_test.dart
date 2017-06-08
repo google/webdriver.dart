@@ -200,7 +200,7 @@ void main() {
       }
       expect(exception, isNotNull);
     });
-  });
+  }, timeout: new Timeout(new Duration(minutes: 1)));
 }
 
 /// FakeClock for testing waitFor functionality.

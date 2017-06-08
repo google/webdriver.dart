@@ -47,5 +47,5 @@ void main() {
         expect(entry.level, equals(LogLevel.info));
       });
     });
-  });
+  }, timeout: new Timeout(new Duration(minutes: 1)));
 }

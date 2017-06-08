@@ -45,5 +45,5 @@ void main() {
     test('can do basic delete', () {
       driver.close(); // This is a DELETE request.
     });
-  });
+  }, timeout: new Timeout(new Duration(minutes: 1)));
 }
