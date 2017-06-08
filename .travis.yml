@@ -1,5 +1,12 @@
 language: dart
-sudo: false
+sudo: required
+dist: trusty
+addons:
+  apt:
+    sources:
+      - google-chrome
+    packages:
+      - google-chrome-stable
 
 dart:
   - dev
@@ -12,7 +19,7 @@ matrix:
     - dart: dev
 
 before_install:
-  - export CHROMEDRIVER_BINARY=/usr/bin/chromium-browser
+  - export CHROMEDRIVER_BINARY=/usr/bin/google-chrome
   - export CHROMEDRIVER_ARGS=--no-sandbox
   - /usr/bin/chromium-browser --version
 
