@@ -1,4 +1,4 @@
-// Copyright 2015 Google Inc. All Rights Reserved.
+// Copyright 2017 Google Inc. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -64,10 +64,8 @@ class JsonWireWebDriver implements WebDriver, SearchContext {
 
   @override
   void get(/* Uri | String */ url) {
-    if (url is Uri) {
-      url = url.toString();
-    }
-    postRequest('url', {'url': url as String});
+    final urlStr = (url is Uri) ? url.toString() : url;
+    postRequest('url', {'url': urlStr as String});
   }
 
   @override
