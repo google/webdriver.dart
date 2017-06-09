@@ -20,6 +20,7 @@ import 'package:webdriver/src/sync/capabilities.dart' show Capabilities;
 import 'package:webdriver/src/sync/command_processor.dart'
     show CommandProcessor;
 import 'package:webdriver/src/sync/web_driver.dart' show WebDriver;
+import 'package:webdriver/src/sync/json_wire_spec/web_driver.dart' as jwire;
 
 export 'package:webdriver/src/sync/alert.dart';
 export 'package:webdriver/src/sync/capabilities.dart';
@@ -53,7 +54,7 @@ WebDriver createDriver(CommandProcessor processor,
   Map response = processor.post(
       uri.resolve('session'), {'desiredCapabilities': desired},
       value: false) as Map<String, dynamic>;
-  return new WebDriver(processor, uri, response['sessionId'],
+  return new jwire.JsonWireWebDriver(processor, uri, response['sessionId'],
       new UnmodifiableMapView(response['value'] as Map<String, dynamic>));
 }
 
@@ -65,6 +66,6 @@ WebDriver fromExistingSession(CommandProcessor processor, String sessionId,
 
   var response =
       processor.get(uri.resolve('session/$sessionId')) as Map<String, dynamic>;
-  return new WebDriver(
+  return new jwire.JsonWireWebDriver(
       processor, uri, sessionId, new UnmodifiableMapView(response));
 }

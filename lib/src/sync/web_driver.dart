@@ -12,150 +12,99 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import 'dart:convert' show BASE64;
-import 'package:stack_trace/stack_trace.dart' show Chain;
-
 import 'command_event.dart';
-import 'command_processor.dart';
 import 'common.dart';
 import 'exception.dart';
-import 'json_wire_spec/keyboard.dart';
-import 'json_wire_spec/target_locator.dart';
-import 'json_wire_spec/logs.dart';
-import 'json_wire_spec/mouse.dart';
 import 'common_spec/navigation.dart';
 import 'common_spec/cookies.dart';
-import 'json_wire_spec/timeouts.dart';
-import 'json_wire_spec/web_element.dart';
-import 'json_wire_spec/window.dart';
 import 'timeouts.dart';
 import 'target_locator.dart';
 import 'window.dart';
 import 'web_element.dart';
+import 'json_wire_spec/mouse.dart';
+import 'json_wire_spec/logs.dart';
+import 'json_wire_spec/keyboard.dart';
 
 typedef void WebDriverListener(WebDriverCommandEvent event);
 
-class WebDriver implements SearchContext {
-  final CommandProcessor _commandProcessor;
-  final Uri _prefix;
-  final Map<String, dynamic> capabilities;
-  final String id;
-  final Uri uri;
-  final bool filterStackTraces;
+/// Interacts with WebDriver.
+abstract class WebDriver implements SearchContext {
+  Map<String, dynamic> get capabilities;
+  String get id;
+  Uri get uri;
+  bool get filterStackTraces;
 
   /// If true, WebDriver actions are recorded as [WebDriverCommandEvent]s.
-  bool notifyListeners = true;
-
-  final _commandListeners = new List<WebDriverListener>();
-
-  WebDriver(this._commandProcessor, Uri uri, String id, this.capabilities,
-      {this.filterStackTraces: true})
-      : this.uri = uri,
-        this.id = id,
-        this._prefix = uri.resolve('session/$id/');
+  bool get notifyListeners;
 
   /// Preferred method for registering listeners. Listeners are expected to
   /// return a Future. Use new Future.value() for synchronous listeners.
-  void addEventListener(WebDriverListener listener) =>
-      _commandListeners.add(listener);
+  void addEventListener(WebDriverListener listener);
 
   /// The current url.
-  String get currentUrl => getRequest('url') as String;
+  String get currentUrl;
 
   /// navigate to the specified url
-  void get(/* Uri | String */ url) {
-    if (url is Uri) {
-      url = url.toString();
-    }
-    postRequest('url', {'url': url as String});
-  }
+  void get(/* Uri | String */ url);
 
   /// The title of the current page.
-  String get title => getRequest('title') as String;
+  String get title;
 
   /// Search for multiple elements within the entire current page.
   @override
-  List<WebElement> findElements(By by) {
-    var elements = postRequest('elements', by);
-    int i = 0;
-
-    final webElements = new List<WebElement>();
-    for (var element in elements) {
-      webElements.add(
-          new JsonWireWebElement(this, element[elementStr], this, by, i++));
-    }
-    return webElements;
-  }
+  List<WebElement> findElements(By by);
 
   /// Search for an element within the entire current page.
   /// Throws [NoSuchElementException] if a matching element is not found.
   @override
-  WebElement findElement(By by) {
-    var element = postRequest('element', by);
-    return new JsonWireWebElement(this, element[elementStr], this, by);
-  }
+  WebElement findElement(By by);
 
   /// An artist's rendition of the current page's source.
-  String get pageSource => getRequest('source') as String;
+  String get pageSource;
 
   /// Close the current window, quitting the browser if it is the last window.
-  void close() {
-    deleteRequest('window');
-  }
+  void close();
 
   /// Quit the browser.
-  void quit({bool closeSession: true}) {
-    try {
-      if (closeSession) {
-        _commandProcessor.delete(uri.resolve('session/$id'));
-      }
-    } finally {
-      _commandProcessor.close();
-    }
-  }
+  void quit({bool closeSession: true});
 
   /// Handles for all of the currently displayed tabs/windows.
-  List<Window> get windows => new JsonWireWindows(this).allWindows;
+  List<Window> get windows;
 
   /// Handle for the active tab/window.
-  Window get window => new JsonWireWindows(this).activeWindow;
+  Window get window;
 
   /// The currently focused element, or the body element if no element has
   /// focus.
-  WebElement get activeElement {
-    var element = postRequest('element/active');
-    if (element != null) {
-      return new JsonWireWebElement(
-          this, element[elementStr], this, 'activeElement');
-    }
-    return null;
-  }
+  WebElement get activeElement;
 
-  Windows get windowsManager => new JsonWireWindows(this);
+  Windows get windowsManager;
 
-  TargetLocator get switchTo => new JsonWireTargetLocator(this);
+  TargetLocator get switchTo;
 
-  Navigation get navigate => new Navigation(this);
+  Navigation get navigate;
 
-  Cookies get cookies => new Cookies(this);
+  Cookies get cookies;
 
-  Logs get logs => new Logs(this);
+  @Deprecated('This not supported in the W3C spec.')
+  Logs get logs;
 
-  Timeouts get timeouts => new JsonWireTimeouts(this);
+  Timeouts get timeouts;
 
-  Keyboard get keyboard => new Keyboard(this);
+  // TODO(staats): add actions support.
 
-  Mouse get mouse => new Mouse(this);
+  @Deprecated('This not supported in the W3C spec. Use actions instead.')
+  Keyboard get keyboard;
+
+  @Deprecated('This not supported in the W3C spec. Use actions instead.')
+  Mouse get mouse;
 
   /// Take a screenshot of the current page as PNG and return it as
   /// base64-encoded string.
-  String captureScreenshotAsBase64() => getRequest('screenshot');
+  String captureScreenshotAsBase64();
 
   /// Take a screenshot of the current page as PNG as list of uint8.
-  List<int> captureScreenshotAsList() {
-    var base64Encoded = captureScreenshotAsBase64();
-    return BASE64.decode(base64Encoded);
-  }
+  List<int> captureScreenshotAsList();
 
   /// Inject a snippet of JavaScript into the page for execution in the context
   /// of the currently selected frame. The executed script is assumed to be
@@ -175,8 +124,7 @@ class WebDriver implements SearchContext {
   /// Arguments may be any JSON-able object. WebElements will be converted to
   /// the corresponding DOM element. Likewise, any DOM Elements in the script
   /// result will be converted to WebElements.
-  dynamic executeAsync(String script, List args) => _recursiveElementify(
-      postRequest('execute_async', {'script': script, 'args': args}));
+  dynamic executeAsync(String script, List args);
 
   /// Inject a snippet of JavaScript into the page for execution in the context
   /// of the currently selected frame. The executed script is assumed to be
@@ -190,97 +138,23 @@ class WebDriver implements SearchContext {
   /// Arguments may be any JSON-able object. WebElements will be converted to
   /// the corresponding DOM element. Likewise, any DOM Elements in the script
   /// result will be converted to WebElements.
-  dynamic execute(String script, List args) => _recursiveElementify(
-      postRequest('execute', {'script': script, 'args': args}));
+  dynamic execute(String script, List args);
 
-  dynamic _recursiveElementify(result) {
-    if (result is Map) {
-      if (result.length == 1 && result.containsKey(elementStr)) {
-        return new JsonWireWebElement(
-            this, result[elementStr], this, 'javascript');
-      } else {
-        var newResult = {};
-        result.forEach((key, value) {
-          newResult[key] = _recursiveElementify(value);
-        });
-        return newResult;
-      }
-    } else if (result is List) {
-      return result.map((value) => _recursiveElementify(value)).toList();
-    } else {
-      return result;
-    }
-  }
+  /// Performs post request on command to the WebDriver server.
+  ///
+  /// For use by supporting WebDriver packages.
+  dynamic postRequest(String command, [params]);
 
-  dynamic postRequest(String command, [params]) => _performRequestWithLog(
-      () => _commandProcessor.post(_resolve(command), params),
-      'POST',
-      command,
-      params);
+  /// Performs get request on command to the WebDriver server.
+  ///
+  /// For use by supporting WebDriver packages.
+  dynamic getRequest(String command);
 
-  dynamic getRequest(String command) => _performRequestWithLog(
-      () => _commandProcessor.get(_resolve(command)), 'GET', command, null);
-
-  dynamic deleteRequest(String command) => _performRequestWithLog(
-      () => _commandProcessor.delete(_resolve(command)),
-      'DELETE',
-      command,
-      null);
-
-  // Performs request and sends the result to listeners/onCommandController.
-  // This is typically always what you want to use.
-  dynamic _performRequestWithLog(
-      Function fn, String method, String command, params) {
-    return _performRequest(fn, method, command, params);
-  }
-
-  // Performs the request. This will not notify any listeners or
-  // onCommandController. This should only be called from
-  // _performRequestWithLog.
-  dynamic _performRequest(Function fn, String method, String command, params) {
-    var startTime = new DateTime.now();
-    var trace = new Chain.current();
-    if (filterStackTraces) {
-      trace = trace.foldFrames(
-          (f) => f.library.startsWith('package:webdriver/'),
-          terse: true);
-    }
-    var result;
-    var exception;
-    try {
-      result = fn();
-      return result;
-    } catch (e) {
-      exception = e;
-      rethrow;
-    } finally {
-      if (notifyListeners) {
-        for (WebDriverListener listener in _commandListeners) {
-          listener(new WebDriverCommandEvent(
-              method: method,
-              endPoint: command,
-              params: params,
-              startTime: startTime,
-              endTime: new DateTime.now(),
-              exception: exception,
-              result: result,
-              stackTrace: trace));
-        }
-      }
-    }
-  }
-
-  Uri _resolve(String command) {
-    var uri = _prefix.resolve(command);
-    if (uri.path.endsWith('/')) {
-      uri = uri.replace(path: uri.path.substring(0, uri.path.length - 1));
-    }
-    return uri;
-  }
+  /// Performs delete request on command to the WebDriver server.
+  ///
+  /// For use by supporting WebDriver packages.
+  dynamic deleteRequest(String command);
 
   @override
-  WebDriver get driver => this;
-
-  @override
-  String toString() => 'WebDriver($_prefix)';
+  WebDriver get driver;
 }
