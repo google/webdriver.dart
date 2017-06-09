@@ -22,7 +22,8 @@ class JsonWireAlert implements Alert {
   final WebDriver _driver;
   final Resolver _resolver;
 
-  JsonWireAlert(this._text, this._driver) : _resolver = new Resolver(_driver, '');
+  JsonWireAlert(this._text, this._driver)
+      : _resolver = new Resolver(_driver, '');
 
   String get text => _text;
 

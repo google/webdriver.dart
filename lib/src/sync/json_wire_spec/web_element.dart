@@ -111,14 +111,15 @@ class JsonWireWebElement implements WebElement, SearchContext {
     int i = 0;
     final webElements = new List<WebElement>();
     for (var element in elements) {
-      webElements
-          .add(new JsonWireWebElement(driver, element[elementStr], this, by, i++));
+      webElements.add(
+          new JsonWireWebElement(driver, element[elementStr], this, by, i++));
     }
     return webElements;
   }
 
   @override
-  Attributes get attributes => new Attributes(driver, '$_elementPrefix/attribute');
+  Attributes get attributes =>
+      new Attributes(driver, '$_elementPrefix/attribute');
 
   @override
   Attributes get cssProperties => new Attributes(driver, '$_elementPrefix/css');

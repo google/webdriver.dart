@@ -14,7 +14,6 @@
 
 /// Sets WebDriver timeouts.
 abstract class Timeouts {
-
   /// Set the script timeout.
   void setScriptTimeout(Duration duration);
 

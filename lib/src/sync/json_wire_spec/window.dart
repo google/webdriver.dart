@@ -25,12 +25,14 @@ class JsonWireWindows implements Windows {
   JsonWireWindows(this._driver) : _resolver = new Resolver(_driver, '');
 
   @override
-  Window get activeWindow => new JsonWireWindow(_driver,
-      _resolver.get('window_handle') as String);
+  Window get activeWindow =>
+      new JsonWireWindow(_driver, _resolver.get('window_handle') as String);
 
   @override
   List<Window> get allWindows =>
-      (_resolver.get('window_handles') as List<String>).map((handle) => new JsonWireWindow(_driver, handle)).toList();
+      (_resolver.get('window_handles') as List<String>)
+          .map((handle) => new JsonWireWindow(_driver, handle))
+          .toList();
 }
 
 class JsonWireWindow implements Window {
@@ -39,8 +41,8 @@ class JsonWireWindow implements Window {
   final Resolver _handleResolver;
   final Resolver _session;
 
-  JsonWireWindow(this._driver, this._handle) :
-        _handleResolver = new Resolver(_driver, 'window/$_handle'),
+  JsonWireWindow(this._driver, this._handle)
+      : _handleResolver = new Resolver(_driver, 'window/$_handle'),
         _session = new Resolver(_driver, '');
 
   @override
@@ -60,7 +62,8 @@ class JsonWireWindow implements Window {
   Rectangle<int> get rect {
     final curLocation = this.location;
     final curSize = this.size;
-    return new Rectangle<int>(curLocation.x, curLocation.y, curSize.width, curSize.height);
+    return new Rectangle<int>(
+        curLocation.x, curLocation.y, curSize.width, curSize.height);
   }
 
   @override
@@ -76,16 +79,18 @@ class JsonWireWindow implements Window {
 
   @override
   void setSize(Rectangle<int> size) {
-    _handleResolver.post('size', {'width': size.width.toInt(), 'height': size.height.toInt()});
+    _handleResolver.post(
+        'size', {'width': size.width.toInt(), 'height': size.height.toInt()});
   }
 
   @override
   void setLocation(Point<int> point) {
-    _handleResolver.post('position', {'x': point.x.toInt(), 'y': point.y.toInt()});
+    _handleResolver
+        .post('position', {'x': point.x.toInt(), 'y': point.y.toInt()});
   }
 
   @override
-  void setAsActive() => _session.post('window', {'name' : _handle});
+  void setAsActive() => _session.post('window', {'name': _handle});
 
   @override
   int get hashCode => _handle.hashCode * 3 + _driver.hashCode;

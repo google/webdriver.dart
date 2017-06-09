@@ -19,20 +19,17 @@ import 'web_driver.dart';
 
 /// Interacts with windows.
 abstract class Windows {
-
   /// Get the current active window.
   Window get activeWindow;
 
   /// Get all windows.
   List<Window> get allWindows;
-
 }
 
 /// Handle to window.
 ///
 /// Upon use, the window will automatically be set as active.
 abstract class Window {
-
   /// The size of the window.
   @Deprecated('JSON wire legacy support, emulated for newer browsers')
   Rectangle<int> get size;
@@ -63,5 +60,4 @@ abstract class Window {
 
   @override
   bool operator ==(other);
-
 }

@@ -19,7 +19,7 @@ const String elementStr = 'ELEMENT';
 
 /// Simple class to provide access to indexed properties such as WebElement
 /// attributes or css styles.
-class Attributes  {
+class Attributes {
   final Resolver _resolver;
 
   Attributes(driver, command) : _resolver = new Resolver(driver, command);

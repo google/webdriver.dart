@@ -19,7 +19,6 @@ import 'web_driver.dart';
 import 'window.dart';
 
 abstract class TargetLocator {
-
   /// Change focus to another frame on the page.
   /// If [frame] is a:
   ///   [int]: select by its zero-based index
@@ -45,5 +44,4 @@ abstract class TargetLocator {
   ///
   /// Throws [NoSuchAlertException] if there is not currently an alert.
   Alert get alert;
-
 }

@@ -71,5 +71,6 @@ class JsonWireTargetLocator implements TargetLocator {
   int get hashCode => _driver.hashCode;
 
   @override
-  bool operator ==(other) => other is JsonWireTargetLocator && other._driver == _driver;
+  bool operator ==(other) =>
+      other is JsonWireTargetLocator && other._driver == _driver;
 }

@@ -14,7 +14,6 @@
 
 /// A JavaScript alert(), confirm(), or prompt() dialog.
 abstract class Alert {
-
   /// The text of the JavaScript alert(), confirm(), or prompt() dialog.
   String get text;
 
@@ -35,5 +34,4 @@ abstract class Alert {
   ///
   /// Throws [NoSuchAlertException] if there isn't currently an alert
   void sendKeys(String keysToSend);
-
 }

@@ -81,7 +81,8 @@ class WebDriver implements SearchContext {
 
     final webElements = new List<WebElement>();
     for (var element in elements) {
-      webElements.add(new JsonWireWebElement(this, element[elementStr], this, by, i++));
+      webElements.add(
+          new JsonWireWebElement(this, element[elementStr], this, by, i++));
     }
     return webElements;
   }
@@ -124,7 +125,8 @@ class WebDriver implements SearchContext {
   WebElement get activeElement {
     var element = postRequest('element/active');
     if (element != null) {
-      return new JsonWireWebElement(this, element[elementStr], this, 'activeElement');
+      return new JsonWireWebElement(
+          this, element[elementStr], this, 'activeElement');
     }
     return null;
   }
@@ -194,7 +196,8 @@ class WebDriver implements SearchContext {
   dynamic _recursiveElementify(result) {
     if (result is Map) {
       if (result.length == 1 && result.containsKey(elementStr)) {
-        return new JsonWireWebElement(this, result[elementStr], this, 'javascript');
+        return new JsonWireWebElement(
+            this, result[elementStr], this, 'javascript');
       } else {
         var newResult = {};
         result.forEach((key, value) {

@@ -19,7 +19,6 @@ import 'web_driver.dart';
 
 /// WebDriver representation and interactions with an HTML element.
 abstract class WebElement implements SearchContext {
-
   String get id;
 
   /// The context from which this element was found.

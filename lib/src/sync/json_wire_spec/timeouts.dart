@@ -20,7 +20,8 @@ class JsonWireTimeouts extends Timeouts {
   final WebDriver _driver;
   final Resolver _resolver;
 
-  JsonWireTimeouts(this._driver) : _resolver = new Resolver(_driver, 'timeouts');
+  JsonWireTimeouts(this._driver)
+      : _resolver = new Resolver(_driver, 'timeouts');
 
   void _set(String type, Duration duration) {
     _resolver.post('', {'type': type, 'ms': duration.inMilliseconds});
@@ -42,5 +43,6 @@ class JsonWireTimeouts extends Timeouts {
   int get hashCode => _driver.hashCode;
 
   @override
-  bool operator ==(other) => other is JsonWireTimeouts && other._driver == _driver;
+  bool operator ==(other) =>
+      other is JsonWireTimeouts && other._driver == _driver;
 }
