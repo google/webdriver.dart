@@ -25,8 +25,8 @@ abstract class WebDriverException implements Exception {
   factory WebDriverException(
       {int httpStatusCode, String httpReasonPhrase, dynamic jsonResp}) {
     if (jsonResp is Map) {
-      var status = jsonResp['status'];
-      var message = jsonResp['value']['message'];
+      final status = jsonResp['status'];
+      final message = jsonResp['value']['message'];
 
       switch (status) {
         case 0:

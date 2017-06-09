@@ -75,11 +75,11 @@ class JsonWireWebDriver implements WebDriver, SearchContext {
 
   @override
   List<WebElement> findElements(By by) {
-    var elements = postRequest('elements', by);
+    final elements = postRequest('elements', by);
     int i = 0;
 
     final webElements = new List<JsonWireWebElement>();
-    for (var element in elements) {
+    for (final element in elements) {
       webElements.add(
           new JsonWireWebElement(this, element[elementStr], this, by, i++));
     }
@@ -88,7 +88,7 @@ class JsonWireWebDriver implements WebDriver, SearchContext {
 
   @override
   WebElement findElement(By by) {
-    var element = postRequest('element', by);
+    final element = postRequest('element', by);
     return new JsonWireWebElement(this, element[elementStr], this, by);
   }
 
@@ -119,7 +119,7 @@ class JsonWireWebDriver implements WebDriver, SearchContext {
 
   @override
   WebElement get activeElement {
-    var element = postRequest('element/active');
+    final element = postRequest('element/active');
     if (element != null) {
       return new JsonWireWebElement(
           this, element[elementStr], this, 'activeElement');
@@ -156,7 +156,7 @@ class JsonWireWebDriver implements WebDriver, SearchContext {
 
   @override
   List<int> captureScreenshotAsList() {
-    var base64Encoded = captureScreenshotAsBase64();
+    final base64Encoded = captureScreenshotAsBase64();
     return BASE64.decode(base64Encoded);
   }
 
@@ -174,7 +174,7 @@ class JsonWireWebDriver implements WebDriver, SearchContext {
         return new JsonWireWebElement(
             this, result[elementStr], this, 'javascript');
       } else {
-        var newResult = {};
+        final newResult = {};
         result.forEach((key, value) {
           newResult[key] = _recursiveElementify(value);
         });
@@ -216,7 +216,7 @@ class JsonWireWebDriver implements WebDriver, SearchContext {
   // onCommandController. This should only be called from
   // _performRequestWithLog.
   dynamic _performRequest(Function fn, String method, String command, params) {
-    var startTime = new DateTime.now();
+    final startTime = new DateTime.now();
     var trace = new Chain.current();
     if (filterStackTraces) {
       trace = trace.foldFrames(

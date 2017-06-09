@@ -47,14 +47,14 @@ class JsonWireWindow implements Window {
 
   @override
   Rectangle<int> get size {
-    var size = _handleResolver.get('size');
+    final size = _handleResolver.get('size');
     return new Rectangle<int>(
         0, 0, size['width'].toInt(), size['height'].toInt());
   }
 
   @override
   Point<int> get location {
-    var point = _handleResolver.get('position');
+    final point = _handleResolver.get('position');
     return new Point<int>(point['x'].toInt(), point['y'].toInt());
   }
 

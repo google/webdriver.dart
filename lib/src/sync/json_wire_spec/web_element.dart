@@ -75,13 +75,13 @@ class JsonWireWebElement implements WebElement, SearchContext {
 
   @override
   Point get location {
-    var point = _resolver.get('location');
+    final point = _resolver.get('location');
     return new Point<int>(point['x'].toInt(), point['y'].toInt());
   }
 
   @override
   Rectangle<int> get size {
-    var size = _resolver.get('size');
+    final size = _resolver.get('size');
     return new Rectangle<int>(
         0, 0, size['width'].toInt(), size['height'].toInt());
   }
@@ -101,16 +101,16 @@ class JsonWireWebElement implements WebElement, SearchContext {
 
   @override
   WebElement findElement(By by) {
-    var element = _resolver.post('element', by);
+    final element = _resolver.post('element', by);
     return new JsonWireWebElement(driver, element[elementStr], this, by);
   }
 
   @override
   List<WebElement> findElements(By by) {
-    var elements = _resolver.post('elements', by) as Iterable;
+    final elements = _resolver.post('elements', by) as Iterable;
     int i = 0;
     final webElements = new List<WebElement>();
-    for (var element in elements) {
+    for (final element in elements) {
       webElements.add(
           new JsonWireWebElement(driver, element[elementStr], this, by, i++));
     }
@@ -139,7 +139,7 @@ class JsonWireWebElement implements WebElement, SearchContext {
 
   @override
   String toString() {
-    var out = new StringBuffer()..write(context);
+    final out = new StringBuffer()..write(context);
     if (locator is By) {
       if (index == null) {
         out..write('.findElement(');

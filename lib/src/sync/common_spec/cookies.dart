@@ -39,7 +39,7 @@ class Cookies {
 
   /// Retrieve all cookies visible to the current page.
   List<Cookie> get all {
-    var cookies = _resolver.get('') as List<Map<String, dynamic>>;
+    final cookies = _resolver.get('') as List<Map<String, dynamic>>;
     return cookies.map((c) => new Cookie.fromJson(c)).toList();
   }
 
@@ -91,7 +91,7 @@ class Cookie {
   }
 
   Map<String, dynamic> toJson() {
-    var json = <String, dynamic>{'name': name, 'value': value};
+    final json = <String, dynamic>{'name': name, 'value': value};
     if (path is String) {
       json['path'] = path;
     }

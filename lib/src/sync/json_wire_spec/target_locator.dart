@@ -61,7 +61,7 @@ class JsonWireTargetLocator implements TargetLocator {
   ///
   /// Throws [NoSuchAlertException] if there is not currently an alert.
   Alert get alert {
-    var text = _resolver.get('alert_text');
+    final text = _resolver.get('alert_text');
     return new JsonWireAlert(text, _driver);
   }
 
