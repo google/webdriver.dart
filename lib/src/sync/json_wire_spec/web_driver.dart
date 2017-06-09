@@ -15,23 +15,25 @@
 import 'dart:convert' show BASE64;
 import 'package:stack_trace/stack_trace.dart' show Chain;
 
+import 'keyboard.dart';
+import 'logs.dart';
+import 'mouse.dart';
+import 'target_locator.dart';
+import 'timeouts.dart';
+import 'web_element.dart';
+import 'window.dart';
+
+import '../common_spec/navigation.dart';
+import '../common_spec/cookies.dart';
+
 import '../command_event.dart';
 import '../command_processor.dart';
 import '../common.dart';
-import 'keyboard.dart';
-import 'target_locator.dart';
-import 'logs.dart';
-import 'mouse.dart';
-import '../common_spec/navigation.dart';
-import '../common_spec/cookies.dart';
-import 'timeouts.dart';
-import 'web_element.dart';
 import '../target_locator.dart';
 import '../timeouts.dart';
-import '../web_element.dart';
-import 'window.dart';
-import '../window.dart';
 import '../web_driver.dart';
+import '../web_element.dart';
+import '../window.dart';
 
 class JsonWireWebDriver implements WebDriver, SearchContext {
   final CommandProcessor _commandProcessor;

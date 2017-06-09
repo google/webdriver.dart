@@ -13,8 +13,8 @@
 // limitations under the License.
 
 import '../common.dart';
-import '../web_driver.dart';
 import '../timeouts.dart';
+import '../web_driver.dart';
 
 class JsonWireTimeouts extends Timeouts {
   final WebDriver _driver;

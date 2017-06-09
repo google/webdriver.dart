@@ -12,12 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import '../alert.dart';
 import 'alert.dart';
+
+import '../alert.dart';
 import '../common.dart';
+import '../target_locator.dart';
 import '../web_driver.dart';
 import '../window.dart';
-import '../target_locator.dart';
 
 class JsonWireTargetLocator implements TargetLocator {
   final WebDriver _driver;

@@ -12,11 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import 'json_wire_spec/alert.dart';
 import 'alert.dart';
-import 'common.dart';
-import 'web_driver.dart';
-import 'window.dart';
 
 abstract class TargetLocator {
   /// Change focus to another frame on the page.

@@ -15,12 +15,14 @@
 import 'command_event.dart';
 import 'common.dart';
 import 'exception.dart';
+import 'target_locator.dart';
+import 'timeouts.dart';
+import 'web_element.dart';
+import 'window.dart';
+
 import 'common_spec/navigation.dart';
 import 'common_spec/cookies.dart';
-import 'timeouts.dart';
-import 'target_locator.dart';
-import 'window.dart';
-import 'web_element.dart';
+
 import 'json_wire_spec/mouse.dart';
 import 'json_wire_spec/logs.dart';
 import 'json_wire_spec/keyboard.dart';

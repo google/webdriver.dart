@@ -14,9 +14,6 @@
 
 import 'dart:math' show Point, Rectangle;
 
-import 'common.dart';
-import 'web_driver.dart';
-
 /// Interacts with windows.
 abstract class Windows {
   /// Get the current active window.
