@@ -100,13 +100,13 @@ class JsonWireWebElement implements WebElement, SearchContext {
   String get text => _resolver.get('text') as String;
 
   @override
-  JsonWireWebElement findElement(By by) {
+  WebElement findElement(By by) {
     var element = _resolver.post('element', by);
     return new JsonWireWebElement(driver, element[elementStr], this, by);
   }
 
   @override
-  List<JsonWireWebElement> findElements(By by) {
+  List<WebElement> findElements(By by) {
     var elements = _resolver.post('elements', by) as Iterable;
     int i = 0;
     final webElements = new List<WebElement>();

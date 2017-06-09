@@ -41,6 +41,8 @@ export 'package:webdriver/src/sync/window.dart';
 
 final Uri defaultUri = Uri.parse('http://127.0.0.1:4444/wd/hub/');
 
+//TODO(staats): when W3C spec created, infer spec during WebDriver creation.
+
 WebDriver createDriver(CommandProcessor processor,
     {Uri uri, Map<String, dynamic> desired}) {
   if (uri == null) {
