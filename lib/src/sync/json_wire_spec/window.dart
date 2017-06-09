@@ -57,10 +57,17 @@ class JsonWireWindow implements Window {
   }
 
   @override
-  Rectangle<int> get rect => throw 'Not implemented';
+  Rectangle<int> get rect {
+    final curLocation = this.location;
+    final curSize = this.size;
+    return new Rectangle<int>(curLocation.x, curLocation.y, curSize.width, curSize.height);
+  }
 
   @override
-  void set rect(Rectangle<int> location) => throw 'Not implemented';
+  void set rect(Rectangle<int> location) {
+    setSize(location);
+    setLocation(new Point(location.left, location.top));
+  }
 
   @override
   void maximize() {

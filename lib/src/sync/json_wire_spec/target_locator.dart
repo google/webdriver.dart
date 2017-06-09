@@ -12,13 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import 'json_wire_spec/alert.dart';
+import '../alert.dart';
 import 'alert.dart';
-import 'common.dart';
-import 'web_driver.dart';
-import 'window.dart';
+import '../common.dart';
+import '../web_driver.dart';
+import '../window.dart';
+import '../target_locator.dart';
 
-abstract class TargetLocator {
+class JsonWireTargetLocator implements TargetLocator {
+  final WebDriver _driver;
+  final Resolver _resolver;
+
+  JsonWireTargetLocator(this._driver) : _resolver = new Resolver(_driver, '');
 
   /// Change focus to another frame on the page.
   /// If [frame] is a:
@@ -30,7 +35,9 @@ abstract class TargetLocator {
   ///   not provided: selects the first frame on the page or the main document.
   ///
   ///   Throws [NoSuchFrameException] if the specified frame can't be found.
-  void frame([frame]);
+  void frame([frame]) {
+    _resolver.post('frame', {'id': frame});
+  }
 
   /// Switch the focus of void commands for this driver to the window with the
   /// given name/handle.
@@ -38,12 +45,31 @@ abstract class TargetLocator {
   /// Throws [NoSuchWindowException] if the specified window can't be found.
   @Deprecated('Use "Window.setAsActive()". '
       'Selecting by name is not supported by the current W3C spec.')
-  void window(dynamic window);
+  void window(dynamic window) {
+    if (window is Window) {
+      window.setAsActive();
+    } else if (window is String) {
+      _resolver.post('window', {'name': window});
+    } else {
+      throw 'Unsupported type: ${window.runtimeType}';
+    }
+  }
 
   /// Switches to the currently active modal dialog for this particular driver
   /// instance.
   ///
   /// Throws [NoSuchAlertException] if there is not currently an alert.
-  Alert get alert;
+  Alert get alert {
+    var text = _resolver.get('alert_text');
+    return new JsonWireAlert(text, _driver);
+  }
 
+  @override
+  String toString() => '$_driver.switchTo';
+
+  @override
+  int get hashCode => _driver.hashCode;
+
+  @override
+  bool operator ==(other) => other is JsonWireTargetLocator && other._driver == _driver;
 }

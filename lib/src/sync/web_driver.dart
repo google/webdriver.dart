@@ -20,6 +20,7 @@ import 'command_processor.dart';
 import 'common.dart';
 import 'exception.dart';
 import 'json_wire_spec/keyboard.dart';
+import 'json_wire_spec/target_locator.dart';
 import 'json_wire_spec/logs.dart';
 import 'json_wire_spec/mouse.dart';
 import 'common_spec/navigation.dart';
@@ -128,7 +129,9 @@ class WebDriver implements SearchContext {
     return null;
   }
 
-  TargetLocator get switchTo => new TargetLocator(this);
+  Windows get windowsManager => new JsonWireWindows(this);
+
+  TargetLocator get switchTo => new JsonWireTargetLocator(this);
 
   Navigation get navigate => new Navigation(this);
 
