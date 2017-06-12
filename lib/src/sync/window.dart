@@ -1,4 +1,4 @@
-// Copyright 2015 Google Inc. All Rights Reserved.
+// Copyright 2017 Google Inc. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,55 +14,47 @@
 
 import 'dart:math' show Point, Rectangle;
 
-import 'common.dart';
-import 'web_driver.dart';
+/// Interacts with windows.
+abstract class Windows {
+  /// Get the current active window.
+  Window get activeWindow;
 
-class Window {
-  final WebDriver _driver;
-  final Resolver _resolver;
+  /// Get all windows.
+  List<Window> get allWindows;
+}
 
-  final String handle;
+/// Handle to window.
+///
+/// Upon use, the window will automatically be set as active.
+abstract class Window {
+  /// The size of the window.
+  @Deprecated('JSON wire legacy support, emulated for newer browsers')
+  Rectangle<int> get size;
 
-  Window(this._driver, this.handle) :
-        _resolver = new Resolver(_driver, 'window/$handle');
+  /// The location of the window.
+  @Deprecated('JSON wire legacy support, emulated for newer browsers')
+  Point<int> get location;
 
-  /// The size of this window.
-  Rectangle<int> get size {
-    var size = _resolver.get('size');
-    return new Rectangle<int>(
-        0, 0, size['width'].toInt(), size['height'].toInt());
-  }
+  /// The location and size of the window.
+  Rectangle<int> get rect;
 
-  /// The location of this window.
-  Point<int> get location {
-    var point = _resolver.get('position');
-    return new Point<int>(point['x'].toInt(), point['y'].toInt());
-  }
+  /// The location and size of the window.
+  void set rect(Rectangle<int> location);
 
-  /// Maximize this window.
-  void maximize() {
-    _resolver.post('maximize');
-  }
+  /// Maximize the window.
+  void maximize();
 
-  /// Set this window size.
-  void setSize(Rectangle<int> size) {
-    _resolver.post('size', {'width': size.width.toInt(), 'height': size.height.toInt()});
-  }
+  /// Set the window size.
+  @Deprecated('JSON wire legacy support, emulated for newer browsers')
+  void setSize(Rectangle<int> size);
 
-  /// Set this window location.
-  void setLocation(Point<int> point) {
-    _resolver.post('position', {'x': point.x.toInt(), 'y': point.y.toInt()});
-  }
+  /// Set the window location.
+  @Deprecated('JSON wire legacy support, emulated for newer browsers')
+  void setLocation(Point<int> point);
 
-  @override
-  int get hashCode => handle.hashCode * 3 + _driver.hashCode;
+  /// Sets the window as active.
+  void setAsActive();
 
   @override
-  bool operator ==(other) =>
-      other is Window &&
-      other._driver == this._driver &&
-      other.handle == this.handle;
-
-  @override
-  String toString() => '$_driver.windows[$handle]';
+  bool operator ==(other);
 }

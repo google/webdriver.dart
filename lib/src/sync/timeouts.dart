@@ -12,26 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-class WebDriverCommandEvent {
-  final String method;
-  final String endPoint;
-  final params;
-  final StackTrace stackTrace;
-  final DateTime startTime;
-  final DateTime endTime;
-  final exception;
-  final result;
+/// Sets WebDriver timeouts.
+abstract class Timeouts {
+  /// Set the script timeout.
+  void setScriptTimeout(Duration duration);
 
-  WebDriverCommandEvent(
-      {this.method,
-      this.endPoint,
-      this.params,
-      this.startTime,
-      this.endTime,
-      this.exception,
-      this.result,
-      this.stackTrace});
+  /// Set the implicit timeout.
+  void setImplicitTimeout(Duration duration);
 
-  String toString() => '[$startTime - $endTime] $method $endPoint($params) => '
-      '${exception != null ? exception : result}';
+  /// Set the page load timeout.
+  void setPageLoadTimeout(Duration duration);
 }

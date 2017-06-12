@@ -1,4 +1,4 @@
-// Copyright 2015 Google Inc. All Rights Reserved.
+// Copyright 2017 Google Inc. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import 'common.dart';
-import 'web_driver.dart';
+import '../common.dart';
+import '../web_driver.dart';
 
 class Logs {
   final WebDriver _driver;
@@ -22,7 +22,7 @@ class Logs {
   Logs(this._driver) : _resolver = new Resolver(_driver, 'log');
 
   List<LogEntry> get(String logType) {
-    var entries = _resolver.post('', {'type': logType}) as List<Map>;
+    final entries = _resolver.post('', {'type': logType}) as List<Map>;
     return entries.map((e) => new LogEntry.fromMap(e)).toList();
   }
 

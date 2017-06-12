@@ -1,4 +1,4 @@
-// Copyright 2015 Google Inc. All Rights Reserved.
+// Copyright 2017 Google Inc. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,42 +12,26 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import 'common.dart';
-import 'web_driver.dart';
-
-/// A JavaScript alert(), confirm(), or prompt() dialog
-class Alert {
+/// A JavaScript alert(), confirm(), or prompt() dialog.
+abstract class Alert {
   /// The text of the JavaScript alert(), confirm(), or prompt() dialog.
-  final String text;
-  final WebDriver _driver;
-  final Resolver _resolver;
-
-  Alert(this.text, this._driver) : _resolver = new Resolver(_driver, '');
+  String get text;
 
   /// Accepts the currently displayed alert (may not be the alert for which this
   /// object was created).
   ///
   ///  Throws [NoSuchAlertException] if there isn't currently an alert.
-  void accept() {
-    _resolver.post('accept_alert');
-  }
+  void accept();
 
   /// Dismisses the currently displayed alert (may not be the alert for which
   /// this object was created).
   ///
   ///  Throws [NoSuchAlertException] if there isn't currently an alert.
-  void dismiss() {
-    _resolver.post('dismiss_alert');
-  }
+  void dismiss();
 
   /// Sends keys to the currently displayed alert (may not be the alert for
   /// which this object was created).
   ///
   /// Throws [NoSuchAlertException] if there isn't currently an alert
-  void sendKeys(String keysToSend) {
-    _resolver.post('alert_text', {'text': keysToSend});
-  }
-
-  @override
-  String toString() => '$_driver.switchTo.alert[$text]';
+  void sendKeys(String keysToSend);
 }

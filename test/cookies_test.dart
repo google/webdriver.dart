@@ -83,27 +83,5 @@ void main() {
       driver.cookies.deleteAll();
       expect(driver.cookies.all.toList(), isEmpty);
     }, skip: 'unreliable');
-  });
-
-  group('TimeOuts', () {
-    WebDriver driver;
-
-    setUp(() {
-      driver = config.createTestDriver();
-    });
-
-    tearDown(() {
-      if (driver != null) {
-        driver.quit();
-      }
-      driver = null;
-    });
-
-    // TODO(DrMarcII): Figure out how to tell if timeouts are correctly set
-    test('set all timeouts', () {
-      driver.timeouts.setScriptTimeout(new Duration(seconds: 5));
-      driver.timeouts.setImplicitTimeout(new Duration(seconds: 1));
-      driver.timeouts.setPageLoadTimeout(new Duration(seconds: 10));
-    });
   }, timeout: new Timeout(new Duration(minutes: 1)));
 }

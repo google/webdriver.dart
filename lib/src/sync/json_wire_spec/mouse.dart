@@ -1,4 +1,4 @@
-// Copyright 2015 Google Inc. All Rights Reserved.
+// Copyright 2017 Google Inc. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import 'common.dart';
-import 'web_driver.dart';
-import 'web_element.dart';
+import '../common.dart';
+import '../web_driver.dart';
+import '../web_element.dart';
 
 class MouseButton {
   /// The primary button is usually the left button or the only button on
@@ -45,7 +45,7 @@ class Mouse {
 
   /// Click any mouse button (at the coordinates set by the last moveTo).
   void click([MouseButton button]) {
-    var json = {};
+    final json = {};
     if (button is MouseButton) {
       json['button'] = button.value;
     }
@@ -55,7 +55,7 @@ class Mouse {
   /// Click and hold any mouse button (at the coordinates set by the last
   /// moveTo command).
   void down([MouseButton button]) {
-    var json = {};
+    final json = {};
     if (button is MouseButton) {
       json['button'] = button.value;
     }
@@ -64,7 +64,7 @@ class Mouse {
 
   /// Releases the mouse button previously held (where the mouse is currently at).
   void up([MouseButton button]) {
-    var json = {};
+    final json = {};
     if (button is MouseButton) {
       json['button'] = button.value;
     }
@@ -88,7 +88,7 @@ class Mouse {
   /// the top-left corner of the [element].
   /// All other combinations of parameters are illegal.
   void moveTo({WebElement element, int xOffset, int yOffset}) {
-    var json = {};
+    final json = {};
     if (element is WebElement) {
       json['element'] = element.id;
     }

@@ -1,4 +1,4 @@
-// Copyright 2015 Google Inc. All Rights Reserved.
+// Copyright 2017 Google Inc. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,8 +19,9 @@ const String elementStr = 'ELEMENT';
 
 /// Simple class to provide access to indexed properties such as WebElement
 /// attributes or css styles.
-class Attributes  {
+class Attributes {
   final Resolver _resolver;
+
   Attributes(driver, command) : _resolver = new Resolver(driver, command);
 
   String operator [](String name) => _resolver.get(name) as String;

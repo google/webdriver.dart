@@ -1,4 +1,4 @@
-// Copyright 2015 Google Inc. All Rights Reserved.
+// Copyright 2017 Google Inc. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,139 +17,81 @@ import 'dart:math' show Point, Rectangle;
 import 'common.dart';
 import 'web_driver.dart';
 
-class WebElement implements SearchContext {
-  final String _elementPrefix;
-  final Resolver _resolver;
-
-  final String id;
+/// WebDriver representation and interactions with an HTML element.
+abstract class WebElement implements SearchContext {
+  String get id;
 
   /// The context from which this element was found.
-  final SearchContext context;
+  SearchContext get context;
 
-  final WebDriver driver;
+  WebDriver get driver;
 
   /// How the element was located from the context.
-  final dynamic /* String | Finder */ locator;
+  dynamic /* String | Finder */ get locator;
 
   /// The index of this element in the set of element founds. If the method
   /// used to find this element always returns one element, then this is null.
-  final int index;
-
-  WebElement(this.driver, id, [this.context, this.locator, this.index])
-      : this.id = id,
-        _elementPrefix = 'element/$id',
-        _resolver = new Resolver(driver, 'element/$id');
+  int get index;
 
   /// Click on this element.
-  void click() {
-    _resolver.post('click');
-  }
+  void click();
 
   /// Submit this element if it is part of a form.
-  void submit() {
-    _resolver.post('submit');
-  }
+  void submit();
 
   /// Send [keysToSend] to this element.
-  void sendKeys(String keysToSend) {
-    _resolver.post('value', {
-      'value': [keysToSend]
-    });
-  }
+  void sendKeys(String keysToSend);
 
   /// Clear the content of a text element.
-  void clear() {
-    _resolver.post('clear');
-  }
+  void clear();
 
   /// Is this radio button/checkbox selected?
-  bool get selected => _resolver.get('selected') as bool;
+  bool get selected;
 
   /// Is this form element enabled?
-  bool get enabled => _resolver.get('enabled') as bool;
+  bool get enabled;
 
   /// Is this element visible in the page?
-  bool get displayed => _resolver.get('displayed') as bool;
+  bool get displayed;
 
-  /// The location within the document of this element.
-  Point get location {
-    var point = _resolver.get('location');
-    return new Point<int>(point['x'].toInt(), point['y'].toInt());
-  }
+  /// The location of the element.
+  ///
+  /// This is assumed to be the upper left corner of the element, but its
+  /// implementation is not well defined in the JSON spec.
+  @Deprecated('JSON wire legacy support, emulated for newer browsers')
+  Point get location;
 
   /// The size of this element.
-  Rectangle<int> get size {
-    var size = _resolver.get('size');
-    return new Rectangle<int>(
-        0, 0, size['width'].toInt(), size['height'].toInt());
-  }
+  @Deprecated('JSON wire legacy support, emulated for newer browsers')
+  Rectangle<int> get size;
+
+  /// The bounds of this element.
+  ///
+  /// This the W3C spec compatible approach.
+  Rectangle<int> get rect;
 
   /// The tag name for this element.
-  String get name => _resolver.get('name') as String;
+  String get name;
 
   ///  Visible text within this element.
-  String get text => _resolver.get('text') as String;
+  String get text;
 
   ///Find an element nested within this element.
   ///
   /// Throws [NoSuchElementException] if matching element is not found.
-  WebElement findElement(By by) {
-    var element = _resolver.post('element', by);
-    return new WebElement(driver, element[elementStr], this, by);
-  }
+  WebElement findElement(By by);
 
   /// Find multiple elements nested within this element.
-  List<WebElement> findElements(By by) {
-    var elements = _resolver.post('elements', by) as Iterable;
-    int i = 0;
-    final webElements = new List<WebElement>();
-    for (var element in elements) {
-      webElements
-          .add(new WebElement(driver, element[elementStr], this, by, i++));
-    }
-    return webElements;
-  }
+  List<WebElement> findElements(By by);
 
   /// Access to the HTML attributes of this tag.
-  ///
-  /// TODO(DrMarcII): consider special handling of boolean attributes.
-  Attributes get attributes => new Attributes(driver, '$_elementPrefix/attribute');
+  Attributes get attributes;
 
   /// Access to the cssProperties of this element.
-  ///
-  /// TODO(DrMarcII): consider special handling of color and possibly other
-  /// properties.
-  Attributes get cssProperties => new Attributes(driver, '$_elementPrefix/css');
+  Attributes get cssProperties;
 
-  /// Does this element represent the same element as another element?
-  /// Not the same as ==
-  bool equals(WebElement other) => _resolver.get('equals/${other.id}') as bool;
+  /// Are these two elements the same underlying element in the DOM.
+  bool equals(WebElement other);
 
-  Map<String, String> toJson() => {elementStr: id};
-
-  @override
-  int get hashCode => driver.hashCode * 3 + id.hashCode;
-
-  @override
-  bool operator ==(other) =>
-      other is WebElement && other.driver == this.driver && other.id == this.id;
-
-  @override
-  String toString() {
-    var out = new StringBuffer()..write(context);
-    if (locator is By) {
-      if (index == null) {
-        out..write('.findElement(');
-      } else {
-        out..write('.findElements(');
-      }
-      out..write(locator)..write(')');
-    } else {
-      out..write('.')..write(locator);
-    }
-    if (index != null) {
-      out..write('[')..write(index)..write(']');
-    }
-    return out.toString();
-  }
+  Map<String, String> toJson();
 }

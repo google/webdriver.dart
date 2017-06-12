@@ -1,4 +1,4 @@
-// Copyright 2015 Google Inc. All Rights Reserved.
+// Copyright 2017 Google Inc. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -25,8 +25,8 @@ abstract class WebDriverException implements Exception {
   factory WebDriverException(
       {int httpStatusCode, String httpReasonPhrase, dynamic jsonResp}) {
     if (jsonResp is Map) {
-      var status = jsonResp['status'];
-      var message = jsonResp['value']['message'];
+      final status = jsonResp['status'];
+      final message = jsonResp['value']['message'];
 
       switch (status) {
         case 0:
