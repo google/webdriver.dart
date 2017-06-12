@@ -25,7 +25,7 @@ typedef WebDriver createTestDriver(
     {Map<String, dynamic> additionalCapabilities});
 
 final Uri _defaultChromeUri = Uri.parse('http://127.0.0.1:4444/wd/hub/');
-final Uri _defaultFirefoxUri = Uri.parse('http://127.0.0.1:4444/');
+final Uri _defaultFirefoxUri = Uri.parse('http://127.0.0.1:4445/');
 
 /// TODO(staats): this needs to be the W3C spec.
 WebDriver createFirefoxTestDriver(

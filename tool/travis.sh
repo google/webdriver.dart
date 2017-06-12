@@ -25,7 +25,11 @@ fi
 
 # Start chromedriver.
 chromedriver --port=4444 --url-base=wd/hub &
-PID=$!
+PIDC=$!
+
+# Start geckodriver (Firefox).
+geckodriver --port=4445 &
+PIDG=$!
 
 # Run tests.
 pub run test -r expanded -p vm -j 1
@@ -34,7 +38,8 @@ if [[ $TEST_STATUS -ne 0 ]]; then
   STATUS=$TEST_STATUS
 fi
 
-# Exit chromedriver.
-kill $PID
+# Exit chromedriver and geckodriver.
+kill $PIDC
+kill $PIDG
 
 exit $STATUS
