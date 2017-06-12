@@ -24,6 +24,19 @@ export '../test_util.dart';
 typedef WebDriver createTestDriver(
     {Map<String, dynamic> additionalCapabilities});
 
+final Uri _defaultChromeUri = Uri.parse('http://127.0.0.1:4444/wd/hub/');
+final Uri _defaultFirefoxUri = Uri.parse('http://127.0.0.1:4444/');
+
+WebDriver createFirefoxTestDriver(
+    {Map<String, dynamic> additionalCapabilities}) {
+  final capabilities = Capabilities.firefox;
+
+  if (additionalCapabilities != null) {
+    capabilities.addAll(additionalCapabilities);
+  }
+  return createDriver(uri:_defaultFirefoxUri, desired: capabilities);
+}
+
 WebDriver createChromeTestDriver(
     {Map<String, dynamic> additionalCapabilities}) {
   var capabilities = Capabilities.chrome;
@@ -47,5 +60,5 @@ WebDriver createChromeTestDriver(
     capabilities.addAll(additionalCapabilities);
   }
 
-  return createDriver(desired: additionalCapabilities);
+  return createDriver(uri:_defaultChromeUri, desired: additionalCapabilities);
 }
