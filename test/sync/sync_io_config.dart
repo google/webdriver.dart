@@ -35,7 +35,7 @@ WebDriver createFirefoxTestDriver(
   if (additionalCapabilities != null) {
     capabilities.addAll(additionalCapabilities);
   }
-  return createDriver(uri:_defaultFirefoxUri, desired: capabilities);
+  return createDriver(uri: _defaultFirefoxUri, desired: capabilities);
 }
 
 WebDriver createChromeTestDriver(
@@ -61,5 +61,5 @@ WebDriver createChromeTestDriver(
     capabilities.addAll(additionalCapabilities);
   }
 
-  return createDriver(uri:_defaultChromeUri, desired: additionalCapabilities);
+  return createDriver(uri: _defaultChromeUri, desired: additionalCapabilities);
 }
