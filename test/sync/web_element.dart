@@ -20,7 +20,7 @@ import 'package:webdriver/sync_core.dart';
 
 import 'sync_io_config.dart' as config;
 
-void main() {
+void runTests(config.createTestDriver createTestDriver) {
   group('WebElement', () {
     WebDriver driver;
     WebElement table;
@@ -32,7 +32,7 @@ void main() {
     WebElement invisible;
 
     setUp(() {
-      driver = config.createTestDriver();
+      driver = createTestDriver();
       driver.get(config.testPagePath);
       table = driver.findElement(const By.tagName('table'));
       button = driver.findElement(const By.tagName('button'));

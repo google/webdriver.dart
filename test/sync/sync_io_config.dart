@@ -19,9 +19,11 @@ import 'dart:io' show Platform;
 import 'package:webdriver/sync_core.dart' show Capabilities, WebDriver;
 import 'package:webdriver/sync_io.dart' show createDriver;
 
-export 'test_util.dart';
+export '../test_util.dart';
 
-WebDriver createTestDriver({Map<String, dynamic> additionalCapabilities}) {
+typedef WebDriver createTestDriver({Map<String, dynamic> additionalCapabilities});
+
+WebDriver createChromeTestDriver({Map<String, dynamic> additionalCapabilities}) {
   var capabilities = Capabilities.chrome;
   Map env = Platform.environment;
 

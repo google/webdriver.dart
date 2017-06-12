@@ -20,12 +20,12 @@ import 'package:webdriver/sync_core.dart';
 
 import 'sync_io_config.dart' as config;
 
-void main() {
+void runTests(config.createTestDriver createTestDriver) {
   group('Cookies', () {
     WebDriver driver;
 
     setUp(() {
-      driver = config.createTestDriver();
+      driver = createTestDriver();
       driver.get('http://www.google.com/ncr');
     });
 

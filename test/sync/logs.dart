@@ -20,7 +20,7 @@ import 'package:webdriver/sync_core.dart';
 
 import 'sync_io_config.dart' as config;
 
-void main() {
+void runTests(config.createTestDriver createTestDriver) {
   group('Logs', () {
     WebDriver driver;
 
@@ -29,7 +29,7 @@ void main() {
         Capabilities.loggingPrefs: {LogType.performance: LogLevel.info}
       };
 
-      driver = config.createTestDriver(additionalCapabilities: capabilities);
+      driver = createTestDriver(additionalCapabilities: capabilities);
       driver.get(config.testPagePath);
     });
 

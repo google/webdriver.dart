@@ -13,20 +13,19 @@
 // limitations under the License.
 
 @TestOn("vm")
-library webdriver.navigation_test;
+library webdriver.options_test;
 
 import 'package:test/test.dart';
 import 'package:webdriver/sync_core.dart';
 
 import 'sync_io_config.dart' as config;
 
-void main() {
-  group('Navigation', () {
+void runTests(config.createTestDriver createTestDriver) {
+  group('TimeOuts', () {
     WebDriver driver;
 
     setUp(() {
-      driver = config.createTestDriver();
-      driver.get(config.testPagePath);
+      driver = createTestDriver();
     });
 
     tearDown(() {
@@ -36,15 +35,11 @@ void main() {
       driver = null;
     });
 
-    test('refresh', () {
-      var element = driver.findElement(const By.tagName('button'));
-      driver.navigate.refresh();
-      try {
-        element.name;
-      } on StaleElementReferenceException {
-        return true;
-      }
-      return 'expected StaleElementReferenceException';
+    // TODO(DrMarcII): Figure out how to tell if timeouts are correctly set
+    test('set all timeouts', () {
+      driver.timeouts.setScriptTimeout(new Duration(seconds: 5));
+      driver.timeouts.setImplicitTimeout(new Duration(seconds: 1));
+      driver.timeouts.setPageLoadTimeout(new Duration(seconds: 10));
     });
   }, timeout: new Timeout(new Duration(minutes: 1)));
 }

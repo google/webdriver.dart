@@ -22,7 +22,7 @@ import 'package:webdriver/sync_core.dart';
 
 import 'sync_io_config.dart' as config;
 
-void main() {
+void runTests(config.createTestDriver createTestDriver) {
   group('Keyboard', () {
     WebDriver driver;
     WebElement textInput;
@@ -35,7 +35,7 @@ void main() {
         ctrlCmdKey = Keyboard.control;
       }
 
-      driver = config.createTestDriver();
+      driver = createTestDriver();
       driver.get(config.testPagePath);
       textInput = driver.findElement(const By.cssSelector('input[type=text]'));
       textInput.click();
