@@ -24,13 +24,13 @@ import 'sync_io_config.dart' as config;
  * Tests for switchTo.frame(). switchTo.window() and switchTo.alert are tested
  * in other classes.
  */
-void main() {
+void runTests(config.createTestDriver createTestDriver) {
   group('TargetLocator', () {
     WebDriver driver;
     WebElement frame;
 
     setUp(() {
-      driver = config.createTestDriver();
+      driver = createTestDriver();
       driver.get(config.testPagePath);
       frame = driver.findElement(const By.name('frame'));
     });
