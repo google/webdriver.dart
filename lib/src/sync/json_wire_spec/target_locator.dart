@@ -36,6 +36,7 @@ class JsonWireTargetLocator implements TargetLocator {
   ///   not provided: selects the first frame on the page or the main document.
   ///
   ///   Throws [NoSuchFrameException] if the specified frame can't be found.
+  @override
   void frame([frame]) {
     _resolver.post('frame', {'id': frame});
   }
@@ -46,6 +47,7 @@ class JsonWireTargetLocator implements TargetLocator {
   /// Throws [NoSuchWindowException] if the specified window can't be found.
   @Deprecated('Use "Window.setAsActive()". '
       'Selecting by name is not supported by the current W3C spec.')
+  @override
   void window(dynamic window) {
     if (window is Window) {
       window.setAsActive();
@@ -60,6 +62,7 @@ class JsonWireTargetLocator implements TargetLocator {
   /// instance.
   ///
   /// Throws [NoSuchAlertException] if there is not currently an alert.
+  @override
   Alert get alert {
     final text = _resolver.get('alert_text');
     return new JsonWireAlert(text, _driver);
