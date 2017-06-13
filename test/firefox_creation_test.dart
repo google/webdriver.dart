@@ -12,38 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-library webdriver.support.async_test;
-
 import 'package:test/test.dart';
-import 'package:webdriver/sync_io.dart';
 
-import 'sync_io_config.dart' as config;
+import 'sync/sync_io_config.dart' as config;
 
 void main() {
-  group('Sync IO', () {
-    WebDriver driver;
-
-    setUp(() {
-      driver = config.createTestDriver();
-    });
-
-    tearDown(() {
-      if (driver != null) {
-        driver.quit();
+  group('Firefox creation ', () {
+    test('fails as expected', () {
+      try {
+        final driver = config.createFirefoxTestDriver();
+        fail('Still using JSON wire spec, should not parse correctly.');
+      } catch (e) {
+        // Expected.
       }
-      driver = null;
-    });
-
-    test('can do basic post', () {
-      driver.get(config.testPagePath); // This is POST to WebDriver.
-    });
-
-    test('can do basic get', () {
-      driver.title; // This is a GET request.
-    });
-
-    test('can do basic delete', () {
-      driver.close(); // This is a DELETE request.
     });
   }, timeout: new Timeout(new Duration(minutes: 1)));
 }

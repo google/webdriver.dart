@@ -19,9 +19,27 @@ import 'dart:io' show Platform;
 import 'package:webdriver/sync_core.dart' show Capabilities, WebDriver;
 import 'package:webdriver/sync_io.dart' show createDriver;
 
-export 'test_util.dart';
+export '../test_util.dart';
 
-WebDriver createTestDriver({Map<String, dynamic> additionalCapabilities}) {
+typedef WebDriver createTestDriver(
+    {Map<String, dynamic> additionalCapabilities});
+
+final Uri _defaultChromeUri = Uri.parse('http://127.0.0.1:4444/wd/hub/');
+final Uri _defaultFirefoxUri = Uri.parse('http://127.0.0.1:4445/');
+
+/// TODO(staats): this needs to be the W3C spec.
+WebDriver createFirefoxTestDriver(
+    {Map<String, dynamic> additionalCapabilities}) {
+  final capabilities = Capabilities.firefox;
+
+  if (additionalCapabilities != null) {
+    capabilities.addAll(additionalCapabilities);
+  }
+  return createDriver(uri: _defaultFirefoxUri, desired: capabilities);
+}
+
+WebDriver createChromeTestDriver(
+    {Map<String, dynamic> additionalCapabilities}) {
   var capabilities = Capabilities.chrome;
   Map env = Platform.environment;
 
@@ -43,5 +61,5 @@ WebDriver createTestDriver({Map<String, dynamic> additionalCapabilities}) {
     capabilities.addAll(additionalCapabilities);
   }
 
-  return createDriver(desired: additionalCapabilities);
+  return createDriver(uri: _defaultChromeUri, desired: additionalCapabilities);
 }

@@ -22,12 +22,12 @@ import 'package:webdriver/sync_core.dart';
 
 import 'sync_io_config.dart' as config;
 
-void main() {
+void runTests(config.createTestDriver createTestDriver) {
   group('Window', () {
     WebDriver driver;
 
     setUp(() {
-      driver = config.createTestDriver();
+      driver = createTestDriver();
     });
 
     tearDown(() {

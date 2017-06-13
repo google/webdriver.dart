@@ -1,4 +1,4 @@
-// Copyright 2015 Google Inc. All Rights Reserved.
+// Copyright 2017 Google Inc. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,21 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-@TestOn("vm")
-library webdriver.navigation_test;
+library webdriver.support.async_test;
 
 import 'package:test/test.dart';
-import 'package:webdriver/sync_core.dart';
+import 'package:webdriver/sync_io.dart';
 
 import 'sync_io_config.dart' as config;
 
-void main() {
-  group('Navigation', () {
+void runTests(config.createTestDriver createTestDriver) {
+  group('Sync IO', () {
     WebDriver driver;
 
     setUp(() {
-      driver = config.createTestDriver();
-      driver.get(config.testPagePath);
+      driver = createTestDriver();
     });
 
     tearDown(() {
@@ -36,15 +34,16 @@ void main() {
       driver = null;
     });
 
-    test('refresh', () {
-      var element = driver.findElement(const By.tagName('button'));
-      driver.navigate.refresh();
-      try {
-        element.name;
-      } on StaleElementReferenceException {
-        return true;
-      }
-      return 'expected StaleElementReferenceException';
+    test('can do basic post', () {
+      driver.get(config.testPagePath); // This is POST to WebDriver.
+    });
+
+    test('can do basic get', () {
+      driver.title; // This is a GET request.
+    });
+
+    test('can do basic delete', () {
+      driver.close(); // This is a DELETE request.
     });
   }, timeout: new Timeout(new Duration(minutes: 1)));
 }

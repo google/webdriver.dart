@@ -20,11 +20,11 @@ import 'package:webdriver/sync_core.dart';
 
 import 'sync_io_config.dart' as config;
 
-void main() {
+void runTests(config.createTestDriver createTestDriver) {
   group('WebDriver', () {
     group('create', () {
       test('default', () {
-        WebDriver driver = config.createTestDriver();
+        WebDriver driver = createTestDriver();
         driver.get(config.testPagePath);
         var element = driver.findElement(const By.tagName('button'));
         expect(element.name, 'button');
@@ -36,7 +36,7 @@ void main() {
       WebDriver driver;
 
       setUp(() {
-        driver = config.createTestDriver();
+        driver = createTestDriver();
         driver.get(config.testPagePath);
       });
 

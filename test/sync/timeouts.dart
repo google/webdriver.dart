@@ -13,24 +13,19 @@
 // limitations under the License.
 
 @TestOn("vm")
-library webdriver.logs_test;
+library webdriver.options_test;
 
 import 'package:test/test.dart';
 import 'package:webdriver/sync_core.dart';
 
 import 'sync_io_config.dart' as config;
 
-void main() {
-  group('Logs', () {
+void runTests(config.createTestDriver createTestDriver) {
+  group('TimeOuts', () {
     WebDriver driver;
 
     setUp(() {
-      Map<String, dynamic> capabilities = {
-        Capabilities.loggingPrefs: {LogType.performance: LogLevel.info}
-      };
-
-      driver = config.createTestDriver(additionalCapabilities: capabilities);
-      driver.get(config.testPagePath);
+      driver = createTestDriver();
     });
 
     tearDown(() {
@@ -40,12 +35,11 @@ void main() {
       driver = null;
     });
 
-    test('get logs', () {
-      List<LogEntry> logs = driver.logs.get(LogType.performance).toList();
-      expect(logs.length, greaterThan(0));
-      logs.forEach((entry) {
-        expect(entry.level, equals(LogLevel.info));
-      });
+    // TODO(DrMarcII): Figure out how to tell if timeouts are correctly set
+    test('set all timeouts', () {
+      driver.timeouts.setScriptTimeout(new Duration(seconds: 5));
+      driver.timeouts.setImplicitTimeout(new Duration(seconds: 1));
+      driver.timeouts.setPageLoadTimeout(new Duration(seconds: 10));
     });
   }, timeout: new Timeout(new Duration(minutes: 1)));
 }

@@ -13,22 +13,24 @@
 // limitations under the License.
 
 @TestOn("vm")
-library webdriver.mouse_test;
+library webdriver.alert_test;
 
 import 'package:test/test.dart';
 import 'package:webdriver/sync_core.dart';
 
 import 'sync_io_config.dart' as config;
 
-void main() {
-  group('Mouse', () {
+void runTests(config.createTestDriver createTestDriver) {
+  group('Alert', () {
     WebDriver driver;
     WebElement button;
+    WebElement output;
 
     setUp(() {
-      driver = config.createTestDriver();
+      driver = createTestDriver();
       driver.get(config.testPagePath);
       button = driver.findElement(const By.tagName('button'));
+      output = driver.findElement(const By.id('settable'));
     });
 
     tearDown(() {
@@ -38,43 +40,40 @@ void main() {
       driver = null;
     });
 
-    test('moveTo element/click', () {
-      driver.mouse.moveTo(element: button);
-      driver.mouse.click();
+    test('no alert', () {
+      try {
+        driver.switchTo.alert;
+        fail('Expected exception on no alert');
+      } on NoSuchAlertException {}
+    });
+
+    test('text', () {
+      button.click();
       var alert = driver.switchTo.alert;
+      expect(alert.text, 'button clicked');
       alert.dismiss();
     });
 
-    test('moveTo coordinates/click', () {
-      var pos = button.location;
-      driver.mouse.moveTo(xOffset: pos.x + 5, yOffset: pos.y + 5);
-      driver.mouse.click();
+    test('accept', () {
+      button.click();
       var alert = driver.switchTo.alert;
-      alert.dismiss();
+      alert.accept();
+      expect(output.text, startsWith('accepted'));
     });
 
-    test('moveTo element coordinates/click', () {
-      driver.mouse.moveTo(element: button, xOffset: 5, yOffset: 5);
-      driver.mouse.click();
+    test('dismiss', () {
+      button.click();
       var alert = driver.switchTo.alert;
       alert.dismiss();
+      expect(output.text, startsWith('dismissed'));
     });
 
-    // TODO(DrMarcII): Better up/down tests
-    test('down/up', () {
-      driver.mouse.moveTo(element: button);
-      driver.mouse.down();
-      driver.mouse.up();
-      var alert = driver.switchTo.alert;
-      alert.dismiss();
-    });
-
-    // TODO(DrMarcII): Better double click test
-    test('doubleClick', () {
-      driver.mouse.moveTo(element: button);
-      driver.mouse.doubleClick();
-      var alert = driver.switchTo.alert;
-      alert.dismiss();
+    test('sendKeys', () {
+      button.click();
+      Alert alert = driver.switchTo.alert;
+      alert.sendKeys('some keys');
+      alert.accept();
+      expect(output.text, endsWith('some keys'));
     });
   }, timeout: new Timeout(new Duration(minutes: 1)));
 }
