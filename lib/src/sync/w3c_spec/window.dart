@@ -45,6 +45,7 @@ class W3cWindow implements Window {
       : _windowResolver = new Resolver(_driver, 'window'),
         _session = new Resolver(_driver, '');
 
+  // TODO(staats): better exceptions.
   @override
   Rectangle<int> get size =>
       throw 'Unsupported by W3C spec, use "rect" instead.';
