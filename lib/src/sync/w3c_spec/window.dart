@@ -46,27 +46,35 @@ class W3cWindow implements Window {
         _session = new Resolver(_driver, '');
 
   @override
-  Rectangle<int> get size => throw 'Unsupported by W3C spec, use "rect" instead.';
+  Rectangle<int> get size =>
+      throw 'Unsupported by W3C spec, use "rect" instead.';
 
   @override
-  Point<int> get location => throw 'Unsupported by W3C spec, use "rect" instead.';
+  Point<int> get location =>
+      throw 'Unsupported by W3C spec, use "rect" instead.';
 
   @override
-  void setSize(Rectangle<int> size) => throw 'Unsupported by W3C spec, use "rect" instead.';
+  void setSize(Rectangle<int> size) =>
+      throw 'Unsupported by W3C spec, use "rect" instead.';
 
   @override
-  void setLocation(Point<int> point) => throw 'Unsupported by W3C spec, use "rect" instead.';
+  void setLocation(Point<int> point) =>
+      throw 'Unsupported by W3C spec, use "rect" instead.';
 
   @override
   Rectangle<int> get rect {
     final rect = _windowResolver.get('rect');
-    return new Rectangle(rect['x'].toInt(), rect['y'].toInt(), rect['width'].toInt(), rect['height'].toInt());
+    return new Rectangle(rect['x'].toInt(), rect['y'].toInt(),
+        rect['width'].toInt(), rect['height'].toInt());
   }
 
   @override
-  void set rect(Rectangle<int> location) =>
-    _windowResolver.post('rect', {'x' : location.left, 'y':
-    location.top, 'width': location.width, 'height' : location.height});
+  void set rect(Rectangle<int> location) => _windowResolver.post('rect', {
+        'x': location.left,
+        'y': location.top,
+        'width': location.width,
+        'height': location.height
+      });
 
   @override
   void maximize() => _windowResolver.post('maximize');

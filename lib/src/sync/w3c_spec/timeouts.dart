@@ -20,8 +20,7 @@ class W3cTimeouts extends Timeouts {
   final WebDriver _driver;
   final Resolver _resolver;
 
-  W3cTimeouts(this._driver)
-      : _resolver = new Resolver(_driver, 'timeouts');
+  W3cTimeouts(this._driver) : _resolver = new Resolver(_driver, 'timeouts');
 
   void _set(String type, Duration duration) =>
       _resolver.post('', {type: duration.inMilliseconds});
@@ -42,6 +41,5 @@ class W3cTimeouts extends Timeouts {
   int get hashCode => _driver.hashCode;
 
   @override
-  bool operator ==(other) =>
-      other is W3cTimeouts && other._driver == _driver;
+  bool operator ==(other) => other is W3cTimeouts && other._driver == _driver;
 }

@@ -17,11 +17,10 @@ import '../common.dart';
 import '../web_driver.dart';
 
 class W3cAlert implements Alert {
-
   final WebDriver _driver;
   final Resolver _resolver;
 
-  W3cAlert(this._driver): _resolver = new Resolver(_driver, 'alert');
+  W3cAlert(this._driver) : _resolver = new Resolver(_driver, 'alert');
 
   @override
   String get text => _resolver.get('text');
@@ -33,7 +32,8 @@ class W3cAlert implements Alert {
   void dismiss() => _resolver.post('dismiss');
 
   @override
-  void sendKeys(String keysToSend) => _resolver.post('text', {'value': keysToSend});
+  void sendKeys(String keysToSend) =>
+      _resolver.post('text', {'value': keysToSend});
 
   @override
   String toString() => '$_driver.switchTo.alert[$text]';
