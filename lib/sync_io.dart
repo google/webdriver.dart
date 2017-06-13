@@ -18,8 +18,7 @@ import 'dart:convert' show JSON;
 import 'dart:io' show ContentType, HttpHeaders;
 
 import 'package:sync_http/sync_http.dart';
-import 'package:webdriver/sync_core.dart' as core
-    show createDriver, fromExistingSession, WebDriver;
+import 'package:webdriver/sync_core.dart' as core;
 import 'package:webdriver/src/sync/command_processor.dart'
     show CommandProcessor;
 import 'package:webdriver/src/sync/exception.dart' show WebDriverException;
@@ -32,16 +31,16 @@ export 'package:webdriver/sync_core.dart'
 /// Note: WebDriver endpoints will be constructed using [resolve] against
 /// [uri]. Therefore, if [uri] does not end with a trailing slash, the
 /// last path component will be dropped.
-core.WebDriver createDriver({Uri uri, Map<String, dynamic> desired}) =>
-    core.createDriver(new IOCommandProcessor(), uri: uri, desired: desired);
+core.WebDriver createDriver({Uri uri, Map<String, dynamic> desired, core.WebDriverSpec spec = core.WebDriverSpec.JsonWire}) =>
+    core.createDriver(new IOCommandProcessor(), uri: uri, desired: desired, spec: spec);
 
 /// Creates a WebDriver instance connected to an existing session.
 ///
 /// Note: WebDriver endpoints will be constructed using [resolve] against
 /// [uri]. Therefore, if [uri] does not end with a trailing slash, the
 /// last path component will be dropped.
-core.WebDriver fromExistingSession(String sessionId, {Uri uri}) =>
-    core.fromExistingSession(new IOCommandProcessor(), sessionId, uri: uri);
+core.WebDriver fromExistingSession(String sessionId, {Uri uri, core.WebDriverSpec spec = core.WebDriverSpec.JsonWire}) =>
+    core.fromExistingSession(new IOCommandProcessor(), sessionId, uri: uri, spec: spec);
 
 final ContentType _contentTypeJson =
     new ContentType("application", "json", charset: "utf-8");

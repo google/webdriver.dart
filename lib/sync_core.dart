@@ -21,6 +21,8 @@ import 'package:webdriver/src/sync/command_processor.dart'
     show CommandProcessor;
 import 'package:webdriver/src/sync/web_driver.dart' show WebDriver;
 import 'package:webdriver/src/sync/json_wire_spec/web_driver.dart' as jwire;
+import 'package:webdriver/src/sync/w3c_spec/web_driver.dart' as w3c;
+
 
 export 'package:webdriver/src/sync/alert.dart';
 export 'package:webdriver/src/sync/capabilities.dart';
@@ -41,10 +43,15 @@ export 'package:webdriver/src/sync/window.dart';
 
 final Uri defaultUri = Uri.parse('http://127.0.0.1:4444/wd/hub/');
 
-//TODO(staats): when W3C spec created, infer spec during WebDriver creation.
+enum WebDriverSpec {
+  Auto,
+  JsonWire,
+  W3c
+}
 
+//TODO(staats): infer spec during WebDriver creation.
 WebDriver createDriver(CommandProcessor processor,
-    {Uri uri, Map<String, dynamic> desired}) {
+    {Uri uri, Map<String, dynamic> desired, WebDriverSpec spec = WebDriverSpec.JsonWire}) {
   if (uri == null) {
     uri = defaultUri;
   }
@@ -53,21 +60,39 @@ WebDriver createDriver(CommandProcessor processor,
     desired = Capabilities.empty;
   }
 
-  Map response = processor.post(
+  final response = processor.post(
       uri.resolve('session'), {'desiredCapabilities': desired},
       value: false) as Map<String, dynamic>;
-  return new jwire.JsonWireWebDriver(processor, uri, response['sessionId'],
-      new UnmodifiableMapView(response['value'] as Map<String, dynamic>));
+
+  switch(spec) {
+    case WebDriverSpec.JsonWire:
+      return new jwire.JsonWireWebDriver(processor, uri, response['sessionId'],
+          new UnmodifiableMapView(response['value'] as Map<String, dynamic>));
+    case WebDriverSpec.W3c:
+      return new w3c.W3cWebDriver(processor, uri, response['sessionId'],
+          new UnmodifiableMapView(response['value'] as Map<String, dynamic>));
+    case WebDriverSpec.Auto:
+      throw 'Not yet supported!';
+  }
+  throw 'Inconcievable!'; // The word does mean what I think it means.
 }
 
 WebDriver fromExistingSession(CommandProcessor processor, String sessionId,
-    {Uri uri}) {
+    {Uri uri, WebDriverSpec spec = WebDriverSpec.JsonWire}) {
   if (uri == null) {
     uri = defaultUri;
   }
 
-  var response =
+  final response =
       processor.get(uri.resolve('session/$sessionId')) as Map<String, dynamic>;
-  return new jwire.JsonWireWebDriver(
-      processor, uri, sessionId, new UnmodifiableMapView(response));
+
+  switch(spec) {
+    case WebDriverSpec.JsonWire:
+      return new jwire.JsonWireWebDriver(processor, uri, sessionId, new UnmodifiableMapView(response));
+    case WebDriverSpec.W3c:
+      return new w3c.W3cWebDriver(processor, uri, sessionId, new UnmodifiableMapView(response));
+    case WebDriverSpec.Auto:
+      throw 'Not yet supported!';
+  }
+  throw 'Inconcievable!'; // Really really.
 }
