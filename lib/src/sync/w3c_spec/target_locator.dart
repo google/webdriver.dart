@@ -27,13 +27,13 @@ class W3cTargetLocator implements TargetLocator {
   W3cTargetLocator(this._driver) : _resolver = new Resolver(_driver, '');
 
   @override
-  void frame([frame]) {
-  }
+  void frame([frame]) => _resolver.post('frame', {'id': frame});
 
   @Deprecated('Use "Window.setAsActive()". '
       'Selecting by name is not supported by the current W3C spec.')
   @override
-  void window(dynamic window) => throw 'No';
+  //TODO(staats): create an exception for this.
+  void window(dynamic window) => throw 'Unsupported by W3C spec';
 
   @override
   Alert get alert => new W3cAlert(_driver);
