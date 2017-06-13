@@ -14,14 +14,11 @@
 
 library webdriver.sync_io;
 
-import 'dart:convert' show JSON;
-import 'dart:io' show ContentType, HttpHeaders;
+import 'dart:io' show ContentType;
 
-import 'package:sync_http/sync_http.dart';
 import 'package:webdriver/sync_core.dart' as core;
-import 'package:webdriver/src/sync/command_processor.dart'
-    show CommandProcessor;
-import 'package:webdriver/src/sync/exception.dart' show WebDriverException;
+import 'package:webdriver/sync_core.dart' as core
+    show createDriver, fromExistingSession, WebDriver;
 
 export 'package:webdriver/sync_core.dart'
     hide createDriver, fromExistingSession;
@@ -31,77 +28,15 @@ export 'package:webdriver/sync_core.dart'
 /// Note: WebDriver endpoints will be constructed using [resolve] against
 /// [uri]. Therefore, if [uri] does not end with a trailing slash, the
 /// last path component will be dropped.
+
 core.WebDriver createDriver({Uri uri, Map<String, dynamic> desired, core.WebDriverSpec spec = core.WebDriverSpec.JsonWire}) =>
-    core.createDriver(new IOCommandProcessor(), uri: uri, desired: desired, spec: spec);
+    core.createDriver(uri: uri, desired: desired, spec: spec);
 
 /// Creates a WebDriver instance connected to an existing session.
 ///
 /// Note: WebDriver endpoints will be constructed using [resolve] against
 /// [uri]. Therefore, if [uri] does not end with a trailing slash, the
 /// last path component will be dropped.
+
 core.WebDriver fromExistingSession(String sessionId, {Uri uri, core.WebDriverSpec spec = core.WebDriverSpec.JsonWire}) =>
-    core.fromExistingSession(new IOCommandProcessor(), sessionId, uri: uri, spec: spec);
-
-final ContentType _contentTypeJson =
-    new ContentType("application", "json", charset: "utf-8");
-
-class IOCommandProcessor implements CommandProcessor {
-  @override
-  dynamic post(Uri uri, dynamic params, {bool value: true}) {
-    final request = SyncHttpClient.postUrl(uri);
-    _setUpRequest(request);
-    request.headers.contentType = _contentTypeJson;
-    if (params != null) {
-      var body = JSON.encode(params); // Cannot be changed from UTF8.
-      request.write(body);
-    }
-    return _processResponse(request.close(), value);
-  }
-
-  @override
-  dynamic get(Uri uri, {bool value: true}) {
-    final request = SyncHttpClient.getUrl(uri);
-    _setUpRequest(request);
-    return _processResponse(request.close(), value);
-  }
-
-  @override
-  dynamic delete(Uri uri, {bool value: true}) {
-    final request = SyncHttpClient.deleteUrl(uri);
-    _setUpRequest(request);
-    return _processResponse(request.close(), value);
-  }
-
-  @override
-  void close() {}
-
-  _processResponse(SyncHttpClientResponse response, bool value) {
-    final respDecoded = response.body;
-    Map respBody;
-    try {
-      respBody = JSON.decode(respDecoded);
-    } catch (e) {}
-
-    // TODO(staats): Update to infer protocols.
-    if (response.statusCode < 200 ||
-        response.statusCode > 299 ||
-        (respBody is Map &&
-            respBody['status'] != null &&
-            respBody['status'] != 0)) {
-      throw new WebDriverException(
-          httpStatusCode: response.statusCode,
-          httpReasonPhrase: response.reasonPhrase,
-          jsonResp: respBody);
-    }
-    if (value && respBody is Map) {
-      return respBody['value'];
-    }
-    return respBody;
-  }
-
-  void _setUpRequest(SyncHttpClientRequest request) {
-    // TODO(staats): Follow redirects.
-    request.headers.add(HttpHeaders.ACCEPT, "application/json");
-    request.headers.add(HttpHeaders.CACHE_CONTROL, "no-cache");
-  }
-}
+    core.fromExistingSession(sessionId, uri: uri, spec: spec);

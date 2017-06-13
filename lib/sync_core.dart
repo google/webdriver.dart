@@ -17,9 +17,10 @@ library webdriver.sync_core;
 import 'dart:collection' show UnmodifiableMapView;
 
 import 'package:webdriver/src/sync/capabilities.dart' show Capabilities;
-import 'package:webdriver/src/sync/command_processor.dart'
-    show CommandProcessor;
 import 'package:webdriver/src/sync/web_driver.dart' show WebDriver;
+
+import 'package:webdriver/src/sync/json_wire_spec/command_processor.dart'
+  as jwireCommand;
 import 'package:webdriver/src/sync/json_wire_spec/web_driver.dart' as jwire;
 import 'package:webdriver/src/sync/w3c_spec/web_driver.dart' as w3c;
 
@@ -27,11 +28,11 @@ import 'package:webdriver/src/sync/w3c_spec/web_driver.dart' as w3c;
 export 'package:webdriver/src/sync/alert.dart';
 export 'package:webdriver/src/sync/capabilities.dart';
 export 'package:webdriver/src/sync/command_event.dart';
-export 'package:webdriver/src/sync/command_processor.dart';
 export 'package:webdriver/src/sync/common.dart';
 export 'package:webdriver/src/sync/common_spec/cookies.dart';
 export 'package:webdriver/src/sync/common_spec/navigation.dart';
 export 'package:webdriver/src/sync/exception.dart';
+export 'package:webdriver/src/sync/json_wire_spec/command_processor.dart';
 export 'package:webdriver/src/sync/json_wire_spec/keyboard.dart';
 export 'package:webdriver/src/sync/json_wire_spec/logs.dart';
 export 'package:webdriver/src/sync/json_wire_spec/mouse.dart';
@@ -50,7 +51,7 @@ enum WebDriverSpec {
 }
 
 //TODO(staats): infer spec during WebDriver creation.
-WebDriver createDriver(CommandProcessor processor,
+WebDriver createDriver(
     {Uri uri, Map<String, dynamic> desired, WebDriverSpec spec = WebDriverSpec.JsonWire}) {
   if (uri == null) {
     uri = defaultUri;
@@ -60,15 +61,19 @@ WebDriver createDriver(CommandProcessor processor,
     desired = Capabilities.empty;
   }
 
-  final response = processor.post(
-      uri.resolve('session'), {'desiredCapabilities': desired},
-      value: false) as Map<String, dynamic>;
-
   switch(spec) {
     case WebDriverSpec.JsonWire:
+      final processor = new jwireCommand.JsonWireCommandProcessor();
+      final response = processor.post(
+        uri.resolve('session'), {'desiredCapabilities': desired},
+        value: false) as Map<String, dynamic>;
       return new jwire.JsonWireWebDriver(processor, uri, response['sessionId'],
           new UnmodifiableMapView(response['value'] as Map<String, dynamic>));
     case WebDriverSpec.W3c:
+      final processor = new jwireCommand.JsonWireCommandProcessor();
+      final response = processor.post(
+          uri.resolve('session'), {'desiredCapabilities': desired},
+          value: false) as Map<String, dynamic>;
       return new w3c.W3cWebDriver(processor, uri, response['sessionId'],
           new UnmodifiableMapView(response['value'] as Map<String, dynamic>));
     case WebDriverSpec.Auto:
@@ -77,19 +82,23 @@ WebDriver createDriver(CommandProcessor processor,
   throw 'Inconcievable!'; // The word does mean what I think it means.
 }
 
-WebDriver fromExistingSession(CommandProcessor processor, String sessionId,
+
+WebDriver fromExistingSession(String sessionId,
     {Uri uri, WebDriverSpec spec = WebDriverSpec.JsonWire}) {
   if (uri == null) {
     uri = defaultUri;
   }
 
-  final response =
-      processor.get(uri.resolve('session/$sessionId')) as Map<String, dynamic>;
-
   switch(spec) {
     case WebDriverSpec.JsonWire:
-      return new jwire.JsonWireWebDriver(processor, uri, sessionId, new UnmodifiableMapView(response));
+      final processor = new jwireCommand.JsonWireCommandProcessor();
+      final response =
+        processor.get(uri.resolve('session/$sessionId')) as Map<String, dynamic>;
+        return new jwire.JsonWireWebDriver(processor, uri, sessionId, new UnmodifiableMapView(response));
     case WebDriverSpec.W3c:
+      final processor = new jwireCommand.JsonWireCommandProcessor();
+      final response =
+        processor.get(uri.resolve('session/$sessionId')) as Map<String, dynamic>;
       return new w3c.W3cWebDriver(processor, uri, sessionId, new UnmodifiableMapView(response));
     case WebDriverSpec.Auto:
       throw 'Not yet supported!';
