@@ -56,26 +56,25 @@ class JsonWireCommandProcessor implements CommandProcessor {
   void close() {}
 
   _processResponse(SyncHttpClientResponse response, bool value) {
-    final respDecoded = response.body;
-    Map respBody;
+    Map responseBody;
     try {
-      respBody = JSON.decode(respDecoded);
+      responseBody = JSON.decode(response.body);
     } catch (e) {}
 
     if (response.statusCode < 200 ||
         response.statusCode > 299 ||
-        (respBody is Map &&
-            respBody['status'] != null &&
-            respBody['status'] != 0)) {
+        (responseBody is Map &&
+            responseBody['status'] != null &&
+            responseBody['status'] != 0)) {
       throw new WebDriverException(
           httpStatusCode: response.statusCode,
           httpReasonPhrase: response.reasonPhrase,
-          jsonResp: respBody);
+          jsonResp: responseBody);
     }
-    if (value && respBody is Map) {
-      return respBody['value'];
+    if (value && responseBody is Map) {
+      return responseBody['value'];
     }
-    return respBody;
+    return responseBody;
   }
 
   void _setUpRequest(SyncHttpClientRequest request) {
