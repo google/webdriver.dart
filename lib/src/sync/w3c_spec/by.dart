@@ -37,5 +37,5 @@ Map<String, String> byToJson(By by) {
       value = by.value;
   }
 
-  return {'using' : using, 'value' : value};
+  return {'using': using, 'value': value};
 }
