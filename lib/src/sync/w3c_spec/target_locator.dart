@@ -12,37 +12,39 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import 'alert.dart';
+
 import '../alert.dart';
 import '../common.dart';
+import '../target_locator.dart';
 import '../web_driver.dart';
+import '../window.dart';
 
-/// A JavaScript alert(), confirm(), or prompt() dialog for the JSON wire spec.
-class JsonWireAlert implements Alert {
-  final String _text;
+class W3cTargetLocator implements TargetLocator {
   final WebDriver _driver;
   final Resolver _resolver;
 
-  JsonWireAlert(this._text, this._driver)
-      : _resolver = new Resolver(_driver, '');
+  W3cTargetLocator(this._driver) : _resolver = new Resolver(_driver, '');
 
   @override
-  String get text => _text;
+  void frame([frame]) => _resolver.post('frame', {'id': frame});
+
+  @Deprecated('Use "Window.setAsActive()". '
+      'Selecting by name is not supported by the current W3C spec.')
+  @override
+  //TODO(staats): create an exception for this.
+  void window(dynamic window) => throw 'Unsupported by W3C spec';
 
   @override
-  void accept() {
-    _resolver.post('accept_alert');
-  }
+  Alert get alert => new W3cAlert(_driver);
 
   @override
-  void dismiss() {
-    _resolver.post('dismiss_alert');
-  }
+  String toString() => '$_driver.switchTo';
 
   @override
-  void sendKeys(String keysToSend) {
-    _resolver.post('alert_text', {'text': keysToSend});
-  }
+  int get hashCode => _driver.hashCode;
 
   @override
-  String toString() => '$_driver.switchTo.alert[$text]';
+  bool operator ==(other) =>
+      other is W3cTargetLocator && other._driver == _driver;
 }

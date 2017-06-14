@@ -22,6 +22,8 @@ import 'package:webdriver/src/sync/web_driver.dart' show WebDriver;
 import 'package:webdriver/src/sync/command_processor.dart';
 import 'package:webdriver/src/sync/json_wire_spec/response_processor.dart';
 import 'package:webdriver/src/sync/json_wire_spec/web_driver.dart' as jwire;
+import 'package:webdriver/src/sync/w3c_spec/response_processor.dart';
+import 'package:webdriver/src/sync/w3c_spec/web_driver.dart' as w3c;
 
 export 'package:webdriver/src/sync/alert.dart';
 export 'package:webdriver/src/sync/capabilities.dart';
@@ -42,9 +44,15 @@ export 'package:webdriver/src/sync/window.dart';
 
 final Uri defaultUri = Uri.parse('http://127.0.0.1:4444/wd/hub/');
 
-//TODO(staats): when W3C spec created, infer spec during WebDriver creation.
+/// Defines the WebDriver spec to use. Auto = try to infer the spec based on
+/// the response during session creation.
+enum WebDriverSpec { Auto, JsonWire, W3c }
 
-WebDriver createDriver({Uri uri, Map<String, dynamic> desired}) {
+//TODO(staats): infer spec during WebDriver creation.
+WebDriver createDriver(
+    {Uri uri,
+    Map<String, dynamic> desired,
+    WebDriverSpec spec = WebDriverSpec.JsonWire}) {
   if (uri == null) {
     uri = defaultUri;
   }
@@ -53,24 +61,54 @@ WebDriver createDriver({Uri uri, Map<String, dynamic> desired}) {
     desired = Capabilities.empty;
   }
 
-  final processor =
-      new SyncHttpCommandProcessor(processor: processJsonWireResponse);
-  final response = processor.post(
-      uri.resolve('session'), {'desiredCapabilities': desired},
-      value: false) as Map<String, dynamic>;
-  return new jwire.JsonWireWebDriver(processor, uri, response['sessionId'],
-      new UnmodifiableMapView(response['value'] as Map<String, dynamic>));
+  switch (spec) {
+    case WebDriverSpec.JsonWire:
+      final processor =
+          new SyncHttpCommandProcessor(processor: processJsonWireResponse);
+      final response = processor.post(
+          uri.resolve('session'), {'desiredCapabilities': desired},
+          value: false) as Map<String, dynamic>;
+      return new jwire.JsonWireWebDriver(processor, uri, response['sessionId'],
+          new UnmodifiableMapView(response['value'] as Map<String, dynamic>));
+    case WebDriverSpec.W3c:
+      final processor =
+          new SyncHttpCommandProcessor(processor: processW3cResponse);
+      final response = processor.post(
+          uri.resolve('session'), {'desiredCapabilities': desired},
+          value: true) as Map<String, dynamic>;
+      return new w3c.W3cWebDriver(processor, uri, response['sessionId'],
+          new UnmodifiableMapView(response['value'] as Map<String, dynamic>));
+    case WebDriverSpec.Auto:
+      throw 'Not yet supported!';
+    default:
+      throw 'Not yet supported!'; // Impossible.
+  }
 }
 
-WebDriver fromExistingSession(String sessionId, {Uri uri}) {
+WebDriver fromExistingSession(String sessionId,
+    {Uri uri, WebDriverSpec spec = WebDriverSpec.JsonWire}) {
   if (uri == null) {
     uri = defaultUri;
   }
 
-  final processor =
-      new SyncHttpCommandProcessor(processor: processJsonWireResponse);
-  final response =
-      processor.get(uri.resolve('session/$sessionId')) as Map<String, dynamic>;
-  return new jwire.JsonWireWebDriver(
-      processor, uri, sessionId, new UnmodifiableMapView(response));
+  switch (spec) {
+    case WebDriverSpec.JsonWire:
+      final processor =
+          new SyncHttpCommandProcessor(processor: processJsonWireResponse);
+      final response = processor.get(uri.resolve('session/$sessionId'))
+          as Map<String, dynamic>;
+      return new jwire.JsonWireWebDriver(
+          processor, uri, sessionId, new UnmodifiableMapView(response));
+    case WebDriverSpec.W3c:
+      final processor =
+          new SyncHttpCommandProcessor(processor: processW3cResponse);
+      final response = processor.get(uri.resolve('session/$sessionId'))
+          as Map<String, dynamic>;
+      return new w3c.W3cWebDriver(
+          processor, uri, sessionId, new UnmodifiableMapView(response));
+    case WebDriverSpec.Auto:
+      throw 'Not yet supported!';
+    default:
+      throw 'Not yet supported!'; // Impossible.
+  }
 }
