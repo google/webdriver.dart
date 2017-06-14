@@ -19,18 +19,18 @@ import 'dart:collection' show UnmodifiableMapView;
 import 'package:webdriver/src/sync/capabilities.dart' show Capabilities;
 import 'package:webdriver/src/sync/web_driver.dart' show WebDriver;
 
-import 'package:webdriver/src/sync/json_wire_spec/command_processor.dart'
-  as jwireCommand;
+import 'package:webdriver/src/sync/command_processor.dart';
+import 'package:webdriver/src/sync/json_wire_spec/response_processor.dart';
 import 'package:webdriver/src/sync/json_wire_spec/web_driver.dart' as jwire;
 
 export 'package:webdriver/src/sync/alert.dart';
 export 'package:webdriver/src/sync/capabilities.dart';
 export 'package:webdriver/src/sync/command_event.dart';
+export 'package:webdriver/src/sync/command_processor.dart';
 export 'package:webdriver/src/sync/common.dart';
 export 'package:webdriver/src/sync/common_spec/cookies.dart';
 export 'package:webdriver/src/sync/common_spec/navigation.dart';
 export 'package:webdriver/src/sync/exception.dart';
-export 'package:webdriver/src/sync/json_wire_spec/command_processor.dart';
 export 'package:webdriver/src/sync/json_wire_spec/keyboard.dart';
 export 'package:webdriver/src/sync/json_wire_spec/logs.dart';
 export 'package:webdriver/src/sync/json_wire_spec/mouse.dart';
@@ -53,7 +53,7 @@ WebDriver createDriver({Uri uri, Map<String, dynamic> desired}) {
     desired = Capabilities.empty;
   }
 
-  final processor = new jwireCommand.JsonWireCommandProcessor();
+  final processor = new SyncHttpCommandProcessor(processor: processJsonWireResponse);
   Map response = processor.post(
       uri.resolve('session'), {'desiredCapabilities': desired},
       value: false) as Map<String, dynamic>;
@@ -67,7 +67,7 @@ WebDriver fromExistingSession(String sessionId,
     uri = defaultUri;
   }
 
-  final processor = new jwireCommand.JsonWireCommandProcessor();
+  final processor = new SyncHttpCommandProcessor(processor: processJsonWireResponse);
   var response =
       processor.get(uri.resolve('session/$sessionId')) as Map<String, dynamic>;
   return new jwire.JsonWireWebDriver(processor,
