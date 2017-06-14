@@ -32,7 +32,7 @@ void runTests(config.createTestDriver createTestDriver) {
       });
     });
 
-    group('methods', () {
+    /*group('methods', () {
       WebDriver driver;
 
       setUp(() {
@@ -194,6 +194,6 @@ void runTests(config.createTestDriver createTestDriver) {
           expect(eventList[i], i);
         }
       });
-    });
+    });*/
   }, timeout: new Timeout(new Duration(minutes: 1)));
 }

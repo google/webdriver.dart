@@ -90,7 +90,7 @@ class W3cWebDriver implements WebDriver, SearchContext {
   @override
   WebElement findElement(By by) {
     final element = postRequest('element', byToJson(by));
-    return new W3cWebElement(this, element[elementStr], this, by);
+    return new W3cWebElement(this, element, this, by);
   }
 
   @override
