@@ -40,4 +40,3 @@ core.WebDriver fromExistingSession(String sessionId, {Uri uri}) =>
 
 final ContentType _contentTypeJson =
     new ContentType("application", "json", charset: "utf-8");
-

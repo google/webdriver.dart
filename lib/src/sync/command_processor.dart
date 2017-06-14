@@ -20,7 +20,7 @@ import 'dart:io' show ContentType, HttpHeaders;
 import 'package:sync_http/sync_http.dart';
 
 final ContentType _contentTypeJson =
-new ContentType("application", "json", charset: "utf-8");
+    new ContentType("application", "json", charset: "utf-8");
 
 typedef dynamic ResponseProcessor(SyncHttpClientResponse response, bool value);
 
@@ -40,11 +40,10 @@ abstract class CommandProcessor {
 
 /// Standard command processor for use with sync_http package.
 class SyncHttpCommandProcessor implements CommandProcessor {
-
   final ResponseProcessor _responseProcessor;
 
-  SyncHttpCommandProcessor({ResponseProcessor processor = null}) :
-      this._responseProcessor = processor ??_defaultProcessor;
+  SyncHttpCommandProcessor({ResponseProcessor processor = null})
+      : this._responseProcessor = processor ?? _defaultProcessor;
 
   @override
   dynamic post(Uri uri, dynamic params, {bool value: true}) {

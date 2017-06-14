@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-
 import 'dart:convert' show JSON;
 
 import 'package:sync_http/sync_http.dart';
@@ -21,23 +20,23 @@ import '../exception.dart' show WebDriverException;
 
 /// Handles responses from the JSON wire protocol.
 dynamic processJsonWireResponse(SyncHttpClientResponse response, bool value) {
-Map responseBody;
-try {
-responseBody = JSON.decode(response.body);
-} catch (e) {}
+  Map responseBody;
+  try {
+    responseBody = JSON.decode(response.body);
+  } catch (e) {}
 
-if (response.statusCode < 200 ||
-response.statusCode > 299 ||
-(responseBody is Map &&
-responseBody['status'] != null &&
-responseBody['status'] != 0)) {
-throw new WebDriverException(
-httpStatusCode: response.statusCode,
-httpReasonPhrase: response.reasonPhrase,
-jsonResp: responseBody);
-}
-if (value && responseBody is Map) {
-return responseBody['value'];
-}
-return responseBody;
+  if (response.statusCode < 200 ||
+      response.statusCode > 299 ||
+      (responseBody is Map &&
+          responseBody['status'] != null &&
+          responseBody['status'] != 0)) {
+    throw new WebDriverException(
+        httpStatusCode: response.statusCode,
+        httpReasonPhrase: response.reasonPhrase,
+        jsonResp: responseBody);
+  }
+  if (value && responseBody is Map) {
+    return responseBody['value'];
+  }
+  return responseBody;
 }
