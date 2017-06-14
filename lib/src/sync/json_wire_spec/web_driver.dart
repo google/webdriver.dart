@@ -15,6 +15,7 @@
 import 'dart:convert' show BASE64;
 import 'package:stack_trace/stack_trace.dart' show Chain;
 
+import 'by.dart' show byToJson;
 import 'keyboard.dart';
 import 'logs.dart';
 import 'mouse.dart';
@@ -73,7 +74,7 @@ class JsonWireWebDriver implements WebDriver, SearchContext {
 
   @override
   List<WebElement> findElements(By by) {
-    final elements = postRequest('elements', _byToJson(by));
+    final elements = postRequest('elements', byToJson(by));
     int i = 0;
 
     final webElements = new List<JsonWireWebElement>();
@@ -86,12 +87,9 @@ class JsonWireWebDriver implements WebDriver, SearchContext {
 
   @override
   WebElement findElement(By by) {
-    final element = postRequest('element', _byToJson(by));
+    final element = postRequest('element', byToJson(by));
     return new JsonWireWebElement(this, element[elementStr], this, by);
   }
-
-  Map<String, String> _byToJson(By by) =>
-      {'using': by.using, 'value': by.value};
 
   @override
   String get pageSource => getRequest('source') as String;
