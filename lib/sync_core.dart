@@ -90,19 +90,23 @@ WebDriver fromExistingSession(String sessionId,
     uri = defaultUri;
   }
 
-  switch(spec) {
+  switch (spec) {
     case WebDriverSpec.JsonWire:
-    final processor =
-    new SyncHttpCommandProcessor(processor: processJsonWireResponse);
+      final processor =
+      new SyncHttpCommandProcessor(processor: processJsonWireResponse);
       final response =
-        processor.get(uri.resolve('session/$sessionId')) as Map<String, dynamic>;
-        return new jwire.JsonWireWebDriver(processor, uri, sessionId, new UnmodifiableMapView(response));
+      processor.get(uri.resolve('session/$sessionId')) as Map<String, dynamic>;
+      return new jwire.JsonWireWebDriver(
+          processor, uri, sessionId, new UnmodifiableMapView(response));
     case WebDriverSpec.W3c:
-  final processor = new SyncHttpCommandProcessor(processor: processJsonWireResponse);
+      final processor = new SyncHttpCommandProcessor(
+          processor: processJsonWireResponse);
       final response =
-        processor.get(uri.resolve('session/$sessionId')) as Map<String, dynamic>;
-      return new w3c.W3cWebDriver(processor, uri, sessionId, new UnmodifiableMapView(response));
+      processor.get(uri.resolve('session/$sessionId')) as Map<String, dynamic>;
+      return new w3c.W3cWebDriver(
+          processor, uri, sessionId, new UnmodifiableMapView(response));
     case WebDriverSpec.Auto:
       throw 'Not yet supported!';
   }
   throw 'Inconcievable!'; // Really really.
+}
