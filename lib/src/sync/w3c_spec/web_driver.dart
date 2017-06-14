@@ -15,6 +15,7 @@
 import 'dart:convert' show BASE64;
 import 'package:stack_trace/stack_trace.dart' show Chain;
 
+import 'by.dart' show byToJson;
 import 'target_locator.dart';
 import 'timeouts.dart';
 import 'web_element.dart';
@@ -75,7 +76,7 @@ class W3cWebDriver implements WebDriver, SearchContext {
   // TODO(staats): unify find logic with that in web_element.
   @override
   List<WebElement> findElements(By by) {
-    final elements = postRequest('elements', by);
+    final elements = postRequest('elements', byToJson(by));
     int i = 0;
 
     final webElements = new List<W3cWebElement>();
@@ -88,7 +89,7 @@ class W3cWebDriver implements WebDriver, SearchContext {
 
   @override
   WebElement findElement(By by) {
-    final element = postRequest('element', by);
+    final element = postRequest('element', byToJson(by));
     return new W3cWebElement(this, element[elementStr], this, by);
   }
 
