@@ -24,7 +24,6 @@ import 'package:webdriver/src/sync/json_wire_spec/response_processor.dart';
 import 'package:webdriver/src/sync/json_wire_spec/web_driver.dart' as jwire;
 import 'package:webdriver/src/sync/w3c_spec/web_driver.dart' as w3c;
 
-
 export 'package:webdriver/src/sync/alert.dart';
 export 'package:webdriver/src/sync/capabilities.dart';
 export 'package:webdriver/src/sync/command_event.dart';
@@ -44,15 +43,13 @@ export 'package:webdriver/src/sync/window.dart';
 
 final Uri defaultUri = Uri.parse('http://127.0.0.1:4444/wd/hub/');
 
-enum WebDriverSpec {
-  Auto,
-  JsonWire,
-  W3c
-}
+enum WebDriverSpec { Auto, JsonWire, W3c }
 
 //TODO(staats): infer spec during WebDriver creation.
 WebDriver createDriver(
-    {Uri uri, Map<String, dynamic> desired, WebDriverSpec spec = WebDriverSpec.JsonWire}) {
+    {Uri uri,
+    Map<String, dynamic> desired,
+    WebDriverSpec spec = WebDriverSpec.JsonWire}) {
   if (uri == null) {
     uri = defaultUri;
   }
@@ -61,17 +58,18 @@ WebDriver createDriver(
     desired = Capabilities.empty;
   }
 
-  switch(spec) {
+  switch (spec) {
     case WebDriverSpec.JsonWire:
-    final processor = new SyncHttpCommandProcessor(processor: processJsonWireResponse);
+      final processor =
+          new SyncHttpCommandProcessor(processor: processJsonWireResponse);
       final response = processor.post(
-        uri.resolve('session'), {'desiredCapabilities': desired},
-        value: false) as Map<String, dynamic>;
+          uri.resolve('session'), {'desiredCapabilities': desired},
+          value: false) as Map<String, dynamic>;
       return new jwire.JsonWireWebDriver(processor, uri, response['sessionId'],
           new UnmodifiableMapView(response['value'] as Map<String, dynamic>));
     case WebDriverSpec.W3c:
-  final processor =
-  new SyncHttpCommandProcessor(processor: processJsonWireResponse);
+      final processor =
+          new SyncHttpCommandProcessor(processor: processJsonWireResponse);
       final response = processor.post(
           uri.resolve('session'), {'desiredCapabilities': desired},
           value: false) as Map<String, dynamic>;
@@ -83,7 +81,6 @@ WebDriver createDriver(
   throw 'Inconcievable!'; // The word does mean what I think it means.
 }
 
-
 WebDriver fromExistingSession(String sessionId,
     {Uri uri, WebDriverSpec spec = WebDriverSpec.JsonWire}) {
   if (uri == null) {
@@ -93,16 +90,16 @@ WebDriver fromExistingSession(String sessionId,
   switch (spec) {
     case WebDriverSpec.JsonWire:
       final processor =
-      new SyncHttpCommandProcessor(processor: processJsonWireResponse);
-      final response =
-      processor.get(uri.resolve('session/$sessionId')) as Map<String, dynamic>;
+          new SyncHttpCommandProcessor(processor: processJsonWireResponse);
+      final response = processor.get(uri.resolve('session/$sessionId'))
+          as Map<String, dynamic>;
       return new jwire.JsonWireWebDriver(
           processor, uri, sessionId, new UnmodifiableMapView(response));
     case WebDriverSpec.W3c:
-      final processor = new SyncHttpCommandProcessor(
-          processor: processJsonWireResponse);
-      final response =
-      processor.get(uri.resolve('session/$sessionId')) as Map<String, dynamic>;
+      final processor =
+          new SyncHttpCommandProcessor(processor: processJsonWireResponse);
+      final response = processor.get(uri.resolve('session/$sessionId'))
+          as Map<String, dynamic>;
       return new w3c.W3cWebDriver(
           processor, uri, sessionId, new UnmodifiableMapView(response));
     case WebDriverSpec.Auto:

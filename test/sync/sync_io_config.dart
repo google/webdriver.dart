@@ -16,7 +16,8 @@ library io_test_util;
 
 import 'dart:io' show Platform;
 
-import 'package:webdriver/sync_core.dart' show Capabilities, WebDriver, WebDriverSpec;
+import 'package:webdriver/sync_core.dart'
+    show Capabilities, WebDriver, WebDriverSpec;
 import 'package:webdriver/sync_io.dart' show createDriver;
 
 export '../test_util.dart';
@@ -34,7 +35,8 @@ WebDriver createFirefoxTestDriver(
   if (additionalCapabilities != null) {
     capabilities.addAll(additionalCapabilities);
   }
-  return createDriver(uri: _defaultFirefoxUri, desired: capabilities, spec: WebDriverSpec.W3c);
+  return createDriver(
+      uri: _defaultFirefoxUri, desired: capabilities, spec: WebDriverSpec.W3c);
 }
 
 WebDriver createChromeTestDriver(

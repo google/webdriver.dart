@@ -45,16 +45,16 @@ class W3cWebElement implements WebElement, SearchContext {
   @override
   void click() => _resolver.post('click');
 
-
   @override
   // TODO(staats): better exception.
-  void submit() => throw  'Unsupported by W3c spec';
+  void submit() => throw 'Unsupported by W3c spec';
 
   @override
   // TODO(staats): tie this into actions API support.
   void sendKeys(String keysToSend) {
     _resolver.post('value', {
-      'text': [keysToSend], 'keyboard': ''
+      'text': [keysToSend],
+      'keyboard': ''
     });
   }
 
@@ -69,7 +69,7 @@ class W3cWebElement implements WebElement, SearchContext {
 
   @override
   // TODO(staats): add many, many tests here.
-  bool get displayed  {
+  bool get displayed {
     final style = _resolver.get('property/getComputedStyle');
     return style['display'] != 'none';
   }
@@ -79,8 +79,8 @@ class W3cWebElement implements WebElement, SearchContext {
   Point get location => throw 'Unsupported by W3C spec, use "rect" instead.';
 
   @override
-  Rectangle<int> get size => throw 'Unsupported by W3C spec, use "rect" instead.';
-
+  Rectangle<int> get size =>
+      throw 'Unsupported by W3C spec, use "rect" instead.';
 
   @override
   Rectangle<int> get rect {
@@ -107,8 +107,8 @@ class W3cWebElement implements WebElement, SearchContext {
     int i = 0;
     final webElements = new List<WebElement>();
     for (final element in elements) {
-      webElements.add(
-          new W3cWebElement(driver, element[elementStr], this, by, i++));
+      webElements
+          .add(new W3cWebElement(driver, element[elementStr], this, by, i++));
     }
     return webElements;
   }

@@ -50,8 +50,7 @@ class W3cWebDriver implements WebDriver, SearchContext {
 
   final _commandListeners = new List<WebDriverListener>();
 
-  W3cWebDriver(
-      this._commandProcessor, Uri uri, String id, this.capabilities,
+  W3cWebDriver(this._commandProcessor, Uri uri, String id, this.capabilities,
       {this.filterStackTraces: true})
       : this.uri = uri,
         this.id = id,
@@ -81,8 +80,8 @@ class W3cWebDriver implements WebDriver, SearchContext {
 
     final webElements = new List<W3cWebElement>();
     for (final element in elements) {
-      webElements.add(
-          new W3cWebElement(this, element[elementStr], this, by, i++));
+      webElements
+          .add(new W3cWebElement(this, element[elementStr], this, by, i++));
     }
     return webElements;
   }
@@ -148,7 +147,8 @@ class W3cWebDriver implements WebDriver, SearchContext {
   Logs get logs => throw 'Unsupported in W3C spec.';
 
   @override
-  Keyboard get keyboard => throw 'Unsupported in W3C spec, use Actions instead.';
+  Keyboard get keyboard =>
+      throw 'Unsupported in W3C spec, use Actions instead.';
 
   @override
   Mouse get mouse => throw 'Unsupported in W3C spec, use Actions instead.';
@@ -173,8 +173,7 @@ class W3cWebDriver implements WebDriver, SearchContext {
   dynamic _recursiveElementify(result) {
     if (result is Map) {
       if (result.length == 1 && result.containsKey(elementStr)) {
-        return new W3cWebElement(
-            this, result[elementStr], this, 'javascript');
+        return new W3cWebElement(this, result[elementStr], this, 'javascript');
       } else {
         final newResult = {};
         result.forEach((key, value) {
@@ -214,7 +213,7 @@ class W3cWebDriver implements WebDriver, SearchContext {
     var trace = new Chain.current();
     if (filterStackTraces) {
       trace = trace.foldFrames(
-              (f) => f.library.startsWith('package:webdriver/'),
+          (f) => f.library.startsWith('package:webdriver/'),
           terse: true);
     }
     var result;
