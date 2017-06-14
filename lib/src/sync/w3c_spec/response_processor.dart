@@ -25,8 +25,7 @@ dynamic processW3cResponse(SyncHttpClientResponse response, bool value) {
     responseBody = JSON.decode(response.body);
   } catch (e) {}
 
-  if (response.statusCode < 200 ||
-      response.statusCode > 299) {
+  if (response.statusCode < 200 || response.statusCode > 299) {
     throw new WebDriverException(
         httpStatusCode: response.statusCode,
         httpReasonPhrase: response.reasonPhrase,

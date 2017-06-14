@@ -86,7 +86,6 @@ WebDriver createDriver(
 
 WebDriver fromExistingSession(String sessionId,
     {Uri uri, WebDriverSpec spec = WebDriverSpec.JsonWire}) {
-
   if (uri == null) {
     uri = defaultUri;
   }
