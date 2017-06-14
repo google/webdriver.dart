@@ -73,7 +73,7 @@ class JsonWireWebDriver implements WebDriver, SearchContext {
 
   @override
   List<WebElement> findElements(By by) {
-    final elements = postRequest('elements', by);
+    final elements = postRequest('elements', _byToJson(by));
     int i = 0;
 
     final webElements = new List<JsonWireWebElement>();
@@ -86,9 +86,12 @@ class JsonWireWebDriver implements WebDriver, SearchContext {
 
   @override
   WebElement findElement(By by) {
-    final element = postRequest('element', by);
+    final element = postRequest('element', _byToJson(by));
     return new JsonWireWebElement(this, element[elementStr], this, by);
   }
+
+  Map<String, String> _byToJson(By by) =>
+      {'using': by.using, 'value': by.value};
 
   @override
   String get pageSource => getRequest('source') as String;
