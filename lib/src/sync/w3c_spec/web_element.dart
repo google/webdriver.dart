@@ -140,9 +140,9 @@ class W3cWebElement implements WebElement, SearchContext {
     final out = new StringBuffer()..write(context);
     if (locator is By) {
       if (index == null) {
-        out..write('.findElement(');
+        out.write('.findElement(');
       } else {
-        out..write('.findElements(');
+        out.write('.findElements(');
       }
       out..write(locator)..write(')');
     } else {

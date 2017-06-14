@@ -14,9 +14,8 @@
 
 library webdriver.sync_io;
 
-import 'package:webdriver/sync_core.dart' as core;
 import 'package:webdriver/sync_core.dart' as core
-    show createDriver, fromExistingSession, WebDriver;
+    show createDriver, fromExistingSession, WebDriver, WebDriverSpec;
 
 export 'package:webdriver/sync_core.dart'
     hide createDriver, fromExistingSession;

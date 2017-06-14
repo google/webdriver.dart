@@ -80,8 +80,9 @@ WebDriver createDriver(
           new UnmodifiableMapView(response['value'] as Map<String, dynamic>));
     case WebDriverSpec.Auto:
       throw 'Not yet supported!';
+    default:
+      throw 'Not yet supported!'; // Impossible.
   }
-  throw 'Inconcievable!'; // The word does mean what I think it means.
 }
 
 WebDriver fromExistingSession(String sessionId,
@@ -107,6 +108,7 @@ WebDriver fromExistingSession(String sessionId,
           processor, uri, sessionId, new UnmodifiableMapView(response));
     case WebDriverSpec.Auto:
       throw 'Not yet supported!';
+    default:
+      throw 'Not yet supported!'; // Impossible.
   }
-  throw 'Inconcievable!'; // Really really.
 }
