@@ -37,14 +37,6 @@ core.WebDriver createDriver(
 /// Note: WebDriver endpoints will be constructed using [resolve] against
 /// [uri]. Therefore, if [uri] does not end with a trailing slash, the
 /// last path component will be dropped.
-<<<<<<< HEAD
 core.WebDriver fromExistingSession(String sessionId,
         {Uri uri, core.WebDriverSpec spec = core.WebDriverSpec.JsonWire}) =>
     core.fromExistingSession(sessionId, uri: uri, spec: spec);
-=======
-core.WebDriver fromExistingSession(String sessionId, {Uri uri}) =>
-    core.fromExistingSession(sessionId, uri: uri);
-
-final ContentType _contentTypeJson =
-    new ContentType("application", "json", charset: "utf-8");
->>>>>>> upstream/master
