@@ -14,8 +14,6 @@
 
 library webdriver.sync_io;
 
-import 'dart:io' show ContentType;
-
 import 'package:webdriver/sync_core.dart' as core;
 import 'package:webdriver/sync_core.dart' as core
     show createDriver, fromExistingSession, WebDriver;
@@ -28,7 +26,6 @@ export 'package:webdriver/sync_core.dart'
 /// Note: WebDriver endpoints will be constructed using [resolve] against
 /// [uri]. Therefore, if [uri] does not end with a trailing slash, the
 /// last path component will be dropped.
-
 core.WebDriver createDriver({Uri uri, Map<String, dynamic> desired, core.WebDriverSpec spec = core.WebDriverSpec.JsonWire}) =>
     core.createDriver(uri: uri, desired: desired, spec: spec);
 
@@ -37,6 +34,6 @@ core.WebDriver createDriver({Uri uri, Map<String, dynamic> desired, core.WebDriv
 /// Note: WebDriver endpoints will be constructed using [resolve] against
 /// [uri]. Therefore, if [uri] does not end with a trailing slash, the
 /// last path component will be dropped.
-
 core.WebDriver fromExistingSession(String sessionId, {Uri uri, core.WebDriverSpec spec = core.WebDriverSpec.JsonWire}) =>
     core.fromExistingSession(sessionId, uri: uri, spec: spec);
+

@@ -19,8 +19,8 @@ import 'dart:collection' show UnmodifiableMapView;
 import 'package:webdriver/src/sync/capabilities.dart' show Capabilities;
 import 'package:webdriver/src/sync/web_driver.dart' show WebDriver;
 
-import 'package:webdriver/src/sync/json_wire_spec/command_processor.dart'
-  as jwireCommand;
+import 'package:webdriver/src/sync/command_processor.dart';
+import 'package:webdriver/src/sync/json_wire_spec/response_processor.dart';
 import 'package:webdriver/src/sync/json_wire_spec/web_driver.dart' as jwire;
 import 'package:webdriver/src/sync/w3c_spec/web_driver.dart' as w3c;
 
@@ -28,11 +28,11 @@ import 'package:webdriver/src/sync/w3c_spec/web_driver.dart' as w3c;
 export 'package:webdriver/src/sync/alert.dart';
 export 'package:webdriver/src/sync/capabilities.dart';
 export 'package:webdriver/src/sync/command_event.dart';
+export 'package:webdriver/src/sync/command_processor.dart';
 export 'package:webdriver/src/sync/common.dart';
 export 'package:webdriver/src/sync/common_spec/cookies.dart';
 export 'package:webdriver/src/sync/common_spec/navigation.dart';
 export 'package:webdriver/src/sync/exception.dart';
-export 'package:webdriver/src/sync/json_wire_spec/command_processor.dart';
 export 'package:webdriver/src/sync/json_wire_spec/keyboard.dart';
 export 'package:webdriver/src/sync/json_wire_spec/logs.dart';
 export 'package:webdriver/src/sync/json_wire_spec/mouse.dart';
@@ -63,14 +63,15 @@ WebDriver createDriver(
 
   switch(spec) {
     case WebDriverSpec.JsonWire:
-      final processor = new jwireCommand.JsonWireCommandProcessor();
+    final processor = new SyncHttpCommandProcessor(processor: processJsonWireResponse);
       final response = processor.post(
         uri.resolve('session'), {'desiredCapabilities': desired},
         value: false) as Map<String, dynamic>;
       return new jwire.JsonWireWebDriver(processor, uri, response['sessionId'],
           new UnmodifiableMapView(response['value'] as Map<String, dynamic>));
     case WebDriverSpec.W3c:
-      final processor = new jwireCommand.JsonWireCommandProcessor();
+  final processor =
+  new SyncHttpCommandProcessor(processor: processJsonWireResponse);
       final response = processor.post(
           uri.resolve('session'), {'desiredCapabilities': desired},
           value: false) as Map<String, dynamic>;
@@ -91,12 +92,13 @@ WebDriver fromExistingSession(String sessionId,
 
   switch(spec) {
     case WebDriverSpec.JsonWire:
-      final processor = new jwireCommand.JsonWireCommandProcessor();
+    final processor =
+    new SyncHttpCommandProcessor(processor: processJsonWireResponse);
       final response =
         processor.get(uri.resolve('session/$sessionId')) as Map<String, dynamic>;
         return new jwire.JsonWireWebDriver(processor, uri, sessionId, new UnmodifiableMapView(response));
     case WebDriverSpec.W3c:
-      final processor = new jwireCommand.JsonWireCommandProcessor();
+  final processor = new SyncHttpCommandProcessor(processor: processJsonWireResponse);
       final response =
         processor.get(uri.resolve('session/$sessionId')) as Map<String, dynamic>;
       return new w3c.W3cWebDriver(processor, uri, sessionId, new UnmodifiableMapView(response));
@@ -104,4 +106,3 @@ WebDriver fromExistingSession(String sessionId,
       throw 'Not yet supported!';
   }
   throw 'Inconcievable!'; // Really really.
-}
