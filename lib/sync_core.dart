@@ -22,6 +22,7 @@ import 'package:webdriver/src/sync/web_driver.dart' show WebDriver;
 import 'package:webdriver/src/sync/command_processor.dart';
 import 'package:webdriver/src/sync/json_wire_spec/response_processor.dart';
 import 'package:webdriver/src/sync/json_wire_spec/web_driver.dart' as jwire;
+import 'package:webdriver/src/sync/w3c_spec/response_processor.dart';
 import 'package:webdriver/src/sync/w3c_spec/web_driver.dart' as w3c;
 
 export 'package:webdriver/src/sync/alert.dart';
@@ -43,6 +44,8 @@ export 'package:webdriver/src/sync/window.dart';
 
 final Uri defaultUri = Uri.parse('http://127.0.0.1:4444/wd/hub/');
 
+/// Defines the WebDriver spec to use. Auto = try to infer the spec based on
+/// the response during session creation.
 enum WebDriverSpec { Auto, JsonWire, W3c }
 
 //TODO(staats): infer spec during WebDriver creation.
@@ -69,10 +72,10 @@ WebDriver createDriver(
           new UnmodifiableMapView(response['value'] as Map<String, dynamic>));
     case WebDriverSpec.W3c:
       final processor =
-          new SyncHttpCommandProcessor(processor: processJsonWireResponse);
+          new SyncHttpCommandProcessor(processor: processW3cResponse);
       final response = processor.post(
           uri.resolve('session'), {'desiredCapabilities': desired},
-          value: false) as Map<String, dynamic>;
+          value: true) as Map<String, dynamic>;
       return new w3c.W3cWebDriver(processor, uri, response['sessionId'],
           new UnmodifiableMapView(response['value'] as Map<String, dynamic>));
     case WebDriverSpec.Auto:
@@ -97,7 +100,7 @@ WebDriver fromExistingSession(String sessionId,
           processor, uri, sessionId, new UnmodifiableMapView(response));
     case WebDriverSpec.W3c:
       final processor =
-          new SyncHttpCommandProcessor(processor: processJsonWireResponse);
+          new SyncHttpCommandProcessor(processor: processW3cResponse);
       final response = processor.get(uri.resolve('session/$sessionId'))
           as Map<String, dynamic>;
       return new w3c.W3cWebDriver(
