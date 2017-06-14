@@ -55,7 +55,7 @@ WebDriver createDriver({Uri uri, Map<String, dynamic> desired}) {
 
   final processor =
       new SyncHttpCommandProcessor(processor: processJsonWireResponse);
-  Map response = processor.post(
+  final response = processor.post(
       uri.resolve('session'), {'desiredCapabilities': desired},
       value: false) as Map<String, dynamic>;
   return new jwire.JsonWireWebDriver(processor, uri, response['sessionId'],
@@ -69,7 +69,7 @@ WebDriver fromExistingSession(String sessionId, {Uri uri}) {
 
   final processor =
       new SyncHttpCommandProcessor(processor: processJsonWireResponse);
-  var response =
+  final response =
       processor.get(uri.resolve('session/$sessionId')) as Map<String, dynamic>;
   return new jwire.JsonWireWebDriver(
       processor, uri, sessionId, new UnmodifiableMapView(response));
