@@ -12,37 +12,34 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import '../alert.dart';
 import '../common.dart';
+import '../timeouts.dart';
 import '../web_driver.dart';
 
-/// A JavaScript alert(), confirm(), or prompt() dialog for the JSON wire spec.
-class JsonWireAlert implements Alert {
-  final String _text;
+class W3cTimeouts extends Timeouts {
   final WebDriver _driver;
   final Resolver _resolver;
 
-  JsonWireAlert(this._text, this._driver)
-      : _resolver = new Resolver(_driver, '');
+  W3cTimeouts(this._driver) : _resolver = new Resolver(_driver, 'timeouts');
+
+  void _set(String type, Duration duration) =>
+      _resolver.post('', {type: duration.inMilliseconds});
 
   @override
-  String get text => _text;
+  void setScriptTimeout(Duration duration) => _set('script', duration);
 
   @override
-  void accept() {
-    _resolver.post('accept_alert');
-  }
+  void setImplicitTimeout(Duration duration) => _set('implicit', duration);
 
   @override
-  void dismiss() {
-    _resolver.post('dismiss_alert');
-  }
+  void setPageLoadTimeout(Duration duration) => _set('pageLoad', duration);
 
   @override
-  void sendKeys(String keysToSend) {
-    _resolver.post('alert_text', {'text': keysToSend});
-  }
+  String toString() => '$_driver.timeouts';
 
   @override
-  String toString() => '$_driver.switchTo.alert[$text]';
+  int get hashCode => _driver.hashCode;
+
+  @override
+  bool operator ==(other) => other is W3cTimeouts && other._driver == _driver;
 }

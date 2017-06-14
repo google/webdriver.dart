@@ -12,19 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import 'package:test/test.dart';
-
+import 'sync/basic_sync.dart';
 import 'sync/sync_io_config.dart' as config;
 
 void main() {
-  group('Firefox creation ', () {
-    test('fails as expected', () {
-      try {
-        final driver = config.createFirefoxTestDriver();
-        fail('Still using JSON wire spec, should not parse correctly.');
-      } catch (e) {
-        // Expected.
-      }
-    });
-  }, timeout: new Timeout(new Duration(minutes: 1)));
+  runTests(config.createFirefoxTestDriver);
 }
