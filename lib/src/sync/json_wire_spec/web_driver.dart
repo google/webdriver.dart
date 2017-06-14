@@ -15,7 +15,7 @@
 import 'dart:convert' show BASE64;
 import 'package:stack_trace/stack_trace.dart' show Chain;
 
-import 'by.dart';
+import 'by.dart' show byToJson;
 import 'keyboard.dart';
 import 'logs.dart';
 import 'mouse.dart';

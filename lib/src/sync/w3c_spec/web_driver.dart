@@ -82,7 +82,7 @@ class W3cWebDriver implements WebDriver, SearchContext {
     final webElements = new List<W3cWebElement>();
     for (final element in elements) {
       webElements
-          .add(new W3cWebElement(this, element[elementStr], this, by, i++));
+          .add(new W3cWebElement(this, element, this, by, i++));
     }
     return webElements;
   }

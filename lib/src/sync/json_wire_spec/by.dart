@@ -14,5 +14,5 @@
 
 import '../common.dart' show By;
 
-/// Cconvert [By] instances into maps.
+/// Convert [By] instances into JSON params.
 Map<String, String> byToJson(By by) => {'using': by.using, 'value': by.value};
