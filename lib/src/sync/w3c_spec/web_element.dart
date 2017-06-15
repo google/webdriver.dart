@@ -14,6 +14,8 @@
 
 import 'dart:math' show Point, Rectangle;
 
+import 'by.dart' show byToJson;
+
 import '../common.dart';
 import '../web_driver.dart';
 import '../web_element.dart';
@@ -97,13 +99,13 @@ class W3cWebElement implements WebElement, SearchContext {
 
   @override
   WebElement findElement(By by) {
-    final element = _resolver.post('element', by);
+    final element = _resolver.post('element', byToJson(by));
     return new W3cWebElement(driver, element[elementStr], this, by);
   }
 
   @override
   List<WebElement> findElements(By by) {
-    final elements = _resolver.post('elements', by) as Iterable;
+    final elements = _resolver.post('elements', byToJson(by)) as Iterable;
     int i = 0;
     final webElements = new List<WebElement>();
     for (final element in elements) {

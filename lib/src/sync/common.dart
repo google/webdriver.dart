@@ -64,10 +64,10 @@ class Resolver {
 }
 
 class By {
-  final String _using;
-  final String _value;
+  final String using;
+  final String value;
 
-  const By(this._using, this._value);
+  const By(this.using, this.value);
 
   /// Returns an element whose ID attribute matches the search value.
   const By.id(String id) : this('id', id);
@@ -98,12 +98,10 @@ class By {
   /// Returns an element matching a CSS selector.
   const By.cssSelector(String cssSelector) : this('css selector', cssSelector);
 
-  Map<String, String> toJson() => {'using': _using, 'value': _value};
-
   @override
   String toString() {
     var constructor;
-    switch (_using) {
+    switch (using) {
       case 'link text':
         constructor = 'linkText';
         break;
@@ -120,15 +118,15 @@ class By {
         constructor = 'cssSelector';
         break;
       default:
-        constructor = _using;
+        constructor = using;
     }
-    return 'By.$constructor($_value)';
+    return 'By.$constructor($value)';
   }
 
   @override
-  int get hashCode => _using.hashCode * 3 + _value.hashCode;
+  int get hashCode => using.hashCode * 3 + value.hashCode;
 
   @override
   bool operator ==(other) =>
-      other is By && other._using == this._using && other._value == this._value;
+      other is By && other.using == this.using && other.value == this.value;
 }
