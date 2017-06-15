@@ -15,7 +15,7 @@
 import 'dart:convert' show BASE64;
 import 'package:stack_trace/stack_trace.dart' show Chain;
 
-import 'by.dart' show byToJson;
+import 'element_finder.dart';
 import 'target_locator.dart';
 import 'timeouts.dart';
 import 'web_element.dart';
@@ -45,6 +45,7 @@ class W3cWebDriver implements WebDriver, SearchContext {
   final String id;
   final Uri uri;
   final bool filterStackTraces;
+  ElementFinder _finder;
 
   @override
   bool notifyListeners = true;
@@ -55,7 +56,9 @@ class W3cWebDriver implements WebDriver, SearchContext {
       {this.filterStackTraces: true})
       : this.uri = uri,
         this.id = id,
-        this._prefix = uri.resolve('session/$id/');
+        this._prefix = uri.resolve('session/$id/') {
+    _finder = new ElementFinder(this, new Resolver(driver, ''), this);
+  }
 
   @override
   void addEventListener(WebDriverListener listener) =>
@@ -73,25 +76,11 @@ class W3cWebDriver implements WebDriver, SearchContext {
   @override
   String get title => getRequest('title') as String;
 
-  // TODO(staats): unify find logic with that in web_element.
   @override
-  List<WebElement> findElements(By by) {
-    final elements = postRequest('elements', byToJson(by));
-    int i = 0;
-
-    final webElements = new List<W3cWebElement>();
-    for (final element in elements) {
-      webElements
-          .add(new W3cWebElement(this, element[elementStr], this, by, i++));
-    }
-    return webElements;
-  }
+  List<WebElement> findElements(By by) => _finder.findElements(by);
 
   @override
-  WebElement findElement(By by) {
-    final element = postRequest('element', byToJson(by));
-    return new W3cWebElement(this, element[elementStr], this, by);
-  }
+  WebElement findElement(By by) => _finder.findElement(by);
 
   @override
   String get pageSource => getRequest('source') as String;
