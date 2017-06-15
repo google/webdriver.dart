@@ -20,7 +20,6 @@ import '../web_element.dart';
 
 /// Handles logic for finding elements in both WebDriver and element contexts.
 class ElementFinder {
-
   final WebDriver _driver;
   final SearchContext _context;
   final Resolver _resolver;
@@ -44,7 +43,7 @@ class ElementFinder {
         using = 'css selector';
         value = by.value;
         break;
-    // xpath, css selector, link text, partial link text, seem fine.
+      // xpath, css selector, link text, partial link text, seem fine.
       default:
         using = by.using;
         value = by.value;
@@ -53,11 +52,9 @@ class ElementFinder {
     return {'using': using, 'value': value};
   }
 
-  List<WebElement> findElements(By by) =>
-    _findElements(by, 'elements');
+  List<WebElement> findElements(By by) => _findElements(by, 'elements');
 
-  WebElement findElement(By by) =>
-   _findElements(by, 'element')[0];
+  WebElement findElement(By by) => _findElements(by, 'element')[0];
 
   List<String> _unwrapReponse(Map<String, String> response) => response.values;
 
@@ -67,10 +64,8 @@ class ElementFinder {
 
     final webElements = new List<W3cWebElement>();
     for (final element in elements) {
-      webElements
-          .add(new W3cWebElement(_driver, element, _context, by, i++));
+      webElements.add(new W3cWebElement(_driver, element, _context, by, i++));
     }
     return webElements;
   }
-
 }

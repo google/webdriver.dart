@@ -101,7 +101,7 @@ class W3cWebElement implements WebElement, SearchContext {
   String get text => _resolver.get('text') as String;
 
   @override
-  WebElement findElement(By by)  => _finder.findElement(by);
+  WebElement findElement(By by) => _finder.findElement(by);
 
   @override
   List<WebElement> findElements(By by) => _finder.findElements(by);
