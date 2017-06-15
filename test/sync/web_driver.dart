@@ -100,7 +100,7 @@ void runTests(config.createTestDriver createTestDriver) {
       test('close/windows', () {
         int numHandles = (driver.windows.toList()).length;
         (driver.findElement(const By.partialLinkText('Open copy'))).click();
-        sleep(new Duration(milliseconds:500)); // Bit slow on Firefox.
+        sleep(new Duration(milliseconds: 500)); // Bit slow on Firefox.
         expect(driver.windows.toList(), hasLength(numHandles + 1));
         driver.close();
         expect(driver.windows.toList(), hasLength(numHandles));
@@ -111,7 +111,7 @@ void runTests(config.createTestDriver createTestDriver) {
         Window next;
 
         (driver.findElement(const By.partialLinkText('Open copy'))).click();
-        sleep(new Duration(milliseconds:500)); // Bit slow on Firefox.
+        sleep(new Duration(milliseconds: 500)); // Bit slow on Firefox.
         for (final window in driver.windows) {
           if (window != orig) {
             next = window;
@@ -154,7 +154,6 @@ void runTests(config.createTestDriver createTestDriver) {
         var e = driver.executeAsync(script, ['new text', button]);
         expect(e.text, 'new text');
       });
-
 
       test('captureScreenshot', () {
         var screenshot = driver.captureScreenshotAsList().toList();
