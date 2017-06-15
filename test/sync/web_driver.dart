@@ -15,6 +15,7 @@
 @TestOn("vm")
 library webdriver.web_driver_test;
 
+import 'dart:io';
 import 'package:test/test.dart';
 import 'package:webdriver/sync_core.dart';
 
@@ -22,7 +23,7 @@ import 'sync_io_config.dart' as config;
 
 void runTests(config.createTestDriver createTestDriver) {
   group('WebDriver', () {
-    group('create', () {
+    /*group('create', () {
       test('default', () {
         WebDriver driver = createTestDriver();
         driver.get(config.testPagePath);
@@ -30,9 +31,9 @@ void runTests(config.createTestDriver createTestDriver) {
         expect(element.name, 'button');
         driver.quit();
       });
-    });
+    });*/
 
-    /*group('methods', () {
+    group('methods', () {
       WebDriver driver;
 
       setUp(() {
@@ -47,7 +48,7 @@ void runTests(config.createTestDriver createTestDriver) {
         driver = null;
       });
 
-      test('get', () {
+      /*test('get', () {
         driver.get(config.testPagePath);
         driver.findElement(const By.tagName('button'));
         ;
@@ -62,16 +63,17 @@ void runTests(config.createTestDriver createTestDriver) {
       test('findElement -- success', () {
         var element = driver.findElement(const By.tagName('tr'));
         expect(element, config.isSyncWebElement);
-      });
+      });*/
 
-      test('findElement -- failure', () {
+      // NEEDS REAL EXCEPTIONS
+      /*test('findElement -- failure', () {
         try {
           driver.findElement(const By.id('non-existent-id'));
           throw 'expected NoSuchElementException';
         } on NoSuchElementException {}
-      });
+      });*/
 
-      test('findElements -- 1 found', () {
+      /*test('findElements -- 1 found', () {
         var elements = driver
             .findElements(const By.cssSelector('input[type=text]'))
             .toList();
@@ -98,27 +100,29 @@ void runTests(config.createTestDriver createTestDriver) {
       test('close/windows', () {
         int numHandles = (driver.windows.toList()).length;
         (driver.findElement(const By.partialLinkText('Open copy'))).click();
+        sleep(new Duration(milliseconds:500)); // Bit slow on Firefox.
         expect(driver.windows.toList(), hasLength(numHandles + 1));
         driver.close();
         expect(driver.windows.toList(), hasLength(numHandles));
-      });
+      });*/
 
       test('window', () {
         Window orig = driver.window;
         Window next;
 
         (driver.findElement(const By.partialLinkText('Open copy'))).click();
-        for (Window window in driver.windows) {
+        sleep(new Duration(milliseconds:500)); // Bit slow on Firefox.
+        for (final window in driver.windows) {
           if (window != orig) {
             next = window;
-            driver.switchTo.window(window);
+            window.setAsActive();
             break;
           }
         }
         expect(driver.window, equals(next));
         driver.close();
       });
-
+/*
       test('activeElement', () {
         var element = driver.activeElement;
         expect(element.name, 'body');
@@ -193,7 +197,7 @@ void runTests(config.createTestDriver createTestDriver) {
         for (int i = 0; i < 10; i++) {
           expect(eventList[i], i);
         }
-      });
-    });*/
+      });*/
+    });
   }, timeout: new Timeout(new Duration(minutes: 1)));
 }

@@ -48,7 +48,7 @@ class W3cWebElement implements WebElement, SearchContext {
   }
 
   @override
-  void click() => _resolver.post('click');
+  void click() => _resolver.post('click', {});
 
   @override
   // TODO(staats): better exception.

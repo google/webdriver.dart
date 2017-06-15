@@ -77,7 +77,6 @@ class W3cWebDriver implements WebDriver, SearchContext {
   String get title => getRequest('title') as String;
 
   @override
-
   List<WebElement> findElements(By by) => _finder.findElements(by);
 
   @override

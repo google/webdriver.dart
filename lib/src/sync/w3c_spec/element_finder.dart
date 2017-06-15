@@ -52,20 +52,25 @@ class ElementFinder {
     return {'using': using, 'value': value};
   }
 
-  List<WebElement> findElements(By by) => _findElements(by, 'elements');
+  List<WebElement> findElements(By by) {
+    final elements =
+        _resolver.post('elements', _byToJson(by)) as List<Map<String, String>>;
 
-  WebElement findElement(By by) => _findElements(by, 'element')[0];
+    // "as List<String>;" should not be necessary, but helps IntelliJ
+    final ids = elements.fold(new List<String>(), (cur, m) {
+      cur.addAll(m.values);
+      return cur;
+    }) as List<String>;
 
-  List<String> _unwrapReponse(Map<String, String> response) => response.values;
+    var i = 0;
+    return ids
+        .map((id) => new W3cWebElement(_driver, id, _context, by, i++))
+        .toList();
+  }
 
-  List<WebElement> _findElements(By by, String command) {
-    final elements = _unwrapReponse(_resolver.post(command, _byToJson(by)));
-    int i = 0;
-
-    final webElements = new List<W3cWebElement>();
-    for (final element in elements) {
-      webElements.add(new W3cWebElement(_driver, element, _context, by, i++));
-    }
-    return webElements;
+  WebElement findElement(By by) {
+    final element =
+        _resolver.post('element', _byToJson(by)) as Map<String, String>;
+    return new W3cWebElement(_driver, element.values.first, _context, by);
   }
 }
