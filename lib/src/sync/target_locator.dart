@@ -37,7 +37,5 @@ abstract class TargetLocator {
 
   /// Switches to the currently active modal dialog for this particular driver
   /// instance.
-  ///
-  /// Throws [NoSuchAlertException] if there is not currently an alert.
   Alert get alert;
 }
