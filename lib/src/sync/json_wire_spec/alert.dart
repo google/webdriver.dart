@@ -18,15 +18,14 @@ import '../web_driver.dart';
 
 /// A JavaScript alert(), confirm(), or prompt() dialog for the JSON wire spec.
 class JsonWireAlert implements Alert {
-  final String _text;
   final WebDriver _driver;
   final Resolver _resolver;
 
-  JsonWireAlert(this._text, this._driver)
+  JsonWireAlert(this._driver)
       : _resolver = new Resolver(_driver, '');
 
   @override
-  String get text => _text;
+  String get text => _resolver.get('alert_text');
 
   @override
   void accept() {
