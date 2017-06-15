@@ -143,7 +143,6 @@ void runTests(config.createTestDriver createTestDriver) {
             arguments[1].textContent = arguments[0];
             return arguments[1];''';
         var e = driver.execute(script, ['new text', button]);
-        print(e.runtimeType);
         expect(e.text, 'new text');
       });
 
