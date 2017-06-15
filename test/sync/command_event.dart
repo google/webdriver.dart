@@ -61,5 +61,5 @@ void runTests(config.createTestDriver createTestDriver) {
       expect(events[1].startTime.isBefore(events[1].endTime), isTrue);
       expect(events[1].stackTrace, new isInstanceOf<Chain>());
     });
-  }, timeout: new Timeout(new Duration(minutes: 1)));
+  }, timeout: new Timeout(new Duration(minutes: 2)));
 }

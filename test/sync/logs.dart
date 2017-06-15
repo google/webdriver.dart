@@ -47,5 +47,5 @@ void runTests(config.createTestDriver createTestDriver) {
         expect(entry.level, equals(LogLevel.info));
       });
     });
-  }, timeout: new Timeout(new Duration(minutes: 1)));
+  }, timeout: new Timeout(new Duration(minutes: 2)));
 }

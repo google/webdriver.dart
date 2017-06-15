@@ -188,5 +188,5 @@ void main() {
       var element = await driver.findElement(const By.cssSelector('table'));
       expect(await element.equals(table), isTrue);
     });
-  }, timeout: new Timeout(new Duration(minutes: 1)));
+  }, timeout: new Timeout(new Duration(minutes: 2)));
 }

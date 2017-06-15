@@ -73,5 +73,5 @@ void runTests(config.createTestDriver createTestDriver) {
       driver.keyboard.sendKeys('xxx');
       expect(textInput.attributes['value'], 'xxx');
     });
-  }, timeout: new Timeout(new Duration(minutes: 1)));
+  }, timeout: new Timeout(new Duration(minutes: 2)));
 }
