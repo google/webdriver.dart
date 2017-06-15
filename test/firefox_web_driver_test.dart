@@ -12,7 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import '../common.dart' show By;
+import 'sync/web_driver.dart';
+import 'sync/sync_io_config.dart' as config;
 
-/// Convert [By] instances into JSON params.
-Map<String, String> byToJson(By by) => {'using': by.using, 'value': by.value};
+void main() {
+  runTests(config.createFirefoxTestDriver);
+}
