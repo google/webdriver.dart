@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import 'sync/command_event.dart';
+import 'sync/command_event.dartgit';
 import 'sync/sync_io_config.dart' as config;
 
 void main() {
