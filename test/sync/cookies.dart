@@ -59,7 +59,7 @@ void runTests(config.createTestDriver createTestDriver) {
         if (cookie.name == 'mycookie') {
           found = true;
           expect(cookie.value, 'myvalue');
-          expect(cookie.expiry, date);
+          expect(cookie.domain, '.google.com');
           break;
         }
       }
