@@ -152,5 +152,5 @@ void main() {
     test('window close', () async {
       await forwardedDriver.close();
     });
-  }, timeout: new Timeout(new Duration(minutes: 1)));
+  }, timeout: new Timeout(new Duration(minutes: 2)));
 }

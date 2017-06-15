@@ -169,7 +169,7 @@ void main() {
           anyElement((PrefsOption o) =>
               o.name == Capabilities.hasNativeEvents && o.value == true));
     });
-  }, timeout: new Timeout(new Duration(minutes: 1)));
+  }, timeout: new Timeout(new Duration(minutes: 2)));
 }
 
 Archive unpackArchiveData(Map profileData) {
