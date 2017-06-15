@@ -23,7 +23,7 @@ import 'sync_io_config.dart' as config;
 
 void runTests(config.createTestDriver createTestDriver) {
   group('WebDriver', () {
-    /*group('create', () {
+    group('create', () {
       test('default', () {
         WebDriver driver = createTestDriver();
         driver.get(config.testPagePath);
@@ -31,7 +31,7 @@ void runTests(config.createTestDriver createTestDriver) {
         expect(element.name, 'button');
         driver.quit();
       });
-    });*/
+    });
 
     group('methods', () {
       WebDriver driver;
@@ -48,7 +48,7 @@ void runTests(config.createTestDriver createTestDriver) {
         driver = null;
       });
 
-      /*test('get', () {
+      test('get', () {
         driver.get(config.testPagePath);
         driver.findElement(const By.tagName('button'));
         ;
@@ -63,17 +63,17 @@ void runTests(config.createTestDriver createTestDriver) {
       test('findElement -- success', () {
         var element = driver.findElement(const By.tagName('tr'));
         expect(element, config.isSyncWebElement);
-      });*/
+      });
 
-      // NEEDS REAL EXCEPTIONS
-      /*test('findElement -- failure', () {
+      test('findElement -- failure', () {
         try {
           driver.findElement(const By.id('non-existent-id'));
-          throw 'expected NoSuchElementException';
-        } on NoSuchElementException {}
-      });*/
+          throw 'expected exception';
+          // TODO(staats): update to specify exception.
+        } on Exception {}
+      });
 
-      /*test('findElements -- 1 found', () {
+      test('findElements -- 1 found', () {
         var elements = driver
             .findElements(const By.cssSelector('input[type=text]'))
             .toList();
@@ -104,7 +104,7 @@ void runTests(config.createTestDriver createTestDriver) {
         expect(driver.windows.toList(), hasLength(numHandles + 1));
         driver.close();
         expect(driver.windows.toList(), hasLength(numHandles));
-      });*/
+      });
 
       test('window', () {
         Window orig = driver.window;
@@ -122,7 +122,7 @@ void runTests(config.createTestDriver createTestDriver) {
         expect(driver.window, equals(next));
         driver.close();
       });
-/*
+
       test('activeElement', () {
         var element = driver.activeElement;
         expect(element.name, 'body');
@@ -143,6 +143,7 @@ void runTests(config.createTestDriver createTestDriver) {
             arguments[1].textContent = arguments[0];
             return arguments[1];''';
         var e = driver.execute(script, ['new text', button]);
+        print(e.runtimeType);
         expect(e.text, 'new text');
       });
 
@@ -154,6 +155,7 @@ void runTests(config.createTestDriver createTestDriver) {
         var e = driver.executeAsync(script, ['new text', button]);
         expect(e.text, 'new text');
       });
+
 
       test('captureScreenshot', () {
         var screenshot = driver.captureScreenshotAsList().toList();
@@ -179,7 +181,9 @@ void runTests(config.createTestDriver createTestDriver) {
           driver.executeAsync('', []);
           fail('Did not throw timeout as expected');
         } catch (e) {
-          expect(e.toString(), contains('asynchronous script timeout'));
+          // TODO(staats): make this less fragile/dependent on error messages.
+          expect(e.toString().toLowerCase(), contains('time'));
+          expect(e.toString().toLowerCase(), contains('out'));
         }
       });
 
@@ -197,7 +201,7 @@ void runTests(config.createTestDriver createTestDriver) {
         for (int i = 0; i < 10; i++) {
           expect(eventList[i], i);
         }
-      });*/
+      });
     });
   }, timeout: new Timeout(new Duration(minutes: 1)));
 }

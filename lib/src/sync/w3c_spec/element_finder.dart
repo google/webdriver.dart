@@ -73,4 +73,13 @@ class ElementFinder {
         _resolver.post('element', _byToJson(by)) as Map<String, String>;
     return new W3cWebElement(_driver, element.values.first, _context, by);
   }
+
+  WebElement findActiveElement() {
+    final element = _resolver.get('element/active');
+    if (element != null) {
+      return new W3cWebElement(
+          _driver, element.values.first, _context, 'activeElement');
+    }
+    return null;
+  }
 }
