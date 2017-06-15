@@ -41,7 +41,7 @@ void runTests(config.createTestDriver createTestDriver) {
 
     test('handles exceptions', () {
       try {
-        driver.switchTo.alert;
+        driver.switchTo.alert.text;
         fail('Expected exception on no alert');
       } catch (NoSuchAlertException) {}
       expect(events[1].method, 'GET');
