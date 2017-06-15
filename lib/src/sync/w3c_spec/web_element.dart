@@ -14,7 +14,7 @@
 
 import 'dart:math' show Point, Rectangle;
 
-import 'by.dart' show byToJson;
+import 'element_finder.dart';
 
 import '../common.dart';
 import '../web_driver.dart';
@@ -23,6 +23,7 @@ import '../web_element.dart';
 class W3cWebElement implements WebElement, SearchContext {
   final String _elementPrefix;
   final Resolver _resolver;
+  ElementFinder _finder;
 
   @override
   final String id;
@@ -42,7 +43,9 @@ class W3cWebElement implements WebElement, SearchContext {
   W3cWebElement(this.driver, id, [this.context, this.locator, this.index])
       : this.id = id,
         _elementPrefix = 'element/$id',
-        _resolver = new Resolver(driver, 'element/$id');
+        _resolver = new Resolver(driver, 'element/$id') {
+    _finder = new ElementFinder(driver, _resolver, this);
+  }
 
   @override
   void click() => _resolver.post('click');
@@ -98,22 +101,10 @@ class W3cWebElement implements WebElement, SearchContext {
   String get text => _resolver.get('text') as String;
 
   @override
-  WebElement findElement(By by) {
-    final element = _resolver.post('element', byToJson(by));
-    return new W3cWebElement(driver, element[elementStr], this, by);
-  }
+  WebElement findElement(By by) => _finder.findElement(by);
 
   @override
-  List<WebElement> findElements(By by) {
-    final elements = _resolver.post('elements', byToJson(by)) as Iterable;
-    int i = 0;
-    final webElements = new List<WebElement>();
-    for (final element in elements) {
-      webElements
-          .add(new W3cWebElement(driver, element[elementStr], this, by, i++));
-    }
-    return webElements;
-  }
+  List<WebElement> findElements(By by) => _finder.findElements(by);
 
   @override
   Attributes get attributes =>
