@@ -15,6 +15,7 @@
 @TestOn("vm")
 library webdriver.web_driver_test;
 
+import 'dart:io';
 import 'package:test/test.dart';
 import 'package:webdriver/sync_core.dart';
 
@@ -67,8 +68,9 @@ void runTests(config.createTestDriver createTestDriver) {
       test('findElement -- failure', () {
         try {
           driver.findElement(const By.id('non-existent-id'));
-          throw 'expected NoSuchElementException';
-        } on NoSuchElementException {}
+          throw 'expected exception';
+          // TODO(staats): update to specify exception.
+        } on Exception {}
       });
 
       test('findElements -- 1 found', () {
@@ -98,6 +100,7 @@ void runTests(config.createTestDriver createTestDriver) {
       test('close/windows', () {
         int numHandles = (driver.windows.toList()).length;
         (driver.findElement(const By.partialLinkText('Open copy'))).click();
+        sleep(new Duration(milliseconds: 500)); // Bit slow on Firefox.
         expect(driver.windows.toList(), hasLength(numHandles + 1));
         driver.close();
         expect(driver.windows.toList(), hasLength(numHandles));
@@ -108,10 +111,11 @@ void runTests(config.createTestDriver createTestDriver) {
         Window next;
 
         (driver.findElement(const By.partialLinkText('Open copy'))).click();
-        for (Window window in driver.windows) {
+        sleep(new Duration(milliseconds: 500)); // Bit slow on Firefox.
+        for (final window in driver.windows) {
           if (window != orig) {
             next = window;
-            driver.switchTo.window(window);
+            window.setAsActive();
             break;
           }
         }
@@ -175,7 +179,9 @@ void runTests(config.createTestDriver createTestDriver) {
           driver.executeAsync('', []);
           fail('Did not throw timeout as expected');
         } catch (e) {
-          expect(e.toString(), contains('asynchronous script timeout'));
+          // TODO(staats): make this less fragile/dependent on error messages.
+          expect(e.toString().toLowerCase(), contains('time'));
+          expect(e.toString().toLowerCase(), contains('out'));
         }
       });
 

@@ -108,14 +108,7 @@ class W3cWebDriver implements WebDriver, SearchContext {
   Window get window => new W3cWindows(this).activeWindow;
 
   @override
-  WebElement get activeElement {
-    final element = postRequest('element/active');
-    if (element != null) {
-      return new W3cWebElement(
-          this, element[elementStr], this, 'activeElement');
-    }
-    return null;
-  }
+  WebElement get activeElement => _finder.findActiveElement();
 
   @override
   Windows get windowsManager => new W3cWindows(this);
@@ -162,7 +155,7 @@ class W3cWebDriver implements WebDriver, SearchContext {
 
   dynamic _recursiveElementify(result) {
     if (result is Map) {
-      if (result.length == 1 && result.containsKey(elementStr)) {
+      if (result.containsKey(elementStr)) {
         return new W3cWebElement(this, result[elementStr], this, 'javascript');
       } else {
         final newResult = {};

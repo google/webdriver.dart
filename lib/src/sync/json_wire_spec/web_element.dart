@@ -15,6 +15,7 @@
 import 'dart:math' show Point, Rectangle;
 
 import 'by.dart' show byToJson;
+
 import '../common.dart';
 import '../web_driver.dart';
 import '../web_element.dart';
