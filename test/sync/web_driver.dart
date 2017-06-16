@@ -201,5 +201,5 @@ void runTests(config.createTestDriver createTestDriver) {
         }
       });
     });
-  }, timeout: new Timeout(new Duration(minutes: 1)));
+  }, timeout: new Timeout(new Duration(minutes: 2)));
 }

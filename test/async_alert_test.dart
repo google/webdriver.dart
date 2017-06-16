@@ -72,5 +72,5 @@ void main() {
       await alert.accept();
       expect(await output.text, endsWith('some keys'));
     });
-  }, timeout: new Timeout(new Duration(minutes: 1)));
+  }, timeout: new Timeout(new Duration(minutes: 2)));
 }

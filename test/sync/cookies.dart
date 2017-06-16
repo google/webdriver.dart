@@ -59,7 +59,7 @@ void runTests(config.createTestDriver createTestDriver) {
         if (cookie.name == 'mycookie') {
           found = true;
           expect(cookie.value, 'myvalue');
-          expect(cookie.expiry, date);
+          expect(cookie.domain, '.google.com');
           break;
         }
       }
@@ -83,5 +83,5 @@ void runTests(config.createTestDriver createTestDriver) {
       driver.cookies.deleteAll();
       expect(driver.cookies.all.toList(), isEmpty);
     }, skip: 'unreliable');
-  }, timeout: new Timeout(new Duration(minutes: 1)));
+  }, timeout: new Timeout(new Duration(minutes: 2)));
 }

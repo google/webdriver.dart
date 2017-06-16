@@ -76,5 +76,5 @@ void main() {
       var alert = await driver.switchTo.alert;
       await alert.dismiss();
     });
-  }, timeout: new Timeout(new Duration(minutes: 1)));
+  }, timeout: new Timeout(new Duration(minutes: 2)));
 }
