@@ -26,14 +26,16 @@ class W3cAlert implements Alert {
   String get text => _resolver.get('text');
 
   @override
-  void accept() => _resolver.post('accept');
+  void accept() => _resolver.post('accept', {});
 
   @override
-  void dismiss() => _resolver.post('dismiss');
+  void dismiss() => _resolver.post('dismiss', {});
 
+  // This does NOT match the W3C spec, which specifies 'value' not 'text'.
+  // But this is what geckodriver uses.
   @override
   void sendKeys(String keysToSend) =>
-      _resolver.post('text', {'value': keysToSend});
+      _resolver.post('text', {'text': keysToSend});
 
   @override
   String toString() => '$_driver.switchTo.alert[$text]';

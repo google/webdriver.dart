@@ -42,9 +42,9 @@ void runTests(config.createTestDriver createTestDriver) {
 
     test('no alert', () {
       try {
-        driver.switchTo.alert;
+        driver.switchTo.alert.text;
         fail('Expected exception on no alert');
-      } on NoSuchAlertException {}
+      } on Exception {}
     });
 
     test('text', () {

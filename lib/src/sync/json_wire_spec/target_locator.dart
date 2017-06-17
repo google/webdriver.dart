@@ -60,13 +60,8 @@ class JsonWireTargetLocator implements TargetLocator {
 
   /// Switches to the currently active modal dialog for this particular driver
   /// instance.
-  ///
-  /// Throws [NoSuchAlertException] if there is not currently an alert.
   @override
-  Alert get alert {
-    final text = _resolver.get('alert_text');
-    return new JsonWireAlert(text, _driver);
-  }
+  Alert get alert => new JsonWireAlert(_driver);
 
   @override
   String toString() => '$_driver.switchTo';
