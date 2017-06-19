@@ -17,7 +17,7 @@ import '../navigation.dart';
 import '../web_driver.dart';
 
 /// Browser navigation actions.
-class JsonWireNavigation implements Navigation{
+class JsonWireNavigation implements Navigation {
   final WebDriver _driver;
   final Resolver _resolver;
 
@@ -45,5 +45,6 @@ class JsonWireNavigation implements Navigation{
   int get hashCode => _driver.hashCode;
 
   @override
-  bool operator ==(other) => other is JsonWireNavigation && other._driver == _driver;
+  bool operator ==(other) =>
+      other is JsonWireNavigation && other._driver == _driver;
 }

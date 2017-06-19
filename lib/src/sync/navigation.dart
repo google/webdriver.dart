@@ -14,7 +14,6 @@
 
 /// Browser navigation actions.
 abstract class Navigation {
-
   ///  Navigate forwards in the browser history, if possible.
   void forward();
 

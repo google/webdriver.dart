@@ -44,5 +44,5 @@ class W3cNavigation implements Navigation {
   int get hashCode => _driver.hashCode;
 
   @override
-  bool operator ==(other) => other is W3cNavigation&& other._driver == _driver;
+  bool operator ==(other) => other is W3cNavigation && other._driver == _driver;
 }
