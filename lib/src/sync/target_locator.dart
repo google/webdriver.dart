@@ -18,8 +18,6 @@ abstract class TargetLocator {
   /// Change focus to another frame on the page.
   /// If [frame] is a:
   ///   [int]: select by its zero-based index
-  ///   [String]: select frame by the name of the frame window or the id of the
-  ///           frame or iframe tag.
   ///   [WebElement]: select the frame for a previously found frame or iframe
   ///               element.
   ///   not provided: selects the first frame on the page or the main document.

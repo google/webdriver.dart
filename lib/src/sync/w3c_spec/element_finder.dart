@@ -39,6 +39,10 @@ class ElementFinder {
         using = 'css selector';
         value = '#${by.value}';
         break;
+      case 'name': // This doesn't exist in the W3C spec.
+        using = 'css selector';
+        value = '[name=${by.value}]';
+        break;
       case 'tag name': // This is in the W3C spec, but not in geckodriver.
         using = 'css selector';
         value = by.value;

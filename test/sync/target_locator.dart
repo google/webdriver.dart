@@ -47,11 +47,6 @@ void runTests(config.createTestDriver createTestDriver) {
       expect(driver.pageSource, contains('this is a frame'));
     });
 
-    test('frame name', () {
-      driver.switchTo.frame('frame');
-      expect(driver.pageSource, contains('this is a frame'));
-    });
-
     test('frame element', () {
       driver.switchTo.frame(frame);
       expect(driver.pageSource, contains('this is a frame'));
