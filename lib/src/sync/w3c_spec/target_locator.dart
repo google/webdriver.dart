@@ -15,7 +15,6 @@
 import 'alert.dart';
 import 'web_element.dart';
 
-
 import '../alert.dart';
 import '../common.dart';
 import '../target_locator.dart';
@@ -32,14 +31,16 @@ class W3cTargetLocator implements TargetLocator {
     if (frame == null || frame is int) {
       _resolver.post('frame', {'id': frame});
     } else if (frame is W3cWebElement) {
-      _resolver.post('frame', {'id': {w3cElementStr: frame.id}});
-
+      _resolver.post('frame', {
+        'id': {w3cElementStr: frame.id}
+      });
     } else {
       // If you're here, you probably screwed up. But in the case someone
       // depends on this behavior, we allow you to pass arbitrary objects.
       _resolver.post('frame', {'id': frame});
     }
   }
+
   @Deprecated('Use "Window.setAsActive()". '
       'Selecting by name is not supported by the current W3C spec.')
   @override
