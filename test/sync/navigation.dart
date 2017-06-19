@@ -41,10 +41,10 @@ void runTests(config.createTestDriver createTestDriver) {
       driver.navigate.refresh();
       try {
         element.name;
-      } on StaleElementReferenceException {
+      } on Exception {
         return true;
       }
-      return 'expected StaleElementReferenceException';
+      return 'expected Exception';
     });
   }, timeout: new Timeout(new Duration(minutes: 2)));
 }

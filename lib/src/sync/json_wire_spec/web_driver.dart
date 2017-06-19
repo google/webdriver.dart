@@ -19,17 +19,18 @@ import 'by.dart' show byToJson;
 import 'keyboard.dart';
 import 'logs.dart';
 import 'mouse.dart';
+import 'navigation.dart';
 import 'target_locator.dart';
 import 'timeouts.dart';
 import 'web_element.dart';
 import 'window.dart';
 
-import '../common_spec/navigation.dart';
 import '../common_spec/cookies.dart';
 
 import '../command_event.dart';
 import '../command_processor.dart';
 import '../common.dart';
+import '../navigation.dart';
 import '../target_locator.dart';
 import '../timeouts.dart';
 import '../web_driver.dart';
@@ -133,7 +134,7 @@ class JsonWireWebDriver implements WebDriver, SearchContext {
   TargetLocator get switchTo => new JsonWireTargetLocator(this);
 
   @override
-  Navigation get navigate => new Navigation(this);
+  Navigation get navigate => new JsonWireNavigation(this);
 
   @override
   Cookies get cookies => new Cookies(this);
