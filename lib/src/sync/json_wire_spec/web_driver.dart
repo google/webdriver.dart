@@ -79,8 +79,8 @@ class JsonWireWebDriver implements WebDriver, SearchContext {
 
     final webElements = new List<JsonWireWebElement>();
     for (final element in elements) {
-      webElements.add(
-          new JsonWireWebElement(this, element[jsonWireElementStr], this, by, i++));
+      webElements.add(new JsonWireWebElement(
+          this, element[jsonWireElementStr], this, by, i++));
     }
     return webElements;
   }

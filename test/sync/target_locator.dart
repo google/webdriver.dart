@@ -55,10 +55,9 @@ void runTests(config.createTestDriver createTestDriver) {
         driver.switchTo.frame('frame');
         print('FINISHED SWITCH');
         expect(driver.pageSource, contains('this is a frame')); // JSON.
-      } on Exception catch(e) {
+      } on Exception catch (e) {
         expect(e.toString(), contains('frame id has unexpected type')); // W3C.
       }
-
     });
 
     test('frame element', () {
