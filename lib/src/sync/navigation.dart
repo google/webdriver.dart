@@ -12,37 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import '../common.dart';
-import '../web_driver.dart';
-
 /// Browser navigation actions.
-class Navigation {
-  final WebDriver _driver;
-  final Resolver _resolver;
-
-  Navigation(this._driver) : _resolver = new Resolver(_driver, '');
-
+abstract class Navigation {
   ///  Navigate forwards in the browser history, if possible.
-  void forward() {
-    _resolver.post('forward');
-  }
+  void forward();
 
   /// Navigate backwards in the browser history, if possible.
-  void back() {
-    _resolver.post('back');
-  }
+  void back();
 
   /// Refresh the current page.
-  void refresh() {
-    _resolver.post('refresh');
-  }
-
-  @override
-  String toString() => '$_driver.navigate';
-
-  @override
-  int get hashCode => _driver.hashCode;
-
-  @override
-  bool operator ==(other) => other is Navigation && other._driver == _driver;
+  void refresh();
 }
