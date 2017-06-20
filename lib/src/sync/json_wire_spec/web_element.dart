@@ -124,6 +124,10 @@ class JsonWireWebElement implements WebElement, SearchContext {
       new Attributes(driver, '$_elementPrefix/attribute');
 
   @override
+  Attributes get properties =>
+      new Attributes(driver, '$_elementPrefix/property');
+
+  @override
   Attributes get cssProperties => new Attributes(driver, '$_elementPrefix/css');
 
   @override
