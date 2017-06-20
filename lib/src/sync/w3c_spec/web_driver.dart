@@ -16,12 +16,12 @@ import 'dart:convert' show BASE64;
 import 'package:stack_trace/stack_trace.dart' show Chain;
 
 import 'element_finder.dart';
+import 'navigation.dart';
 import 'target_locator.dart';
 import 'timeouts.dart';
 import 'web_element.dart';
 import 'window.dart';
 
-import '../common_spec/navigation.dart';
 import '../common_spec/cookies.dart';
 
 // We don't implement this, but we need the types to define the API.
@@ -32,6 +32,7 @@ import '../json_wire_spec/mouse.dart';
 import '../command_event.dart';
 import '../command_processor.dart';
 import '../common.dart';
+import '../navigation.dart';
 import '../target_locator.dart';
 import '../timeouts.dart';
 import '../web_driver.dart';
@@ -117,7 +118,7 @@ class W3cWebDriver implements WebDriver, SearchContext {
   TargetLocator get switchTo => new W3cTargetLocator(this);
 
   @override
-  Navigation get navigate => new Navigation(this);
+  Navigation get navigate => new W3cNavigation(this);
 
   @override
   Cookies get cookies => new Cookies(this);

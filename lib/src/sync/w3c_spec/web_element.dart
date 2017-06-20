@@ -58,13 +58,13 @@ class W3cWebElement implements WebElement, SearchContext {
   // TODO(staats): tie this into actions API support.
   void sendKeys(String keysToSend) {
     _resolver.post('value', {
-      'text': [keysToSend],
-      'keyboard': ''
+      'text': keysToSend, // What geckodriver really wants.
+      'value': keysToSend // Actual W3C spec.
     });
   }
 
   @override
-  void clear() => _resolver.post('clear');
+  void clear() => _resolver.post('clear', {});
 
   @override
   bool get selected => _resolver.get('selected') as bool;
@@ -74,10 +74,7 @@ class W3cWebElement implements WebElement, SearchContext {
 
   @override
   // TODO(staats): add many, many tests here.
-  bool get displayed {
-    final style = _resolver.get('property/getComputedStyle');
-    return style['display'] != 'none';
-  }
+  bool get displayed => this.cssProperties['display'] != 'none';
 
   @override
   // TODO(staats): better exception.
@@ -111,12 +108,15 @@ class W3cWebElement implements WebElement, SearchContext {
       new Attributes(driver, '$_elementPrefix/attribute');
 
   @override
-  Attributes get cssProperties => new Attributes(driver, '$_elementPrefix/css');
-
-  // TODO(staats): add support for properties to WebElement.
+  Attributes get properties =>
+      new Attributes(driver, '$_elementPrefix/property');
 
   @override
-  bool equals(WebElement other) => _resolver.get('equals/${other.id}') as bool;
+  Attributes get cssProperties => new Attributes(driver, '$_elementPrefix/css');
+
+  @override
+  bool equals(WebElement other) =>
+      other is W3cWebElement && other.id == this.id;
 
   @override
   Map<String, String> toJson() => {jsonWireElementStr: id};

@@ -87,6 +87,9 @@ abstract class WebElement implements SearchContext {
   /// Access to the HTML attributes of this tag.
   Attributes get attributes;
 
+  /// Access to the HTML properties of this tag.
+  Attributes get properties;
+
   /// Access to the cssProperties of this element.
   Attributes get cssProperties;
 

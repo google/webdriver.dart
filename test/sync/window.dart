@@ -39,32 +39,27 @@ void runTests(config.createTestDriver createTestDriver) {
 
     test('size', () {
       var window = driver.window;
-      var size = const Rectangle<int>(0, 0, 600, 400);
-      window.setSize(size);
-      expect(window.size, size);
-    });
+      var windowRect = const Rectangle<int>(0, 0, 600, 400);
+      window.rect = windowRect;
+      // Height and width seem consistent across browser/platforms.
+      expect(window.rect.width, windowRect.width);
+      expect(window.rect.height, windowRect.height);
 
-    test('location', () {
-      var window = driver.window;
-      var position = const Point<int>(100, 200);
-      window.setLocation(position);
-      expect(window.location, position);
-    }, skip: 'unreliable');
+      // These are not consistent, so we give them a bit of wiggle.
+      expect((window.rect.left - windowRect.left).abs(), lessThan(50));
+      expect((window.rect.top - windowRect.top).abs(), lessThan(50));
+    });
 
     // May not work on some OS/browser combinations (notably Mac OS X).
     test('maximize', () {
       var window = driver.window;
-      window.setSize(const Rectangle<int>(0, 0, 300, 200));
-      window.setLocation(const Point<int>(100, 200));
+      final windowRect = const Rectangle<int>(100, 200, 300, 300);
+      window.rect = windowRect;
       window.maximize();
 
-      var location = window.location;
-      var size = window.size;
-      // Changed from `lessThan(100)` to pass the test on Mac.
-      expect(location.x, lessThanOrEqualTo(100));
-      expect(location.y, lessThan(200));
-      expect(size.height, greaterThan(200));
-      expect(size.width, greaterThan(300));
-    }, skip: 'unreliable');
+      var finalRect = window.rect;
+      expect(finalRect.width, greaterThan(300));
+      expect(finalRect.height, greaterThan(300));
+    }, skip: 'Unreliable on Travis');
   }, timeout: new Timeout(new Duration(minutes: 2)));
 }
