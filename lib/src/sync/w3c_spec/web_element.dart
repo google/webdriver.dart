@@ -58,10 +58,9 @@ class W3cWebElement implements WebElement, SearchContext {
   // TODO(staats): tie this into actions API support.
   void sendKeys(String keysToSend) {
     _resolver.post('value', {
-      'text': keysToSend, // What geckodriver wants.
-      'value': keysToSend
-    } //W3C spec.
-        );
+      'text': keysToSend, // What geckodriver really wants.
+      'value': keysToSend // Actual W3C spec.
+    });
   }
 
   @override
