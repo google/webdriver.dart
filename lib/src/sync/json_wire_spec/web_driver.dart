@@ -80,7 +80,7 @@ class JsonWireWebDriver implements WebDriver, SearchContext {
     final webElements = new List<JsonWireWebElement>();
     for (final element in elements) {
       webElements.add(
-          new JsonWireWebElement(this, element[elementStr], this, by, i++));
+          new JsonWireWebElement(this, element[jsonWireElementStr], this, by, i++));
     }
     return webElements;
   }
@@ -88,7 +88,7 @@ class JsonWireWebDriver implements WebDriver, SearchContext {
   @override
   WebElement findElement(By by) {
     final element = postRequest('element', byToJson(by));
-    return new JsonWireWebElement(this, element[elementStr], this, by);
+    return new JsonWireWebElement(this, element[jsonWireElementStr], this, by);
   }
 
   @override
@@ -121,7 +121,7 @@ class JsonWireWebDriver implements WebDriver, SearchContext {
     final element = postRequest('element/active');
     if (element != null) {
       return new JsonWireWebElement(
-          this, element[elementStr], this, 'activeElement');
+          this, element[jsonWireElementStr], this, 'activeElement');
     }
     return null;
   }
@@ -169,9 +169,9 @@ class JsonWireWebDriver implements WebDriver, SearchContext {
 
   dynamic _recursiveElementify(result) {
     if (result is Map) {
-      if (result.length == 1 && result.containsKey(elementStr)) {
+      if (result.length == 1 && result.containsKey(jsonWireElementStr)) {
         return new JsonWireWebElement(
-            this, result[elementStr], this, 'javascript');
+            this, result[jsonWireElementStr], this, 'javascript');
       } else {
         final newResult = {};
         result.forEach((key, value) {

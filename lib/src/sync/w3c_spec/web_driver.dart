@@ -155,8 +155,8 @@ class W3cWebDriver implements WebDriver, SearchContext {
 
   dynamic _recursiveElementify(result) {
     if (result is Map) {
-      if (result.containsKey(elementStr)) {
-        return new W3cWebElement(this, result[elementStr], this, 'javascript');
+      if (result.containsKey(jsonWireElementStr)) {
+        return new W3cWebElement(this, result[jsonWireElementStr], this, 'javascript');
       } else {
         final newResult = {};
         result.forEach((key, value) {

@@ -104,7 +104,7 @@ class JsonWireWebElement implements WebElement, SearchContext {
   @override
   WebElement findElement(By by) {
     final element = _resolver.post('element', byToJson(by));
-    return new JsonWireWebElement(driver, element[elementStr], this, by);
+    return new JsonWireWebElement(driver, element[jsonWireElementStr], this, by);
   }
 
   @override
@@ -114,7 +114,7 @@ class JsonWireWebElement implements WebElement, SearchContext {
     final webElements = new List<WebElement>();
     for (final element in elements) {
       webElements.add(
-          new JsonWireWebElement(driver, element[elementStr], this, by, i++));
+          new JsonWireWebElement(driver, element[jsonWireElementStr], this, by, i++));
     }
     return webElements;
   }
@@ -130,7 +130,7 @@ class JsonWireWebElement implements WebElement, SearchContext {
   bool equals(WebElement other) => _resolver.get('equals/${other.id}') as bool;
 
   @override
-  Map<String, String> toJson() => {elementStr: id};
+  Map<String, String> toJson() => {jsonWireElementStr: id};
 
   @override
   int get hashCode => driver.hashCode * 3 + id.hashCode;
