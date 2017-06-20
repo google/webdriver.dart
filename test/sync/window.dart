@@ -60,6 +60,6 @@ void runTests(config.createTestDriver createTestDriver) {
       var finalRect = window.rect;
       expect(finalRect.width, greaterThan(300));
       expect(finalRect.height, greaterThan(300));
-    });
+    }, skip: 'Unreliable on Travis');
   }, timeout: new Timeout(new Duration(minutes: 2)));
 }
