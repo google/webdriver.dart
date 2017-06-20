@@ -78,7 +78,7 @@ class W3cWindow implements Window {
       });
 
   @override
-  void maximize() => _windowResolver.post('maximize');
+  void maximize() => _windowResolver.post('maximize', {});
 
   @override
   void setAsActive() => _session.post('window', {'handle': _handle});
