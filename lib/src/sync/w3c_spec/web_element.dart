@@ -114,8 +114,6 @@ class W3cWebElement implements WebElement, SearchContext {
   @override
   Attributes get cssProperties => new Attributes(driver, '$_elementPrefix/css');
 
-  // TODO(staats): add support for properties to WebElement.
-
   @override
   bool equals(WebElement other) =>
       other is W3cWebElement && other.id == this.id;
