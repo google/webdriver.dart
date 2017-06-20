@@ -47,9 +47,17 @@ void runTests(config.createTestDriver createTestDriver) {
       expect(driver.pageSource, contains('this is a frame'));
     });
 
+    // Both the JSON and W3C specs allow passing strings. In the JSON spec, we
+    // expect this to work (finds a frame with the name of the string). In the
+    // W3C spec we expect this to fail with an exception thrown by the driver.
     test('frame name', () {
-      driver.switchTo.frame('frame');
-      expect(driver.pageSource, contains('this is a frame'));
+      try {
+        driver.switchTo.frame('frame');
+        print('FINISHED SWITCH');
+        expect(driver.pageSource, contains('this is a frame')); // JSON.
+      } on Exception catch (e) {
+        expect(e.toString(), contains('frame id has unexpected type')); // W3C.
+      }
     });
 
     test('frame element', () {

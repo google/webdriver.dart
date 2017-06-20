@@ -15,7 +15,12 @@
 import 'web_driver.dart';
 import 'web_element.dart';
 
-const String elementStr = 'ELEMENT';
+// Magic constants -- identifiers indicating a value is an element.
+// Source: https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol
+const String jsonWireElementStr = 'ELEMENT';
+
+// Source: https://www.w3.org/TR/webdriver/#elements
+const String w3cElementStr = 'element-6066-11e4-a52e-4f735466cecf';
 
 /// Simple class to provide access to indexed properties such as WebElement
 /// attributes or css styles.

@@ -119,7 +119,7 @@ class W3cWebElement implements WebElement, SearchContext {
       other is W3cWebElement && other.id == this.id;
 
   @override
-  Map<String, String> toJson() => {elementStr: id};
+  Map<String, String> toJson() => {jsonWireElementStr: id};
 
   @override
   int get hashCode => driver.hashCode * 3 + id.hashCode;
