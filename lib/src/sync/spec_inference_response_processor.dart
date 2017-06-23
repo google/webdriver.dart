@@ -33,8 +33,9 @@ dynamic inferSessionResponseSpec(SyncHttpClientResponse response, bool _) {
     responseBody = JSON.decode(response.body);
   } catch (e) {}
 
+  // TODO(staats): create more description error messages.
   if (response.statusCode < 200 || response.statusCode > 299) {
-    // Throw exception.
+    throw 'Response code: ${response.statusCode}';
   }
 
   // JSON responses have multiple keys.
@@ -46,5 +47,5 @@ dynamic inferSessionResponseSpec(SyncHttpClientResponse response, bool _) {
     return new InferredResponse(
         responseBody['value']['sessionId'], WebDriverSpec.W3c);
   }
-  // Throw exception.
+  throw 'Could not infer spec type; number of keys: ${responseBody.keys}';
 }
