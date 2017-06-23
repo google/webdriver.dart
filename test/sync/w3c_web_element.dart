@@ -138,7 +138,8 @@ void runTests(config.createTestDriver createTestDriver) {
         expect(e, new isInstanceOf<W3cWebDriverException>());
         expect((e as W3cWebDriverException).httpStatusCode, 404);
         expect((e as W3cWebDriverException).error, 'no such element');
-        expect((e as W3cWebDriverException).message, contains('Unable to locate element'));
+        expect((e as W3cWebDriverException).message,
+            contains('Unable to locate element'));
       }
     });
 
