@@ -16,7 +16,7 @@ import 'dart:convert' show JSON;
 
 import 'package:sync_http/sync_http.dart';
 
-import '../exception.dart' show WebDriverException;
+import 'exception.dart' show JsonWireWebDriverException;
 
 /// Handles responses from the JSON wire protocol.
 dynamic processJsonWireResponse(SyncHttpClientResponse response, bool value) {
@@ -30,7 +30,7 @@ dynamic processJsonWireResponse(SyncHttpClientResponse response, bool value) {
       (responseBody is Map &&
           responseBody['status'] != null &&
           responseBody['status'] != 0)) {
-    throw new WebDriverException(
+    throw new JsonWireWebDriverException(
         httpStatusCode: response.statusCode,
         httpReasonPhrase: response.reasonPhrase,
         jsonResp: responseBody);
