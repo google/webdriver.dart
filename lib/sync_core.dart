@@ -20,6 +20,7 @@ import 'package:webdriver/src/sync/capabilities.dart' show Capabilities;
 import 'package:webdriver/src/sync/web_driver.dart' show WebDriver;
 
 import 'package:webdriver/src/sync/command_processor.dart';
+import 'package:webdriver/src/sync/spec_inference_response_processor.dart';
 import 'package:webdriver/src/sync/json_wire_spec/response_processor.dart';
 import 'package:webdriver/src/sync/json_wire_spec/web_driver.dart' as jwire;
 import 'package:webdriver/src/sync/w3c_spec/response_processor.dart';
@@ -79,7 +80,12 @@ WebDriver createDriver(
       return new w3c.W3cWebDriver(processor, uri, response['sessionId'],
           new UnmodifiableMapView(response['value'] as Map<String, dynamic>));
     case WebDriverSpec.Auto:
-      throw 'Not yet supported!';
+      final response =
+          new SyncHttpCommandProcessor(processor: inferSessionResponseSpec)
+              .post(uri.resolve('session'), {'desiredCapabilities': desired},
+                  value: true) as InferredResponse;
+      return fromExistingSession(response.sessionId,
+          uri: uri, spec: response.spec);
     default:
       throw 'Not yet supported!'; // Impossible.
   }
@@ -107,7 +113,7 @@ WebDriver fromExistingSession(String sessionId,
       return new w3c.W3cWebDriver(
           processor, uri, sessionId, new UnmodifiableMapView(response));
     case WebDriverSpec.Auto:
-      throw 'Not yet supported!';
+      throw 'Not supported!';
     default:
       throw 'Not yet supported!'; // Impossible.
   }
