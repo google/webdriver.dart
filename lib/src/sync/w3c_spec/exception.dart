@@ -33,10 +33,11 @@ class W3cWebDriverException implements WebDriverException {
   String get message => _message;
 
   factory W3cWebDriverException({int httpStatusCode, dynamic jsonResp}) {
-    if (jsonResp is Map) {
-      final error = jsonResp['error'];
-      final message = jsonResp['message'];
-      final stacktrace = jsonResp['stacktrace'];
+    if (jsonResp is Map && jsonResp.keys.contains('value')) {
+      final value = jsonResp['value'];
+      final error = value['error'];
+      final message = value['message'];
+      final stacktrace = value['stacktrace'];
 
       return new W3cWebDriverException._(
           httpStatusCode, error, message, stacktrace);
