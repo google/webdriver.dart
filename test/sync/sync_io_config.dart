@@ -29,7 +29,8 @@ final Uri _defaultChromeUri = Uri.parse('http://127.0.0.1:4444/wd/hub/');
 final Uri _defaultFirefoxUri = Uri.parse('http://127.0.0.1:4445/');
 
 WebDriver createFirefoxTestDriver(
-    {Map<String, dynamic> additionalCapabilities, WebDriverSpec spec: WebDriverSpec.W3c}) {
+    {Map<String, dynamic> additionalCapabilities,
+    WebDriverSpec spec: WebDriverSpec.W3c}) {
   final capabilities = Capabilities.firefox;
 
   if (additionalCapabilities != null) {
@@ -40,7 +41,8 @@ WebDriver createFirefoxTestDriver(
 }
 
 WebDriver createChromeTestDriver(
-    {Map<String, dynamic> additionalCapabilities, WebDriverSpec spec: WebDriverSpec.JsonWire}) {
+    {Map<String, dynamic> additionalCapabilities,
+    WebDriverSpec spec: WebDriverSpec.JsonWire}) {
   var capabilities = Capabilities.chrome;
   Map env = Platform.environment;
 
@@ -62,5 +64,6 @@ WebDriver createChromeTestDriver(
     capabilities.addAll(additionalCapabilities);
   }
 
-  return createDriver(uri: _defaultChromeUri, desired: additionalCapabilities, spec: spec);
+  return createDriver(
+      uri: _defaultChromeUri, desired: additionalCapabilities, spec: spec);
 }

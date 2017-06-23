@@ -108,10 +108,8 @@ WebDriver fromExistingSession(String sessionId,
     case WebDriverSpec.W3c:
       final processor =
           new SyncHttpCommandProcessor(processor: processW3cResponse);
-      final response = processor.get(uri.resolve('session/$sessionId'))
-          as Map<String, dynamic>;
       return new w3c.W3cWebDriver(
-          processor, uri, sessionId, new UnmodifiableMapView(response));
+          processor, uri, sessionId, new Map<String, dynamic>());
     case WebDriverSpec.Auto:
       throw 'Not supported!';
     default:

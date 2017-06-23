@@ -37,17 +37,14 @@ dynamic inferSessionResponseSpec(SyncHttpClientResponse response, bool _) {
     // Throw exception.
   }
 
+  // JSON responses have multiple keys.
   if (responseBody.keys.length > 1) {
-    // JSON
     return new InferredResponse(
         responseBody['sessionId'], WebDriverSpec.JsonWire);
-  } else if (responseBody.keys == 1) {
-    // W3C
+    // W3C responses have only one key, value.
+  } else if (responseBody.keys.length == 1) {
     return new InferredResponse(
         responseBody['value']['sessionId'], WebDriverSpec.W3c);
-  } else {
-    // Throw exception.
   }
-
-  return response;
+  // Throw exception.
 }
