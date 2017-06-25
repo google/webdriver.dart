@@ -16,6 +16,8 @@
 library webdriver.spec_inference_test;
 
 import 'package:test/test.dart';
+import 'package:webdriver/src/sync/json_wire_spec/exception.dart' as json;
+import 'package:webdriver/src/sync/w3c_spec/exception.dart' as w3c;
 import 'package:webdriver/sync_core.dart';
 
 import 'sync_io_config.dart' as config;
@@ -40,7 +42,10 @@ void main() {
       try {
         button.findElement(const By.tagName('tr'));
         throw 'Expected NoSuchElementException';
-      } on NoSuchElementException {}
+      } catch(e) {
+        expect(e, new isInstanceOf<json.NoSuchElementException>());
+        expect(e.toString(), contains('Unable to locate element'));
+      }
     });
 
     test('firefox work', () {
@@ -49,8 +54,11 @@ void main() {
       final button = driver.findElement(const By.tagName('button'));
       try {
         button.findElement(const By.tagName('tr'));
-        throw 'Expected Exception';
-      } on Exception {} // TODO(staats): update exception type.
+        throw 'Expected W3cWebDriverException';
+      } catch(e) {
+        expect(e, new isInstanceOf<w3c.W3cWebDriverException>());
+        expect(e.toString(), contains('Unable to locate element'));
+      }
     });
   }, timeout: new Timeout(new Duration(minutes: 2)));
 }
