@@ -16,7 +16,7 @@ import 'dart:convert' show JSON;
 
 import 'package:sync_http/sync_http.dart';
 
-import '../exception.dart' show WebDriverException;
+import 'exception.dart' show W3cWebDriverException;
 
 /// Handles responses from the W3C protocol.
 dynamic processW3cResponse(SyncHttpClientResponse response, bool value) {
@@ -26,10 +26,8 @@ dynamic processW3cResponse(SyncHttpClientResponse response, bool value) {
   } catch (e) {}
 
   if (response.statusCode < 200 || response.statusCode > 299) {
-    throw new WebDriverException(
-        httpStatusCode: response.statusCode,
-        httpReasonPhrase: response.reasonPhrase,
-        jsonResp: responseBody);
+    throw new W3cWebDriverException(
+        httpStatusCode: response.statusCode, jsonResp: responseBody);
   }
   if (value && responseBody is Map) {
     return responseBody['value'];
