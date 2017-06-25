@@ -19,6 +19,7 @@ import 'dart:io';
 
 import 'package:test/test.dart';
 import 'package:webdriver/sync_core.dart';
+import 'package:webdriver/src/sync/w3c_spec/exception.dart';
 
 import 'sync_io_config.dart' as config;
 
@@ -133,7 +134,13 @@ void runTests(config.createTestDriver createTestDriver) {
       try {
         button.findElement(const By.tagName('tr'));
         throw 'Expected Exception';
-      } on Exception {}
+      } catch (e) {
+        expect(e, new isInstanceOf<W3cWebDriverException>());
+        expect((e as W3cWebDriverException).httpStatusCode, 404);
+        expect((e as W3cWebDriverException).error, 'no such element');
+        expect((e as W3cWebDriverException).message,
+            contains('Unable to locate element'));
+      }
     });
 
     test('findElements -- 1 found', () {

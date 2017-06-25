@@ -16,6 +16,7 @@
 library webdriver.web_element_test;
 
 import 'package:test/test.dart';
+import 'package:webdriver/src/sync/json_wire_spec/exception.dart';
 import 'package:webdriver/sync_core.dart';
 
 import 'sync_io_config.dart' as config;
@@ -146,7 +147,9 @@ void runTests(config.createTestDriver createTestDriver) {
       try {
         button.findElement(const By.tagName('tr'));
         throw 'Expected NoSuchElementException';
-      } on NoSuchElementException {}
+      } catch (e) {
+        expect(e, new isInstanceOf<NoSuchElementException>());
+      }
     });
 
     test('findElements -- 1 found', () {
