@@ -16,8 +16,8 @@
 library webdriver.web_element_test;
 
 import 'package:test/test.dart';
-import 'package:webdriver/sync_core.dart';
 import 'package:webdriver/src/sync/json_wire_spec/exception.dart';
+import 'package:webdriver/sync_core.dart';
 
 import 'sync_io_config.dart' as config;
 
