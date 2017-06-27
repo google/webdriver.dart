@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-library webdriver.exception;
+library webdriver.json_exception;
 
 import '../exception.dart';
 
