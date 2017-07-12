@@ -14,7 +14,6 @@
 
 import 'command_event.dart';
 import 'common.dart';
-import 'exception.dart';
 import 'navigation.dart';
 import 'target_locator.dart';
 import 'timeouts.dart';
@@ -35,7 +34,7 @@ abstract class WebDriver implements SearchContext {
   String get id;
   Uri get uri;
   bool get filterStackTraces;
-
+  
   /// If true, WebDriver actions are recorded as [WebDriverCommandEvent]s.
   bool get notifyListeners;
 
