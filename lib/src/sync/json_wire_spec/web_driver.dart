@@ -59,8 +59,7 @@ class JsonWireWebDriver implements WebDriver, SearchContext {
         this._prefix = uri.resolve('session/$id/');
 
   @override
-  async_core.WebDriver get asyncDriver =>
-      createAsyncWebDriver(this.uri, this.id, this.capabilities);
+  async_core.WebDriver get asyncDriver => createAsyncWebDriver(this);
 
   @override
   void addEventListener(WebDriverListener listener) =>

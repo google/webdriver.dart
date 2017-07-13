@@ -25,11 +25,14 @@ const String jsonWireElementStr = 'ELEMENT';
 // Source: https://www.w3.org/TR/webdriver/#elements
 const String w3cElementStr = 'element-6066-11e4-a52e-4f735466cecf';
 
-/// Returns an [async_core.WebDriver] based on the URI + session ID.
-async_core.WebDriver createAsyncWebDriver(
-        Uri uri, String sessionId, Map<String, dynamic> capabilities) =>
-    new async_core.WebDriver(
-        new async_io.IOCommandProcessor(), uri, sessionId, capabilities);
+/// Returns an [async_core.WebDriver] with the same URI + session ID.
+async_core.WebDriver createAsyncWebDriver(WebDriver driver) =>
+    new async_core.WebDriver(new async_io.IOCommandProcessor(), driver.uri,
+        driver.id, driver.capabilities);
+
+/// Returns an [async_core.WebElement] based on a current [WebElement].
+async_core.WebElement createAsyncWebElement(WebElement element) =>
+    new async_core.WebElement(createAsyncWebDriver(element.driver), element.id);
 
 /// Simple class to provide access to indexed properties such as WebElement
 /// attributes or css styles.

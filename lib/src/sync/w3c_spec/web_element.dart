@@ -30,7 +30,7 @@ class W3cWebElement implements WebElement, SearchContext {
   final String id;
 
   @override
-  async_core.WebElement get asyncElement => null;
+  async_core.WebElement get asyncElement => createAsyncWebElement(this);
 
   @override
   final SearchContext context;
