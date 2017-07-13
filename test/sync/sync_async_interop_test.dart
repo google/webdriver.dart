@@ -35,11 +35,37 @@ void runTests(config.createTestDriver createTestDriver) {
       driver = null;
     });
 
-    test('sync to async works', () async {
+    test('sync to async driver works', () async {
       final asyncDriver = driver.asyncDriver;
       expect(asyncDriver, new isInstanceOf<async_core.WebDriver>());
       await asyncDriver.get(config.testPagePath);
       driver.findElement(const By.tagName('button'));
+    });
+
+    test('sync to async web element works', () async {
+      final asyncDriver = driver.asyncDriver;
+      expect(asyncDriver, new isInstanceOf<async_core.WebDriver>());
+      await asyncDriver.get(config.testPagePath);
+      final button = driver.findElement(const By.tagName('button'));
+      final asyncButton = button.asyncElement;
+
+      expect(button, new isInstanceOf<WebElement>());
+      expect(asyncButton, new isInstanceOf<async_core.WebElement>());
+      expect(asyncButton.id, button.id);
+      expect(await asyncButton.name, button.name);
+    });
+
+    test('sync to async web element finding works', () async {
+      final asyncDriver = driver.asyncDriver;
+      expect(asyncDriver, new isInstanceOf<async_core.WebDriver>());
+      await asyncDriver.get(config.testPagePath);
+
+      final table = driver.findElement(const By.tagName('table'));
+      final asyncTable = table.asyncElement;
+      final element = table.findElement(const By.tagName('tr'));
+      final asyncElement = await asyncTable.findElement(const async_core.By.tagName('tr'));
+      expect(element.id, await asyncElement.id);
+      expect(element.name, await asyncElement.name);
     });
   }, timeout: new Timeout(new Duration(minutes: 2)));
 }
