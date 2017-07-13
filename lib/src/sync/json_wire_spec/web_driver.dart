@@ -25,8 +25,9 @@ import 'timeouts.dart';
 import 'web_element.dart';
 import 'window.dart';
 
-import '../common_spec/cookies.dart';
+import '../../../async_core.dart' as async_core;
 
+import '../common_spec/cookies.dart';
 import '../command_event.dart';
 import '../command_processor.dart';
 import '../common.dart';
@@ -56,6 +57,10 @@ class JsonWireWebDriver implements WebDriver, SearchContext {
       : this.uri = uri,
         this.id = id,
         this._prefix = uri.resolve('session/$id/');
+
+  @override
+  async_core.WebDriver get asyncDriver =>
+      createAsyncWebDriver(this.uri, this.id, this.capabilities);
 
   @override
   void addEventListener(WebDriverListener listener) =>

@@ -12,6 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import '../../async_core.dart' as async_core;
+import '../../async_io.dart' as async_io;
+
 import 'web_driver.dart';
 import 'web_element.dart';
 
@@ -21,6 +24,12 @@ const String jsonWireElementStr = 'ELEMENT';
 
 // Source: https://www.w3.org/TR/webdriver/#elements
 const String w3cElementStr = 'element-6066-11e4-a52e-4f735466cecf';
+
+/// Returns an [async_core.WebDriver] based on the URI + session ID.
+async_core.WebDriver createAsyncWebDriver(
+        Uri uri, String sessionId, Map<String, dynamic> capabilities) =>
+    new async_core.WebDriver(
+        new async_io.IOCommandProcessor(), uri, sessionId, capabilities);
 
 /// Simple class to provide access to indexed properties such as WebElement
 /// attributes or css styles.

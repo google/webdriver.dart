@@ -42,7 +42,7 @@ void main() {
       try {
         button.findElement(const By.tagName('tr'));
         throw 'Expected NoSuchElementException';
-      } catch(e) {
+      } catch (e) {
         expect(e, new isInstanceOf<json.NoSuchElementException>());
         expect(e.toString(), contains('Unable to locate element'));
       }
@@ -55,7 +55,7 @@ void main() {
       try {
         button.findElement(const By.tagName('tr'));
         throw 'Expected W3cWebDriverException';
-      } catch(e) {
+      } catch (e) {
         expect(e, new isInstanceOf<w3c.W3cWebDriverException>());
         expect(e.toString(), contains('Unable to locate element'));
       }
