@@ -35,10 +35,10 @@ void runTests(config.createTestDriver createTestDriver) {
       driver = null;
     });
 
-    test('sync to async works', () {
+    test('sync to async works', () async {
       final asyncDriver = driver.asyncDriver;
       expect(asyncDriver, new isInstanceOf<async_core.WebDriver>());
-      asyncDriver.get(config.testPagePath);
+      await asyncDriver.get(config.testPagePath);
       driver.findElement(const By.tagName('button'));
     });
   }, timeout: new Timeout(new Duration(minutes: 2)));
