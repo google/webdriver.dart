@@ -16,6 +16,7 @@ import 'dart:math' show Point, Rectangle;
 
 import 'element_finder.dart';
 
+import '../../../async_core.dart' as async_core;
 import '../common.dart';
 import '../web_driver.dart';
 import '../web_element.dart';
@@ -27,6 +28,9 @@ class W3cWebElement implements WebElement, SearchContext {
 
   @override
   final String id;
+
+  @override
+  async_core.WebElement get asyncElement => null;
 
   @override
   final SearchContext context;
