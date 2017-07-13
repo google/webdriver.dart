@@ -49,7 +49,6 @@ final Uri defaultUri = Uri.parse('http://127.0.0.1:4444/wd/hub/');
 /// the response during session creation.
 enum WebDriverSpec { Auto, JsonWire, W3c }
 
-//TODO(staats): infer spec during WebDriver creation.
 WebDriver createDriver(
     {Uri uri,
     Map<String, dynamic> desired,
