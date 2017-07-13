@@ -43,6 +43,27 @@ and as such, require the use of the WebDriver remote server.
 
     WebDriver driver = createDriver(...);
     ```
+    
+    This will use by default the asynchronous, JSON wire spec implementation.
+    You now can also use a synchronous version of WebDriver:
+    
+    ```Dart
+    
+    import 'package:webdriver/sync_io.dart';
+
+    final driver = createDriver(...);
+    ```
+    
+    This version of WebDriver supports both the JSON wire spec and W3C spec,
+    allowing use with modern versions of Firefox. This defaults to the JSON
+    wire spec, but can also be configured to use the W3C spec or even to try
+    and automatically infer the spec during session creation:
+    
+    ```Dart
+     final w3cDriver = createDriver(spec: WebDriverSpec.W3c);  // Use W3C spec.
+ 
+     final anyDriver = createDriver(spec: WebDriverSpec.Auto); // Infer spec.
+     ```
 
 ## Testing
 
