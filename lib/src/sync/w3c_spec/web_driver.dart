@@ -22,8 +22,9 @@ import 'timeouts.dart';
 import 'web_element.dart';
 import 'window.dart';
 
-import '../common_spec/cookies.dart';
+import '../../../async_core.dart' as async_core;
 
+import '../common_spec/cookies.dart';
 // We don't implement this, but we need the types to define the API.
 import '../json_wire_spec/keyboard.dart';
 import '../json_wire_spec/logs.dart';
@@ -60,6 +61,12 @@ class W3cWebDriver implements WebDriver, SearchContext {
         this._prefix = uri.resolve('session/$id/') {
     _finder = new ElementFinder(this, new Resolver(driver, ''), this);
   }
+
+  @override
+  async_core.WebDriver get asyncDriver => createAsyncWebDriver(this);
+
+  @override
+  async_core.SearchContext get asyncContext => asyncDriver;
 
   @override
   void addEventListener(WebDriverListener listener) =>

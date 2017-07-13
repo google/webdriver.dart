@@ -14,12 +14,13 @@
 
 import 'command_event.dart';
 import 'common.dart';
-import 'exception.dart';
 import 'navigation.dart';
 import 'target_locator.dart';
 import 'timeouts.dart';
 import 'web_element.dart';
 import 'window.dart';
+
+import '../../async_core.dart' as async_core;
 
 import 'common_spec/cookies.dart';
 
@@ -35,6 +36,10 @@ abstract class WebDriver implements SearchContext {
   String get id;
   Uri get uri;
   bool get filterStackTraces;
+
+  /// Produces a [async_core.WebDriver] with the same session ID. Allows
+  /// backwards compatibility with other frameworks.
+  async_core.WebDriver get asyncDriver;
 
   /// If true, WebDriver actions are recorded as [WebDriverCommandEvent]s.
   bool get notifyListeners;

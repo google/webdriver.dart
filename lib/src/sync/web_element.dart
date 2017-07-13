@@ -14,12 +14,18 @@
 
 import 'dart:math' show Point, Rectangle;
 
+import '../../async_core.dart' as async_core;
+
 import 'common.dart';
 import 'web_driver.dart';
 
 /// WebDriver representation and interactions with an HTML element.
 abstract class WebElement implements SearchContext {
   String get id;
+
+  /// Produces a compatible [async_core.WebElement]. Allows backwards
+  /// compatibility with other frameworks.
+  async_core.WebElement get asyncElement;
 
   /// The context from which this element was found.
   SearchContext get context;

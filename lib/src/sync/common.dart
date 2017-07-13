@@ -12,6 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import '../../async_core.dart' as async_core;
+import '../../async_io.dart' as async_io;
+
 import 'web_driver.dart';
 import 'web_element.dart';
 
@@ -21,6 +24,15 @@ const String jsonWireElementStr = 'ELEMENT';
 
 // Source: https://www.w3.org/TR/webdriver/#elements
 const String w3cElementStr = 'element-6066-11e4-a52e-4f735466cecf';
+
+/// Returns an [async_core.WebDriver] with the same URI + session ID.
+async_core.WebDriver createAsyncWebDriver(WebDriver driver) =>
+    new async_core.WebDriver(new async_io.IOCommandProcessor(), driver.uri,
+        driver.id, driver.capabilities);
+
+/// Returns an [async_core.WebElement] based on a current [WebElement].
+async_core.WebElement createAsyncWebElement(WebElement element) =>
+    new async_core.WebElement(createAsyncWebDriver(element.driver), element.id);
 
 /// Simple class to provide access to indexed properties such as WebElement
 /// attributes or css styles.
@@ -34,6 +46,10 @@ class Attributes {
 
 abstract class SearchContext {
   WebDriver get driver;
+
+  /// Produces a compatible [async_core.SearchContext]. Allows backwards
+  /// compatibility with other frameworks.
+  async_core.SearchContext get asyncContext;
 
   /// Searches for multiple elements within the context.
   List<WebElement> findElements(By by);
