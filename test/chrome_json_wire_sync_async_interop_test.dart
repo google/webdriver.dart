@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import 'sync/sync_async_interop_test.dart';
+import 'sync/sync_async_interop.dart';
 import 'sync/sync_io_config.dart' as config;
 
 void main() {

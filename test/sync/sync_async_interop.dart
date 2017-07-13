@@ -63,7 +63,8 @@ void runTests(config.createTestDriver createTestDriver) {
       final table = driver.findElement(const By.tagName('table'));
       final asyncTable = table.asyncElement;
       final element = table.findElement(const By.tagName('tr'));
-      final asyncElement = await asyncTable.findElement(const async_core.By.tagName('tr'));
+      final asyncElement =
+          await asyncTable.findElement(const async_core.By.tagName('tr'));
       expect(element.id, await asyncElement.id);
       expect(element.name, await asyncElement.name);
     });
