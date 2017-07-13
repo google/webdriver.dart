@@ -69,7 +69,7 @@ class WebDriver implements SearchContext {
     int i = 0;
 
     for (var element in elements) {
-      yield new WebElement._(this, element[_element], this, by, i);
+      yield new WebElement(this, element[_element], this, by, i);
       i++;
     }
   }
@@ -79,7 +79,7 @@ class WebDriver implements SearchContext {
   @override
   Future<WebElement> findElement(By by) async {
     var element = await postRequest('element', by);
-    return new WebElement._(this, element[_element], this, by);
+    return new WebElement(this, element[_element], this, by);
   }
 
   /// An artist's rendition of the current page's source.
@@ -121,7 +121,7 @@ class WebDriver implements SearchContext {
   Future<WebElement> get activeElement async {
     var element = await postRequest('element/active');
     if (element != null) {
-      return new WebElement._(this, element[_element], this, 'activeElement');
+      return new WebElement(this, element[_element], this, 'activeElement');
     }
     return null;
   }
@@ -202,7 +202,7 @@ class WebDriver implements SearchContext {
   dynamic _recursiveElementify(result) {
     if (result is Map) {
       if (result.length == 1 && result.containsKey(_element)) {
-        return new WebElement._(this, result[_element], this, 'javascript');
+        return new WebElement(this, result[_element], this, 'javascript');
       } else {
         var newResult = {};
         result.forEach((key, value) {
