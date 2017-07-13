@@ -47,6 +47,10 @@ class Attributes {
 abstract class SearchContext {
   WebDriver get driver;
 
+  /// Produces a compatible [async_core.SearchContext]. Allows backwards
+  /// compatibility with other frameworks.
+  async_core.SearchContext get asyncContext;
+
   /// Searches for multiple elements within the context.
   List<WebElement> findElements(By by);
 

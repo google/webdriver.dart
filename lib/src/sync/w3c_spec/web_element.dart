@@ -33,6 +33,9 @@ class W3cWebElement implements WebElement, SearchContext {
   async_core.WebElement get asyncElement => createAsyncWebElement(this);
 
   @override
+  async_core.SearchContext get asyncContext => asyncElement;
+
+  @override
   final SearchContext context;
 
   @override

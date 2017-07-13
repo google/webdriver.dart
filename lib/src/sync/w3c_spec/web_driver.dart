@@ -66,6 +66,9 @@ class W3cWebDriver implements WebDriver, SearchContext {
   async_core.WebDriver get asyncDriver => createAsyncWebDriver(this);
 
   @override
+  async_core.SearchContext get asyncContext => asyncDriver;
+
+  @override
   void addEventListener(WebDriverListener listener) =>
       _commandListeners.add(listener);
 
