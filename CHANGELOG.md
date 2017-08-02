@@ -1,3 +1,19 @@
+## v2.0.0-beta
+Initial beta release of WebDriver 2.0. Many changes exist here, and 
+as the release evolves there may be breaking changes to the API. 
+
+The two big changes are the addition of support for synchronous
+communication via the sync_http package (along with an accompanying
+synchronous API) and support for the W3C spec. 
+
+Currently, only the synchronous API supports the W3C spec, but in the
+future both asynchronous and synchronous APIs will support this.
+ 
+## v1.2.4
+* Adds Adds null check for status before checking status code. 
+  Avoids throwing exceptions if status code is not present. (Due to 
+  oversight this was never properly released.)
+
 ## v1.2.3
 
 *  Enable generics for waitFor.
