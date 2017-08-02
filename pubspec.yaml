@@ -1,6 +1,8 @@
 name: webdriver
 version: 2.0.0-beta
-authors: Marc Fisher II <fisherii@google.com>, Matt Staats<staats@google.com>
+authors:
+  - Marc Fisher II <fisherii@google.com>
+  - Matt Staats<staats@google.com>
 description: >
   Provides WebDriver bindings for Dart. These support the WebDriver JSON interface
   and the W3C spec and require the use of the WebDriver remote server.
