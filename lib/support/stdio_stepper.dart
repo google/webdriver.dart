@@ -108,7 +108,7 @@ class LineReader {
   }
 
   void _listen(/* List<int> | int */ data) {
-    if (data is List) {
+    if (data is List<int>) {
       data.forEach(_addByte);
     } else {
       _addByte(data);
