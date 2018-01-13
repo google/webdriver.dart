@@ -83,5 +83,5 @@ void runTests(config.createTestDriver createTestDriver) {
       driver.cookies.deleteAll();
       expect(driver.cookies.all.toList(), isEmpty);
     }, skip: 'unreliable');
-  }, timeout: new Timeout(new Duration(minutes: 2)));
+  }, timeout: const Timeout(const Duration(minutes: 2)));
 }

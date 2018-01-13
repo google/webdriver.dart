@@ -67,7 +67,7 @@ class JsonWireWindow implements Window {
   }
 
   @override
-  void set rect(Rectangle<int> location) {
+  set rect(Rectangle<int> location) {
     setSize(location);
     setLocation(new Point(location.left, location.top));
   }

@@ -74,5 +74,5 @@ void main() {
       await driver.keyboard.sendKeys('xxx');
       expect(await textInput.attributes['value'], 'xxx');
     });
-  }, timeout: new Timeout(new Duration(minutes: 2)));
+  }, timeout: const Timeout(const Duration(minutes: 2)));
 }

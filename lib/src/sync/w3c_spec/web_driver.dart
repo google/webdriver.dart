@@ -56,13 +56,11 @@ class W3cWebDriver implements WebDriver, SearchContext {
   @override
   bool notifyListeners = true;
 
-  final _commandListeners = new List<WebDriverListener>();
+  final _commandListeners = <WebDriverListener>[];
 
-  W3cWebDriver(this._commandProcessor, Uri uri, String id, this.capabilities,
+  W3cWebDriver(this._commandProcessor, this.uri, this.id, this.capabilities,
       {this.filterStackTraces: true})
-      : this.uri = uri,
-        this.id = id,
-        this._prefix = uri.resolve('session/$id/') {
+      : this._prefix = uri.resolve('session/$id/') {
     _finder = new ElementFinder(this, new Resolver(driver, ''), this);
   }
 
@@ -178,7 +176,7 @@ class W3cWebDriver implements WebDriver, SearchContext {
         return newResult;
       }
     } else if (result is List) {
-      return result.map((value) => _recursiveElementify(value)).toList();
+      return result.map(_recursiveElementify).toList();
     } else {
       return result;
     }

@@ -60,5 +60,5 @@ void main() {
         expect(e.toString(), contains('Unable to locate element'));
       }
     });
-  }, timeout: new Timeout(new Duration(minutes: 2)));
+  }, timeout: const Timeout(const Duration(minutes: 2)));
 }

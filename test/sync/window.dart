@@ -61,5 +61,5 @@ void runTests(config.createTestDriver createTestDriver) {
       expect(finalRect.width, greaterThan(300));
       expect(finalRect.height, greaterThan(300));
     }, skip: 'Unreliable on Travis');
-  }, timeout: new Timeout(new Duration(minutes: 2)));
+  }, timeout: const Timeout(const Duration(minutes: 2)));
 }

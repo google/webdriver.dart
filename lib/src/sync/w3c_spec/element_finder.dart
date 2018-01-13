@@ -61,7 +61,7 @@ class ElementFinder {
         _resolver.post('elements', _byToJson(by)) as List<Map<String, String>>;
 
     // "as List<String>;" should not be necessary, but helps IntelliJ
-    final ids = elements.fold(new List<String>(), (cur, m) {
+    final ids = elements.fold(<String>[], (cur, m) {
       cur.addAll(m.values);
       return cur;
     }) as List<String>;

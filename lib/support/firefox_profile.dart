@@ -206,7 +206,7 @@ class FirefoxProfile {
           print('Can\'t parse lines from file "${file.path}":');
           canNotParseCaption = false;
         }
-        print('  ${line}');
+        print('  $line');
         continue;
       }
       prefs.add(option);
@@ -228,7 +228,7 @@ class FirefoxProfile {
         ArchiveFile archiveFile;
         final name = path.relative(f.path, from: profileDirectory.path);
         if (f is io.Directory) {
-          archiveFile = new ArchiveFile('${name}/', 0, []);
+          archiveFile = new ArchiveFile('$name/', 0, []);
         } else if (f is io.File) {
           if (name == 'prefs.js' || name == 'user.js') {
             return;
@@ -287,7 +287,7 @@ abstract class PrefsOption<T> {
   factory PrefsOption.parse(String prefs) {
     final match = _preferencePattern.firstMatch(prefs);
     if (match == null) {
-      return new InvalidOption('Not a valid prefs option: "${prefs}".')
+      return new InvalidOption('Not a valid prefs option: "$prefs".')
           as PrefsOption<T>;
     }
     final name = match.group(1);
@@ -308,7 +308,7 @@ abstract class PrefsOption<T> {
       int value = int.parse(valueString);
       return new IntegerOption(name, value) as PrefsOption<T>;
     } catch (_) {}
-    return new InvalidOption('Not a valid prefs option: "${prefs}".')
+    return new InvalidOption('Not a valid prefs option: "$prefs".')
         as PrefsOption<T>;
   }
 
@@ -327,7 +327,7 @@ abstract class PrefsOption<T> {
   @override
   int get hashCode => name.hashCode;
 
-  String get asPrefString => 'user_pref("${name}", ${_valueAsPrefString});';
+  String get asPrefString => 'user_pref("$name", $_valueAsPrefString);';
 
   String get _valueAsPrefString;
 }

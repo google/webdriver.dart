@@ -97,7 +97,7 @@ void _matcherExpect(value, m.Matcher matcher) {
   var mismatchDescription = new m.StringDescription();
   matcher.describeMismatch(value, mismatchDescription, matchState, true);
   if (mismatchDescription.length > 0) {
-    desc.add('   Which: ${mismatchDescription}\n');
+    desc.add('   Which: $mismatchDescription\n');
   }
   throw new Exception(desc.toString());
 }

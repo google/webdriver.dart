@@ -101,9 +101,9 @@ void main() {
 
     // TODO(DrMarcII): Figure out how to tell if timeouts are correctly set
     test('set all timeouts', () async {
-      await driver.timeouts.setScriptTimeout(new Duration(seconds: 5));
-      await driver.timeouts.setImplicitTimeout(new Duration(seconds: 1));
-      await driver.timeouts.setPageLoadTimeout(new Duration(seconds: 10));
+      await driver.timeouts.setScriptTimeout(const Duration(seconds: 5));
+      await driver.timeouts.setImplicitTimeout(const Duration(seconds: 1));
+      await driver.timeouts.setPageLoadTimeout(const Duration(seconds: 10));
     });
-  }, timeout: new Timeout(new Duration(minutes: 2)));
+  }, timeout: const Timeout(const Duration(minutes: 2)));
 }

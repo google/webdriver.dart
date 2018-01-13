@@ -46,9 +46,8 @@ class JsonWireWebElement implements WebElement, SearchContext {
   @override
   final int index;
 
-  JsonWireWebElement(this.driver, id, [this.context, this.locator, this.index])
-      : this.id = id,
-        _elementPrefix = 'element/$id',
+  JsonWireWebElement(this.driver, this.id, [this.context, this.locator, this.index])
+      : _elementPrefix = 'element/$id',
         _resolver = new Resolver(driver, 'element/$id');
 
   @override
@@ -119,7 +118,7 @@ class JsonWireWebElement implements WebElement, SearchContext {
   List<WebElement> findElements(By by) {
     final elements = _resolver.post('elements', byToJson(by)) as Iterable;
     int i = 0;
-    final webElements = new List<WebElement>();
+    final webElements = <WebElement>[];
     for (final element in elements) {
       webElements.add(new JsonWireWebElement(
           driver, element[jsonWireElementStr], this, by, i++));

@@ -45,5 +45,5 @@ void runTests(config.createTestDriver createTestDriver) {
     test('can do basic delete', () {
       driver.cookies.deleteAll(); // This is a DELETE request.
     });
-  }, timeout: new Timeout(new Duration(minutes: 2)));
+  }, timeout: const Timeout(const Duration(minutes: 2)));
 }

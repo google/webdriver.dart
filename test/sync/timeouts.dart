@@ -37,9 +37,9 @@ void runTests(config.createTestDriver createTestDriver) {
 
     // TODO(DrMarcII): Figure out how to tell if timeouts are correctly set
     test('set all timeouts', () {
-      driver.timeouts.setScriptTimeout(new Duration(seconds: 5));
-      driver.timeouts.setImplicitTimeout(new Duration(seconds: 1));
-      driver.timeouts.setPageLoadTimeout(new Duration(seconds: 10));
+      driver.timeouts.setScriptTimeout(const Duration(seconds: 5));
+      driver.timeouts.setImplicitTimeout(const Duration(seconds: 1));
+      driver.timeouts.setPageLoadTimeout(const Duration(seconds: 10));
     });
-  }, timeout: new Timeout(new Duration(minutes: 2)));
+  }, timeout: const Timeout(const Duration(minutes: 2)));
 }

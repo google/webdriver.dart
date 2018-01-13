@@ -91,7 +91,7 @@ class IOCommandProcessor implements CommandProcessor {
 
   @override
   Future close() async {
-    await client.close(force: true);
+    client.close(force: true);
   }
 
   Future<dynamic> _processResponse(HttpClientResponse response, bool value) async {

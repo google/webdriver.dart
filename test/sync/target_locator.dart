@@ -69,5 +69,5 @@ void runTests(config.createTestDriver createTestDriver) {
       driver.switchTo.frame();
       driver.findElement(const By.tagName('button'));
     });
-  }, timeout: new Timeout(new Duration(minutes: 2)));
+  }, timeout: const Timeout(const Duration(minutes: 2)));
 }

@@ -24,9 +24,7 @@ LineReader _stdinLineReader;
 
 /// A [LineReader] instance connected to 'dart:io' [stdin].
 LineReader get stdinLineReader {
-  if (_stdinLineReader == null) {
-    _stdinLineReader = new LineReader(stdin);
-  }
+  _stdinLineReader ??= new LineReader(stdin);
   return _stdinLineReader;
 }
 
