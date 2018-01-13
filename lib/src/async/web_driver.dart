@@ -251,7 +251,7 @@ class WebDriver implements SearchContext {
   }
 
   // This is an ugly hack, I know, but I dunno how to cleanly do this.
-  var _previousEvent = null;
+  var _previousEvent;
 
   // Performs the request. This will not notify any listeners or
   // onCommandController. This should only be called from

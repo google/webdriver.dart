@@ -41,7 +41,7 @@ void main() {
     });
 
     test('no alert', () {
-      expect(driver.switchTo.alert, throws);
+      expect(driver.switchTo.alert, throwsA(anything));
     });
 
     test('text', () async {

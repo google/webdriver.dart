@@ -43,9 +43,13 @@ import '../window.dart';
 class W3cWebDriver implements WebDriver, SearchContext {
   final CommandProcessor _commandProcessor;
   final Uri _prefix;
+  @override
   final Map<String, dynamic> capabilities;
+  @override
   final String id;
+  @override
   final Uri uri;
+  @override
   final bool filterStackTraces;
   ElementFinder _finder;
 

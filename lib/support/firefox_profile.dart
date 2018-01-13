@@ -139,7 +139,7 @@ class FirefoxProfile {
           new io.File(path.join(profileDirectory.absolute.path, 'user.js'));
       if (userPrefsFile.existsSync()) {
         _userPrefs = loadPrefsFile(userPrefsFile)
-            .where((option) => !lockedPrefs.contains(option));
+            .where((option) => !lockedPrefs.contains(option)).toSet();
       }
     }
     _prefs.addAll(lockedPrefs);

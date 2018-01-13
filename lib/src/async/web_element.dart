@@ -27,7 +27,7 @@ class WebElement extends _WebDriverBase implements SearchContext {
   /// used to find this element always returns one element, then this is null.
   final int index;
 
-  WebElement(driver, id, [this.context, this.locator, this.index])
+  WebElement(driver, String id, [this.context, this.locator, this.index])
       : this.id = id,
         super(driver, 'element/$id');
 
@@ -84,12 +84,14 @@ class WebElement extends _WebDriverBase implements SearchContext {
   ///Find an element nested within this element.
   ///
   /// Throws [NoSuchElementException] if matching element is not found.
+  @override
   Future<WebElement> findElement(By by) async {
     var element = await _post('element', by);
     return new WebElement(driver, element[_element], this, by);
   }
 
   /// Find multiple elements nested within this element.
+  @override
   Stream<WebElement> findElements(By by) async* {
     var elements = await _post('elements', by);
     int i = 0;

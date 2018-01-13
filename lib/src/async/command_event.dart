@@ -33,6 +33,7 @@ class WebDriverCommandEvent {
       this.result,
       this.stackTrace});
 
+  @override
   String toString() => '[$startTime - $endTime] $method $endPoint($params) => '
       '${exception != null ? exception : result}';
 }

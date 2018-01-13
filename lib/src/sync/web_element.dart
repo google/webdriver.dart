@@ -30,6 +30,7 @@ abstract class WebElement implements SearchContext {
   /// The context from which this element was found.
   SearchContext get context;
 
+  @override
   WebDriver get driver;
 
   /// How the element was located from the context.
@@ -85,9 +86,11 @@ abstract class WebElement implements SearchContext {
   ///Find an element nested within this element.
   ///
   /// Throws [NoSuchElementException] if matching element is not found.
+  @override
   WebElement findElement(By by);
 
   /// Find multiple elements nested within this element.
+  @override
   List<WebElement> findElements(By by);
 
   /// Access to the HTML attributes of this tag.

@@ -56,7 +56,7 @@ void main() {
     test('awaitChecking throws exception on acquire of held lock', () async {
       var lock = new Lock(awaitChecking: true);
       await lock.acquire();
-      expect(lock.acquire(), throws);
+      expect(lock.acquire(), throwsA(anything));
       lock.release();
       await lock.acquire();
       lock.release();
@@ -210,6 +210,7 @@ class FakeClock extends Clock {
   @override
   DateTime get now => _now;
 
+  @override
   Future sleep([Duration interval = defaultInterval]) {
     _now = _now.add(interval);
     return new Future.value();

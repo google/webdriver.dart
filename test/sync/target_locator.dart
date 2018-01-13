@@ -20,10 +20,9 @@ import 'package:webdriver/sync_core.dart';
 
 import 'sync_io_config.dart' as config;
 
-/**
- * Tests for switchTo.frame(). switchTo.window() and switchTo.alert are tested
- * in other classes.
- */
+
+/// Tests for switchTo.frame(). switchTo.window() and switchTo.alert are tested
+/// in other classes.
 void runTests(config.createTestDriver createTestDriver) {
   group('TargetLocator', () {
     WebDriver driver;

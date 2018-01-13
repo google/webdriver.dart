@@ -41,9 +41,13 @@ import '../window.dart';
 class JsonWireWebDriver implements WebDriver, SearchContext {
   final CommandProcessor _commandProcessor;
   final Uri _prefix;
+  @override
   final Map<String, dynamic> capabilities;
+  @override
   final String id;
+  @override
   final Uri uri;
+  @override
   final bool filterStackTraces;
 
   @override

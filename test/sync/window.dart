@@ -15,7 +15,7 @@
 @TestOn("vm")
 library webdriver.window_test;
 
-import 'dart:math' show Point, Rectangle;
+import 'dart:math' show Rectangle;
 
 import 'package:test/test.dart';
 import 'package:webdriver/sync_core.dart';

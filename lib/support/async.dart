@@ -79,9 +79,9 @@ class Clock {
   }
 }
 
-_unittestExpect(value, ut.Matcher matcher) => ut.expect(value, matcher);
+void _unittestExpect(value, ut.Matcher matcher) => ut.expect(value, matcher);
 
-_matcherExpect(value, m.Matcher matcher) {
+void _matcherExpect(value, m.Matcher matcher) {
   var matchState = {};
   if (matcher.matches(value, matchState)) {
     return;
