@@ -46,7 +46,8 @@ class JsonWireWebElement implements WebElement, SearchContext {
   @override
   final int index;
 
-  JsonWireWebElement(this.driver, this.id, [this.context, this.locator, this.index])
+  JsonWireWebElement(this.driver, this.id,
+      [this.context, this.locator, this.index])
       : _elementPrefix = 'element/$id',
         _resolver = new Resolver(driver, 'element/$id');
 

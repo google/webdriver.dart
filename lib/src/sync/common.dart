@@ -110,7 +110,6 @@ class By {
   /// Returns an element whose tag name matches the search value.
   const By.tagName(String tagName) : this('tag name', tagName);
 
-
   /// Returns an element whose class name contains the search value; compound
   /// class names are not permitted
   const By.className(String className) : this('class name', className);

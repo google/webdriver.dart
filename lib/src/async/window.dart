@@ -17,8 +17,7 @@ part of webdriver.core;
 class Window extends _WebDriverBase {
   final String handle;
 
-  Window._(driver, this.handle)
-      : super(driver, 'window/$handle');
+  Window._(driver, this.handle) : super(driver, 'window/$handle');
 
   /// The size of this window.
   Future<Rectangle<int>> get size async {

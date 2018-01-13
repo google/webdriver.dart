@@ -94,7 +94,8 @@ class IOCommandProcessor implements CommandProcessor {
     client.close(force: true);
   }
 
-  Future<dynamic> _processResponse(HttpClientResponse response, bool value) async {
+  Future<dynamic> _processResponse(
+      HttpClientResponse response, bool value) async {
     var respDecoded = await UTF8.decodeStream(response);
     _lock.release();
     Map respBody;
