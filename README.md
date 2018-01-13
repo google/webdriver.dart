@@ -22,6 +22,12 @@ and as such, require the use of the WebDriver remote server.
 
 2.  Install it
 
+    If you're using IntelliJ, choose:
+
+    ```
+    Control + Shift + A > Pub: Get Dependencies
+    ```
+
     If you're using the Dart Editor, choose:
 
     ```
