@@ -20,10 +20,8 @@ import 'package:webdriver/async_core.dart';
 
 import 'io_config.dart' as config;
 
-/**
- * Tests for switchTo.frame(). switchTo.window() and switchTo.alert are tested
- * in other classes.
- */
+/// Tests for switchTo.frame(). switchTo.window() and switchTo.alert are tested
+/// in other classes.
 void main() {
   group('TargetLocator', () {
     WebDriver driver;
@@ -62,5 +60,5 @@ void main() {
       await driver.switchTo.frame();
       await driver.findElement(const By.tagName('button'));
     });
-  }, timeout: new Timeout(new Duration(minutes: 2)));
+  }, timeout: const Timeout(const Duration(minutes: 2)));
 }

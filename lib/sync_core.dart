@@ -54,13 +54,9 @@ WebDriver createDriver(
     {Uri uri,
     Map<String, dynamic> desired,
     WebDriverSpec spec = WebDriverSpec.JsonWire}) {
-  if (uri == null) {
-    uri = defaultUri;
-  }
+  uri ??= defaultUri;
 
-  if (desired == null) {
-    desired = Capabilities.empty;
-  }
+  desired ??= Capabilities.empty;
 
   switch (spec) {
     case WebDriverSpec.JsonWire:
@@ -93,9 +89,7 @@ WebDriver createDriver(
 
 WebDriver fromExistingSession(String sessionId,
     {Uri uri, WebDriverSpec spec = WebDriverSpec.JsonWire}) {
-  if (uri == null) {
-    uri = defaultUri;
-  }
+  uri ??= defaultUri;
 
   switch (spec) {
     case WebDriverSpec.JsonWire:
@@ -109,7 +103,7 @@ WebDriver fromExistingSession(String sessionId,
       final processor =
           new SyncHttpCommandProcessor(processor: processW3cResponse);
       return new w3c.W3cWebDriver(
-          processor, uri, sessionId, new Map<String, dynamic>());
+          processor, uri, sessionId, const <String, dynamic>{});
     case WebDriverSpec.Auto:
       throw 'Not supported!';
     default:

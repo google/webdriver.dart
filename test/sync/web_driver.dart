@@ -51,7 +51,6 @@ void runTests(config.createTestDriver createTestDriver) {
       test('get', () {
         driver.get(config.testPagePath);
         driver.findElement(const By.tagName('button'));
-        ;
       });
 
       test('currentUrl', () {
@@ -100,7 +99,7 @@ void runTests(config.createTestDriver createTestDriver) {
       test('close/windows', () {
         int numHandles = (driver.windows.toList()).length;
         (driver.findElement(const By.partialLinkText('Open copy'))).click();
-        sleep(new Duration(milliseconds: 500)); // Bit slow on Firefox.
+        sleep(const Duration(milliseconds: 500)); // Bit slow on Firefox.
         expect(driver.windows.toList(), hasLength(numHandles + 1));
         driver.close();
         expect(driver.windows.toList(), hasLength(numHandles));
@@ -111,7 +110,7 @@ void runTests(config.createTestDriver createTestDriver) {
         Window next;
 
         (driver.findElement(const By.partialLinkText('Open copy'))).click();
-        sleep(new Duration(milliseconds: 500)); // Bit slow on Firefox.
+        sleep(const Duration(milliseconds: 500)); // Bit slow on Firefox.
         for (final window in driver.windows) {
           if (window != orig) {
             next = window;
@@ -175,7 +174,7 @@ void runTests(config.createTestDriver createTestDriver) {
 
       test('event listeners work with script timeouts', () {
         try {
-          driver.timeouts.setScriptTimeout(new Duration(seconds: 1));
+          driver.timeouts.setScriptTimeout(const Duration(seconds: 1));
           driver.executeAsync('', []);
           fail('Did not throw timeout as expected');
         } catch (e) {
@@ -186,7 +185,7 @@ void runTests(config.createTestDriver createTestDriver) {
       });
 
       test('event listeners ordered appropriately', () {
-        var eventList = new List<int>();
+        var eventList = <int>[];
         int current = 0;
         driver.addEventListener((WebDriverCommandEvent e) {
           eventList.add(current++);
@@ -201,5 +200,5 @@ void runTests(config.createTestDriver createTestDriver) {
         }
       });
     });
-  }, timeout: new Timeout(new Duration(minutes: 2)));
+  }, timeout: const Timeout(const Duration(minutes: 2)));
 }

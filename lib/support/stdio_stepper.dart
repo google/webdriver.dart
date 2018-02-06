@@ -24,9 +24,7 @@ LineReader _stdinLineReader;
 
 /// A [LineReader] instance connected to 'dart:io' [stdin].
 LineReader get stdinLineReader {
-  if (_stdinLineReader == null) {
-    _stdinLineReader = new LineReader(stdin);
-  }
+  _stdinLineReader ??= new LineReader(stdin);
   return _stdinLineReader;
 }
 
@@ -74,7 +72,7 @@ class StdioStepper implements Stepper {
     throw new Exception('stdin has been closed');
   }
 
-  _printUsage() {
+  void _printUsage() {
     print('`c` or `continue`: execute command');
     print('`s` or `skip`: skip command');
     print('`d` or `disable`: disable stepper');

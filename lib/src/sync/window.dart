@@ -39,7 +39,7 @@ abstract class Window {
   Rectangle<int> get rect;
 
   /// The location and size of the window.
-  void set rect(Rectangle<int> location);
+  set rect(Rectangle<int> location);
 
   /// Maximize the window.
   void maximize();

@@ -31,13 +31,11 @@ class WebDriver implements SearchContext {
   final _onCommandController =
       new StreamController<WebDriverCommandEvent>.broadcast();
 
-  final _commandListeners = new List<WebDriverListener>();
+  final _commandListeners = <WebDriverListener>[];
 
-  WebDriver(this._commandProcessor, Uri uri, String id, this.capabilities,
+  WebDriver(this._commandProcessor, this.uri, this.id, this.capabilities,
       {this.filterStackTraces: true})
-      : this.uri = uri,
-        this.id = id,
-        this._prefix = uri.resolve('session/$id/');
+      : this._prefix = uri.resolve('session/$id/');
 
   /// Deprecated in favor of addEventListener.
   @deprecated
@@ -211,7 +209,7 @@ class WebDriver implements SearchContext {
         return newResult;
       }
     } else if (result is List) {
-      return result.map((value) => _recursiveElementify(value)).toList();
+      return result.map(_recursiveElementify).toList();
     } else {
       return result;
     }
@@ -251,7 +249,7 @@ class WebDriver implements SearchContext {
   }
 
   // This is an ugly hack, I know, but I dunno how to cleanly do this.
-  var _previousEvent = null;
+  var _previousEvent;
 
   // Performs the request. This will not notify any listeners or
   // onCommandController. This should only be called from

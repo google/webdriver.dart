@@ -23,16 +23,20 @@ class W3cNavigation implements Navigation {
   W3cNavigation(this._driver) : _resolver = new Resolver(_driver, '');
 
   ///  Navigate forwards in the browser history, if possible.
+  @override
   void forward() {
     _resolver.post('forward', {});
   }
 
   /// Navigate backwards in the browser history, if possible.
+
+  @override
   void back() {
     _resolver.post('back', {});
   }
 
   /// Refresh the current page.
+  @override
   void refresh() {
     _resolver.post('refresh', {});
   }

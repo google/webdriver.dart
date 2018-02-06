@@ -45,13 +45,9 @@ final Uri defaultUri = Uri.parse('http://127.0.0.1:4444/wd/hub/');
 
 Future<WebDriver> createDriver(CommandProcessor processor,
     {Uri uri, Map<String, dynamic> desired}) async {
-  if (uri == null) {
-    uri = defaultUri;
-  }
+  uri ??= defaultUri;
 
-  if (desired == null) {
-    desired = Capabilities.empty;
-  }
+  desired ??= Capabilities.empty;
 
   Map response = await processor.post(
       uri.resolve('session'), {'desiredCapabilities': desired},
@@ -63,9 +59,7 @@ Future<WebDriver> createDriver(CommandProcessor processor,
 Future<WebDriver> fromExistingSession(
     CommandProcessor processor, String sessionId,
     {Uri uri}) async {
-  if (uri == null) {
-    uri = defaultUri;
-  }
+  uri ??= defaultUri;
 
   var response = await processor.get(uri.resolve('session/$sessionId'))
       as Map<String, dynamic>;

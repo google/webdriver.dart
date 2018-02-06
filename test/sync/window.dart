@@ -15,7 +15,7 @@
 @TestOn("vm")
 library webdriver.window_test;
 
-import 'dart:math' show Point, Rectangle;
+import 'dart:math' show Rectangle;
 
 import 'package:test/test.dart';
 import 'package:webdriver/sync_core.dart';
@@ -61,5 +61,5 @@ void runTests(config.createTestDriver createTestDriver) {
       expect(finalRect.width, greaterThan(300));
       expect(finalRect.height, greaterThan(300));
     }, skip: 'Unreliable on Travis');
-  }, timeout: new Timeout(new Duration(minutes: 2)));
+  }, timeout: const Timeout(const Duration(minutes: 2)));
 }

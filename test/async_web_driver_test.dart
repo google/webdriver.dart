@@ -52,7 +52,6 @@ void main() {
       test('get', () async {
         await driver.get(config.testPagePath);
         await driver.findElement(const By.tagName('button'));
-        ;
       });
 
       test('currentUrl', () async {
@@ -181,11 +180,11 @@ void main() {
       test('future based event listeners work with script timeouts', () async {
         driver.addEventListener((WebDriverCommandEvent e) async {
           return await new Future.delayed(
-              new Duration(milliseconds: 1000), (() {}));
+              const Duration(milliseconds: 1000), (() {}));
         });
 
         try {
-          driver.timeouts.setScriptTimeout(new Duration(seconds: 1));
+          driver.timeouts.setScriptTimeout(const Duration(seconds: 1));
           await driver.executeAsync('', []);
           fail('Did not throw timeout as expected');
         } catch (e) {
@@ -194,7 +193,7 @@ void main() {
       });
 
       test('future based event listeners ordered appropriately', () async {
-        var eventList = new List<int>();
+        var eventList = <int>[];
         int millisDelay = 2000;
         int current = 0;
         driver.addEventListener((WebDriverCommandEvent e) async {
@@ -214,5 +213,5 @@ void main() {
         }
       });
     });
-  }, timeout: new Timeout(new Duration(minutes: 2)));
+  }, timeout: const Timeout(const Duration(minutes: 2)));
 }

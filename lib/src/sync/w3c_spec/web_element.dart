@@ -47,9 +47,8 @@ class W3cWebElement implements WebElement, SearchContext {
   @override
   final int index;
 
-  W3cWebElement(this.driver, id, [this.context, this.locator, this.index])
-      : this.id = id,
-        _elementPrefix = 'element/$id',
+  W3cWebElement(this.driver, this.id, [this.context, this.locator, this.index])
+      : _elementPrefix = 'element/$id',
         _resolver = new Resolver(driver, 'element/$id') {
     _finder = new ElementFinder(driver, _resolver, this);
   }

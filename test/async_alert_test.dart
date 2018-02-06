@@ -41,7 +41,7 @@ void main() {
     });
 
     test('no alert', () {
-      expect(driver.switchTo.alert, throws);
+      expect(driver.switchTo.alert, throwsA(anything));
     });
 
     test('text', () async {
@@ -72,5 +72,5 @@ void main() {
       await alert.accept();
       expect(await output.text, endsWith('some keys'));
     });
-  }, timeout: new Timeout(new Duration(minutes: 2)));
+  }, timeout: const Timeout(const Duration(minutes: 2)));
 }

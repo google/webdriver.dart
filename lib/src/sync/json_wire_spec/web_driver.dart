@@ -41,22 +41,24 @@ import '../window.dart';
 class JsonWireWebDriver implements WebDriver, SearchContext {
   final CommandProcessor _commandProcessor;
   final Uri _prefix;
+  @override
   final Map<String, dynamic> capabilities;
+  @override
   final String id;
+  @override
   final Uri uri;
+  @override
   final bool filterStackTraces;
 
   @override
   bool notifyListeners = true;
 
-  final _commandListeners = new List<WebDriverListener>();
+  final _commandListeners = <WebDriverListener>[];
 
   JsonWireWebDriver(
-      this._commandProcessor, Uri uri, String id, this.capabilities,
+      this._commandProcessor, this.uri, this.id, this.capabilities,
       {this.filterStackTraces: true})
-      : this.uri = uri,
-        this.id = id,
-        this._prefix = uri.resolve('session/$id/');
+      : this._prefix = uri.resolve('session/$id/');
 
   @override
   async_core.WebDriver get asyncDriver => createAsyncWebDriver(this);
@@ -85,7 +87,7 @@ class JsonWireWebDriver implements WebDriver, SearchContext {
     final elements = postRequest('elements', byToJson(by));
     int i = 0;
 
-    final webElements = new List<JsonWireWebElement>();
+    final webElements = <JsonWireWebElement>[];
     for (final element in elements) {
       webElements.add(new JsonWireWebElement(
           this, element[jsonWireElementStr], this, by, i++));
@@ -188,7 +190,7 @@ class JsonWireWebDriver implements WebDriver, SearchContext {
         return newResult;
       }
     } else if (result is List) {
-      return result.map((value) => _recursiveElementify(value)).toList();
+      return result.map(_recursiveElementify).toList();
     } else {
       return result;
     }

@@ -56,7 +56,7 @@ void main() {
     test('awaitChecking throws exception on acquire of held lock', () async {
       var lock = new Lock(awaitChecking: true);
       await lock.acquire();
-      expect(lock.acquire(), throws);
+      expect(lock.acquire(), throwsA(anything));
       lock.release();
       await lock.acquire();
       lock.release();
@@ -200,7 +200,7 @@ void main() {
       }
       expect(exception, isNotNull);
     });
-  }, timeout: new Timeout(new Duration(minutes: 2)));
+  }, timeout: const Timeout(const Duration(minutes: 2)));
 }
 
 /// FakeClock for testing waitFor functionality.
@@ -210,6 +210,7 @@ class FakeClock extends Clock {
   @override
   DateTime get now => _now;
 
+  @override
   Future sleep([Duration interval = defaultInterval]) {
     _now = _now.add(interval);
     return new Future.value();

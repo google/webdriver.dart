@@ -67,7 +67,7 @@ class _HtmlCommandProcessor implements CommandProcessor {
   Future<dynamic> _request(
       String method, Uri uri, dynamic params, bool value) async {
     await _lock.acquire();
-    var sendData = null;
+    var sendData;
     if (params != null && method == 'POST') {
       sendData = JSON.encode(params);
     }

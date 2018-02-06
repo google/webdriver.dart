@@ -75,5 +75,5 @@ void runTests(config.createTestDriver createTestDriver) {
       alert.accept();
       expect(output.text, endsWith('some keys'));
     });
-  }, timeout: new Timeout(new Duration(minutes: 2)));
+  }, timeout: const Timeout(const Duration(minutes: 2)));
 }

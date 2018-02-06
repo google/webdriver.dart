@@ -70,7 +70,7 @@ class W3cWindow implements Window {
   }
 
   @override
-  void set rect(Rectangle<int> location) => _windowResolver.post('rect', {
+  set rect(Rectangle<int> location) => _windowResolver.post('rect', {
         'x': location.left,
         'y': location.top,
         'width': location.width,
