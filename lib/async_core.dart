@@ -49,9 +49,9 @@ Future<WebDriver> createDriver(CommandProcessor processor,
 
   desired ??= Capabilities.empty;
 
-  Map response = await processor.post(
+  Map<String, dynamic> response = new Map.from(await processor.post(
       uri.resolve('session'), {'desiredCapabilities': desired},
-      value: false) as Map<String, dynamic>;
+      value: false));
   return new WebDriver(processor, uri, response['sessionId'],
       new UnmodifiableMapView(response['value'] as Map<String, dynamic>));
 }
@@ -61,8 +61,8 @@ Future<WebDriver> fromExistingSession(
     {Uri uri}) async {
   uri ??= defaultUri;
 
-  var response = await processor.get(uri.resolve('session/$sessionId'))
-      as Map<String, dynamic>;
+  Map<String, dynamic> response =
+      new Map.from(await processor.get(uri.resolve('session/$sessionId')));
   return new WebDriver(
       processor, uri, sessionId, new UnmodifiableMapView(response));
 }
