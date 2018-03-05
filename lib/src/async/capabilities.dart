@@ -51,7 +51,7 @@ class Capabilities {
     ..[version] = ''
     ..[platform] = BrowserPlatform.android;
 
-  static Map<String, dynamic> get empty => <String, dynamic>{};
+  static Map<String, dynamic> get empty => new <String, dynamic>();
 }
 
 /// Browser name constants.
