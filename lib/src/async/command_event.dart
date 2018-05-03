@@ -16,12 +16,12 @@ part of webdriver.core;
 class WebDriverCommandEvent {
   final String method;
   final String endPoint;
-  final params;
+  final Object params;
   final StackTrace stackTrace;
   final DateTime startTime;
   final DateTime endTime;
-  final exception;
-  final result;
+  final Object exception;
+  final Object result;
 
   WebDriverCommandEvent(
       {this.method,

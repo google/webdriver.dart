@@ -108,8 +108,7 @@ void main() {
     });
 
     test('throws if condition throws and timeouts', () async {
-      var exception;
-
+      Object exception;
       try {
         await clock.waitFor(() => throw 'an exception');
       } catch (e) {
@@ -119,7 +118,7 @@ void main() {
     });
 
     test('throws if condition never matches', () async {
-      var exception;
+      Object exception;
       try {
         await clock.waitFor(() => null, matcher: isNotNull);
       } catch (e) {
@@ -129,7 +128,7 @@ void main() {
     });
 
     test('throws if condition never matches unittest.Matcher', () async {
-      var exception;
+      Object exception;
       try {
         await clock.waitFor(() => null, matcher: ut.isNotNull);
       } catch (e) {
@@ -155,8 +154,7 @@ void main() {
     });
 
     test('works with Future exceptions', () async {
-      var exception;
-
+      Object exception;
       try {
         await clock.waitFor(() => new Future.error('an exception'));
       } catch (e) {
@@ -181,7 +179,7 @@ void main() {
 
     test('sanity test with real Clock -- throws', () async {
       var clock = const Clock();
-      var exception;
+      Object exception;
       try {
         await clock.waitFor(() => throw 'an exception');
       } catch (e) {
@@ -192,7 +190,7 @@ void main() {
 
     test('sanity test with real Clock -- never matches', () async {
       var clock = const Clock();
-      var exception;
+      Object exception;
       try {
         await clock.waitFor(() => null, matcher: isNotNull);
       } catch (e) {

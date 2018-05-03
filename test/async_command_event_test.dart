@@ -15,6 +15,8 @@
 @TestOn('vm')
 library webdriver.command_event_test;
 
+import 'dart:async';
+
 import 'package:stack_trace/stack_trace.dart';
 import 'package:test/test.dart';
 import 'package:webdriver/async_core.dart';
@@ -27,7 +29,7 @@ void main() {
     WebDriver driver;
 
     var events = <WebDriverCommandEvent>[];
-    var sub;
+    StreamSubscription sub;
 
     setUp(() async {
       driver = await config.createTestDriver();

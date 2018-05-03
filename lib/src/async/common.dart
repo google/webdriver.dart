@@ -98,7 +98,7 @@ class By {
 
   @override
   String toString() {
-    var constructor;
+    String constructor;
     switch (_using) {
       case 'link text':
         constructor = 'linkText';

@@ -250,7 +250,7 @@ class WebDriver implements SearchContext {
   }
 
   // This is an ugly hack, I know, but I dunno how to cleanly do this.
-  var _previousEvent;
+  WebDriverCommandEvent _previousEvent;
 
   // Performs the request. This will not notify any listeners or
   // onCommandController. This should only be called from
@@ -264,8 +264,8 @@ class WebDriver implements SearchContext {
           (f) => f.library.startsWith('package:webdriver/'),
           terse: true);
     }
-    var result;
-    var exception;
+    Object result;
+    Object exception;
     try {
       if (stepper == null || await stepper.step(method, command, params)) {
         result = await fn();
