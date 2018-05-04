@@ -47,7 +47,7 @@ class WebDriver implements SearchContext {
       _commandListeners.add(listener);
 
   /// The current url.
-  Future<String> get currentUrl => getRequest('url') as Future<String>;
+  Future<String> get currentUrl => getRequest<String>('url');
 
   /// navigate to the specified url
   Future get(/* Uri | String */ url) async {
@@ -58,7 +58,7 @@ class WebDriver implements SearchContext {
   }
 
   /// The title of the current page.
-  Future<String> get title => getRequest('title') as Future<String>;
+  Future<String> get title => getRequest<String>('title');
 
   /// Search for multiple elements within the entire current page.
   @override
@@ -81,7 +81,7 @@ class WebDriver implements SearchContext {
   }
 
   /// An artist's rendition of the current page's source.
-  Future<String> get pageSource => getRequest('source') as Future<String>;
+  Future<String> get pageSource => getRequest<String>('source');
 
   /// Close the current window, quitting the browser if it is the last window.
   Future close() async {
@@ -215,16 +215,17 @@ class WebDriver implements SearchContext {
     }
   }
 
-  Future postRequest(String command, [params]) => _performRequestWithLog(
-      () => _commandProcessor.post(_resolve(command), params),
-      'POST',
-      command,
-      params);
+  Future<T> postRequest<T>(String command, [params]) =>
+      _performRequestWithLog<T>(
+          () => _commandProcessor.post(_resolve(command), params),
+          'POST',
+          command,
+          params);
 
-  Future getRequest(String command) => _performRequestWithLog(
+  Future<T> getRequest<T>(String command) => _performRequestWithLog<T>(
       () => _commandProcessor.get(_resolve(command)), 'GET', command, null);
 
-  Future deleteRequest(String command) => _performRequestWithLog(
+  Future<T> deleteRequest<T>(String command) => _performRequestWithLog<T>(
       () => _commandProcessor.delete(_resolve(command)),
       'DELETE',
       command,
@@ -232,9 +233,9 @@ class WebDriver implements SearchContext {
 
   // Performs request and sends the result to listeners/onCommandController.
   // This is typically always what you want to use.
-  Future _performRequestWithLog(
+  Future<T> _performRequestWithLog<T>(
       Function fn, String method, String command, params) async {
-    return await _performRequest(fn, method, command, params)
+    return await _performRequest<T>(fn, method, command, params)
         .whenComplete(() async {
       if (notifyListeners) {
         if (_previousEvent == null) {
@@ -254,7 +255,7 @@ class WebDriver implements SearchContext {
   // Performs the request. This will not notify any listeners or
   // onCommandController. This should only be called from
   // _performRequestWithLog.
-  Future _performRequest(
+  Future<T> _performRequest<T>(
       Function fn, String method, String command, params) async {
     var startTime = new DateTime.now();
     var trace = new Chain.current();

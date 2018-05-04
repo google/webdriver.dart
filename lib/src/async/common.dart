@@ -21,7 +21,7 @@ const String _element = 'ELEMENT';
 class Attributes extends _WebDriverBase {
   Attributes._(driver, command) : super(driver, command);
 
-  Future<String> operator [](String name) => _get(name) as Future<String>;
+  Future<String> operator [](String name) => _get<String>(name);
 }
 
 abstract class SearchContext {
@@ -45,7 +45,7 @@ abstract class _WebDriverBase {
   Future _post(String command, [param]) =>
       driver.postRequest(_resolve(command), param);
 
-  Future _get(String command) => driver.getRequest(_resolve(command));
+  Future<T> _get<T>(String command) => driver.getRequest(_resolve(command));
 
   Future _delete(String command) => driver.deleteRequest(_resolve(command));
 
