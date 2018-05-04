@@ -53,13 +53,13 @@ class WebElement extends _WebDriverBase implements SearchContext {
   }
 
   /// Is this radio button/checkbox selected?
-  Future<bool> get selected => _get('selected') as Future<bool>;
+  Future<bool> get selected => _get<bool>('selected');
 
   /// Is this form element enabled?
-  Future<bool> get enabled => _get('enabled') as Future<bool>;
+  Future<bool> get enabled => _get<bool>('enabled');
 
   /// Is this element visible in the page?
-  Future<bool> get displayed => _get('displayed') as Future<bool>;
+  Future<bool> get displayed => _get<bool>('displayed');
 
   /// The location within the document of this element.
   Future<Point> get location async {
@@ -75,10 +75,10 @@ class WebElement extends _WebDriverBase implements SearchContext {
   }
 
   /// The tag name for this element.
-  Future<String> get name => _get('name') as Future<String>;
+  Future<String> get name => _get<String>('name');
 
   ///  Visible text within this element.
-  Future<String> get text => _get('text') as Future<String>;
+  Future<String> get text => _get<String>('text');
 
   ///Find an element nested within this element.
   ///
@@ -113,8 +113,7 @@ class WebElement extends _WebDriverBase implements SearchContext {
 
   /// Does this element represent the same element as another element?
   /// Not the same as ==
-  Future<bool> equals(WebElement other) =>
-      _get('equals/${other.id}') as Future<bool>;
+  Future<bool> equals(WebElement other) => _get<bool>('equals/${other.id}');
 
   Map<String, String> toJson() => {_element: id};
 
