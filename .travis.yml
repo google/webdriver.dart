@@ -13,7 +13,8 @@ addons:
 
 dart:
   - dev
-  - stable
+  # Re-enable stable when the stable version of Dart is >= 2.0.0
+  #- stable
 
 with_content_shell: false
 
