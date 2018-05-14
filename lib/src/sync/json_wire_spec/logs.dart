@@ -22,8 +22,11 @@ class Logs {
   Logs(this._driver) : _resolver = new Resolver(_driver, 'log');
 
   List<LogEntry> get(String logType) {
-    final entries = _resolver.post('', {'type': logType}) as List<Map>;
-    return entries.map((e) => new LogEntry.fromMap(e)).toList();
+    final entries = _resolver.post('', {'type': logType}).cast<Map>();
+    return entries
+        .map((e) => new LogEntry.fromMap(e))
+        .toList()
+        .cast<LogEntry>();
   }
 
   @override
