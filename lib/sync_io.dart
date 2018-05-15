@@ -28,7 +28,7 @@ export 'package:webdriver/sync_core.dart'
 core.WebDriver createDriver(
         {Uri uri,
         Map<String, dynamic> desired,
-        core.WebDriverSpec spec = core.WebDriverSpec.JsonWire}) =>
+        core.WebDriverSpec spec = core.WebDriverSpec.Auto}) =>
     core.createDriver(uri: uri, desired: desired, spec: spec);
 
 /// Creates a WebDriver instance connected to an existing session.

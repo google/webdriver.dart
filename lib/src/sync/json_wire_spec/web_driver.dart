@@ -31,6 +31,7 @@ import '../common_spec/cookies.dart';
 import '../command_event.dart';
 import '../command_processor.dart';
 import '../common.dart';
+import '../keyboard.dart';
 import '../navigation.dart';
 import '../target_locator.dart';
 import '../timeouts.dart';
@@ -155,7 +156,7 @@ class JsonWireWebDriver implements WebDriver, SearchContext {
   Timeouts get timeouts => new JsonWireTimeouts(this);
 
   @override
-  Keyboard get keyboard => new Keyboard(this);
+  Keyboard get keyboard => new JsonWireKeyboard(this);
 
   @override
   Mouse get mouse => new Mouse(this);
