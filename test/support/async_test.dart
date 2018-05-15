@@ -36,14 +36,14 @@ void main() {
 
     test('release without acquiring fails', () {
       var lock = new Lock();
-      expect(() => lock.release(), throwsA(new isInstanceOf<StateError>()));
+      expect(() => lock.release(), throwsA(const isInstanceOf<StateError>()));
     });
 
     test('locking prevents acquisition of lock', () async {
       var lock = new Lock();
       var secondLockAcquired = false;
       await lock.acquire();
-      lock.acquire().then((_) => secondLockAcquired = true);
+      await lock.acquire().then((_) => secondLockAcquired = true);
       // Make sure that lock is not unacquired just because of timing
       await new Future.delayed(const Duration(seconds: 1));
       expect(secondLockAcquired, isFalse);
@@ -166,7 +166,7 @@ void main() {
     });
 
     test('sanity test with real Clock -- successful', () async {
-      var clock = new Clock();
+      var clock = const Clock();
       var count = 0;
       var result = await clock.waitFor(() {
         if (count < 2) {
@@ -180,7 +180,7 @@ void main() {
     });
 
     test('sanity test with real Clock -- throws', () async {
-      var clock = new Clock();
+      var clock = const Clock();
       var exception;
       try {
         await clock.waitFor(() => throw 'an exception');
@@ -191,7 +191,7 @@ void main() {
     });
 
     test('sanity test with real Clock -- never matches', () async {
-      var clock = new Clock();
+      var clock = const Clock();
       var exception;
       try {
         await clock.waitFor(() => null, matcher: isNotNull);

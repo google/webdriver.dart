@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-@TestOn("vm")
+@TestOn('vm')
 library webdriver.command_event_test;
 
 import 'package:stack_trace/stack_trace.dart';
@@ -46,10 +46,10 @@ void runTests(config.createTestDriver createTestDriver) {
       } catch (NoSuchAlertException) {}
       expect(events[1].method, 'GET');
       expect(events[1].endPoint, contains('alert'));
-      expect(events[1].exception, new isInstanceOf<WebDriverException>());
+      expect(events[1].exception, const isInstanceOf<WebDriverException>());
       expect(events[1].result, isNull);
       expect(events[1].startTime.isBefore(events[1].endTime), isTrue);
-      expect(events[1].stackTrace, new isInstanceOf<Chain>());
+      expect(events[1].stackTrace, const isInstanceOf<Chain>());
     });
 
     test('handles normal operation', () {
@@ -59,7 +59,7 @@ void runTests(config.createTestDriver createTestDriver) {
       expect(events[1].exception, isNull);
       expect(events[1].result, hasLength(0));
       expect(events[1].startTime.isBefore(events[1].endTime), isTrue);
-      expect(events[1].stackTrace, new isInstanceOf<Chain>());
+      expect(events[1].stackTrace, const isInstanceOf<Chain>());
     });
   }, timeout: const Timeout(const Duration(minutes: 2)));
 }

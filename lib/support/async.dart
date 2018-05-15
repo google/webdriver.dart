@@ -26,7 +26,7 @@ const defaultTimeout = const Duration(seconds: 5);
 const clock = const Clock();
 
 Future<T> waitFor<T>(FutureOr<T> condition(),
-        {matcher: null,
+        {matcher,
         Duration timeout: defaultTimeout,
         Duration interval: defaultInterval}) =>
     clock.waitFor<T>(condition,
@@ -51,7 +51,7 @@ class Clock {
   /// rethrown. If [condition] doesn't throw then an [expect] exception is
   /// thrown.
   Future<T> waitFor<T>(FutureOr<T> condition(),
-      {matcher: null,
+      {matcher,
       Duration timeout: defaultTimeout,
       Duration interval: defaultInterval}) async {
     if (matcher != null && matcher is! ut.Matcher && matcher is! m.Matcher) {

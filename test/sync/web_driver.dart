@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-@TestOn("vm")
+@TestOn('vm')
 library webdriver.web_driver_test;
 
 import 'dart:io';
@@ -133,7 +133,7 @@ void runTests(config.createTestDriver createTestDriver) {
       test('windows', () {
         var windows = driver.windows.toList();
         expect(windows, hasLength(isPositive));
-        expect(windows, everyElement(new isInstanceOf<Window>()));
+        expect(windows, everyElement(const isInstanceOf<Window>()));
       });
 
       test('execute', () {
@@ -157,19 +157,19 @@ void runTests(config.createTestDriver createTestDriver) {
       test('captureScreenshot', () {
         var screenshot = driver.captureScreenshotAsList().toList();
         expect(screenshot, hasLength(isPositive));
-        expect(screenshot, everyElement(new isInstanceOf<int>()));
+        expect(screenshot, everyElement(const isInstanceOf<int>()));
       });
 
       test('captureScreenshotAsList', () {
         var screenshot = driver.captureScreenshotAsList();
         expect(screenshot, hasLength(isPositive));
-        expect(screenshot, everyElement(new isInstanceOf<int>()));
+        expect(screenshot, everyElement(const isInstanceOf<int>()));
       });
 
       test('captureScreenshotAsBase64', () {
         var screenshot = driver.captureScreenshotAsBase64();
         expect(screenshot, hasLength(isPositive));
-        expect(screenshot, new isInstanceOf<String>());
+        expect(screenshot, const isInstanceOf<String>());
       });
 
       test('event listeners work with script timeouts', () {

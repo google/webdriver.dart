@@ -15,8 +15,8 @@
 library webdriver.support.stdio_stepper;
 
 import 'dart:async' show Future, Stream, StreamController;
-import 'dart:convert' show Encoding, JSON;
-import 'dart:io' show exit, Stdin, stdin, SYSTEM_ENCODING;
+import 'dart:convert' show Encoding, json;
+import 'dart:io' show exit, Stdin, stdin, systemEncoding;
 
 import 'package:webdriver/src/async/stepper.dart';
 
@@ -41,7 +41,7 @@ class StdioStepper implements Stepper {
   @override
   Future<bool> step(String method, String command, params) async {
     if (!enabled) return true;
-    print('$method $command(${JSON.encode(params)}):');
+    print('$method $command(${json.encode(params)}):');
     await for (String command in _reader.onLine) {
       switch (command) {
         case 'continue':
@@ -97,7 +97,7 @@ class LineReader {
   /// Only encodings that are a superset of ASCII are supported
   /// TODO(DrMarcII): Support arbitrary encodings
   LineReader(Stream /* <List<int> | int> */ stream,
-      {this.encoding: SYSTEM_ENCODING}) {
+      {this.encoding: systemEncoding}) {
     if (stream is Stdin) {
       stdin.lineMode = false;
     }

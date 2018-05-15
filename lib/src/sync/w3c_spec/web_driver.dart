@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import 'dart:convert' show BASE64;
+import 'dart:convert' show base64;
 import 'package:stack_trace/stack_trace.dart' show Chain;
 
 import 'element_finder.dart';
@@ -152,7 +152,7 @@ class W3cWebDriver implements WebDriver, SearchContext {
   @override
   List<int> captureScreenshotAsList() {
     final base64Encoded = captureScreenshotAsBase64();
-    return BASE64.decode(base64Encoded);
+    return base64.decode(base64Encoded);
   }
 
   @override

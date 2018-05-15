@@ -14,18 +14,18 @@
 
 library webdriver.command_processor;
 
-import 'dart:convert' show JSON;
+import 'dart:convert' show json;
 import 'dart:io' show ContentType, HttpHeaders;
 
 import 'package:sync_http/sync_http.dart';
 
 final ContentType _contentTypeJson =
-    new ContentType("application", "json", charset: "utf-8");
+    new ContentType('application', 'json', charset: 'utf-8');
 
 typedef dynamic ResponseProcessor(SyncHttpClientResponse response, bool value);
 
 dynamic _defaultProcessor(SyncHttpClientResponse response, bool value) =>
-    JSON.decode(response.body);
+    json.decode(response.body);
 
 /// Interface for synchronous HTTP access.
 abstract class CommandProcessor {
@@ -42,7 +42,7 @@ abstract class CommandProcessor {
 class SyncHttpCommandProcessor implements CommandProcessor {
   final ResponseProcessor _responseProcessor;
 
-  SyncHttpCommandProcessor({ResponseProcessor processor = null})
+  SyncHttpCommandProcessor({ResponseProcessor processor})
       : this._responseProcessor = processor ?? _defaultProcessor;
 
   @override
@@ -51,7 +51,7 @@ class SyncHttpCommandProcessor implements CommandProcessor {
     _setUpRequest(request);
     request.headers.contentType = _contentTypeJson;
     if (params != null) {
-      var body = JSON.encode(params); // Cannot be changed from UTF8.
+      var body = json.encode(params); // Cannot be changed from UTF8.
       request.write(body);
     }
     return _responseProcessor(request.close(), value);
@@ -76,7 +76,7 @@ class SyncHttpCommandProcessor implements CommandProcessor {
 
   void _setUpRequest(SyncHttpClientRequest request) {
     // TODO(staats): Follow redirects.
-    request.headers.add(HttpHeaders.ACCEPT, "application/json");
-    request.headers.add(HttpHeaders.CACHE_CONTROL, "no-cache");
+    request.headers.add(HttpHeaders.ACCEPT, 'application/json');
+    request.headers.add(HttpHeaders.CACHE_CONTROL, 'no-cache');
   }
 }

@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-@TestOn("vm")
+@TestOn('vm')
 library webdriver.spec_inference_test;
 
 import 'package:test/test.dart';
@@ -43,7 +43,7 @@ void main() {
         button.findElement(const By.tagName('tr'));
         throw 'Expected NoSuchElementException';
       } catch (e) {
-        expect(e, new isInstanceOf<json.NoSuchElementException>());
+        expect(e, const isInstanceOf<json.NoSuchElementException>());
         expect(e.toString(), contains('Unable to locate element'));
       }
     });
@@ -56,7 +56,7 @@ void main() {
         button.findElement(const By.tagName('tr'));
         throw 'Expected W3cWebDriverException';
       } catch (e) {
-        expect(e, new isInstanceOf<w3c.W3cWebDriverException>());
+        expect(e, const isInstanceOf<w3c.W3cWebDriverException>());
         expect(e.toString(), contains('Unable to locate element'));
       }
     });

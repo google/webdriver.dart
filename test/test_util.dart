@@ -22,10 +22,10 @@ import 'package:path/path.dart' as path;
 import 'package:webdriver/async_core.dart' as async_core;
 import 'package:webdriver/sync_core.dart' as sync_core;
 
-final Matcher isWebElement = new isInstanceOf<async_core.WebElement>();
-final Matcher isSyncWebElement = new isInstanceOf<sync_core.WebElement>();
-final Matcher isRectangle = new isInstanceOf<Rectangle<int>>();
-final Matcher isPoint = new isInstanceOf<Point<int>>();
+final Matcher isWebElement = const isInstanceOf<async_core.WebElement>();
+final Matcher isSyncWebElement = const isInstanceOf<sync_core.WebElement>();
+final Matcher isRectangle = const isInstanceOf<Rectangle<int>>();
+final Matcher isPoint = const isInstanceOf<Point<int>>();
 
 String get testPagePath {
   String testPagePath = path.absolute('test', 'test_page.html');

@@ -146,7 +146,7 @@ class WebDriver implements SearchContext {
   /// Take a screenshot of the current page as PNG as list of uint8.
   Future<List<int>> captureScreenshotAsList() async {
     var base64Encoded = captureScreenshotAsBase64();
-    return BASE64.decode(await base64Encoded);
+    return base64.decode(await base64Encoded);
   }
 
   /// Take a screenshot of the current page as PNG as stream of uint8.

@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-@TestOn("vm")
+@TestOn('vm')
 library webdriver.support.forwarder_test;
 
 import 'dart:io';
@@ -40,7 +40,7 @@ void main() {
       forwarder =
           new WebDriverForwarder(driver, prefix: '/webdriver/session/1');
 
-      server = await HttpServer.bind(InternetAddress.ANY_IP_V4, 0);
+      server = await HttpServer.bind(InternetAddress.anyIPv4, 0);
       server.listen((request) {
         if (request.uri.path.startsWith('/webdriver')) {
           forwarder.forward(request);

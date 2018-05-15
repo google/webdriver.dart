@@ -12,10 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-@TestOn("vm")
+@TestOn('vm')
 library webdriver.support.firefox_profile_test;
 
-import 'dart:convert' show BASE64, Encoding, UTF8;
+import 'dart:convert' show base64, Encoding, utf8;
 import 'dart:io' as io;
 
 import 'package:archive/archive.dart' show Archive, ArchiveFile, ZipDecoder;
@@ -32,7 +32,7 @@ void main() {
           r'extensions/{972ce4c6-7e08-4474-a285-3208198ce6fd}\",\"e\":true,\'
           r'"v\":\"40.0\",\"st\":1439535413000,\"mt\":1438968709000}}}");';
       var option = new PrefsOption.parse(value);
-      expect(option, new isInstanceOf<StringOption>());
+      expect(option, const isInstanceOf<StringOption>());
       expect(option.asPrefString, value);
     });
 
@@ -40,21 +40,21 @@ void main() {
       const value = r'user_pref("browser.cache.disk.parent_directory", '
           r'"\\\\volume\\web\\cache\\mz");';
       var option = new PrefsOption.parse(value);
-      expect(option, new isInstanceOf<StringOption>());
+      expect(option, const isInstanceOf<StringOption>());
       expect(option.asPrefString, value);
     });
 
     test('parse and serialize integer value', () {
       const value = r'user_pref("browser.cache.frecency_experiment", 3);';
       var option = new PrefsOption.parse(value);
-      expect(option, new isInstanceOf<IntegerOption>());
+      expect(option, const isInstanceOf<IntegerOption>());
       expect(option.asPrefString, value);
     });
 
     test('parse and serialize negative integer value', () {
       const value = r'user_pref("browser.cache.frecency_experiment", -3);';
       var option = new PrefsOption.parse(value);
-      expect(option, new isInstanceOf<IntegerOption>());
+      expect(option, const isInstanceOf<IntegerOption>());
       expect(option.asPrefString, value);
     });
 
@@ -62,7 +62,7 @@ void main() {
       const value =
           r'user_pref("browser.cache.disk.smart_size.first_run", true);';
       var option = new PrefsOption.parse(value);
-      expect(option, new isInstanceOf<BooleanOption>());
+      expect(option, const isInstanceOf<BooleanOption>());
       expect(option.asPrefString, value);
     });
 
@@ -70,7 +70,7 @@ void main() {
       const value =
           r'user_pref("browser.cache.disk.smart_size.first_run", false);';
       var option = new PrefsOption.parse(value);
-      expect(option, new isInstanceOf<BooleanOption>());
+      expect(option, const isInstanceOf<BooleanOption>());
       expect(option.asPrefString, value);
     });
 
@@ -78,7 +78,7 @@ void main() {
       const value =
           r'user_pref("browser.cache.disk.smart_size.first_run", True);';
       var option = new PrefsOption.parse(value);
-      expect(option, new isInstanceOf<BooleanOption>());
+      expect(option, const isInstanceOf<BooleanOption>());
       expect(option.value, true);
     });
 
@@ -173,7 +173,7 @@ void main() {
 }
 
 Archive unpackArchiveData(Map profileData) {
-  var zipArchive = BASE64.decode(profileData['firefox_profile']);
+  var zipArchive = base64.decode(profileData['firefox_profile']);
   return new ZipDecoder().decodeBytes(zipArchive, verify: true);
 }
 
@@ -184,7 +184,7 @@ class MockFile implements io.File {
   MockFile(this.content);
 
   @override
-  String readAsStringSync({Encoding encoding: UTF8}) => content;
+  String readAsStringSync({Encoding encoding: utf8}) => content;
 
   @override
   dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
