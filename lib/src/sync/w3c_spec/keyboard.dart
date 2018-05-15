@@ -27,15 +27,15 @@ class W3cKeyboard extends Keyboard {
     final keyDownActions = <Map<String, String>>[];
     final keyUpActions = <Map<String, String>>[];
     for (String s in chordToSend) {
-      keyDownActions.add({"type": "keyDown", "value": s});
-      keyUpActions.add({"type": "keyUp", "value": s});
+      keyDownActions.add({'type': 'keyDown', 'value': s});
+      keyUpActions.add({'type': 'keyUp', 'value': s});
     }
     _resolver.post('actions', {
       'actions': [
         {
-          "type": "key",
-          "id": "keys",
-          "actions":
+          'type': 'key',
+          'id': 'keys',
+          'actions':
               keyDownActions + keyUpActions.reversed.toList(growable: false)
         }
       ]
@@ -46,12 +46,12 @@ class W3cKeyboard extends Keyboard {
   void sendKeys(String keysToSend) {
     final keyActions = <Map<String, String>>[];
     for (int i = 0; i < keysToSend.length; ++i) {
-      keyActions.add({"type": "keyDown", "value": keysToSend[i]});
-      keyActions.add({"type": "keyUp", "value": keysToSend[i]});
+      keyActions.add({'type': 'keyDown', 'value': keysToSend[i]});
+      keyActions.add({'type': 'keyUp', 'value': keysToSend[i]});
     }
     _resolver.post('actions', {
       'actions': [
-        {"type": "key", "id": "keys", "actions": keyActions}
+        {'type': 'key', 'id': 'keys', 'actions': keyActions}
       ]
     });
   }
