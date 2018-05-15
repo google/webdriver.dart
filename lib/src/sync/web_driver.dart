@@ -14,6 +14,7 @@
 
 import 'command_event.dart';
 import 'common.dart';
+import 'keyboard.dart';
 import 'navigation.dart';
 import 'target_locator.dart';
 import 'timeouts.dart';
@@ -26,7 +27,6 @@ import 'common_spec/cookies.dart';
 
 import 'json_wire_spec/mouse.dart';
 import 'json_wire_spec/logs.dart';
-import 'json_wire_spec/keyboard.dart';
 
 typedef void WebDriverListener(WebDriverCommandEvent event);
 
@@ -98,9 +98,6 @@ abstract class WebDriver implements SearchContext {
 
   Timeouts get timeouts;
 
-  // TODO(staats): add actions support.
-
-  @Deprecated('This not supported in the W3C spec. Use actions instead.')
   Keyboard get keyboard;
 
   @Deprecated('This not supported in the W3C spec. Use actions instead.')

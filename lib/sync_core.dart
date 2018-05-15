@@ -32,10 +32,10 @@ export 'package:webdriver/src/sync/command_event.dart';
 export 'package:webdriver/src/sync/command_processor.dart';
 export 'package:webdriver/src/sync/common.dart';
 export 'package:webdriver/src/sync/common_spec/cookies.dart';
+export 'package:webdriver/src/sync/keyboard.dart';
 export 'package:webdriver/src/sync/navigation.dart';
 export 'package:webdriver/src/sync/exception.dart';
 export 'package:webdriver/src/sync/json_wire_spec/exception.dart';
-export 'package:webdriver/src/sync/json_wire_spec/keyboard.dart';
 export 'package:webdriver/src/sync/json_wire_spec/logs.dart';
 export 'package:webdriver/src/sync/json_wire_spec/mouse.dart';
 export 'package:webdriver/src/sync/timeouts.dart';
@@ -53,7 +53,7 @@ enum WebDriverSpec { Auto, JsonWire, W3c }
 WebDriver createDriver(
     {Uri uri,
     Map<String, dynamic> desired,
-    WebDriverSpec spec = WebDriverSpec.JsonWire}) {
+    WebDriverSpec spec = WebDriverSpec.Auto}) {
   uri ??= defaultUri;
 
   desired ??= Capabilities.empty;
@@ -71,14 +71,22 @@ WebDriver createDriver(
       final processor =
           new SyncHttpCommandProcessor(processor: processW3cResponse);
       final response = processor.post(
-          uri.resolve('session'), {'desiredCapabilities': desired},
+          uri.resolve('session'),
+          {
+            'capabilities': {'desiredCapabilities': desired}
+          },
           value: true) as Map<String, dynamic>;
       return new w3c.W3cWebDriver(processor, uri, response['sessionId'],
           new UnmodifiableMapView(response['value'] as Map<String, dynamic>));
     case WebDriverSpec.Auto:
       final response =
           new SyncHttpCommandProcessor(processor: inferSessionResponseSpec)
-              .post(uri.resolve('session'), {'desiredCapabilities': desired},
+              .post(
+                  uri.resolve('session'),
+                  {
+                    'desiredCapabilities': desired,
+                    'capabilities': {'desiredCapabilities': desired}
+                  },
                   value: true) as InferredResponse;
       return fromExistingSession(response.sessionId,
           uri: uri, spec: response.spec);

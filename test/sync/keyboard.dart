@@ -50,28 +50,37 @@ void runTests(config.createTestDriver createTestDriver) {
 
     test('sendKeys -- once', () {
       driver.keyboard.sendKeys('abcdef');
-      expect(textInput.attributes['value'], 'abcdef');
+      expect(valueOf(textInput), 'abcdef');
     });
 
     test('sendKeys -- twice', () {
       driver.keyboard.sendKeys('abc');
       driver.keyboard.sendKeys('def');
-      expect(textInput.attributes['value'], 'abcdef');
+      expect(valueOf(textInput), 'abcdef');
     });
 
     test('sendKeys -- with tab', () {
       driver.keyboard.sendKeys('abc${Keyboard.tab}def');
-      expect(textInput.attributes['value'], 'abc');
+      expect(valueOf(textInput), 'abc');
     });
 
     // NOTE: does not work on Mac.
     test('sendChord -- CTRL+X', () {
       driver.keyboard.sendKeys('abcdef');
-      expect(textInput.attributes['value'], 'abcdef');
+      expect(valueOf(textInput), 'abcdef');
       driver.keyboard.sendChord([ctrlCmdKey, 'a']);
       driver.keyboard.sendChord([ctrlCmdKey, 'x']);
       driver.keyboard.sendKeys('xxx');
-      expect(textInput.attributes['value'], 'xxx');
+      expect(valueOf(textInput), 'xxx');
     });
   }, timeout: const Timeout(const Duration(minutes: 2)));
+}
+
+/// Gets the "value" property of a [WebElement].
+///
+/// The behavior for the "value" property of a text input is different for
+/// different specs (json wire updates it through attribute and W3C updates it
+/// through property).
+String valueOf(WebElement textInput) {
+  return textInput.attributes['value'] ?? textInput.properties['value'];
 }
