@@ -95,23 +95,50 @@ void runTests(config.createTestDriver createTestDriver) {
     });
 
     test('rect -- table', () {
-      var location = table.rect;
-      expect(location, config.isRectangle);
-      expect(location.left, isNonNegative);
-      expect(location.top, isNonNegative);
-      expect(location.width, isNonNegative);
-      expect(location.height, isNonNegative);
+      var rect = table.rect;
+      expect(rect, config.isRectangle);
+      expect(rect.left, isNonNegative);
+      expect(rect.top, isNonNegative);
+      expect(rect.width, isNonNegative);
+      expect(rect.height, isNonNegative);
+    });
+
+    test('rect -- invisible', () {
+      var rect = invisible.rect;
+      expect(rect, config.isRectangle);
+      expect(rect.left, 0);
+      expect(rect.top, 0);
+      expect(rect.width, 0);
+      expect(rect.height, 0);
+    });
+
+    test('location -- table', () {
+      var location = table.location;
+      expect(location, config.isPoint);
+      expect(location.x, isNonNegative);
+      expect(location.y, isNonNegative);
     });
 
     test('location -- invisible', () {
-      var location = invisible.rect;
-      expect(location, config.isRectangle);
-      expect(location.left, 0);
-      expect(location.top, 0);
-      expect(location.width, 0);
-      expect(location.height, 0);
+      var location = invisible.location;
+      expect(location, config.isPoint);
+      expect(location.x, 0);
+      expect(location.y, 0);
     });
 
+    test('size -- table', () {
+      var size = table.size;
+      expect(size, config.isRectangle);
+      expect(size.width, isNonNegative);
+      expect(size.height, isNonNegative);
+    });
+
+    test('size -- invisible', () {
+      var size = invisible.size;
+      expect(size, config.isRectangle);
+      expect(size.width, 0);
+      expect(size.height, 0);
+    });
     test('name', () {
       expect(table.name, 'table');
       expect(button.name, 'button');

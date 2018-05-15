@@ -15,6 +15,7 @@
 import 'command_event.dart';
 import 'common.dart';
 import 'keyboard.dart';
+import 'mouse.dart';
 import 'navigation.dart';
 import 'target_locator.dart';
 import 'timeouts.dart';
@@ -25,7 +26,6 @@ import '../../async_core.dart' as async_core;
 
 import 'common_spec/cookies.dart';
 
-import 'json_wire_spec/mouse.dart';
 import 'json_wire_spec/logs.dart';
 
 typedef void WebDriverListener(WebDriverCommandEvent event);

@@ -32,6 +32,7 @@ import '../command_event.dart';
 import '../command_processor.dart';
 import '../common.dart';
 import '../keyboard.dart';
+import '../mouse.dart';
 import '../navigation.dart';
 import '../target_locator.dart';
 import '../timeouts.dart';
@@ -159,7 +160,7 @@ class JsonWireWebDriver implements WebDriver, SearchContext {
   Keyboard get keyboard => new JsonWireKeyboard(this);
 
   @override
-  Mouse get mouse => new Mouse(this);
+  Mouse get mouse => new JsonWireMouse(this);
 
   @override
   String captureScreenshotAsBase64() => getRequest('screenshot');

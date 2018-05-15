@@ -65,11 +65,9 @@ abstract class WebElement implements SearchContext {
   ///
   /// This is assumed to be the upper left corner of the element, but its
   /// implementation is not well defined in the JSON spec.
-  @Deprecated('JSON wire legacy support, emulated for newer browsers')
   Point get location;
 
   /// The size of this element.
-  @Deprecated('JSON wire legacy support, emulated for newer browsers')
   Rectangle<int> get size;
 
   /// The bounds of this element.
