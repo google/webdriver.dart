@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-@TestOn("vm")
+@TestOn('vm')
 library webdriver.web_element_test;
 
 import 'dart:io';
@@ -162,7 +162,7 @@ void runTests(config.createTestDriver createTestDriver) {
         button.findElement(const By.tagName('tr'));
         throw 'Expected Exception';
       } catch (e) {
-        expect(e, new isInstanceOf<W3cWebDriverException>());
+        expect(e, const isInstanceOf<W3cWebDriverException>());
         expect((e as W3cWebDriverException).httpStatusCode, 404);
         expect((e as W3cWebDriverException).error, 'no such element');
         expect((e as W3cWebDriverException).message,

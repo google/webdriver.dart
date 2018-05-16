@@ -14,25 +14,25 @@
 
 /// Capabilities constants.
 class Capabilities {
-  static const String browserName = "browserName";
-  static const String platform = "platform";
-  static const String supportsJavascript = "javascriptEnabled";
-  static const String takesScreenshot = "takesScreenshot";
-  static const String version = "version";
-  static const String supportsAlerts = "handlesAlerts";
-  static const String supportSqlDatabase = "databaseEnabled";
-  static const String supportsLocationContext = "locationContextEnabled";
-  static const String supportsApplicationCache = "applicationCacheEnabled";
-  static const String supportsBrowserConnection = "browserConnectionEnabled";
-  static const String supportsFindingByCss = "cssSelectorsEnabled";
-  static const String proxy = "proxy";
-  static const String supportsWebStorage = "webStorageEnabled";
-  static const String rotatable = "rotatable";
-  static const String acceptSslCerts = "acceptSslCerts";
-  static const String hasNativeEvents = "nativeEvents";
-  static const String unexpectedAlertBehaviour = "unexpectedAlertBehaviour";
-  static const String loggingPrefs = "loggingPrefs";
-  static const String enableProfiling = "webdriver.logging.profiler.enabled";
+  static const String browserName = 'browserName';
+  static const String platform = 'platform';
+  static const String supportsJavascript = 'javascriptEnabled';
+  static const String takesScreenshot = 'takesScreenshot';
+  static const String version = 'version';
+  static const String supportsAlerts = 'handlesAlerts';
+  static const String supportSqlDatabase = 'databaseEnabled';
+  static const String supportsLocationContext = 'locationContextEnabled';
+  static const String supportsApplicationCache = 'applicationCacheEnabled';
+  static const String supportsBrowserConnection = 'browserConnectionEnabled';
+  static const String supportsFindingByCss = 'cssSelectorsEnabled';
+  static const String proxy = 'proxy';
+  static const String supportsWebStorage = 'webStorageEnabled';
+  static const String rotatable = 'rotatable';
+  static const String acceptSslCerts = 'acceptSslCerts';
+  static const String hasNativeEvents = 'nativeEvents';
+  static const String unexpectedAlertBehaviour = 'unexpectedAlertBehaviour';
+  static const String loggingPrefs = 'loggingPrefs';
+  static const String enableProfiling = 'webdriver.logging.profiler.enabled';
 
   static Map<String, dynamic> get chrome => new Map.from(empty)
     ..[browserName] = Browser.chrome
@@ -54,18 +54,18 @@ class Capabilities {
 
 /// Browser name constants.
 class Browser {
-  static const String firefox = "firefox";
-  static const String safari = "safari";
-  static const String opera = "opera";
-  static const String chrome = "chrome";
-  static const String android = "android";
-  static const String ie = "internet explorer";
-  static const String iphone = "iPhone";
-  static const String ipad = "iPad";
+  static const String firefox = 'firefox';
+  static const String safari = 'safari';
+  static const String opera = 'opera';
+  static const String chrome = 'chrome';
+  static const String android = 'android';
+  static const String ie = 'internet explorer';
+  static const String iphone = 'iPhone';
+  static const String ipad = 'iPad';
 }
 
 /// Browser operating system constants.
 class BrowserPlatform {
-  static const String any = "ANY";
-  static const String android = "ANDROID";
+  static const String any = 'ANY';
+  static const String android = 'ANDROID';
 }

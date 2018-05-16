@@ -94,7 +94,6 @@ abstract class WebDriverException implements Exception {
 
   @override
   bool operator ==(other) =>
-      other != null &&
       other.runtimeType == this.runtimeType &&
       other.statusCode == this.statusCode &&
       other.message == this.message;

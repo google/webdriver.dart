@@ -16,7 +16,7 @@ library webdriver.core;
 
 import 'dart:async' show Future, Stream, StreamController;
 import 'dart:collection' show UnmodifiableMapView;
-import 'dart:convert' show BASE64;
+import 'dart:convert' show base64;
 import 'dart:math' show Point, Rectangle;
 
 import 'package:stack_trace/stack_trace.dart' show Chain;

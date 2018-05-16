@@ -15,7 +15,7 @@
 library webdriver.support.forwarder;
 
 import 'dart:async' show Future;
-import 'dart:convert' show JSON, UTF8;
+import 'dart:convert' show json, utf8;
 import 'dart:io' show ContentType, Directory, File, HttpRequest, HttpStatus;
 
 import 'package:path/path.dart' as path;
@@ -91,21 +91,21 @@ class WebDriverForwarder {
       }
       Map<String, dynamic> params;
       if (request.method == 'POST') {
-        String requestBody = await UTF8.decodeStream(request);
+        String requestBody = await utf8.decodeStream(request);
         if (requestBody != null && requestBody.isNotEmpty) {
-          params = JSON.decode(requestBody) as Map<String, dynamic>;
+          params = json.decode(requestBody) as Map<String, dynamic>;
         }
       }
       var value = await _forward(request.method, endpoint, params);
       request.response
-          .add(UTF8.encode(JSON.encode({'status': 0, 'value': value})));
+          .add(utf8.encode(json.encode({'status': 0, 'value': value})));
     } on WebDriverException catch (e) {
-      request.response.add(UTF8.encode(JSON.encode({
+      request.response.add(utf8.encode(json.encode({
         'status': e.statusCode,
         'value': {'message': e.message}
       })));
     } catch (e) {
-      request.response.add(UTF8.encode(JSON.encode({
+      request.response.add(utf8.encode(json.encode({
         'status': 13,
         'value': {'message': e.toString()}
       })));

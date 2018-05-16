@@ -15,7 +15,7 @@
 library webdriver.html;
 
 import 'dart:async' show Future;
-import 'dart:convert' show JSON;
+import 'dart:convert' show json;
 import 'dart:html' show HttpRequest, ProgressEvent;
 
 import 'package:webdriver/async_core.dart' as core
@@ -67,9 +67,9 @@ class _HtmlCommandProcessor implements CommandProcessor {
   Future<dynamic> _request(
       String method, Uri uri, dynamic params, bool value) async {
     await _lock.acquire();
-    var sendData;
+    String sendData;
     if (params != null && method == 'POST') {
-      sendData = JSON.encode(params);
+      sendData = json.encode(params);
     }
 
     HttpRequest request;
@@ -87,7 +87,7 @@ class _HtmlCommandProcessor implements CommandProcessor {
     }
     var respBody = request.response;
     try {
-      respBody = JSON.decode(respBody);
+      respBody = json.decode(respBody);
     } catch (e) {}
 
     if (request.status < 200 ||

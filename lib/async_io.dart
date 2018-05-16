@@ -15,7 +15,7 @@
 library webdriver.io;
 
 import 'dart:async' show Future;
-import 'dart:convert' show JSON, UTF8;
+import 'dart:convert' show json, utf8;
 import 'dart:io'
     show
         ContentType,
@@ -50,7 +50,7 @@ Future<core.WebDriver> fromExistingSession(String sessionId, {Uri uri}) =>
     core.fromExistingSession(new IOCommandProcessor(), sessionId, uri: uri);
 
 final ContentType _contentTypeJson =
-    new ContentType("application", "json", charset: "utf-8");
+    new ContentType('application', 'json', charset: 'utf-8');
 
 class IOCommandProcessor implements CommandProcessor {
   final HttpClient client = new HttpClient();
@@ -64,7 +64,7 @@ class IOCommandProcessor implements CommandProcessor {
     _setUpRequest(request);
     request.headers.contentType = _contentTypeJson;
     if (params != null) {
-      var body = UTF8.encode(JSON.encode(params));
+      var body = utf8.encode(json.encode(params));
       request.contentLength = body.length;
       request.add(body);
     } else {
@@ -96,11 +96,11 @@ class IOCommandProcessor implements CommandProcessor {
 
   Future<dynamic> _processResponse(
       HttpClientResponse response, bool value) async {
-    var respDecoded = await UTF8.decodeStream(response);
+    var respDecoded = await utf8.decodeStream(response);
     _lock.release();
     Map respBody;
     try {
-      respBody = JSON.decode(respDecoded);
+      respBody = json.decode(respDecoded);
     } catch (e) {}
 
     if (response.statusCode < 200 ||
@@ -121,8 +121,8 @@ class IOCommandProcessor implements CommandProcessor {
 
   void _setUpRequest(HttpClientRequest request) {
     request.followRedirects = true;
-    request.headers.add(HttpHeaders.ACCEPT, "application/json");
-    request.headers.add(HttpHeaders.ACCEPT_CHARSET, UTF8.name);
-    request.headers.add(HttpHeaders.CACHE_CONTROL, "no-cache");
+    request.headers.add(HttpHeaders.ACCEPT, 'application/json');
+    request.headers.add(HttpHeaders.ACCEPT_CHARSET, utf8.name);
+    request.headers.add(HttpHeaders.CACHE_CONTROL, 'no-cache');
   }
 }

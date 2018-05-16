@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-@TestOn("vm")
+@TestOn('vm')
 library webdriver.web_element_test;
 
 import 'package:test/test.dart';
@@ -148,7 +148,7 @@ void runTests(config.createTestDriver createTestDriver) {
         button.findElement(const By.tagName('tr'));
         throw 'Expected NoSuchElementException';
       } catch (e) {
-        expect(e, new isInstanceOf<NoSuchElementException>());
+        expect(e, const isInstanceOf<NoSuchElementException>());
       }
     });
 

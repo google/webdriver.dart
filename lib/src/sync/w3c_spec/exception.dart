@@ -53,7 +53,6 @@ class W3cWebDriverException implements WebDriverException {
 
   @override
   bool operator ==(other) =>
-      other != null &&
       other.runtimeType == this.runtimeType &&
       other.statusCode == this.httpStatusCode &&
       other.message == this.message &&

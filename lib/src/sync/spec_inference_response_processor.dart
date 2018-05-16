@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import 'dart:convert' show JSON;
+import 'dart:convert' show json;
 
 import 'package:sync_http/sync_http.dart';
 import 'package:webdriver/sync_core.dart';
@@ -30,7 +30,7 @@ class InferredResponse {
 dynamic inferSessionResponseSpec(SyncHttpClientResponse response, bool _) {
   Map responseBody;
   try {
-    responseBody = JSON.decode(response.body);
+    responseBody = json.decode(response.body);
   } catch (e) {}
 
   // TODO(staats): create more description error messages.

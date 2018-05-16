@@ -99,7 +99,6 @@ abstract class JsonWireWebDriverException implements WebDriverException {
 
   @override
   bool operator ==(other) =>
-      other != null &&
       other.runtimeType == this.runtimeType &&
       other.statusCode == this.statusCode &&
       other.message == this.message;

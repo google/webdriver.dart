@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-@TestOn("vm")
+@TestOn('vm')
 library webdriver.web_driver_test;
 
 import 'dart:async';
@@ -136,7 +136,7 @@ void main() {
       test('windows', () async {
         var windows = await driver.windows.toList();
         expect(windows, hasLength(isPositive));
-        expect(windows, everyElement(new isInstanceOf<Window>()));
+        expect(windows, everyElement(const isInstanceOf<Window>()));
       });
 
       test('execute', () async {
@@ -162,19 +162,19 @@ void main() {
       test('captureScreenshot', () async {
         var screenshot = await driver.captureScreenshot().toList();
         expect(screenshot, hasLength(isPositive));
-        expect(screenshot, everyElement(new isInstanceOf<int>()));
+        expect(screenshot, everyElement(const isInstanceOf<int>()));
       });
 
       test('captureScreenshotAsList', () async {
         var screenshot = await driver.captureScreenshotAsList();
         expect(screenshot, hasLength(isPositive));
-        expect(screenshot, everyElement(new isInstanceOf<int>()));
+        expect(screenshot, everyElement(const isInstanceOf<int>()));
       });
 
       test('captureScreenshotAsBase64', () async {
         var screenshot = await driver.captureScreenshotAsBase64();
         expect(screenshot, hasLength(isPositive));
-        expect(screenshot, new isInstanceOf<String>());
+        expect(screenshot, const isInstanceOf<String>());
       });
 
       test('future based event listeners work with script timeouts', () async {
