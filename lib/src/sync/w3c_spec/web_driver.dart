@@ -17,6 +17,7 @@ import 'package:stack_trace/stack_trace.dart' show Chain;
 
 import 'element_finder.dart';
 import 'keyboard.dart';
+import 'mouse.dart';
 import 'navigation.dart';
 import 'target_locator.dart';
 import 'timeouts.dart';
@@ -27,9 +28,9 @@ import '../../../async_core.dart' as async_core;
 
 import '../common_spec/cookies.dart';
 import '../keyboard.dart';
+import '../mouse.dart';
 // We don't implement this, but we need the types to define the API.
 import '../json_wire_spec/logs.dart';
-import '../json_wire_spec/mouse.dart';
 
 import '../command_event.dart';
 import '../command_processor.dart';
@@ -144,7 +145,7 @@ class W3cWebDriver implements WebDriver, SearchContext {
   Keyboard get keyboard => new W3cKeyboard(this);
 
   @override
-  Mouse get mouse => throw 'Unsupported in W3C spec, use Actions instead.';
+  Mouse get mouse => new W3cMouse(this);
 
   @override
   String captureScreenshotAsBase64() => getRequest('screenshot');

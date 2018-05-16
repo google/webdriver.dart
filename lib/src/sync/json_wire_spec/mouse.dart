@@ -15,35 +15,15 @@
 import '../common.dart';
 import '../web_driver.dart';
 import '../web_element.dart';
+import '../mouse.dart';
 
-class MouseButton {
-  /// The primary button is usually the left button or the only button on
-  /// single-button devices, used to activate a user interface control or select
-  /// text.
-  static const MouseButton primary = const MouseButton(0);
-
-  /// The auxiliary button is usually the middle button, often combined with a
-  /// mouse wheel.
-  static const MouseButton auxiliary = const MouseButton(1);
-
-  /// The secondary button is usually the right button, often used to display a
-  /// context menu.
-  static const MouseButton secondary = const MouseButton(2);
-
-  final int value;
-
-  /// [value] for a mouse button is defined in
-  /// https://w3c.github.io/uievents/#widl-MouseEvent-button
-  const MouseButton(this.value);
-}
-
-class Mouse {
+class JsonWireMouse extends Mouse {
   final WebDriver _driver;
   final Resolver _resolver;
 
-  Mouse(this._driver) : _resolver = new Resolver(_driver, '');
+  JsonWireMouse(this._driver) : _resolver = new Resolver(_driver, '');
 
-  /// Click any mouse button (at the coordinates set by the last moveTo).
+  @override
   void click([MouseButton button]) {
     final json = {};
     if (button is MouseButton) {
@@ -52,8 +32,7 @@ class Mouse {
     _resolver.post('click', json);
   }
 
-  /// Click and hold any mouse button (at the coordinates set by the last
-  /// moveTo command).
+  @override
   void down([MouseButton button]) {
     final json = {};
     if (button is MouseButton) {
@@ -62,7 +41,7 @@ class Mouse {
     _resolver.post('buttondown', json);
   }
 
-  /// Releases the mouse button previously held (where the mouse is currently at).
+  @override
   void up([MouseButton button]) {
     final json = {};
     if (button is MouseButton) {
@@ -71,22 +50,12 @@ class Mouse {
     _resolver.post('buttonup', json);
   }
 
-  /// Double-clicks at the current mouse coordinates (set by moveTo).
+  @override
   void doubleClick() {
     _resolver.post('doubleclick');
   }
 
-  /// Move the mouse.
-  ///
-  /// If [element] is specified and [xOffset] and [yOffset] are not, will move
-  /// the mouse to the center of the [element].
-  ///
-  /// If [xOffset] and [yOffset] are specified, will move the mouse that distance
-  /// from its current location.
-  ///
-  /// If all three are specified, will move the mouse to the offset relative to
-  /// the top-left corner of the [element].
-  /// All other combinations of parameters are illegal.
+  @override
   void moveTo({WebElement element, int xOffset, int yOffset}) {
     final json = {};
     if (element is WebElement) {
@@ -106,5 +75,5 @@ class Mouse {
   int get hashCode => _driver.hashCode;
 
   @override
-  bool operator ==(other) => other is Mouse && other._driver == _driver;
+  bool operator ==(other) => other is JsonWireMouse && other._driver == _driver;
 }

@@ -83,12 +83,10 @@ class W3cWebElement implements WebElement, SearchContext {
   bool get displayed => this.cssProperties['display'] != 'none';
 
   @override
-  // TODO(staats): better exception.
-  Point get location => throw 'Unsupported by W3C spec, use "rect" instead.';
+  Point get location => rect.topLeft;
 
   @override
-  Rectangle<int> get size =>
-      throw 'Unsupported by W3C spec, use "rect" instead.';
+  Rectangle<int> get size => rect;
 
   @override
   Rectangle<int> get rect {
