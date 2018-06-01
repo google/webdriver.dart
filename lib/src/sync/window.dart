@@ -28,11 +28,9 @@ abstract class Windows {
 /// Upon use, the window will automatically be set as active.
 abstract class Window {
   /// The size of the window.
-  @Deprecated('JSON wire legacy support, unsupported for newer browsers')
   Rectangle<int> get size;
 
   /// The location of the window.
-  @Deprecated('JSON wire legacy support, unsupported for newer browsers')
   Point<int> get location;
 
   /// The location and size of the window.
@@ -45,11 +43,9 @@ abstract class Window {
   void maximize();
 
   /// Set the window size.
-  @Deprecated('JSON wire legacy support, unsupported for newer browsers')
   void setSize(Rectangle<int> size);
 
   /// Set the window location.
-  @Deprecated('JSON wire legacy support, unsupported for newer browsers')
   void setLocation(Point<int> point);
 
   /// Sets the window as active.

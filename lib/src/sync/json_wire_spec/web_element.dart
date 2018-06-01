@@ -128,15 +128,13 @@ class JsonWireWebElement implements WebElement, SearchContext {
   }
 
   @override
-  Attributes get attributes =>
-      new Attributes(driver, '$_elementPrefix/attribute');
+  Attributes get attributes => new _ElementAttributes(this);
 
   @override
-  Attributes get properties =>
-      new Attributes(driver, '$_elementPrefix/property');
+  Attributes get properties => new _ElementProperties(this);
 
   @override
-  Attributes get cssProperties => new Attributes(driver, '$_elementPrefix/css');
+  Attributes get cssProperties => new _ElementComputedStyle(this);
 
   @override
   bool equals(WebElement other) => _resolver.get('equals/${other.id}') as bool;
@@ -170,3 +168,45 @@ class JsonWireWebElement implements WebElement, SearchContext {
     return out.toString();
   }
 }
+
+class _ElementAttributes extends Attributes {
+  final WebElement element;
+
+  _ElementAttributes(this.element);
+
+  @override
+  String operator [](String name) => element.driver.execute("""
+    var attr = arguments[0].attributes["$name"];
+    if(attr) {
+      return attr.value;
+    }
+
+    return null;
+    """, [element])?.toString();
+}
+
+class _ElementComputedStyle extends Attributes {
+  final WebElement element;
+
+  _ElementComputedStyle(this.element);
+
+  @override
+  String operator [](String name) => element.driver.execute(
+      'return window.getComputedStyle(arguments[0]).${_cssPropName(name)};',
+      [element])?.toString();
+}
+
+// Retrieves properties via Javascript.
+class _ElementProperties extends Attributes {
+  final WebElement element;
+
+  _ElementProperties(this.element);
+
+  @override
+  String operator [](String name) => element.driver
+      .execute('return arguments[0]["$name"];', [element])?.toString();
+}
+
+/// Convert hyphenated-properties to camelCase.
+String _cssPropName(String name) => name.splitMapJoin(new RegExp(r'-(\w)'),
+    onMatch: (m) => m.group(1).toUpperCase(), onNonMatch: (m) => m);

@@ -109,14 +109,15 @@ class W3cWebElement implements WebElement, SearchContext {
 
   @override
   Attributes get attributes =>
-      new Attributes(driver, '$_elementPrefix/attribute');
+      new SimpleAttributes(driver, '$_elementPrefix/attribute');
 
   @override
   Attributes get properties =>
-      new Attributes(driver, '$_elementPrefix/property');
+      new SimpleAttributes(driver, '$_elementPrefix/property');
 
   @override
-  Attributes get cssProperties => new Attributes(driver, '$_elementPrefix/css');
+  Attributes get cssProperties =>
+      new SimpleAttributes(driver, '$_elementPrefix/css');
 
   @override
   bool equals(WebElement other) =>

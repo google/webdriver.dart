@@ -36,12 +36,16 @@ async_core.WebElement createAsyncWebElement(WebElement element) =>
 
 /// Simple class to provide access to indexed properties such as WebElement
 /// attributes or css styles.
-class Attributes {
+abstract class Attributes {
+  String operator [](String name);
+}
+
+class SimpleAttributes extends Attributes {
   final Resolver _resolver;
 
-  Attributes(driver, command) : _resolver = new Resolver(driver, command);
+  SimpleAttributes(driver, command) : _resolver = new Resolver(driver, command);
 
-  String operator [](String name) => _resolver.get(name) as String;
+  String operator [](String name) => _resolver.get(name)?.toString();
 }
 
 abstract class SearchContext {
