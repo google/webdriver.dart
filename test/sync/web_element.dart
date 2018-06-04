@@ -68,13 +68,13 @@ void runTests(config.createTestDriver createTestDriver) {
 
     test('sendKeys', () {
       textInput.sendKeys('some keys');
-      expect(textInput.attributes['value'], 'some keys');
+      expect(textInput.properties['value'], 'some keys');
     });
 
     test('clear', () {
       textInput.sendKeys('some keys');
       textInput.clear();
-      expect(textInput.attributes['value'], '');
+      expect(textInput.properties['value'], '');
     });
 
     test('enabled', () {
@@ -174,12 +174,14 @@ void runTests(config.createTestDriver createTestDriver) {
       expect(table.attributes['id'], 'table1');
       expect(table.attributes['non-standard'], 'a non standard attr');
       expect(table.attributes['disabled'], isNull);
-      expect(disabled.attributes['disabled'], 'true');
+      expect(disabled.attributes['disabled'], isNotNull);
     });
 
     test('cssProperties', () {
       expect(invisible.cssProperties['display'], 'none');
-      expect(invisible.cssProperties['background-color'], 'rgba(255, 0, 0, 1)');
+      final backgroundColor = invisible.cssProperties['background-color'];
+      expect(backgroundColor, contains('255, 0, 0'));
+      expect(backgroundColor, startsWith('rgb'));
       expect(invisible.cssProperties['direction'], 'ltr');
     });
 
