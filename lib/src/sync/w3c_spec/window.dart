@@ -45,22 +45,18 @@ class W3cWindow implements Window {
       : _windowResolver = new Resolver(_driver, 'window'),
         _session = new Resolver(_driver, '');
 
-  // TODO(staats): better exceptions.
   @override
-  Rectangle<int> get size =>
-      throw 'Unsupported by W3C spec, use "rect" instead.';
+  Rectangle<int> get size => rect;
 
   @override
-  Point<int> get location =>
-      throw 'Unsupported by W3C spec, use "rect" instead.';
+  Point<int> get location => rect.topLeft;
 
   @override
-  void setSize(Rectangle<int> size) =>
-      throw 'Unsupported by W3C spec, use "rect" instead.';
+  void setSize(Rectangle<int> size) => rect = size;
 
   @override
   void setLocation(Point<int> point) =>
-      throw 'Unsupported by W3C spec, use "rect" instead.';
+      rect = new Rectangle(point.x, point.y, rect.width, rect.height);
 
   @override
   Rectangle<int> get rect {
