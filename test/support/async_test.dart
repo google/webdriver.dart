@@ -17,7 +17,6 @@ library webdriver.support.async_test;
 import 'dart:async' show Future;
 
 import 'package:test/test.dart';
-import 'package:unittest/unittest.dart' as ut;
 import 'package:webdriver/support/async.dart';
 
 void main() {
@@ -126,26 +125,6 @@ void main() {
         exception = e;
       }
       expect(exception, isNotNull);
-    });
-
-    test('throws if condition never matches unittest.Matcher', () async {
-      var exception;
-      try {
-        await clock.waitFor(() => null, matcher: ut.isNotNull);
-      } catch (e) {
-        exception = e;
-      }
-      expect(exception, isNotNull);
-    });
-
-    test('returns if condition matches unittest.Matcher', () async {
-      var count = 0;
-      var result = await clock.waitFor(() {
-        if (count == 2) return 'Google';
-        count++;
-        return null;
-      }, matcher: ut.isNotNull);
-      expect(result, isNotNull);
     });
 
     test('uses Future value', () async {
