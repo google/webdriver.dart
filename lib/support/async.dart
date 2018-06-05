@@ -18,7 +18,6 @@ import 'dart:async' show Completer, Future, FutureOr;
 
 import 'package:matcher/matcher.dart' as m;
 import 'package:stack_trace/stack_trace.dart' show Chain;
-import 'package:unittest/unittest.dart' as ut;
 
 const defaultInterval = const Duration(milliseconds: 500);
 const defaultTimeout = const Duration(seconds: 5);
@@ -54,7 +53,7 @@ class Clock {
       {matcher,
       Duration timeout: defaultTimeout,
       Duration interval: defaultInterval}) async {
-    if (matcher != null && matcher is! ut.Matcher && matcher is! m.Matcher) {
+    if (matcher != null && matcher is! m.Matcher) {
       matcher = m.equals(matcher);
     }
 
@@ -64,8 +63,6 @@ class Clock {
         var value = await condition();
         if (matcher is m.Matcher) {
           _matcherExpect(value, matcher);
-        } else if (matcher is ut.Matcher) {
-          _unittestExpect(value, matcher);
         }
         return value;
       } catch (e) {
@@ -78,8 +75,6 @@ class Clock {
     }
   }
 }
-
-void _unittestExpect(value, ut.Matcher matcher) => ut.expect(value, matcher);
 
 void _matcherExpect(value, m.Matcher matcher) {
   var matchState = {};

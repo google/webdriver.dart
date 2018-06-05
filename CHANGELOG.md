@@ -1,3 +1,7 @@
+## 2.0.0
+
+* Dropped support for `pkg:unittest`.
+
 ## v2.0.0-beta
 Initial beta release of WebDriver 2.0. Many changes exist here, and 
 as the release evolves there may be breaking changes to the API. 
