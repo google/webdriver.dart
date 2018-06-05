@@ -45,6 +45,7 @@ class SimpleAttributes extends Attributes {
 
   SimpleAttributes(driver, command) : _resolver = new Resolver(driver, command);
 
+  @override
   String operator [](String name) => _resolver.get(name)?.toString();
 }
 
@@ -123,7 +124,7 @@ class By {
 
   @override
   String toString() {
-    var constructor;
+    String constructor;
     switch (using) {
       case 'link text':
         constructor = 'linkText';

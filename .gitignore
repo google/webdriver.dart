@@ -1,10 +1,4 @@
-.DS_Store
-packages
+.dart_tool/
+.pub/
 .packages
 pubspec.lock
-.project
-.pub/
-.buildlog
-.settings/
-.idea/
-bazel-*

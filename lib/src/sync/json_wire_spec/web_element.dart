@@ -22,7 +22,6 @@ import '../web_driver.dart';
 import '../web_element.dart';
 
 class JsonWireWebElement implements WebElement, SearchContext {
-  final String _elementPrefix;
   final Resolver _resolver;
 
   @override
@@ -48,8 +47,7 @@ class JsonWireWebElement implements WebElement, SearchContext {
 
   JsonWireWebElement(this.driver, this.id,
       [this.context, this.locator, this.index])
-      : _elementPrefix = 'element/$id',
-        _resolver = new Resolver(driver, 'element/$id');
+      : _resolver = new Resolver(driver, 'element/$id');
 
   @override
   void click() {
@@ -175,14 +173,14 @@ class _ElementAttributes extends Attributes {
   _ElementAttributes(this.element);
 
   @override
-  String operator [](String name) => element.driver.execute("""
+  String operator [](String name) => element.driver.execute('''
     var attr = arguments[0].attributes["$name"];
     if(attr) {
       return attr.value;
     }
 
     return null;
-    """, [element])?.toString();
+    ''', [element])?.toString();
 }
 
 class _ElementComputedStyle extends Attributes {

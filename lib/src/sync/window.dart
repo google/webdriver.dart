@@ -50,7 +50,4 @@ abstract class Window {
 
   /// Sets the window as active.
   void setAsActive();
-
-  @override
-  bool operator ==(other);
 }

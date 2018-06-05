@@ -211,8 +211,8 @@ class W3cWebDriver implements WebDriver, SearchContext {
           (f) => f.library.startsWith('package:webdriver/'),
           terse: true);
     }
-    var result;
-    var exception;
+    Object result;
+    Object exception;
     try {
       result = fn();
       return result;
