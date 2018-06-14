@@ -30,7 +30,7 @@ class JsonWireWindows implements Windows {
 
   @override
   List<Window> get allWindows =>
-      (_resolver.get('window_handles').retype<String>())
+      (_resolver.get('window_handles').cast<String>())
           .map<Window>((handle) => new JsonWireWindow(_driver, handle))
           .toList();
 }
