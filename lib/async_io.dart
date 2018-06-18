@@ -121,8 +121,8 @@ class IOCommandProcessor implements CommandProcessor {
 
   void _setUpRequest(HttpClientRequest request) {
     request.followRedirects = true;
-    request.headers.add(HttpHeaders.ACCEPT, 'application/json');
-    request.headers.add(HttpHeaders.ACCEPT_CHARSET, utf8.name);
-    request.headers.add(HttpHeaders.CACHE_CONTROL, 'no-cache');
+    request.headers.add(HttpHeaders.acceptHeader, 'application/json');
+    request.headers.add(HttpHeaders.acceptCharsetHeader, utf8.name);
+    request.headers.add(HttpHeaders.cacheControlHeader, 'no-cache');
   }
 }

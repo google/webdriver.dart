@@ -49,12 +49,12 @@ void main() {
           File file = new File(
               path.join('test', 'support', 'forwarder_test_page.html'));
           request.response
-            ..statusCode = HttpStatus.OK
+            ..statusCode = HttpStatus.ok
             ..headers.set('Content-type', 'text/html');
           file.openRead().pipe(request.response);
         } else {
           request.response
-            ..statusCode = HttpStatus.NOT_FOUND
+            ..statusCode = HttpStatus.notFound
             ..close();
         }
       });

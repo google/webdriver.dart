@@ -162,7 +162,7 @@ void runTests(config.createTestDriver createTestDriver) {
         button.findElement(const By.tagName('tr'));
         throw 'Expected Exception';
       } catch (e) {
-        expect(e, const isInstanceOf<W3cWebDriverException>());
+        expect(e, const TypeMatcher<W3cWebDriverException>());
         expect((e as W3cWebDriverException).httpStatusCode, 404);
         expect((e as W3cWebDriverException).error, 'no such element');
         expect((e as W3cWebDriverException).message,

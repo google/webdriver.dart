@@ -15,7 +15,7 @@
 part of webdriver.core;
 
 class Logs extends _WebDriverBase {
-  Logs._(driver) : super(driver, 'log');
+  Logs._(WebDriver driver) : super(driver, 'log');
 
   Stream<LogEntry> get(String logType) async* {
     var entries = await _post('', {'type': logType});

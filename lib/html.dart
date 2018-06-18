@@ -81,7 +81,7 @@ class _HtmlCommandProcessor implements CommandProcessor {
           sendData: sendData,
           mimeType: 'application/json');
     } on ProgressEvent catch (e) {
-      request = e.target;
+      request = e.target as HttpRequest;
     } finally {
       _lock.release();
     }

@@ -15,7 +15,7 @@
 part of webdriver.core;
 
 class TargetLocator extends _WebDriverBase {
-  TargetLocator._(driver) : super(driver, '');
+  TargetLocator._(WebDriver driver) : super(driver, '');
 
   /// Change focus to another frame on the page.
   /// If [frame] is a:

@@ -19,7 +19,7 @@ const String _element = 'ELEMENT';
 /// Simple class to provide access to indexed properties such as WebElement
 /// attributes or css styles.
 class Attributes extends _WebDriverBase {
-  Attributes._(driver, command) : super(driver, command);
+  Attributes._(WebDriver driver, String command) : super(driver, command);
 
   Future<String> operator [](String name) => _get<String>(name);
 }

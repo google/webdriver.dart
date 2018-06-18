@@ -17,15 +17,15 @@ library webdriver_test_util;
 import 'dart:math' show Point, Rectangle;
 import 'dart:io' show FileSystemEntity;
 
-import 'package:matcher/matcher.dart' show isInstanceOf, Matcher;
+import 'package:matcher/matcher.dart' show TypeMatcher, Matcher;
 import 'package:path/path.dart' as path;
 import 'package:webdriver/async_core.dart' as async_core;
 import 'package:webdriver/sync_core.dart' as sync_core;
 
-final Matcher isWebElement = const isInstanceOf<async_core.WebElement>();
-final Matcher isSyncWebElement = const isInstanceOf<sync_core.WebElement>();
-final Matcher isRectangle = const isInstanceOf<Rectangle<int>>();
-final Matcher isPoint = const isInstanceOf<Point<int>>();
+final Matcher isWebElement = const TypeMatcher<async_core.WebElement>();
+final Matcher isSyncWebElement = const TypeMatcher<sync_core.WebElement>();
+final Matcher isRectangle = const TypeMatcher<Rectangle<int>>();
+final Matcher isPoint = const TypeMatcher<Point<int>>();
 
 String get testPagePath {
   String testPagePath = path.absolute('test', 'test_page.html');

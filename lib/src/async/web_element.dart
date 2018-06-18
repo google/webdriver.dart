@@ -27,7 +27,8 @@ class WebElement extends _WebDriverBase implements SearchContext {
   /// used to find this element always returns one element, then this is null.
   final int index;
 
-  WebElement(driver, this.id, [this.context, this.locator, this.index])
+  WebElement(WebDriver driver, this.id,
+      [this.context, this.locator, this.index])
       : super(driver, 'element/$id');
 
   /// Click on this element.

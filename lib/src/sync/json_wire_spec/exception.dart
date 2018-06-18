@@ -30,8 +30,8 @@ abstract class JsonWireWebDriverException implements WebDriverException {
   factory JsonWireWebDriverException(
       {int httpStatusCode, String httpReasonPhrase, dynamic jsonResp}) {
     if (jsonResp is Map) {
-      final status = jsonResp['status'];
-      final message = jsonResp['value']['message'];
+      final status = jsonResp['status'] as int;
+      final message = jsonResp['value']['message'] as String;
 
       switch (status) {
         case 0:
@@ -108,118 +108,121 @@ abstract class JsonWireWebDriverException implements WebDriverException {
 }
 
 class InvalidRequestException extends JsonWireWebDriverException {
-  const InvalidRequestException(statusCode, message)
+  const InvalidRequestException(int statusCode, String message)
       : super._(statusCode, message);
 }
 
 class UnknownException extends JsonWireWebDriverException {
-  const UnknownException(statusCode, message) : super._(statusCode, message);
+  const UnknownException(int statusCode, String message)
+      : super._(statusCode, message);
 }
 
 class NoSuchDriverException extends JsonWireWebDriverException {
-  const NoSuchDriverException(statusCode, message)
+  const NoSuchDriverException(int statusCode, String message)
       : super._(statusCode, message);
 }
 
 class NoSuchElementException extends JsonWireWebDriverException {
-  const NoSuchElementException(statusCode, message)
+  const NoSuchElementException(int statusCode, String message)
       : super._(statusCode, message);
 }
 
 class NoSuchFrameException extends JsonWireWebDriverException {
-  const NoSuchFrameException(statusCode, message)
+  const NoSuchFrameException(int statusCode, String message)
       : super._(statusCode, message);
 }
 
 class UnknownCommandException extends JsonWireWebDriverException {
-  const UnknownCommandException(statusCode, message)
+  const UnknownCommandException(int statusCode, String message)
       : super._(statusCode, message);
 }
 
 class StaleElementReferenceException extends JsonWireWebDriverException {
-  const StaleElementReferenceException(statusCode, message)
+  const StaleElementReferenceException(int statusCode, String message)
       : super._(statusCode, message);
 }
 
 class ElementNotVisibleException extends JsonWireWebDriverException {
-  const ElementNotVisibleException(statusCode, message)
+  const ElementNotVisibleException(int statusCode, String message)
       : super._(statusCode, message);
 }
 
 class InvalidElementStateException extends JsonWireWebDriverException {
-  const InvalidElementStateException(statusCode, message)
+  const InvalidElementStateException(int statusCode, String message)
       : super._(statusCode, message);
 }
 
 class ElementIsNotSelectableException extends JsonWireWebDriverException {
-  const ElementIsNotSelectableException(statusCode, message)
+  const ElementIsNotSelectableException(int statusCode, String message)
       : super._(statusCode, message);
 }
 
 class JavaScriptException extends JsonWireWebDriverException {
-  const JavaScriptException(statusCode, message) : super._(statusCode, message);
+  const JavaScriptException(int statusCode, String message)
+      : super._(statusCode, message);
 }
 
 class XPathLookupException extends JsonWireWebDriverException {
-  const XPathLookupException(statusCode, message)
+  const XPathLookupException(int statusCode, String message)
       : super._(statusCode, message);
 }
 
 class TimeoutException extends JsonWireWebDriverException {
-  const TimeoutException(statusCode, message) : super._(statusCode, message);
+  const TimeoutException(int statusCode, String message)
+      : super._(statusCode, message);
 }
 
 class NoSuchWindowException extends JsonWireWebDriverException {
-  const NoSuchWindowException(statusCode, message)
+  const NoSuchWindowException(int statusCode, String message)
       : super._(statusCode, message);
 }
 
 class InvalidCookieDomainException extends JsonWireWebDriverException {
-  const InvalidCookieDomainException(statusCode, message)
+  const InvalidCookieDomainException(int statusCode, String message)
       : super._(statusCode, message);
 }
 
 class UnableToSetCookieException extends JsonWireWebDriverException {
-  const UnableToSetCookieException(statusCode, message)
+  const UnableToSetCookieException(int statusCode, String message)
       : super._(statusCode, message);
 }
 
 class UnexpectedAlertOpenException extends JsonWireWebDriverException {
-  const UnexpectedAlertOpenException(statusCode, message)
+  const UnexpectedAlertOpenException(int statusCode, String message)
       : super._(statusCode, message);
 }
 
 class NoSuchAlertException extends JsonWireWebDriverException {
-  const NoSuchAlertException(statusCode, message)
+  const NoSuchAlertException(int statusCode, String message)
       : super._(statusCode, message);
 }
 
 class InvalidElementCoordinatesException extends JsonWireWebDriverException {
-  const InvalidElementCoordinatesException(statusCode, message)
+  const InvalidElementCoordinatesException(int statusCode, String message)
       : super._(statusCode, message);
 }
 
 class IMENotAvailableException extends JsonWireWebDriverException {
-  const IMENotAvailableException(statusCode, message)
+  const IMENotAvailableException(int statusCode, String message)
       : super._(statusCode, message);
 }
 
 class IMEEngineActivationFailedException extends JsonWireWebDriverException {
-  const IMEEngineActivationFailedException(statusCode, message)
+  const IMEEngineActivationFailedException(int statusCode, String message)
       : super._(statusCode, message);
 }
 
 class InvalidSelectorException extends JsonWireWebDriverException {
-  const InvalidSelectorException(statusCode, message)
+  const InvalidSelectorException(int statusCode, String message)
       : super._(statusCode, message);
 }
 
 class SessionNotCreatedException extends JsonWireWebDriverException {
-  const SessionNotCreatedException(statusCode, message)
+  const SessionNotCreatedException(int statusCode, String message)
       : super._(statusCode, message);
 }
 
 class MoveTargetOutOfBoundsException extends JsonWireWebDriverException {
-  const MoveTargetOutOfBoundsException(statusCode, message)
+  const MoveTargetOutOfBoundsException(int statusCode, String message)
       : super._(statusCode, message);
 }

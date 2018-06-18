@@ -200,7 +200,8 @@ class WebDriver implements SearchContext {
   dynamic _recursiveElementify(result) {
     if (result is Map) {
       if (result.length == 1 && result.containsKey(_element)) {
-        return new WebElement(this, result[_element], this, 'javascript');
+        return new WebElement(
+            this, result[_element] as String, this, 'javascript');
       } else {
         var newResult = {};
         result.forEach((key, value) {

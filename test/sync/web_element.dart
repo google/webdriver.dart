@@ -148,7 +148,7 @@ void runTests(config.createTestDriver createTestDriver) {
         button.findElement(const By.tagName('tr'));
         throw 'Expected NoSuchElementException';
       } catch (e) {
-        expect(e, const isInstanceOf<NoSuchElementException>());
+        expect(e, const TypeMatcher<NoSuchElementException>());
       }
     });
 
