@@ -133,7 +133,7 @@ void runTests(config.createTestDriver createTestDriver) {
       test('windows', () {
         var windows = driver.windows.toList();
         expect(windows, hasLength(isPositive));
-        expect(windows, everyElement(const isInstanceOf<Window>()));
+        expect(windows, everyElement(const TypeMatcher<Window>()));
       });
 
       test('execute', () {
@@ -157,19 +157,19 @@ void runTests(config.createTestDriver createTestDriver) {
       test('captureScreenshot', () {
         var screenshot = driver.captureScreenshotAsList().toList();
         expect(screenshot, hasLength(isPositive));
-        expect(screenshot, everyElement(const isInstanceOf<int>()));
+        expect(screenshot, everyElement(const TypeMatcher<int>()));
       });
 
       test('captureScreenshotAsList', () {
         var screenshot = driver.captureScreenshotAsList();
         expect(screenshot, hasLength(isPositive));
-        expect(screenshot, everyElement(const isInstanceOf<int>()));
+        expect(screenshot, everyElement(const TypeMatcher<int>()));
       });
 
       test('captureScreenshotAsBase64', () {
         var screenshot = driver.captureScreenshotAsBase64();
         expect(screenshot, hasLength(isPositive));
-        expect(screenshot, const isInstanceOf<String>());
+        expect(screenshot, const TypeMatcher<String>());
       });
 
       test('event listeners work with script timeouts', () {

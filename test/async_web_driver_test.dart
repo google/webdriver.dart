@@ -136,7 +136,7 @@ void main() {
       test('windows', () async {
         var windows = await driver.windows.toList();
         expect(windows, hasLength(isPositive));
-        expect(windows, everyElement(const isInstanceOf<Window>()));
+        expect(windows, everyElement(const TypeMatcher<Window>()));
       });
 
       test('execute', () async {
@@ -162,19 +162,19 @@ void main() {
       test('captureScreenshot', () async {
         var screenshot = await driver.captureScreenshot().toList();
         expect(screenshot, hasLength(isPositive));
-        expect(screenshot, everyElement(const isInstanceOf<int>()));
+        expect(screenshot, everyElement(const TypeMatcher<int>()));
       });
 
       test('captureScreenshotAsList', () async {
         var screenshot = await driver.captureScreenshotAsList();
         expect(screenshot, hasLength(isPositive));
-        expect(screenshot, everyElement(const isInstanceOf<int>()));
+        expect(screenshot, everyElement(const TypeMatcher<int>()));
       });
 
       test('captureScreenshotAsBase64', () async {
         var screenshot = await driver.captureScreenshotAsBase64();
         expect(screenshot, hasLength(isPositive));
-        expect(screenshot, const isInstanceOf<String>());
+        expect(screenshot, const TypeMatcher<String>());
       });
 
       test('future based event listeners work with script timeouts', () async {

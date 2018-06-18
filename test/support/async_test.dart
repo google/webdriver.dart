@@ -35,7 +35,7 @@ void main() {
 
     test('release without acquiring fails', () {
       var lock = new Lock();
-      expect(() => lock.release(), throwsA(const isInstanceOf<StateError>()));
+      expect(() => lock.release(), throwsA(const TypeMatcher<StateError>()));
     });
 
     test('locking prevents acquisition of lock', () async {
