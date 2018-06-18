@@ -76,7 +76,7 @@ class SyncHttpCommandProcessor implements CommandProcessor {
 
   void _setUpRequest(SyncHttpClientRequest request) {
     // TODO(staats): Follow redirects.
-    request.headers.add(HttpHeaders.ACCEPT, 'application/json');
-    request.headers.add(HttpHeaders.CACHE_CONTROL, 'no-cache');
+    request.headers.add(HttpHeaders.acceptHeader, 'application/json');
+    request.headers.add(HttpHeaders.cacheControlHeader, 'no-cache');
   }
 }
