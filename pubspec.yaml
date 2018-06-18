@@ -1,5 +1,5 @@
 name: webdriver
-version: 2.0.0-dev
+version: 2.0.0-beta+1
 authors:
   - Marc Fisher II <fisherii@google.com>
   - Matt Staats<staats@google.com>
