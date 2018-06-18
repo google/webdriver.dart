@@ -15,7 +15,7 @@
 part of webdriver.core;
 
 class Cookies extends _WebDriverBase {
-  Cookies._(driver) : super(driver, 'cookie');
+  Cookies._(WebDriver driver) : super(driver, 'cookie');
 
   /// Set a cookie.
   Future add(Cookie cookie) async {
@@ -79,10 +79,10 @@ class Cookie {
           json['expiry'].toInt() * 1000,
           isUtc: true);
     }
-    return new Cookie(json['name'], json['value'],
-        path: json['path'],
-        domain: json['domain'],
-        secure: json['secure'],
+    return new Cookie(json['name'] as String, json['value'] as String,
+        path: json['path'] as String,
+        domain: json['domain'] as String,
+        secure: json['secure'] as bool,
         expiry: expiry);
   }
 
@@ -108,7 +108,7 @@ class Cookie {
 }
 
 class Timeouts extends _WebDriverBase {
-  Timeouts._(driver) : super(driver, 'timeouts');
+  Timeouts._(WebDriver driver) : super(driver, 'timeouts');
 
   Future _set(String type, Duration duration) async {
     await _post('', {'type': type, 'ms': duration.inMilliseconds});

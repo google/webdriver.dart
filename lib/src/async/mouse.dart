@@ -36,7 +36,7 @@ class MouseButton {
 }
 
 class Mouse extends _WebDriverBase {
-  Mouse._(driver) : super(driver, '');
+  Mouse._(WebDriver driver) : super(driver, '');
 
   /// Click any mouse button (at the coordinates set by the last moveTo).
   Future click([MouseButton button]) async {

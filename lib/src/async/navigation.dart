@@ -15,7 +15,7 @@
 part of webdriver.core;
 
 class Navigation extends _WebDriverBase {
-  Navigation._(driver) : super(driver, '');
+  Navigation._(WebDriver driver) : super(driver, '');
 
   ///  Navigate forwards in the browser history, if possible.
   Future forward() async {

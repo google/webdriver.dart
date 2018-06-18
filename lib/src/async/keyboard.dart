@@ -72,7 +72,7 @@ class Keyboard extends _WebDriverBase {
   static const String command = '\uE03D';
   static const String meta = command;
 
-  Keyboard._(driver) : super(driver, '');
+  Keyboard._(WebDriver driver) : super(driver, '');
 
   /// Simulate pressing many keys at once as a 'chord'.
   Future sendChord(Iterable<String> chordToSend) async {

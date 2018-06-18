@@ -19,7 +19,7 @@ class Alert extends _WebDriverBase {
   /// The text of the JavaScript alert(), confirm(), or prompt() dialog.
   final String text;
 
-  Alert._(this.text, driver) : super(driver, '');
+  Alert._(this.text, WebDriver driver) : super(driver, '');
 
   /// Accepts the currently displayed alert (may not be the alert for which this
   /// object was created).
