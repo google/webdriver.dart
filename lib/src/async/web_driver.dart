@@ -37,10 +37,6 @@ class WebDriver implements SearchContext {
       {this.filterStackTraces: true})
       : this._prefix = uri.resolve('session/$id/');
 
-  /// Deprecated in favor of addEventListener.
-  @deprecated
-  Stream<WebDriverCommandEvent> get onCommand => _onCommandController.stream;
-
   /// Preferred method for registering listeners. Listeners are expected to
   /// return a Future. Use new Future.value() for synchronous listeners.
   void addEventListener(WebDriverListener listener) =>
@@ -147,16 +143,6 @@ class WebDriver implements SearchContext {
   Future<List<int>> captureScreenshotAsList() async {
     var base64Encoded = captureScreenshotAsBase64();
     return base64.decode(await base64Encoded);
-  }
-
-  /// Take a screenshot of the current page as PNG as stream of uint8.
-  ///
-  /// Don't use this method. Prefer [captureScreenshotAsBase64] or
-  /// [captureScreenshotAsList]. Returning the data as Stream<int> can be very
-  /// slow.
-  @Deprecated('Use captureScreenshotAsBase64 or captureScreenshotAsList!')
-  Stream<int> captureScreenshot() async* {
-    yield* new Stream.fromIterable(await captureScreenshotAsList());
   }
 
   /// Inject a snippet of JavaScript into the page for execution in the context
