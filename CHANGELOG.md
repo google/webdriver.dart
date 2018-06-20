@@ -1,6 +1,7 @@
 ## v2.0.0-beta+1
 
 * Dropped support for `pkg:unittest`.
+* Add W3C spec mouse and keyboard support.
 * Remove deprecated methods in async WebDriver.
 
 ## v2.0.0-beta
