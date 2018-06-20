@@ -159,12 +159,6 @@ void main() {
         expect(await e.text, 'new text');
       });
 
-      test('captureScreenshot', () async {
-        var screenshot = await driver.captureScreenshot().toList();
-        expect(screenshot, hasLength(isPositive));
-        expect(screenshot, everyElement(const TypeMatcher<int>()));
-      });
-
       test('captureScreenshotAsList', () async {
         var screenshot = await driver.captureScreenshotAsList();
         expect(screenshot, hasLength(isPositive));
@@ -184,7 +178,7 @@ void main() {
         });
 
         try {
-          driver.timeouts.setScriptTimeout(const Duration(seconds: 1));
+          await driver.timeouts.setScriptTimeout(const Duration(seconds: 1));
           await driver.executeAsync('', []);
           fail('Did not throw timeout as expected');
         } catch (e) {

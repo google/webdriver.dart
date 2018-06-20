@@ -28,18 +28,11 @@ class WebDriver implements SearchContext {
   /// If true, WebDriver actions are recorded as [WebDriverCommandEvent]s.
   bool notifyListeners = true;
 
-  final _onCommandController =
-      new StreamController<WebDriverCommandEvent>.broadcast();
-
   final _commandListeners = <WebDriverListener>[];
 
   WebDriver(this._commandProcessor, this.uri, this.id, this.capabilities,
       {this.filterStackTraces: true})
       : this._prefix = uri.resolve('session/$id/');
-
-  /// Deprecated in favor of addEventListener.
-  @deprecated
-  Stream<WebDriverCommandEvent> get onCommand => _onCommandController.stream;
 
   /// Preferred method for registering listeners. Listeners are expected to
   /// return a Future. Use new Future.value() for synchronous listeners.
@@ -149,16 +142,6 @@ class WebDriver implements SearchContext {
     return base64.decode(await base64Encoded);
   }
 
-  /// Take a screenshot of the current page as PNG as stream of uint8.
-  ///
-  /// Don't use this method. Prefer [captureScreenshotAsBase64] or
-  /// [captureScreenshotAsList]. Returning the data as Stream<int> can be very
-  /// slow.
-  @Deprecated('Use captureScreenshotAsBase64 or captureScreenshotAsList!')
-  Stream<int> captureScreenshot() async* {
-    yield* new Stream.fromIterable(await captureScreenshotAsList());
-  }
-
   /// Inject a snippet of JavaScript into the page for execution in the context
   /// of the currently selected frame. The executed script is assumed to be
   /// asynchronous and must signal that is done by invoking the provided
@@ -242,7 +225,6 @@ class WebDriver implements SearchContext {
         if (_previousEvent == null) {
           throw new Error(); // This should be impossible.
         }
-        _onCommandController.add(_previousEvent);
         for (WebDriverListener listener in _commandListeners) {
           await listener(_previousEvent);
         }
