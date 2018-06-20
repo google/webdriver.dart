@@ -28,9 +28,6 @@ class WebDriver implements SearchContext {
   /// If true, WebDriver actions are recorded as [WebDriverCommandEvent]s.
   bool notifyListeners = true;
 
-  final _onCommandController =
-      new StreamController<WebDriverCommandEvent>.broadcast();
-
   final _commandListeners = <WebDriverListener>[];
 
   WebDriver(this._commandProcessor, this.uri, this.id, this.capabilities,
@@ -228,7 +225,6 @@ class WebDriver implements SearchContext {
         if (_previousEvent == null) {
           throw new Error(); // This should be impossible.
         }
-        _onCommandController.add(_previousEvent);
         for (WebDriverListener listener in _commandListeners) {
           await listener(_previousEvent);
         }
