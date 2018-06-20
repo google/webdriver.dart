@@ -1,6 +1,7 @@
-## 2.0.0
+## v2.0.0-beta+1
 
 * Dropped support for `pkg:unittest`.
+* Remove deprecated methods in async WebDriver.
 
 ## v2.0.0-beta
 Initial beta release of WebDriver 2.0. Many changes exist here, and 
