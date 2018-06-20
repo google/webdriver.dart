@@ -178,7 +178,7 @@ void main() {
         });
 
         try {
-          driver.timeouts.setScriptTimeout(const Duration(seconds: 1));
+          await driver.timeouts.setScriptTimeout(const Duration(seconds: 1));
           await driver.executeAsync('', []);
           fail('Did not throw timeout as expected');
         } catch (e) {

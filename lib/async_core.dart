@@ -14,7 +14,7 @@
 
 library webdriver.core;
 
-import 'dart:async' show Future, Stream, StreamController;
+import 'dart:async' show Future, Stream;
 import 'dart:collection' show UnmodifiableMapView;
 import 'dart:convert' show base64;
 import 'dart:math' show Point, Rectangle;
