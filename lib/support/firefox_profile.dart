@@ -229,7 +229,7 @@ class FirefoxProfile {
         ArchiveFile archiveFile;
         final name = path.relative(f.path, from: profileDirectory.path);
         if (f is io.Directory) {
-          archiveFile = new ArchiveFile('$name/', 0, []);
+          archiveFile = new ArchiveFile('$name/', 0, <int>[]);
         } else if (f is io.File) {
           if (name == 'prefs.js' || name == 'user.js') {
             return;
@@ -252,7 +252,6 @@ class FirefoxProfile {
         userPrefs.map((option) => option.asPrefString).join('\n').codeUnits;
     archive.addFile(
         new ArchiveFile('user.js', userJsContent.length, userJsContent));
-
     final zipData = new ZipEncoder().encode(archive);
     return {'firefox_profile': base64.encode(zipData)};
   }
