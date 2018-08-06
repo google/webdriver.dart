@@ -112,7 +112,7 @@ void main() {
 
       await forwardedDriver.execute('arguments[0].el.click();', [
         {
-          'el': {'ELEMENT': 'button'}
+          'el': <String, dynamic>{'ELEMENT': 'button'}
         }
       ]);
 
