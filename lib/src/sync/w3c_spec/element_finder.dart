@@ -58,7 +58,7 @@ class ElementFinder {
 
   List<WebElement> findElements(By by) {
     final elements =
-        _resolver.post('elements', _byToJson(by)) as List<Map<String, String>>;
+        _resolver.post('elements', _byToJson(by)).cast<Map<String, String>>();
 
     // "as List<String>;" should not be necessary, but helps IntelliJ
     final ids = elements.fold(<String>[], (cur, m) {

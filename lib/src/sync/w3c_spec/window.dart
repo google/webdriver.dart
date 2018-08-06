@@ -30,7 +30,7 @@ class W3cWindows implements Windows {
 
   @override
   List<Window> get allWindows =>
-      (_resolver.get('window/handles') as List<String>)
+      (_resolver.get('window/handles').cast<String>())
           .map((handle) => new W3cWindow(_driver, handle))
           .toList();
 }
