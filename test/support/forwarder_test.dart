@@ -111,7 +111,7 @@ void main() {
           buttonNotClicked);
 
       await forwardedDriver.execute('arguments[0].el.click();', [
-        {
+        <String, dynamic>{
           'el': <String, dynamic>{'ELEMENT': 'button'}
         }
       ]);
