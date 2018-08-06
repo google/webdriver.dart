@@ -40,7 +40,7 @@ class Cookies {
   /// Retrieve all cookies visible to the current page.
   List<Cookie> get all {
     final cookies = _resolver.get('').cast<Map<String, dynamic>>();
-    return cookies.map((c) => new Cookie.fromJson(c)).toList<Cookie>();
+    return cookies.map((c) => new Cookie.fromJson(c)).toList().cast<Cookie>();
   }
 
   @override
