@@ -111,7 +111,7 @@ void main() {
           buttonNotClicked);
       final element = await driver.findElement(new By.tagName('input'));
 
-      await forwardedDriver.execute('arguments[0].el.click();', [element]);
+      await forwardedDriver.execute('arguments[0].click();', [element]);
 
       expect(
           await forwardedDriver.getRequest('element/div/text'), buttonClicked);
