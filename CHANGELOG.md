@@ -1,19 +1,15 @@
-## v2.0.0-beta+1
+## v2.0.0
 
 * Dropped support for `pkg:unittest`.
 * Add W3C spec mouse and keyboard support.
 * Remove deprecated methods in async WebDriver.
 
-## v2.0.0-beta
-Initial beta release of WebDriver 2.0. Many changes exist here, and 
-as the release evolves there may be breaking changes to the API. 
+The two big changes are the addition of support for synchronous communication 
+via the `package:sync_http` (along with an accompanying synchronous API) and
+support for the W3C spec. 
 
-The two big changes are the addition of support for synchronous
-communication via the sync_http package (along with an accompanying
-synchronous API) and support for the W3C spec. 
-
-Currently, only the synchronous API supports the W3C spec, but in the
-future both asynchronous and synchronous APIs will support this.
+Currently, only the synchronous API supports the W3C spec, but in the future
+both asynchronous and synchronous APIs will support this.
  
 ## v1.2.4
 * Adds Adds null check for status before checking status code. 
