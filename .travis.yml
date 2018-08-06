@@ -13,8 +13,7 @@ addons:
 
 dart:
   - dev
-  # Re-enable stable when the stable version of Dart is >= 2.0.0
-  #- stable
+  - stable
 
 with_content_shell: false
 
@@ -35,8 +34,8 @@ before_script:
   - wget http://chromedriver.storage.googleapis.com/2.35/chromedriver_linux64.zip
   - unzip chromedriver_linux64.zip
   - export PATH=$PATH:$PWD
-  - wget https://github.com/mozilla/geckodriver/releases/download/v0.19.1/geckodriver-v0.19.1-linux64.tar.gz
-  - tar -xvzf geckodriver-v0.19.1-linux64.tar.gz
+  - wget https://github.com/mozilla/geckodriver/releases/download/v0.21.0/geckodriver-v0.21.0-linux64.tar.gz
+  - tar -xvzf geckodriver-v0.21.0-linux64.tar.gz
   - export PATH=$PATH:$PWD
   - ./tool/travis-setup.sh
 
