@@ -74,7 +74,7 @@ class ElementFinder {
 
   WebElement findElement(By by) {
     final element =
-        _resolver.post('element', _byToJson(by)) as Map<String, String>;
+        _resolver.post('element', _byToJson(by)).cast<String, String>();
     return new W3cWebElement(_driver, element.values.first, _context, by);
   }
 

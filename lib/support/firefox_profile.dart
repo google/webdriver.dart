@@ -196,8 +196,7 @@ class FirefoxProfile {
   /// Comments, lines starting with `//` are silently ignored.
   static Set<PrefsOption> loadPrefsFile(io.File file) {
     final prefs = new Set<PrefsOption>();
-    final lines = LineSplitter
-        .split(file.readAsStringSync())
+    final lines = LineSplitter.split(file.readAsStringSync())
         .where((line) => !_ignoreLine(line));
     bool canNotParseCaption = true;
 
