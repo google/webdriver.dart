@@ -109,12 +109,9 @@ void main() {
     test('execute_script', () async {
       expect(await forwardedDriver.getRequest('element/div/text'),
           buttonNotClicked);
+      final element = driver.findElement(new By.tagName('input'));
 
-      await forwardedDriver.execute('arguments[0].el.click();', [
-        <String, dynamic>{
-          'el': <String, dynamic>{'ELEMENT': 'button'}
-        }
-      ]);
+      await forwardedDriver.execute('arguments[0].el.click();', [element]);
 
       expect(
           await forwardedDriver.getRequest('element/div/text'), buttonClicked);
