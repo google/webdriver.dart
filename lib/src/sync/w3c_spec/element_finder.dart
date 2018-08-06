@@ -58,11 +58,11 @@ class ElementFinder {
 
   List<WebElement> findElements(By by) {
     final elements =
-        _resolver.post('elements', _byToJson(by)).cast<Map<String, String>>();
+        _resolver.post('elements', _byToJson(by)).cast<Map<String, dynamic>>();
 
     // "as List<String>;" should not be necessary, but helps IntelliJ
     final ids = elements.fold(<String>[], (cur, m) {
-      cur.addAll(m.values);
+      cur.addAll(m.values.cast<String>());
       return cur;
     }) as List<String>;
 
