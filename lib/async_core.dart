@@ -53,7 +53,7 @@ Future<WebDriver> createDriver(CommandProcessor processor,
       uri.resolve('session'), {'desiredCapabilities': desired},
       value: false));
   return new WebDriver(processor, uri, response['sessionId'],
-      new UnmodifiableMapView(response['value'] as Map<String, dynamic>));
+      new UnmodifiableMapView(response['value'].cast<String, dynamic>()));
 }
 
 Future<WebDriver> fromExistingSession(
