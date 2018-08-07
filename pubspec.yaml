@@ -8,7 +8,7 @@ description: >-
   interface and the W3C spec and require the use of the WebDriver remote server.
 homepage: https://github.com/google/webdriver.dart
 environment:
-  sdk: '>=2.0.0-dev.61.0 <2.0.0'
+  sdk: '>=2.0.0-dev.61.0 <3.0.0'
 dependencies:
   archive: '>=1.0.0 <3.0.0'
   matcher: ^0.12.3
