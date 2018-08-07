@@ -109,10 +109,16 @@ void main() {
     test('execute_script', () async {
       expect(await forwardedDriver.getRequest('element/div/text'),
           buttonNotClicked);
-      final element =
-          await forwardedDriver.findElement(new By.tagName('input'));
 
-      await forwardedDriver.execute('arguments[0].click();', [element]);
+      final script = '''
+        var els = document.getElementsByTagName(arguments[0].el.name);
+        els[0].click();
+      ''';
+      await forwardedDriver.execute(script, [
+        {
+          'el': {'name': 'input'}
+        }
+      ]);
 
       expect(
           await forwardedDriver.getRequest('element/div/text'), buttonClicked);
