@@ -93,7 +93,7 @@ class WebDriverForwarder {
       if (request.method == 'POST') {
         String requestBody = await utf8.decodeStream(request);
         if (requestBody != null && requestBody.isNotEmpty) {
-          params = json.decode(requestBody).cast<String, dynamic>();
+          params = json.decode(requestBody) as Map<String, dynamic>;
         }
       }
       var value = await _forward(request.method, endpoint, params);
@@ -168,7 +168,7 @@ class WebDriverForwarder {
       case 'execute_async':
         // /execute and /execute_async allow arbitrary JSON objects with
         // embedded WebElememt ids.
-        params = await _deepCopy(params).cast<String, dynamic>();
+        params = await _deepCopy(params) as Map<String, dynamic>;
         break;
     }
 
