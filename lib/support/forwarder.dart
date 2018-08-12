@@ -89,11 +89,11 @@ class WebDriverForwarder {
       if (endpoint.startsWith('/')) {
         endpoint = endpoint.substring(1);
       }
-      Map<String, dynamic> params;
+      Map<dynamic, dynamic> params;
       if (request.method == 'POST') {
         String requestBody = await utf8.decodeStream(request);
         if (requestBody != null && requestBody.isNotEmpty) {
-          params = json.decode(requestBody) as Map<String, dynamic>;
+          params = json.decode(requestBody) as Map<dynamic, dynamic>;
         }
       }
       var value = await _forward(request.method, endpoint, params);
@@ -115,7 +115,7 @@ class WebDriverForwarder {
   }
 
   Future<dynamic> _forward(String method, String endpoint,
-      [Map<String, dynamic> params]) async {
+      [Map<dynamic, dynamic> params]) async {
     List<String> endpointTokens = path.split(endpoint);
     if (endpointTokens.isEmpty) {
       endpointTokens = [''];
@@ -168,7 +168,7 @@ class WebDriverForwarder {
       case 'execute_async':
         // /execute and /execute_async allow arbitrary JSON objects with
         // embedded WebElememt ids.
-        params = await _deepCopy(params) as Map<String, dynamic>;
+        params = await _deepCopy(params) as Map<dynamic, dynamic>;
         break;
     }
 
