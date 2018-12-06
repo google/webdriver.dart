@@ -12,14 +12,43 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import 'package:webdriver/src/common/request_client.dart';
+import 'package:webdriver/src/common/webdriver_handler.dart';
+
 /// Sets WebDriver timeouts.
-abstract class Timeouts {
-  /// Set the script timeout.
-  void setScriptTimeout(Duration duration);
+class Timeouts {
+  final SyncRequestClient _client;
+  final WebDriverHandler _handler;
 
-  /// Set the implicit timeout.
-  void setImplicitTimeout(Duration duration);
+  Timeouts(this._client, this._handler);
 
-  /// Set the page load timeout.
-  void setPageLoadTimeout(Duration duration);
+  /// Sets the script timeout.
+  void setScriptTimeout(Duration duration) {
+    _client.send(_handler.timeouts.buildSetScriptTimeoutRequest(duration),
+        _handler.timeouts.parseSetScriptTimeoutResponse);
+  }
+
+  /// Sets the implicit timeout.
+  void setImplicitTimeout(Duration duration) {
+    _client.send(_handler.timeouts.buildSetImplicitTimeoutRequest(duration),
+        _handler.timeouts.parseSetImplicitTimeoutResponse);
+  }
+
+  /// Sets the page load timeout.
+  void setPageLoadTimeout(Duration duration) {
+    _client.send(_handler.timeouts.buildSetPageLoadTimeoutRequest(duration),
+        _handler.timeouts.parseSetPageLoadTimeoutResponse);
+  }
+
+  @override
+  String toString() => '$_handler.timeouts($_client)';
+
+  @override
+  int get hashCode => _client.hashCode;
+
+  @override
+  bool operator ==(other) =>
+      other is Timeouts &&
+      _handler == other._handler &&
+      _client == other._client;
 }

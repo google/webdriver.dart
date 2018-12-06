@@ -15,114 +15,60 @@
 library webdriver.io;
 
 import 'dart:async' show Future;
-import 'dart:convert' show json, utf8;
-import 'dart:io'
+
+import 'package:webdriver/async_core.dart' as core
     show
-        ContentType,
-        HttpClient,
-        HttpClientRequest,
-        HttpClientResponse,
-        HttpHeaders;
+        createDriver,
+        fromExistingSession,
+        fromExistingSessionSync,
+        WebDriver,
+        WebDriverSpec;
+import 'package:webdriver/src/request/async_io_request_client.dart';
 
-import 'package:webdriver/core.dart' as core
-    show createDriver, fromExistingSession, WebDriver;
-import 'package:webdriver/src/async/command_processor.dart'
-    show CommandProcessor;
-import 'package:webdriver/src/async/exception.dart' show WebDriverException;
-import 'package:webdriver/support/async.dart' show Lock;
+export 'package:webdriver/async_core.dart'
+    hide createDriver, fromExistingSession, fromExistingSessionSync;
+export 'package:webdriver/src/request/async_io_request_client.dart';
 
-export 'package:webdriver/core.dart' hide createDriver, fromExistingSession;
-
-/// Creates a WebDriver instance connected to the specified WebDriver server.
+/// Creates a new async WebDriver using [AsyncIoRequestClient].
 ///
+/// This will bring in dependency on `dart:io`.
 /// Note: WebDriver endpoints will be constructed using [resolve] against
 /// [uri]. Therefore, if [uri] does not end with a trailing slash, the
 /// last path component will be dropped.
-Future<core.WebDriver> createDriver({Uri uri, Map<String, dynamic> desired}) =>
-    core.createDriver(new IOCommandProcessor(), uri: uri, desired: desired);
+Future<core.WebDriver> createDriver(
+        {Uri uri,
+        Map<String, dynamic> desired,
+        core.WebDriverSpec spec = core.WebDriverSpec.Auto}) =>
+    core.createDriver((prefix) => new AsyncIoRequestClient(prefix),
+        uri: uri, desired: desired, spec: spec);
 
-/// Creates a WebDriver instance connected to an existing session.
+/// Creates an async WebDriver from existing session using
+/// [AsyncIoRequestClient].
 ///
+/// This will bring in dependency on `dart:io`.
 /// Note: WebDriver endpoints will be constructed using [resolve] against
 /// [uri]. Therefore, if [uri] does not end with a trailing slash, the
 /// last path component will be dropped.
-Future<core.WebDriver> fromExistingSession(String sessionId, {Uri uri}) =>
-    core.fromExistingSession(new IOCommandProcessor(), sessionId, uri: uri);
+Future<core.WebDriver> fromExistingSession(String sessionId,
+        {Uri uri, core.WebDriverSpec spec = core.WebDriverSpec.Auto}) =>
+    core.fromExistingSession(
+        (prefix) => new AsyncIoRequestClient(prefix), sessionId,
+        uri: uri, spec: spec);
 
-final ContentType _contentTypeJson =
-    new ContentType('application', 'json', charset: 'utf-8');
-
-class IOCommandProcessor implements CommandProcessor {
-  final HttpClient client = new HttpClient();
-
-  final Lock _lock = new Lock();
-
-  @override
-  Future<dynamic> post(Uri uri, dynamic params, {bool value: true}) async {
-    await _lock.acquire();
-    HttpClientRequest request = await client.postUrl(uri);
-    _setUpRequest(request);
-    request.headers.contentType = _contentTypeJson;
-    if (params != null) {
-      var body = utf8.encode(json.encode(params));
-      request.contentLength = body.length;
-      request.add(body);
-    } else {
-      request.contentLength = 0;
-    }
-    return await _processResponse(await request.close(), value);
-  }
-
-  @override
-  Future<dynamic> get(Uri uri, {bool value: true}) async {
-    await _lock.acquire();
-    HttpClientRequest request = await client.getUrl(uri);
-    _setUpRequest(request);
-    return await _processResponse(await request.close(), value);
-  }
-
-  @override
-  Future<dynamic> delete(Uri uri, {bool value: true}) async {
-    await _lock.acquire();
-    HttpClientRequest request = await client.deleteUrl(uri);
-    _setUpRequest(request);
-    return await _processResponse(await request.close(), value);
-  }
-
-  @override
-  Future close() async {
-    client.close(force: true);
-  }
-
-  Future<dynamic> _processResponse(
-      HttpClientResponse response, bool value) async {
-    var respDecoded = await utf8.decodeStream(response);
-    _lock.release();
-    Map respBody;
-    try {
-      respBody = json.decode(respDecoded);
-    } catch (e) {}
-
-    if (response.statusCode < 200 ||
-        response.statusCode > 299 ||
-        (respBody is Map &&
-            respBody['status'] != null &&
-            respBody['status'] != 0)) {
-      throw new WebDriverException(
-          httpStatusCode: response.statusCode,
-          httpReasonPhrase: response.reasonPhrase,
-          jsonResp: respBody);
-    }
-    if (value && respBody is Map) {
-      return respBody['value'];
-    }
-    return respBody;
-  }
-
-  void _setUpRequest(HttpClientRequest request) {
-    request.followRedirects = true;
-    request.headers.add(HttpHeaders.acceptHeader, 'application/json');
-    request.headers.add(HttpHeaders.acceptCharsetHeader, utf8.name);
-    request.headers.add(HttpHeaders.cacheControlHeader, 'no-cache');
-  }
-}
+/// Creates an async WebDriver from existing session with a sync function using
+/// [AsyncIoRequestClient].
+///
+/// The function is sync, so all necessary information ([sessionId], [spec],
+/// [capabilities]) has to be given. Because otherwise, making a call to
+/// WebDriver server will make this function async.
+///
+/// This will bring in dependency on `dart:io`.
+/// Note: WebDriver endpoints will be constructed using [resolve] against
+/// [uri]. Therefore, if [uri] does not end with a trailing slash, the
+/// last path component will be dropped.
+core.WebDriver fromExistingSessionSync(
+        String sessionId, core.WebDriverSpec spec,
+        {Uri uri, Map<String, dynamic> capabilities}) =>
+    core.fromExistingSessionSync(
+        (prefix) => new AsyncIoRequestClient(prefix), sessionId, spec,
+        uri: uri, capabilities: capabilities);

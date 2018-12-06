@@ -12,28 +12,75 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import 'alert.dart';
+import 'package:webdriver/src/common/by.dart';
+import 'package:webdriver/src/common/request_client.dart';
+import 'package:webdriver/src/common/webdriver_handler.dart';
 
-abstract class TargetLocator {
-  /// Change focus to another frame on the page.
+import 'alert.dart';
+import 'web_driver.dart';
+import 'web_element.dart';
+import 'window.dart';
+
+class TargetLocator {
+  final WebDriver _driver;
+  final SyncRequestClient _client;
+  final WebDriverHandler _handler;
+
+  TargetLocator(this._driver, this._client, this._handler);
+
+  /// Changes focus to another frame on the page.
   /// If [frame] is a:
   ///   [int]: select by its zero-based index
   ///   [WebElement]: select the frame for a previously found frame or iframe
-  ///               element.
+  ///       element.
+  ///   [String]: same as above, but only CSS id is provided. Note that this
+  ///       is not element id or frame id.
   ///   not provided: selects the first frame on the page or the main document.
   ///
   ///   Throws [NoSuchFrameException] if the specified frame can't be found.
-  void frame([frame]);
+  void frame([/* int | WebElement | String */ frame]) {
+    if (frame == null || frame is int) {
+      _client.send(_handler.frame.buildSwitchByIdRequest(frame),
+          _handler.frame.parseSwitchByIdResponse);
+    } else if (frame is WebElement) {
+      _client.send(_handler.frame.buildSwitchByElementRequest(frame.id),
+          _handler.frame.parseSwitchByElementResponse);
+    } else if (frame is String) {
+      final frameId = _driver.findElement(new By.id(frame)).id;
+      _client.send(_handler.frame.buildSwitchByElementRequest(frameId),
+          _handler.frame.parseSwitchByElementResponse);
+    } else {
+      throw 'Unsupported frame "$frame" with type ${frame.runtimeType}';
+    }
+  }
 
-  /// Switch the focus of void commands for this driver to the window with the
+  /// Changes focus to the parent frame of the current one.
+  void parentFrame() {
+    _client.send(_handler.frame.buildSwitchToParentRequest(),
+        _handler.frame.parseSwitchToParentResponse);
+  }
+
+  /// Switches the focus of void commands for this driver to the window with the
   /// given name/handle.
   ///
   /// Throws [NoSuchWindowException] if the specified window can't be found.
-  @Deprecated('Use "Window.setAsActive()". '
-      'Selecting by name is not supported by the current W3C spec.')
-  void window(dynamic window);
+  void window(Window window) {
+    window.setAsActive();
+  }
 
   /// Switches to the currently active modal dialog for this particular driver
   /// instance.
-  Alert get alert;
+  ///
+  /// In implementation, just getting alert won't trigger anything. Call
+  /// `alert.text` or other action to really switch to alert.
+  Alert get alert => new Alert(_client, _handler);
+
+  @override
+  String toString() => '$_driver.switchTo';
+
+  @override
+  int get hashCode => _driver.hashCode;
+
+  @override
+  bool operator ==(other) => other is TargetLocator && other._driver == _driver;
 }

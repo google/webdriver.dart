@@ -14,40 +14,124 @@
 
 import 'dart:math' show Point, Rectangle;
 
-/// Interacts with windows.
-abstract class Windows {
-  /// Get the current active window.
-  Window get activeWindow;
-
-  /// Get all windows.
-  List<Window> get allWindows;
-}
+import 'package:webdriver/src/common/request_client.dart';
+import 'package:webdriver/src/common/webdriver_handler.dart';
 
 /// Handle to window.
 ///
 /// Upon use, the window will automatically be set as active.
-abstract class Window {
-  /// The size of the window.
-  Rectangle<int> get size;
+class Window {
+  final SyncRequestClient _client;
+  final WebDriverHandler _handler;
+  final String id;
 
-  /// The location of the window.
-  Point<int> get location;
-
-  /// The location and size of the window.
-  Rectangle<int> get rect;
-
-  /// The location and size of the window.
-  set rect(Rectangle<int> location);
-
-  /// Maximize the window.
-  void maximize();
-
-  /// Set the window size.
-  void setSize(Rectangle<int> size);
-
-  /// Set the window location.
-  void setLocation(Point<int> point);
+  Window(this._client, this._handler, this.id);
 
   /// Sets the window as active.
-  void setAsActive();
+  void setAsActive() {
+    _client.send(_handler.window.buildSetActiveRequest(id),
+        _handler.window.parseSetActiveResponse);
+  }
+
+  /// The location of the window.
+  Point<int> get location => _client.send(
+      _handler.window.buildLocationRequest(),
+      _handler.window.parseLocationResponse);
+
+  /// The outer size of the window.
+  Rectangle<int> get size => _client.send(
+      _handler.window.buildSizeRequest(), _handler.window.parseSizeResponse);
+
+  /// The inner size of the window.
+  Rectangle<int> get innerSize => _client.send(
+      _handler.window.buildInnerSizeRequest(),
+      _handler.window.parseInnerSizeResponse);
+
+  /// The location and size of the window.
+  Rectangle<int> get rect {
+    try {
+      return _client.send(_handler.window.buildRectRequest(),
+          _handler.window.parseRectResponse);
+    } on UnsupportedError {
+      // JsonWire cannot implement this API in one call.
+      // Delegate to other methods.
+      final location = this.location;
+      final size = this.size;
+      return new Rectangle<int>(
+          location.x, location.y, size.width, size.height);
+    }
+  }
+
+  /// Sets the window location.
+  ///
+  /// TODO(jingbian): Remove this, prefer setter.
+  void setLocation(Point<int> point) {
+    this.location = point;
+  }
+
+  /// Sets the window location.
+  set location(Point<int> value) {
+    _client.send(_handler.window.buildSetLocationRequest(value),
+        _handler.window.parseSetLocationResponse);
+  }
+
+  /// Sets the window size.
+  ///
+  /// TODO(jingbian): Remove this, prefer setter.
+  void setSize(Rectangle<int> size) {
+    this.size = size;
+  }
+
+  /// Sets the window size.
+  set size(Rectangle<int> value) {
+    _client.send(_handler.window.buildSetSizeRequest(value),
+        _handler.window.parseSetSizeResponse);
+  }
+
+  /// The location and size of the window.
+  set rect(Rectangle<int> value) {
+    try {
+      _client.send(_handler.window.buildSetRectRequest(value),
+          _handler.window.parseSetRectResponse);
+      return;
+    } on UnsupportedError {
+      // JsonWire cannot implement this API in one call.
+      // Delegate to other methods.
+      location = value.topLeft;
+      size = new Rectangle(0, 0, value.width, value.height);
+    }
+  }
+
+  /// Maximizes the window.
+  void maximize() {
+    _client.send(_handler.window.buildMaximizeRequest(),
+        _handler.window.parseMaximizeResponse);
+  }
+
+  /// Minimizes the window.
+  ///
+  /// Unsupported in JsonWire WebDriver.
+  void minimize() {
+    _client.send(_handler.window.buildMinimizeRequest(),
+        _handler.window.parseMinimizeResponse);
+  }
+
+  /// Closes the window.
+  void close() {
+    _client.send(_handler.window.buildCloseRequest(),
+        _handler.window.parseCloseResponse);
+  }
+
+  @override
+  int get hashCode => id.hashCode + _client.hashCode;
+
+  @override
+  bool operator ==(other) =>
+      other is Window &&
+      other._client == this._client &&
+      other._handler == this._handler &&
+      other.id == this.id;
+
+  @override
+  String toString() => '$_handler.windows($_client)[$id]';
 }

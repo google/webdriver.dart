@@ -15,29 +15,31 @@
 @TestOn('vm')
 library webdriver.logs_test;
 
+import 'dart:io';
+
 import 'package:test/test.dart';
 import 'package:webdriver/sync_core.dart';
 
-import 'sync_io_config.dart' as config;
+import '../configs/sync_io_config.dart' as config;
 
-void runTests(config.createTestDriver createTestDriver) {
+void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
   group('Logs', () {
     WebDriver driver;
+    HttpServer server;
 
-    setUp(() {
+    setUp(() async {
       Map<String, dynamic> capabilities = {
         Capabilities.loggingPrefs: {LogType.performance: LogLevel.info}
       };
 
-      driver = createTestDriver(additionalCapabilities: capabilities);
-      driver.get(config.testPagePath);
+      driver = config.createTestDriver(
+          spec: spec, additionalCapabilities: capabilities);
+      server = await config.createTestServerAndGoToTestPage(driver);
     });
 
-    tearDown(() {
-      if (driver != null) {
-        driver.quit();
-      }
-      driver = null;
+    tearDown(() async {
+      driver?.quit();
+      await server?.close(force: true);
     });
 
     test('get logs', () {

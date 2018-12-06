@@ -12,9 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import 'package:webdriver/sync_core.dart';
+
 import 'sync/web_driver.dart';
-import 'sync/sync_io_config.dart' as config;
 
 void main() {
-  runTests(config.createFirefoxTestDriver);
+  runTests(spec: WebDriverSpec.W3c);
 }

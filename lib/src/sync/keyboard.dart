@@ -12,7 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-abstract class Keyboard {
+import '../common/request_client.dart';
+import '../common/webdriver_handler.dart';
+
+class Keyboard {
   static const String nullChar = '\uE000';
   static const String cancel = '\uE001';
   static const String help = '\uE002';
@@ -70,9 +73,28 @@ abstract class Keyboard {
   static const String command = '\uE03D';
   static const String meta = command;
 
-  /// Simulate pressing many keys at once as a 'chord'.
-  void sendChord(Iterable<String> chordToSend);
+  final SyncRequestClient _client;
+  final WebDriverHandler _handler;
 
-  /// Send [keysToSend] to the active element.
-  void sendKeys(String keysToSend);
+  Keyboard(this._client, this._handler);
+
+  void sendChord(Iterable<String> chordToSend) => _client.send(
+      _handler.keyboard.buildSendChordRequest(chordToSend),
+      _handler.keyboard.parseSendChordResponse);
+
+  void sendKeys(String keysToSend) => _client.send(
+      _handler.keyboard.buildSendKeysRequest(keysToSend),
+      _handler.keyboard.parseSendKeysResponse);
+
+  @override
+  String toString() => '$_handler.keyboard($_client)';
+
+  @override
+  int get hashCode => _client.hashCode;
+
+  @override
+  bool operator ==(other) =>
+      other is Keyboard &&
+      _handler == other._handler &&
+      _client == other._client;
 }

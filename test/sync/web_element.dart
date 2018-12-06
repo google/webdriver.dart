@@ -15,29 +15,33 @@
 @TestOn('vm')
 library webdriver.web_element_test;
 
+import 'dart:io';
+
 import 'package:test/test.dart';
-import 'package:webdriver/src/sync/json_wire_spec/exception.dart';
 import 'package:webdriver/sync_core.dart';
 
-import 'sync_io_config.dart' as config;
+import '../configs/sync_io_config.dart' as config;
 
-void runTests(config.createTestDriver createTestDriver) {
+void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
   group('WebElement', () {
     WebDriver driver;
     WebElement table;
     WebElement button;
     WebElement form;
+    WebElement formSubmit;
     WebElement textInput;
     WebElement checkbox;
     WebElement disabled;
     WebElement invisible;
+    HttpServer server;
 
-    setUp(() {
-      driver = createTestDriver();
-      driver.get(config.testPagePath);
+    setUp(() async {
+      driver = config.createTestDriver(spec: spec);
+      server = await config.createTestServerAndGoToTestPage(driver);
       table = driver.findElement(const By.tagName('table'));
       button = driver.findElement(const By.tagName('button'));
       form = driver.findElement(const By.tagName('form'));
+      formSubmit = form.findElement(const By.cssSelector('input[type=submit]'));
       textInput = driver.findElement(const By.cssSelector('input[type=text]'));
       checkbox =
           driver.findElement(const By.cssSelector('input[type=checkbox]'));
@@ -46,11 +50,9 @@ void runTests(config.createTestDriver createTestDriver) {
       invisible = driver.findElement(const By.tagName('div'));
     });
 
-    tearDown(() {
-      if (driver != null) {
-        driver.quit();
-      }
-      driver = null;
+    tearDown(() async {
+      driver?.quit();
+      await server?.close(force: true);
     });
 
     test('click', () {
@@ -60,7 +62,7 @@ void runTests(config.createTestDriver createTestDriver) {
     });
 
     test('submit', () {
-      form.submit();
+      formSubmit.click();
       var alert = driver.switchTo.alert;
       expect(alert.text, 'form submitted');
       alert.accept();
@@ -96,6 +98,29 @@ void runTests(config.createTestDriver createTestDriver) {
       expect(invisible.displayed, isFalse);
     });
 
+    test('rect -- table', () {
+      var rect = table.rect;
+      expect(rect, config.isRectangle);
+      expect(rect.left, isNonNegative);
+      expect(rect.top, isNonNegative);
+      expect(rect.width, isNonNegative);
+      expect(rect.height, isNonNegative);
+    });
+
+    test('rect -- invisible', () {
+      var rect = invisible.rect;
+      expect(rect, config.isRectangle);
+      expect(rect.left, 0);
+      expect(rect.top, 0);
+      if (driver.spec == WebDriverSpec.W3c) {
+        expect(rect.width, 0);
+        expect(rect.height, 0);
+      } else {
+        expect(rect.width, isNonNegative);
+        expect(rect.height, isNonNegative);
+      }
+    });
+
     test('location -- table', () {
       var location = table.location;
       expect(location, config.isPoint);
@@ -120,9 +145,13 @@ void runTests(config.createTestDriver createTestDriver) {
     test('size -- invisible', () {
       var size = invisible.size;
       expect(size, config.isRectangle);
-      // TODO(DrMarcII): I thought these should be 0
-      expect(size.width, isNonNegative);
-      expect(size.height, isNonNegative);
+      if (driver.spec == WebDriverSpec.W3c) {
+        expect(size.width, 0);
+        expect(size.height, 0);
+      } else {
+        expect(size.width, isNonNegative);
+        expect(size.height, isNonNegative);
+      }
     });
 
     test('name', () {
@@ -140,7 +169,7 @@ void runTests(config.createTestDriver createTestDriver) {
 
     test('findElement -- success', () {
       var element = table.findElement(const By.tagName('tr'));
-      expect(element, config.isSyncWebElement);
+      expect(element, config.isWebElement);
     });
 
     test('findElement -- failure', () {
@@ -156,13 +185,13 @@ void runTests(config.createTestDriver createTestDriver) {
       var elements =
           form.findElements(const By.cssSelector('input[type=text]')).toList();
       expect(elements, hasLength(1));
-      expect(elements, everyElement(config.isSyncWebElement));
+      expect(elements, everyElement(config.isWebElement));
     });
 
     test('findElements -- 4 found', () {
       var elements = table.findElements(const By.tagName('td')).toList();
       expect(elements, hasLength(4));
-      expect(elements, everyElement(config.isSyncWebElement));
+      expect(elements, everyElement(config.isWebElement));
     });
 
     test('findElements -- 0 found', () {

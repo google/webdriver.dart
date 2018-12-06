@@ -35,7 +35,7 @@ void main() {
 
     test('release without acquiring fails', () {
       var lock = new Lock();
-      expect(() => lock.release(), throwsA(const TypeMatcher<StateError>()));
+      expect(() => lock.release(), throwsA(const isInstanceOf<StateError>()));
     });
 
     test('locking prevents acquisition of lock', () async {
@@ -107,7 +107,8 @@ void main() {
     });
 
     test('throws if condition throws and timeouts', () async {
-      Object exception;
+      var exception;
+
       try {
         await clock.waitFor(() => throw 'an exception');
       } catch (e) {
@@ -117,7 +118,7 @@ void main() {
     });
 
     test('throws if condition never matches', () async {
-      Object exception;
+      var exception;
       try {
         await clock.waitFor(() => null, matcher: isNotNull);
       } catch (e) {
@@ -133,7 +134,8 @@ void main() {
     });
 
     test('works with Future exceptions', () async {
-      Object exception;
+      var exception;
+
       try {
         await clock.waitFor(() => new Future.error('an exception'));
       } catch (e) {
@@ -158,7 +160,7 @@ void main() {
 
     test('sanity test with real Clock -- throws', () async {
       var clock = const Clock();
-      Object exception;
+      var exception;
       try {
         await clock.waitFor(() => throw 'an exception');
       } catch (e) {
@@ -169,7 +171,7 @@ void main() {
 
     test('sanity test with real Clock -- never matches', () async {
       var clock = const Clock();
-      Object exception;
+      var exception;
       try {
         await clock.waitFor(() => null, matcher: isNotNull);
       } catch (e) {

@@ -15,10 +15,12 @@
 @TestOn('vm')
 library webdriver.web_element_test;
 
+import 'dart:io';
+
 import 'package:test/test.dart';
 import 'package:webdriver/async_core.dart';
 
-import 'io_config.dart' as config;
+import 'configs/async_io_config.dart' as config;
 
 void main() {
   group('WebElement', () {
@@ -26,17 +28,21 @@ void main() {
     WebElement table;
     WebElement button;
     WebElement form;
+    WebElement formSubmit;
     WebElement textInput;
     WebElement checkbox;
     WebElement disabled;
     WebElement invisible;
+    HttpServer server;
 
     setUp(() async {
       driver = await config.createTestDriver();
-      await driver.get(config.testPagePath);
+      server = await config.createTestServerAndGoToTestPage(driver);
       table = await driver.findElement(const By.tagName('table'));
       button = await driver.findElement(const By.tagName('button'));
       form = await driver.findElement(const By.tagName('form'));
+      formSubmit =
+          await form.findElement(const By.cssSelector('input[type=submit]'));
       textInput =
           await driver.findElement(const By.cssSelector('input[type=text]'));
       checkbox = await driver
@@ -47,10 +53,8 @@ void main() {
     });
 
     tearDown(() async {
-      if (driver != null) {
-        await driver.quit();
-      }
-      driver = null;
+      await driver?.quit();
+      await server?.close(force: true);
     });
 
     test('click', () async {
@@ -60,21 +64,21 @@ void main() {
     });
 
     test('submit', () async {
-      await form.submit();
-      var alert = await driver.switchTo.alert;
-      expect(alert.text, 'form submitted');
+      await formSubmit.click();
+      var alert = driver.switchTo.alert;
+      expect(await alert.text, 'form submitted');
       await alert.accept();
     });
 
     test('sendKeys', () async {
       await textInput.sendKeys('some keys');
-      expect(await textInput.attributes['value'], 'some keys');
+      expect(await textInput.properties['value'], 'some keys');
     });
 
     test('clear', () async {
       await textInput.sendKeys('some keys');
       await textInput.clear();
-      expect(await textInput.attributes['value'], '');
+      expect(await textInput.properties['value'], '');
     });
 
     test('enabled', () async {
@@ -173,13 +177,14 @@ void main() {
       expect(await table.attributes['id'], 'table1');
       expect(await table.attributes['non-standard'], 'a non standard attr');
       expect(await table.attributes['disabled'], isNull);
-      expect(await disabled.attributes['disabled'], 'true');
+      expect(await disabled.attributes['disabled'], isNotNull);
     });
 
     test('cssProperties', () async {
       expect(await invisible.cssProperties['display'], 'none');
-      expect(await invisible.cssProperties['background-color'],
-          'rgba(255, 0, 0, 1)');
+      final backgroundColor = await invisible.cssProperties['background-color'];
+      expect(backgroundColor, contains('255, 0, 0'));
+      expect(backgroundColor, startsWith('rgb'));
       expect(await invisible.cssProperties['direction'], 'ltr');
     });
 

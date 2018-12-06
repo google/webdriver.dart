@@ -12,103 +12,201 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import 'command_event.dart';
-import 'common.dart';
-import 'keyboard.dart';
-import 'mouse.dart';
-import 'navigation.dart';
-import 'target_locator.dart';
-import 'timeouts.dart';
-import 'web_element.dart';
-import 'window.dart';
+import 'dart:convert' show base64;
 
-import '../../async_core.dart' as async_core;
+import 'package:webdriver/async_core.dart' as async_core;
+import 'package:webdriver/src/common/by.dart';
+import 'package:webdriver/src/common/request.dart';
+import 'package:webdriver/src/common/request_client.dart';
+import 'package:webdriver/src/common/spec.dart';
+import 'package:webdriver/src/common/utils.dart';
+import 'package:webdriver/src/common/webdriver_handler.dart';
+import 'package:webdriver/src/sync/common.dart';
+import 'package:webdriver/src/sync/cookies.dart';
+import 'package:webdriver/src/sync/keyboard.dart';
+import 'package:webdriver/src/sync/logs.dart';
+import 'package:webdriver/src/sync/mouse.dart';
+import 'package:webdriver/src/sync/target_locator.dart';
+import 'package:webdriver/src/sync/timeouts.dart';
+import 'package:webdriver/src/sync/web_element.dart';
+import 'package:webdriver/src/sync/window.dart';
 
-import 'common_spec/cookies.dart';
-
-import 'json_wire_spec/logs.dart';
-
-typedef void WebDriverListener(WebDriverCommandEvent event);
+// ignore: uri_does_not_exist
+import 'common_stub.dart'
+    // ignore: uri_does_not_exist
+    if (dart.library.io) 'common_io.dart';
 
 /// Interacts with WebDriver.
-abstract class WebDriver implements SearchContext {
-  Map<String, dynamic> get capabilities;
-  String get id;
-  Uri get uri;
-  bool get filterStackTraces;
+class WebDriver implements SearchContext {
+  final SyncRequestClient _client;
+
+  final WebDriverHandler _handler;
+
+  final Map<String, dynamic> capabilities;
+
+  final WebDriverSpec spec;
+
+  final String id;
+
+  final Uri uri;
+
+  WebDriver(this.uri, this.id, this.capabilities, this._client, this.spec)
+      : this._handler = getHandler(spec);
 
   /// Produces a [async_core.WebDriver] with the same session ID. Allows
   /// backwards compatibility with other frameworks.
-  async_core.WebDriver get asyncDriver;
+  async_core.WebDriver get asyncDriver => createAsyncWebDriver(this);
 
-  /// If true, WebDriver actions are recorded as [WebDriverCommandEvent]s.
-  bool get notifyListeners;
+  @override
+  async_core.SearchContext get asyncContext => asyncDriver;
 
   /// Preferred method for registering listeners. Listeners are expected to
   /// return a Future. Use new Future.value() for synchronous listeners.
-  void addEventListener(WebDriverListener listener);
+  void addEventListener(SyncWebDriverListener listener) {
+    _client.addEventListener(listener);
+  }
 
   /// The current url.
-  String get currentUrl;
+  String get currentUrl => _client.send(_handler.core.buildCurrentUrlRequest(),
+      _handler.core.parseCurrentUrlResponse);
 
-  /// navigate to the specified url
-  void get(/* Uri | String */ url);
+  /// Navigates to the specified url
+  void get(/* Uri | String */ url) {
+    _client.send(
+        _handler.navigation
+            .buildNavigateToRequest((url is Uri) ? url.toString() : url),
+        _handler.navigation.parseNavigateToResponse);
+  }
+
+  ///  Navigates forwards in the browser history, if possible.
+  void forward() {
+    _client.send(_handler.navigation.buildForwardRequest(),
+        _handler.navigation.parseForwardResponse);
+  }
+
+  /// Navigates backwards in the browser history, if possible.
+  void back() {
+    _client.send(_handler.navigation.buildBackRequest(),
+        _handler.navigation.parseBackResponse);
+  }
+
+  /// Refreshes the current page.
+  void refresh() {
+    _client.send(_handler.navigation.buildRefreshRequest(),
+        _handler.navigation.parseRefreshResponse);
+  }
 
   /// The title of the current page.
-  String get title;
+  String get title => _client.send(
+      _handler.core.buildTitleRequest(), _handler.core.parseTitleResponse);
 
   /// Search for multiple elements within the entire current page.
   @override
-  List<WebElement> findElements(By by);
+  List<WebElement> findElements(By by) {
+    final ids = _client.send(
+        _handler.elementFinder.buildFindElementsRequest(by),
+        _handler.elementFinder.parseFindElementsResponse);
+
+    final elements = <WebElement>[];
+    int i = 0;
+    for (final id in ids) {
+      elements.add(new WebElement(this, _client, _handler, id, this, by, i++));
+    }
+
+    return elements;
+  }
 
   /// Search for an element within the entire current page.
   /// Throws [NoSuchElementException] if a matching element is not found.
   @override
-  WebElement findElement(By by);
+  WebElement findElement(By by) => new WebElement(
+      this,
+      _client,
+      _handler,
+      _client.send(_handler.elementFinder.buildFindElementRequest(by),
+          _handler.elementFinder.parseFindElementResponse),
+      this,
+      by);
 
   /// An artist's rendition of the current page's source.
-  String get pageSource;
+  String get pageSource => _client.send(_handler.core.buildPageSourceRequest(),
+      _handler.core.parsePageSourceResponse);
 
-  /// Close the current window, quitting the browser if it is the last window.
-  void close();
+  /// Quits the browser.
+  void quit({bool closeSession: true}) {
+    if (closeSession) {
+      _client.send(_handler.core.buildDeleteSessionRequest(),
+          _handler.core.parseDeleteSessionResponse);
+    }
+  }
 
-  /// Quit the browser.
-  void quit({bool closeSession: true});
+  /// Closes the current window.
+  ///
+  /// This is rather confusing and will be removed.
+  /// Should replace all usages with [window.close()] or [quit()].
+  @deprecated
+  void close() {
+    window.close();
+  }
 
   /// Handles for all of the currently displayed tabs/windows.
-  List<Window> get windows;
+  List<Window> get windows => _client.send(
+      _handler.window.buildGetWindowsRequest(),
+      (response) => _handler.window
+          .parseGetWindowsResponse(response)
+          .map<Window>((w) => new Window(_client, _handler, w))
+          .toList());
 
   /// Handle for the active tab/window.
-  Window get window;
+  Window get window => _client.send(
+      _handler.window.buildGetActiveWindowRequest(),
+      (response) => new Window(_client, _handler,
+          _handler.window.parseGetActiveWindowResponse(response)));
 
   /// The currently focused element, or the body element if no element has
   /// focus.
-  WebElement get activeElement;
+  WebElement get activeElement {
+    final id = _client.send(
+        _handler.elementFinder.buildFindActiveElementRequest(),
+        _handler.elementFinder.parseFindActiveElementResponse);
+    if (id != null) {
+      return new WebElement(this, _client, _handler, id, this, 'activeElement');
+    }
+    return null;
+  }
 
-  Windows get windowsManager;
+  /// Changes focus to specified targets.
+  ///
+  /// Available targets are window, frame, and the current alert.
+  TargetLocator get switchTo => new TargetLocator(this, _client, _handler);
 
-  TargetLocator get switchTo;
+  Cookies get cookies => new Cookies(_client, _handler);
 
-  Navigation get navigate;
+  /// [logs.get(logType)] will give list of logs captured in browser.
+  ///
+  /// Note that for W3C/Firefox, this is not supported and will produce empty
+  /// list of logs, as the spec for this in W3C is not agreed on and Firefox
+  /// refuses to support non-spec features. See
+  /// https://github.com/w3c/webdriver/issues/406.
+  Logs get logs => new Logs(_client, _handler);
 
-  Cookies get cookies;
+  Timeouts get timeouts => new Timeouts(_client, _handler);
 
-  @Deprecated('This not supported in the W3C spec.')
-  Logs get logs;
+  Keyboard get keyboard => new Keyboard(_client, _handler);
 
-  Timeouts get timeouts;
-
-  Keyboard get keyboard;
-
-  @Deprecated('This not supported in the W3C spec. Use actions instead.')
-  Mouse get mouse;
+  Mouse get mouse => new Mouse(_client, _handler);
 
   /// Take a screenshot of the current page as PNG and return it as
   /// base64-encoded string.
-  String captureScreenshotAsBase64();
+  String captureScreenshotAsBase64() => _client.send(
+      _handler.core.buildScreenshotRequest(),
+      _handler.core.parseScreenshotResponse);
 
   /// Take a screenshot of the current page as PNG as list of uint8.
-  List<int> captureScreenshotAsList();
+  List<int> captureScreenshotAsList() {
+    final base64Encoded = captureScreenshotAsBase64();
+    return base64.decode(base64Encoded);
+  }
 
   /// Inject a snippet of JavaScript into the page for execution in the context
   /// of the currently selected frame. The executed script is assumed to be
@@ -128,7 +226,12 @@ abstract class WebDriver implements SearchContext {
   /// Arguments may be any JSON-able object. WebElements will be converted to
   /// the corresponding DOM element. Likewise, any DOM Elements in the script
   /// result will be converted to WebElements.
-  dynamic executeAsync(String script, List args);
+  dynamic executeAsync(String script, List args) => _client.send(
+      _handler.core.buildExecuteAsyncRequest(script, args),
+      (response) => _handler.core.parseExecuteAsyncResponse(
+          response,
+          (elementId) => new WebElement(
+              this, _client, _handler, elementId, this, 'javascript')));
 
   /// Inject a snippet of JavaScript into the page for execution in the context
   /// of the currently selected frame. The executed script is assumed to be
@@ -142,23 +245,44 @@ abstract class WebDriver implements SearchContext {
   /// Arguments may be any JSON-able object. WebElements will be converted to
   /// the corresponding DOM element. Likewise, any DOM Elements in the script
   /// result will be converted to WebElements.
-  dynamic execute(String script, List args);
+  dynamic execute(String script, List args) => _client.send(
+      _handler.core.buildExecuteRequest(script, args),
+      (response) => _handler.core.parseExecuteResponse(
+          response,
+          (elementId) => new WebElement(
+              this, _client, _handler, elementId, this, 'javascript')));
 
   /// Performs post request on command to the WebDriver server.
   ///
   /// For use by supporting WebDriver packages.
-  dynamic postRequest(String command, [params]);
+  dynamic postRequest(String command, [params]) => _client.send(
+      _handler.buildGeneralRequest(HttpMethod.httpPost, command, params),
+      (response) => _handler.parseGeneralResponse(
+          response, (elementId) => getElement(elementId, this)));
 
   /// Performs get request on command to the WebDriver server.
   ///
   /// For use by supporting WebDriver packages.
-  dynamic getRequest(String command);
+  dynamic getRequest(String command) => _client.send(
+      _handler.buildGeneralRequest(HttpMethod.httpGet, command),
+      (response) => _handler.parseGeneralResponse(
+          response, (elementId) => getElement(elementId, this)));
 
   /// Performs delete request on command to the WebDriver server.
   ///
   /// For use by supporting WebDriver packages.
-  dynamic deleteRequest(String command);
+  dynamic deleteRequest(String command) => _client.send(
+      _handler.buildGeneralRequest(HttpMethod.httpDelete, command),
+      (response) => _handler.parseGeneralResponse(
+          response, (elementId) => getElement(elementId, this)));
+
+  WebElement getElement(String elementId, [context, locator, index]) =>
+      new WebElement(
+          this, _client, _handler, elementId, context, locator, index);
 
   @override
-  WebDriver get driver;
+  WebDriver get driver => this;
+
+  @override
+  String toString() => '$_handler.webdriver($_client)';
 }

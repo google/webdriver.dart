@@ -15,31 +15,32 @@
 @TestOn('vm')
 library webdriver.navigation_test;
 
-import 'package:test/test.dart';
-import 'package:webdriver/support/async.dart';
-import 'package:webdriver/async_core.dart';
+import 'dart:io';
 
-import 'io_config.dart' as config;
+import 'package:test/test.dart';
+import 'package:webdriver/async_core.dart';
+import 'package:webdriver/support/async.dart';
+
+import 'configs/async_io_config.dart' as config;
 
 void main() {
   group('Navigation', () {
     WebDriver driver;
+    HttpServer server;
 
     setUp(() async {
       driver = await config.createTestDriver();
-      await driver.get(config.testPagePath);
+      server = await config.createTestServerAndGoToTestPage(driver);
     });
 
     tearDown(() async {
-      if (driver != null) {
-        await driver.quit();
-      }
-      driver = null;
+      await driver?.quit();
+      await server?.close(force: true);
     });
 
     test('refresh', () async {
       var element = await driver.findElement(const By.tagName('button'));
-      await driver.navigate.refresh();
+      await driver.refresh();
       await waitFor(() async {
         try {
           await element.name;

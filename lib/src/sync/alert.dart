@@ -12,26 +12,54 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import 'package:webdriver/src/common/request_client.dart';
+import 'package:webdriver/src/common/webdriver_handler.dart';
+
 /// A JavaScript alert(), confirm(), or prompt() dialog.
-abstract class Alert {
+class Alert {
+  final SyncRequestClient _client;
+  final WebDriverHandler _handler;
+
+  Alert(this._client, this._handler);
+
   /// The text of the JavaScript alert(), confirm(), or prompt() dialog.
-  String get text;
+  String get text => _client.send(_handler.alert.buildGetTextRequest(),
+      _handler.alert.parseGetTextResponse);
 
   /// Accepts the currently displayed alert (may not be the alert for which this
   /// object was created).
   ///
   ///  Throws [NoSuchAlertException] if there isn't currently an alert.
-  void accept();
+  void accept() {
+    _client.send(_handler.alert.buildAcceptRequest(),
+        _handler.alert.parseAcceptResponse);
+  }
 
   /// Dismisses the currently displayed alert (may not be the alert for which
   /// this object was created).
   ///
   ///  Throws [NoSuchAlertException] if there isn't currently an alert.
-  void dismiss();
+  void dismiss() {
+    _client.send(_handler.alert.buildDismissRequest(),
+        _handler.alert.parseDismissResponse);
+  }
 
   /// Sends keys to the currently displayed alert (may not be the alert for
   /// which this object was created).
   ///
   /// Throws [NoSuchAlertException] if there isn't currently an alert
-  void sendKeys(String keysToSend);
+  void sendKeys(String keysToSend) {
+    _client.send(_handler.alert.buildSendTextRequest(keysToSend),
+        _handler.alert.parseSendTextResponse);
+  }
+
+  @override
+  String toString() => '$_handler.switchTo.alert($_client)';
+
+  @override
+  int get hashCode => _client.hashCode;
+
+  @override
+  bool operator ==(other) =>
+      other is Alert && _handler == other._handler && _client == other._client;
 }

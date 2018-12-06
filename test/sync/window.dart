@@ -15,19 +15,20 @@
 @TestOn('vm')
 library webdriver.window_test;
 
+import 'dart:io';
 import 'dart:math' show Rectangle;
 
 import 'package:test/test.dart';
 import 'package:webdriver/sync_core.dart';
 
-import 'sync_io_config.dart' as config;
+import '../configs/sync_io_config.dart' as config;
 
-void runTests(config.createTestDriver createTestDriver) {
+void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
   group('Window', () {
     WebDriver driver;
 
     setUp(() {
-      driver = createTestDriver();
+      driver = config.createTestDriver(spec: spec);
     });
 
     tearDown(() {
@@ -41,13 +42,17 @@ void runTests(config.createTestDriver createTestDriver) {
       var window = driver.window;
       var windowRect = const Rectangle<int>(0, 0, 600, 400);
       window.rect = windowRect;
+
+      // Firefox may take a bit longer to do the resize.
+      sleep(const Duration(seconds: 1));
+
       // Height and width seem consistent across browser/platforms.
       expect(window.rect.width, windowRect.width);
       expect(window.rect.height, windowRect.height);
 
       // These are not consistent, so we give them a bit of wiggle.
-      expect((window.rect.left - windowRect.left).abs(), lessThan(50));
-      expect((window.rect.top - windowRect.top).abs(), lessThan(50));
+      expect((window.rect.left - windowRect.left).abs(), lessThan(80));
+      expect((window.rect.top - windowRect.top).abs(), lessThan(80));
     });
 
     // May not work on some OS/browser combinations (notably Mac OS X).

@@ -15,27 +15,28 @@
 @TestOn('vm')
 library webdriver.mouse_test;
 
+import 'dart:io';
+
 import 'package:test/test.dart';
 import 'package:webdriver/async_core.dart';
 
-import 'io_config.dart' as config;
+import 'configs/async_io_config.dart' as config;
 
 void main() {
   group('Mouse', () {
     WebDriver driver;
     WebElement button;
+    HttpServer server;
 
     setUp(() async {
       driver = await config.createTestDriver();
-      await driver.get(config.testPagePath);
+      server = await config.createTestServerAndGoToTestPage(driver);
       button = await driver.findElement(const By.tagName('button'));
     });
 
     tearDown(() async {
-      if (driver != null) {
-        await driver.quit();
-      }
-      driver = null;
+      await driver?.quit();
+      await server?.close(force: true);
     });
 
     test('moveTo element/click', () async {

@@ -17,14 +17,14 @@ library webdriver.support.async_test;
 import 'package:test/test.dart';
 import 'package:webdriver/sync_io.dart';
 
-import 'sync_io_config.dart' as config;
+import '../configs/sync_io_config.dart' as config;
 
-void runTests(config.createTestDriver createTestDriver) {
+void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
   group('Sync IO', () {
     WebDriver driver;
 
     setUp(() {
-      driver = createTestDriver();
+      driver = config.createTestDriver(spec: spec);
     });
 
     tearDown(() {

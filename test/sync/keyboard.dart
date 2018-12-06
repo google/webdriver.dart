@@ -20,32 +20,31 @@ import 'dart:io';
 import 'package:test/test.dart';
 import 'package:webdriver/sync_core.dart';
 
-import 'sync_io_config.dart' as config;
+import '../configs/sync_io_config.dart' as config;
 
-void runTests(config.createTestDriver createTestDriver) {
+void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
   group('Keyboard', () {
     WebDriver driver;
     WebElement textInput;
+    HttpServer server;
     String ctrlCmdKey = '';
 
-    setUp(() {
+    setUp(() async {
       if (Platform.isMacOS) {
         ctrlCmdKey = Keyboard.command;
       } else {
         ctrlCmdKey = Keyboard.control;
       }
 
-      driver = createTestDriver();
-      driver.get(config.testPagePath);
+      driver = config.createTestDriver(spec: spec);
+      server = await config.createTestServerAndGoToTestPage(driver);
       textInput = driver.findElement(const By.cssSelector('input[type=text]'));
       textInput.click();
     });
 
-    tearDown(() {
-      if (driver != null) {
-        driver.quit();
-      }
-      driver = null;
+    tearDown(() async {
+      driver?.quit();
+      await server?.close(force: true);
     });
 
     test('sendKeys -- once', () {

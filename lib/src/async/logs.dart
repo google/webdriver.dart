@@ -12,60 +12,38 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-part of webdriver.core;
+import 'dart:async';
 
-class Logs extends _WebDriverBase {
-  Logs._(WebDriver driver) : super(driver, 'log');
+import 'package:webdriver/src/common/log.dart';
+import 'package:webdriver/src/common/request_client.dart';
+import 'package:webdriver/src/common/webdriver_handler.dart';
+
+class Logs {
+  final AsyncRequestClient _client;
+  final WebDriverHandler _handler;
+
+  Logs(this._client, this._handler);
 
   Stream<LogEntry> get(String logType) async* {
-    var entries = await _post('', {'type': logType});
-    for (var entry in entries) {
-      yield new LogEntry.fromMap(entry);
+    try {
+      final entries = await _client.send(
+          _handler.logs.buildGetLogsRequest(logType),
+          _handler.logs.parseGetLogsResponse);
+      for (var entry in entries) {
+        yield entry;
+      }
+    } on UnsupportedError {
+      // Produces no entries for W3C/Firefox.
     }
   }
 
   @override
-  String toString() => '$driver.logs';
+  String toString() => '$_handler.logs($_client)';
 
   @override
-  int get hashCode => driver.hashCode;
+  int get hashCode => _client.hashCode;
 
   @override
-  bool operator ==(other) => other is Logs && other.driver == driver;
-}
-
-class LogEntry {
-  final String message;
-  final DateTime timestamp;
-  final String level;
-
-  const LogEntry(this.message, this.timestamp, this.level);
-
-  LogEntry.fromMap(Map map)
-      : this(
-            map['message'],
-            new DateTime.fromMillisecondsSinceEpoch(map['timestamp'].toInt(),
-                isUtc: true),
-            map['level']);
-
-  @override
-  String toString() => '$level[$timestamp]: $message';
-}
-
-class LogType {
-  static const String browser = 'browser';
-  static const String client = 'client';
-  static const String driver = 'driver';
-  static const String performance = 'performance';
-  static const String profiler = 'profiler';
-  static const String server = 'server';
-}
-
-class LogLevel {
-  static const String off = 'OFF';
-  static const String severe = 'SEVERE';
-  static const String warning = 'WARNING';
-  static const String info = 'INFO';
-  static const String debug = 'DEBUG';
-  static const String all = 'ALL';
+  bool operator ==(other) =>
+      other is Logs && _handler == other._handler && _client == other._client;
 }

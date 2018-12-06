@@ -15,27 +15,28 @@
 @TestOn('vm')
 library webdriver.mouse_test;
 
+import 'dart:io';
+
 import 'package:test/test.dart';
 import 'package:webdriver/sync_core.dart';
 
-import 'sync_io_config.dart' as config;
+import '../configs/sync_io_config.dart' as config;
 
-void runTests(config.createTestDriver createTestDriver) {
+void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
   group('Mouse', () {
     WebDriver driver;
     WebElement button;
+    HttpServer server;
 
-    setUp(() {
-      driver = createTestDriver();
-      driver.get(config.testPagePath);
+    setUp(() async {
+      driver = config.createTestDriver(spec: spec);
+      server = await config.createTestServerAndGoToTestPage(driver);
       button = driver.findElement(const By.tagName('button'));
     });
 
-    tearDown(() {
-      if (driver != null) {
-        driver.quit();
-      }
-      driver = null;
+    tearDown(() async {
+      driver?.quit();
+      await server?.close(force: true);
     });
 
     test('moveTo element/click', () {
@@ -51,6 +52,31 @@ void runTests(config.createTestDriver createTestDriver) {
       driver.mouse.click();
       var alert = driver.switchTo.alert;
       alert.dismiss();
+    });
+
+    test('moveTo absolute coordinates/click', () {
+      if (driver.spec == WebDriverSpec.W3c) {
+        var pos = button.location;
+        driver.mouse.moveTo(xOffset: pos.x + 200, yOffset: pos.y + 200);
+        driver.mouse.click();
+        // Should have no alert
+        driver.mouse
+            .moveTo(xOffset: pos.x + 5, yOffset: pos.y + 5, absolute: true);
+        driver.mouse.click();
+        var alert = driver.switchTo.alert;
+        alert.dismiss();
+      }
+    });
+
+    test('moveTo out of bounds', () {
+      if (driver.spec == WebDriverSpec.W3c) {
+        try {
+          driver.mouse.moveTo(xOffset: -10000, yOffset: -10000);
+          throw 'Expected MoveTargetOutOfBoundsException';
+        } catch (e) {
+          expect(e, const TypeMatcher<MoveTargetOutOfBoundsException>());
+        }
+      }
     });
 
     test('moveTo element coordinates/click', () {

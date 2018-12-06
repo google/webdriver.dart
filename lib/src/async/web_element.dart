@@ -12,9 +12,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-part of webdriver.core;
+import 'dart:async';
+import 'dart:math';
 
-class WebElement extends _WebDriverBase implements SearchContext {
+import 'package:webdriver/src/async/common.dart';
+import 'package:webdriver/src/async/web_driver.dart';
+import 'package:webdriver/src/common/by.dart';
+import 'package:webdriver/src/common/request_client.dart';
+import 'package:webdriver/src/common/web_element.dart' as common;
+import 'package:webdriver/src/common/webdriver_handler.dart';
+
+class WebElement extends common.WebElement implements SearchContext {
+  @override
+  final WebDriver driver;
+
+  @override
   final String id;
 
   /// The context from which this element was found.
@@ -27,76 +39,78 @@ class WebElement extends _WebDriverBase implements SearchContext {
   /// used to find this element always returns one element, then this is null.
   final int index;
 
-  WebElement(WebDriver driver, this.id,
-      [this.context, this.locator, this.index])
-      : super(driver, 'element/$id');
+  final AsyncRequestClient _client;
+
+  final WebDriverHandler _handler;
+
+  WebElement(this.driver, this._client, this._handler, this.id,
+      [this.context, this.locator, this.index]);
 
   /// Click on this element.
-  Future click() async {
-    await _post('click');
-  }
-
-  /// Submit this element if it is part of a form.
-  Future submit() async {
-    await _post('submit');
-  }
+  Future click() => _client.send(_handler.element.buildClickRequest(id),
+      _handler.element.parseClickResponse);
 
   /// Send [keysToSend] to this element.
-  Future sendKeys(String keysToSend) async {
-    await _post('value', {
-      'value': [keysToSend]
-    });
-  }
+  Future sendKeys(String keysToSend) => _client.send(
+      _handler.element.buildSendKeysRequest(id, keysToSend),
+      _handler.element.parseSendKeysResponse);
 
   /// Clear the content of a text element.
-  Future clear() async {
-    await _post('clear');
-  }
+  Future clear() => _client.send(_handler.element.buildClearRequest(id),
+      _handler.element.parseClearResponse);
 
   /// Is this radio button/checkbox selected?
-  Future<bool> get selected => _get<bool>('selected');
+  Future<bool> get selected => _client.send(
+      _handler.element.buildSelectedRequest(id),
+      _handler.element.parseSelectedResponse);
 
   /// Is this form element enabled?
-  Future<bool> get enabled => _get<bool>('enabled');
+  Future<bool> get enabled => _client.send(
+      _handler.element.buildEnabledRequest(id),
+      _handler.element.parseEnabledResponse);
 
   /// Is this element visible in the page?
-  Future<bool> get displayed => _get<bool>('displayed');
+  Future<bool> get displayed => _client.send(
+      _handler.element.buildDisplayedRequest(id),
+      _handler.element.parseDisplayedResponse);
 
   /// The location within the document of this element.
-  Future<Point> get location async {
-    var point = await _get('location');
-    return new Point<int>(point['x'].toInt(), point['y'].toInt());
-  }
+  Future<Point> get location => _client.send(
+      _handler.element.buildLocationRequest(id),
+      _handler.element.parseLocationResponse);
 
   /// The size of this element.
-  Future<Rectangle<int>> get size async {
-    var size = await _get('size');
-    return new Rectangle<int>(
-        0, 0, size['width'].toInt(), size['height'].toInt());
-  }
+  Future<Rectangle<int>> get size => _client.send(
+      _handler.element.buildSizeRequest(id),
+      _handler.element.parseSizeResponse);
 
   /// The tag name for this element.
-  Future<String> get name => _get<String>('name');
+  Future<String> get name => _client.send(_handler.element.buildNameRequest(id),
+      _handler.element.parseNameResponse);
 
   ///  Visible text within this element.
-  Future<String> get text => _get<String>('text');
+  Future<String> get text => _client.send(_handler.element.buildTextRequest(id),
+      _handler.element.parseTextResponse);
 
   ///Find an element nested within this element.
   ///
   /// Throws [NoSuchElementException] if matching element is not found.
   @override
-  Future<WebElement> findElement(By by) async {
-    var element = await _post('element', by);
-    return new WebElement(driver, element[_element], this, by);
-  }
+  Future<WebElement> findElement(By by) => _client.send(
+      _handler.elementFinder.buildFindElementRequest(by, id),
+      (response) => driver.getElement(
+          _handler.elementFinder.parseFindElementResponse(response), this, by));
 
   /// Find multiple elements nested within this element.
   @override
   Stream<WebElement> findElements(By by) async* {
-    var elements = await _post('elements', by);
+    final ids = await _client.send(
+        _handler.elementFinder.buildFindElementsRequest(by, id),
+        _handler.elementFinder.parseFindElementsResponse);
+
     int i = 0;
-    for (var element in elements) {
-      yield new WebElement(driver, element[_element], this, by, i);
+    for (var id in ids) {
+      yield driver.getElement(id, this, by, i);
       i++;
     }
   }
@@ -104,19 +118,33 @@ class WebElement extends _WebDriverBase implements SearchContext {
   /// Access to the HTML attributes of this tag.
   ///
   /// TODO(DrMarcII): consider special handling of boolean attributes.
-  Attributes get attributes => new Attributes._(driver, '$_prefix/attribute');
+  Attributes get attributes => new Attributes((name) => _client.send(
+      _handler.element.buildAttributeRequest(id, name),
+      _handler.element.parseAttributeResponse));
+
+  /// Access to the selenium attributes of this tag.
+  ///
+  /// This is deprecated, only used to support old pageloader.
+  @deprecated
+  Attributes get seleniumAttributes => new Attributes((name) => _client.send(
+      _handler.element.buildSeleniumAttributeRequest(id, name),
+      _handler.element.parseSeleniumAttributeResponse));
+
+  /// Access to the HTML properties of this tag.
+  Attributes get properties => new Attributes((name) => _client.send(
+      _handler.element.buildPropertyRequest(id, name),
+      _handler.element.parsePropertyResponse));
 
   /// Access to the cssProperties of this element.
   ///
   /// TODO(DrMarcII): consider special handling of color and possibly other
   /// properties.
-  Attributes get cssProperties => new Attributes._(driver, '$_prefix/css');
+  Attributes get cssProperties => new Attributes((name) => _client.send(
+      _handler.element.buildCssPropertyRequest(id, name),
+      _handler.element.parseCssPropertyResponse));
 
-  /// Does this element represent the same element as another element?
-  /// Not the same as ==
-  Future<bool> equals(WebElement other) => _get<bool>('equals/${other.id}');
-
-  Map<String, String> toJson() => {_element: id};
+  Future<bool> equals(WebElement other) async =>
+      other is WebElement && other.driver == this.driver && other.id == this.id;
 
   @override
   int get hashCode => driver.hashCode * 3 + id.hashCode;

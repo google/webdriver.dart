@@ -15,36 +15,39 @@
 @TestOn('vm')
 library webdriver.alert_test;
 
+import 'dart:io';
+
 import 'package:test/test.dart';
 import 'package:webdriver/sync_core.dart';
 
-import 'sync_io_config.dart' as config;
+import '../configs/sync_io_config.dart' as config;
 
-void runTests(config.createTestDriver createTestDriver) {
+void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
   group('Alert', () {
     WebDriver driver;
     WebElement button;
     WebElement output;
+    HttpServer server;
 
-    setUp(() {
-      driver = createTestDriver();
-      driver.get(config.testPagePath);
+    setUp(() async {
+      driver = config.createTestDriver(spec: spec);
+      server = await config.createTestServerAndGoToTestPage(driver);
       button = driver.findElement(const By.tagName('button'));
       output = driver.findElement(const By.id('settable'));
     });
 
-    tearDown(() {
-      if (driver != null) {
-        driver.quit();
-      }
-      driver = null;
+    tearDown(() async {
+      driver?.quit();
+      await server?.close(force: true);
     });
 
     test('no alert', () {
       try {
         driver.switchTo.alert.text;
         fail('Expected exception on no alert');
-      } on Exception {}
+      } catch (e) {
+        expect(e, const TypeMatcher<NoSuchAlertException>());
+      }
     });
 
     test('text', () {

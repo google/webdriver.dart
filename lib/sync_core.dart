@@ -16,105 +16,100 @@ library webdriver.sync_core;
 
 import 'dart:collection' show UnmodifiableMapView;
 
-import 'package:webdriver/src/sync/capabilities.dart' show Capabilities;
+import 'package:webdriver/src/common/request_client.dart';
+import 'package:webdriver/src/common/session.dart';
+import 'package:webdriver/src/common/spec.dart';
+import 'package:webdriver/src/common/utils.dart';
 import 'package:webdriver/src/sync/web_driver.dart' show WebDriver;
 
-import 'package:webdriver/src/sync/command_processor.dart';
-import 'package:webdriver/src/sync/spec_inference_response_processor.dart';
-import 'package:webdriver/src/sync/json_wire_spec/response_processor.dart';
-import 'package:webdriver/src/sync/json_wire_spec/web_driver.dart' as jwire;
-import 'package:webdriver/src/sync/w3c_spec/response_processor.dart';
-import 'package:webdriver/src/sync/w3c_spec/web_driver.dart' as w3c;
-
+export 'package:webdriver/src/common/by.dart';
+export 'package:webdriver/src/common/capabilities.dart';
+export 'package:webdriver/src/common/command_event.dart';
+export 'package:webdriver/src/common/cookie.dart';
+export 'package:webdriver/src/common/exception.dart';
+export 'package:webdriver/src/common/log.dart';
+export 'package:webdriver/src/common/mouse.dart';
+export 'package:webdriver/src/common/spec.dart';
 export 'package:webdriver/src/sync/alert.dart';
-export 'package:webdriver/src/sync/capabilities.dart';
-export 'package:webdriver/src/sync/command_event.dart';
-export 'package:webdriver/src/sync/command_processor.dart';
 export 'package:webdriver/src/sync/common.dart';
-export 'package:webdriver/src/sync/common_spec/cookies.dart';
+export 'package:webdriver/src/sync/cookies.dart';
 export 'package:webdriver/src/sync/keyboard.dart';
+export 'package:webdriver/src/sync/logs.dart';
 export 'package:webdriver/src/sync/mouse.dart';
-export 'package:webdriver/src/sync/navigation.dart';
-export 'package:webdriver/src/sync/exception.dart';
-export 'package:webdriver/src/sync/json_wire_spec/exception.dart';
-export 'package:webdriver/src/sync/json_wire_spec/logs.dart';
-export 'package:webdriver/src/sync/timeouts.dart';
 export 'package:webdriver/src/sync/target_locator.dart';
+export 'package:webdriver/src/sync/timeouts.dart';
 export 'package:webdriver/src/sync/web_driver.dart';
 export 'package:webdriver/src/sync/web_element.dart';
 export 'package:webdriver/src/sync/window.dart';
 
 final Uri defaultUri = Uri.parse('http://127.0.0.1:4444/wd/hub/');
 
-/// Defines the WebDriver spec to use. Auto = try to infer the spec based on
-/// the response during session creation.
-enum WebDriverSpec { Auto, JsonWire, W3c }
-
+/// Creates a new sync WebDriver.
+///
+/// This is intended for internal use! Please use [createDriver] from
+/// sync_io.dart.
 WebDriver createDriver(
+    SyncRequestClient Function(Uri prefix) createRequestClient,
     {Uri uri,
     Map<String, dynamic> desired,
     WebDriverSpec spec = WebDriverSpec.Auto}) {
   uri ??= defaultUri;
 
-  desired ??= Capabilities.empty;
+  // This client's prefix at root, it has no session prefix in it.
+  final client = createRequestClient(uri);
 
-  switch (spec) {
-    case WebDriverSpec.JsonWire:
-      final processor =
-          new SyncHttpCommandProcessor(processor: processJsonWireResponse);
-      final response = processor.post(
-          uri.resolve('session'), {'desiredCapabilities': desired},
-          value: false) as Map<String, dynamic>;
-      return new jwire.JsonWireWebDriver(processor, uri, response['sessionId'],
-          new UnmodifiableMapView(response['value'] as Map<String, dynamic>));
-    case WebDriverSpec.W3c:
-      final processor =
-          new SyncHttpCommandProcessor(processor: processW3cResponse);
-      final response = processor.post(
-          uri.resolve('session'),
-          {
-            'capabilities': {'desiredCapabilities': desired}
-          },
-          value: true) as Map<String, dynamic>;
-      return new w3c.W3cWebDriver(processor, uri, response['sessionId'],
-          new UnmodifiableMapView(response['value'] as Map<String, dynamic>));
-    case WebDriverSpec.Auto:
-      final response =
-          new SyncHttpCommandProcessor(processor: inferSessionResponseSpec)
-              .post(
-                  uri.resolve('session'),
-                  {
-                    'desiredCapabilities': desired,
-                    'capabilities': {'desiredCapabilities': desired}
-                  },
-                  value: true) as InferredResponse;
-      return fromExistingSession(response.sessionId,
-          uri: uri, spec: response.spec);
-    default:
-      throw 'Not yet supported!'; // Impossible.
+  final handler = getHandler(spec);
+
+  final session = client.send(
+      handler.session.buildCreateRequest(desired: desired),
+      handler.session.parseCreateResponse);
+
+  if (session.spec != WebDriverSpec.JsonWire &&
+      session.spec != WebDriverSpec.W3c) {
+    throw 'Unexpected spec: ${session.spec}';
   }
+
+  return new WebDriver(
+      uri,
+      session.id,
+      new UnmodifiableMapView(session.capabilities),
+      createRequestClient(uri.resolve('session/${session.id}/')),
+      session.spec);
 }
 
+/// Creates a sync WebDriver from existing session.
+///
+/// This is intended for internal use! Please use [fromExistingSession] from
+/// sync_io.dart.
 WebDriver fromExistingSession(String sessionId,
-    {Uri uri, WebDriverSpec spec = WebDriverSpec.JsonWire}) {
+    SyncRequestClient Function(Uri prefix) createRequestClient,
+    {Uri uri,
+    WebDriverSpec spec = WebDriverSpec.Auto,
+    Map<String, dynamic> capabilities}) {
   uri ??= defaultUri;
 
-  switch (spec) {
-    case WebDriverSpec.JsonWire:
-      final processor =
-          new SyncHttpCommandProcessor(processor: processJsonWireResponse);
-      final response = processor.get(uri.resolve('session/$sessionId'))
-          as Map<String, dynamic>;
-      return new jwire.JsonWireWebDriver(
-          processor, uri, sessionId, new UnmodifiableMapView(response));
-    case WebDriverSpec.W3c:
-      final processor =
-          new SyncHttpCommandProcessor(processor: processW3cResponse);
-      return new w3c.W3cWebDriver(
-          processor, uri, sessionId, const <String, dynamic>{});
-    case WebDriverSpec.Auto:
-      throw 'Not supported!';
-    default:
-      throw 'Not yet supported!'; // Impossible.
+  var session = new SessionInfo(sessionId, spec, capabilities);
+
+  // Update session info if not all is provided.
+  if (spec == WebDriverSpec.Auto || capabilities == null) {
+    // This client's prefix at root, it has no session prefix in it.
+    final client = createRequestClient(uri);
+
+    final handler = getHandler(spec);
+
+    session = client.send(handler.session.buildInfoRequest(sessionId),
+        handler.session.parseInfoResponse);
   }
+
+  if (session.spec != WebDriverSpec.JsonWire &&
+      session.spec != WebDriverSpec.W3c) {
+    throw 'Unexpected spec: ${session.spec}';
+  }
+
+  return new WebDriver(
+      uri,
+      session.id,
+      new UnmodifiableMapView(session.capabilities),
+      createRequestClient(uri.resolve('session/${session.id}/')),
+      session.spec);
 }
