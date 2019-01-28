@@ -4,8 +4,9 @@ authors:
   - Marc Fisher II <fisherii@google.com>
   - Matt Staats<staats@google.com>
 description: >
-  Provides WebDriver bindings for Dart. These support the WebDriver JSON interface
-  and the W3C spec and require the use of the WebDriver remote server.
+  Provides WebDriver bindings for Dart.
+  Supports WebDriver JSON interface and W3C spec.
+  Requires the use of WebDriver remote server.
 homepage: https://github.com/google/webdriver.dart
 environment:
   sdk: '>=2.0.0-dev.23.0'

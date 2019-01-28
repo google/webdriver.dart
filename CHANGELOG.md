@@ -1,6 +1,5 @@
 ## v2.1.0
-* Did a major refactor. Now async and sync WebDriver are fully supported
-  for JsonWire and W3C spec. They also share the spec related code now.
+* Full support of JsonWire and W3C protocol specs in sync and async WebDriver.
 
 ## v2.0.0
 
@@ -16,7 +15,7 @@ Currently, only the synchronous API supports the W3C spec, but in the future
 both asynchronous and synchronous APIs will support this.
 
 ## v1.2.4
-* Adds Adds null check for status before checking status code.
+* Adds null check for status before checking status code.
   Avoids throwing exceptions if status code is not present. (Due to
   oversight this was never properly released.)
 
