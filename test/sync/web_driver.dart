@@ -16,60 +16,62 @@
 library webdriver.web_driver_test;
 
 import 'dart:io';
+
 import 'package:test/test.dart';
 import 'package:webdriver/sync_core.dart';
 
-import 'sync_io_config.dart' as config;
+import '../configs/sync_io_config.dart' as config;
 
-void runTests(config.createTestDriver createTestDriver) {
+void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
   group('WebDriver', () {
     group('create', () {
-      test('default', () {
-        WebDriver driver = createTestDriver();
-        driver.get(config.testPagePath);
+      test('default', () async {
+        WebDriver driver = config.createTestDriver(spec: spec);
+        final server = await config.createTestServerAndGoToTestPage(driver);
         var element = driver.findElement(const By.tagName('button'));
         expect(element.name, 'button');
         driver.quit();
+        await server.close(force: true);
       });
     });
 
     group('methods', () {
       WebDriver driver;
+      HttpServer server;
 
-      setUp(() {
-        driver = createTestDriver();
-        driver.get(config.testPagePath);
+      setUp(() async {
+        driver = config.createTestDriver(spec: spec);
+        server = await config.createTestServerAndGoToTestPage(driver);
       });
 
-      tearDown(() {
-        if (driver != null) {
-          driver.quit();
-        }
-        driver = null;
+      tearDown(() async {
+        driver?.quit();
+        await server?.close(force: true);
       });
 
       test('get', () {
-        driver.get(config.testPagePath);
         driver.findElement(const By.tagName('button'));
       });
 
       test('currentUrl', () {
         var url = driver.currentUrl;
-        expect(url, anyOf(startsWith('file:'), startsWith('http:')));
+        expect(url, startsWith('http:'));
+
         expect(url, endsWith('test_page.html'));
       });
 
       test('findElement -- success', () {
         var element = driver.findElement(const By.tagName('tr'));
-        expect(element, config.isSyncWebElement);
+        expect(element, config.isWebElement);
       });
 
       test('findElement -- failure', () {
         try {
           driver.findElement(const By.id('non-existent-id'));
           throw 'expected exception';
-          // TODO(staats): update to specify exception.
-        } on Exception {}
+        } catch (e) {
+          expect(e, const TypeMatcher<NoSuchElementException>());
+        }
       });
 
       test('findElements -- 1 found', () {
@@ -77,19 +79,23 @@ void runTests(config.createTestDriver createTestDriver) {
             .findElements(const By.cssSelector('input[type=text]'))
             .toList();
         expect(elements, hasLength(1));
-        expect(elements, everyElement(config.isSyncWebElement));
+        expect(elements, everyElement(config.isWebElement));
       });
 
       test('findElements -- 4 found', () {
         var elements = driver.findElements(const By.tagName('td')).toList();
         expect(elements, hasLength(4));
-        expect(elements, everyElement(config.isSyncWebElement));
+        expect(elements, everyElement(config.isWebElement));
       });
 
       test('findElements -- 0 found', () {
         var elements =
             driver.findElements(const By.id('non-existent-id')).toList();
         expect(elements, isEmpty);
+      });
+
+      test('title', () {
+        expect(driver.title, 'test_page');
       });
 
       test('pageSource', () {
@@ -101,7 +107,7 @@ void runTests(config.createTestDriver createTestDriver) {
         (driver.findElement(const By.partialLinkText('Open copy'))).click();
         sleep(const Duration(milliseconds: 500)); // Bit slow on Firefox.
         expect(driver.windows.toList(), hasLength(numHandles + 1));
-        driver.close();
+        driver.window.close();
         expect(driver.windows.toList(), hasLength(numHandles));
       });
 
@@ -119,7 +125,7 @@ void runTests(config.createTestDriver createTestDriver) {
           }
         }
         expect(driver.window, equals(next));
-        driver.close();
+        driver.window.close();
       });
 
       test('activeElement', () {
@@ -133,7 +139,7 @@ void runTests(config.createTestDriver createTestDriver) {
       test('windows', () {
         var windows = driver.windows.toList();
         expect(windows, hasLength(isPositive));
-        expect(windows, everyElement(const TypeMatcher<Window>()));
+        expect(windows, everyElement(const isInstanceOf<Window>()));
       });
 
       test('execute', () {
@@ -157,19 +163,19 @@ void runTests(config.createTestDriver createTestDriver) {
       test('captureScreenshot', () {
         var screenshot = driver.captureScreenshotAsList().toList();
         expect(screenshot, hasLength(isPositive));
-        expect(screenshot, everyElement(const TypeMatcher<int>()));
+        expect(screenshot, everyElement(const isInstanceOf<int>()));
       });
 
       test('captureScreenshotAsList', () {
         var screenshot = driver.captureScreenshotAsList();
         expect(screenshot, hasLength(isPositive));
-        expect(screenshot, everyElement(const TypeMatcher<int>()));
+        expect(screenshot, everyElement(const isInstanceOf<int>()));
       });
 
       test('captureScreenshotAsBase64', () {
         var screenshot = driver.captureScreenshotAsBase64();
         expect(screenshot, hasLength(isPositive));
-        expect(screenshot, const TypeMatcher<String>());
+        expect(screenshot, const isInstanceOf<String>());
       });
 
       test('event listeners work with script timeouts', () {
@@ -178,16 +184,14 @@ void runTests(config.createTestDriver createTestDriver) {
           driver.executeAsync('', []);
           fail('Did not throw timeout as expected');
         } catch (e) {
-          // TODO(staats): make this less fragile/dependent on error messages.
-          expect(e.toString().toLowerCase(), contains('time'));
-          expect(e.toString().toLowerCase(), contains('out'));
+          expect(e, const TypeMatcher<ScriptTimeoutException>());
         }
       });
 
       test('event listeners ordered appropriately', () {
         var eventList = <int>[];
         int current = 0;
-        driver.addEventListener((WebDriverCommandEvent e) {
+        driver.addEventListener((e) {
           eventList.add(current++);
         });
 

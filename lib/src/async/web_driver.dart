@@ -12,55 +12,101 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-part of webdriver.core;
+import 'dart:async';
+import 'dart:convert';
 
-typedef Future WebDriverListener(WebDriverCommandEvent event);
+import 'package:webdriver/src/async/common.dart';
+
+import 'package:webdriver/src/async/cookies.dart';
+import 'package:webdriver/src/async/keyboard.dart';
+import 'package:webdriver/src/async/mouse.dart';
+import 'package:webdriver/src/async/logs.dart';
+import 'package:webdriver/src/async/stepper.dart' show Stepper;
+import 'package:webdriver/src/async/target_locator.dart';
+import 'package:webdriver/src/async/timeouts.dart';
+import 'package:webdriver/src/async/web_element.dart';
+import 'package:webdriver/src/async/window.dart';
+import 'package:webdriver/src/common/by.dart';
+import 'package:webdriver/src/common/command_event.dart';
+import 'package:webdriver/src/common/request.dart';
+import 'package:webdriver/src/common/request_client.dart';
+import 'package:webdriver/src/common/spec.dart';
+import 'package:webdriver/src/common/utils.dart';
+import 'package:webdriver/src/common/webdriver_handler.dart';
+import 'package:webdriver/sync_core.dart' as sync_core;
+
+// ignore: uri_does_not_exist
+import 'common_stub.dart'
+    // ignore: uri_does_not_exist
+    if (dart.library.io) 'common_io.dart';
 
 class WebDriver implements SearchContext {
-  final CommandProcessor _commandProcessor;
-  final Uri _prefix;
+  final WebDriverSpec spec;
   final Map<String, dynamic> capabilities;
   final String id;
   final Uri uri;
-  final bool filterStackTraces;
   Stepper stepper;
 
   /// If true, WebDriver actions are recorded as [WebDriverCommandEvent]s.
   bool notifyListeners = true;
 
-  final _commandListeners = <WebDriverListener>[];
+  final _commandListeners = <AsyncWebDriverListener>[];
 
-  WebDriver(this._commandProcessor, this.uri, this.id, this.capabilities,
-      {this.filterStackTraces: true})
-      : this._prefix = uri.resolve('session/$id/');
+  final WebDriverHandler _handler;
+
+  final AsyncRequestClient _client;
+
+  WebDriver(this.uri, this.id, this.capabilities, this._client, this.spec)
+      : this._handler = getHandler(spec);
+
+  /// Produces a [sync_core.WebDriver] with the same session ID. Allows
+  /// forwards compatibility with other frameworks.
+  sync_core.WebDriver get syncDriver => createSyncWebDriver(this);
 
   /// Preferred method for registering listeners. Listeners are expected to
   /// return a Future. Use new Future.value() for synchronous listeners.
-  void addEventListener(WebDriverListener listener) =>
-      _commandListeners.add(listener);
-
-  /// The current url.
-  Future<String> get currentUrl => getRequest<String>('url');
-
-  /// navigate to the specified url
-  Future get(/* Uri | String */ url) async {
-    if (url is Uri) {
-      url = url.toString();
-    }
-    await postRequest('url', {'url': url as String});
+  void addEventListener(AsyncWebDriverListener listener) {
+    _commandListeners.add(listener);
+    _client.addEventListener(listener);
   }
 
+  /// The current url.
+  Future<String> get currentUrl => _client.send(
+      _handler.core.buildCurrentUrlRequest(),
+      _handler.core.parseCurrentUrlResponse);
+
+  /// Navigates to the specified url
+  Future get(/* Uri | String */ url) => _client.send(
+      _handler.navigation
+          .buildNavigateToRequest((url is Uri) ? url.toString() : url),
+      _handler.navigation.parseNavigateToResponse);
+
+  ///  Navigates forwards in the browser history, if possible.
+  Future forward() => _client.send(_handler.navigation.buildForwardRequest(),
+      _handler.navigation.parseForwardResponse);
+
+  /// Navigates backwards in the browser history, if possible.
+  Future back() => _client.send(_handler.navigation.buildBackRequest(),
+      _handler.navigation.parseBackResponse);
+
+  /// Refreshes the current page.
+  Future refresh() => _client.send(_handler.navigation.buildRefreshRequest(),
+      _handler.navigation.parseRefreshResponse);
+
   /// The title of the current page.
-  Future<String> get title => getRequest<String>('title');
+  Future<String> get title => _client.send(
+      _handler.core.buildTitleRequest(), _handler.core.parseTitleResponse);
 
   /// Search for multiple elements within the entire current page.
   @override
   Stream<WebElement> findElements(By by) async* {
-    var elements = await postRequest('elements', by);
+    final ids = await _client.send(
+        _handler.elementFinder.buildFindElementsRequest(by),
+        _handler.elementFinder.parseFindElementsResponse);
     int i = 0;
 
-    for (var element in elements) {
-      yield new WebElement(this, element[_element], this, by, i);
+    for (var id in ids) {
+      yield getElement(id, this, by, i);
       i++;
     }
   }
@@ -68,78 +114,98 @@ class WebDriver implements SearchContext {
   /// Search for an element within the entire current page.
   /// Throws [NoSuchElementException] if a matching element is not found.
   @override
-  Future<WebElement> findElement(By by) async {
-    var element = await postRequest('element', by);
-    return new WebElement(this, element[_element], this, by);
-  }
+  Future<WebElement> findElement(By by) => _client.send(
+      _handler.elementFinder.buildFindElementRequest(by),
+      (response) => getElement(
+          _handler.elementFinder.parseFindElementResponse(response), this, by));
 
   /// An artist's rendition of the current page's source.
-  Future<String> get pageSource => getRequest<String>('source');
+  Future<String> get pageSource => _client.send(
+      _handler.core.buildPageSourceRequest(),
+      _handler.core.parsePageSourceResponse);
 
-  /// Close the current window, quitting the browser if it is the last window.
-  Future close() async {
-    await deleteRequest('window');
-  }
+  /// Quits the browser.
+  Future quit({bool closeSession: true}) => closeSession
+      ? _client.send(_handler.core.buildDeleteSessionRequest(),
+          _handler.core.parseDeleteSessionResponse)
+      : new Future.value();
 
-  /// Quit the browser.
-  Future quit({bool closeSession: true}) async {
-    try {
-      if (closeSession) {
-        await _commandProcessor.delete(uri.resolve('session/$id'));
-      }
-    } finally {
-      await _commandProcessor.close();
-    }
-  }
+  /// Closes the current window.
+  ///
+  /// This is rather confusing and will be removed.
+  /// Should replace all usages with [window.close()] or [quit()].
+  @deprecated
+  Future<void> close() async => (await window).close();
 
   /// Handles for all of the currently displayed tabs/windows.
   Stream<Window> get windows async* {
-    var handles = await getRequest('window_handles');
-
-    for (var handle in handles) {
-      yield new Window._(this, handle);
+    final windows = await _client.send(
+        _handler.window.buildGetWindowsRequest(),
+        (response) => _handler.window
+            .parseGetWindowsResponse(response)
+            .map<Window>((w) => new Window(_client, _handler, w)));
+    for (final window in windows) {
+      yield window;
     }
   }
 
   /// Handle for the active tab/window.
-  Future<Window> get window async {
-    var handle = await getRequest('window_handle');
-    return new Window._(this, handle);
-  }
+  Future<Window> get window => _client.send(
+      _handler.window.buildGetActiveWindowRequest(),
+      (response) => new Window(_client, _handler,
+          _handler.window.parseGetActiveWindowResponse(response)));
 
   /// The currently focused element, or the body element if no element has
   /// focus.
   Future<WebElement> get activeElement async {
-    var element = await postRequest('element/active');
-    if (element != null) {
-      return new WebElement(this, element[_element], this, 'activeElement');
+    final id = await _client.send(
+        _handler.elementFinder.buildFindActiveElementRequest(),
+        _handler.elementFinder.parseFindActiveElementResponse);
+    if (id != null) {
+      return getElement(id, this, 'activeElement');
     }
     return null;
   }
 
-  TargetLocator get switchTo => new TargetLocator._(this);
+  TargetLocator get switchTo =>
+      new TargetLocator(this, this._client, this._handler);
 
-  Navigation get navigate => new Navigation._(this);
+  Cookies get cookies => new Cookies(_client, _handler);
 
-  Cookies get cookies => new Cookies._(this);
+  /// [logs.get(logType)] will give list of logs captured in browser.
+  ///
+  /// Note that for W3C/Firefox, this is not supported and will produce empty
+  /// list of logs, as the spec for this in W3C is not agreed on and Firefox
+  /// refuses to support non-spec features. See
+  /// https://github.com/w3c/webdriver/issues/406.
+  Logs get logs => new Logs(_client, _handler);
 
-  Logs get logs => new Logs._(this);
+  Timeouts get timeouts => new Timeouts(_client, _handler);
 
-  Timeouts get timeouts => new Timeouts._(this);
+  Keyboard get keyboard => new Keyboard(this._client, this._handler);
 
-  Keyboard get keyboard => new Keyboard._(this);
-
-  Mouse get mouse => new Mouse._(this);
+  Mouse get mouse => new Mouse(this._client, this._handler);
 
   /// Take a screenshot of the current page as PNG and return it as
   /// base64-encoded string.
-  Future<String> captureScreenshotAsBase64() async =>
-      await getRequest('screenshot');
+  Future<String> captureScreenshotAsBase64() => _client.send(
+      _handler.core.buildScreenshotRequest(),
+      _handler.core.parseScreenshotResponse);
 
   /// Take a screenshot of the current page as PNG as list of uint8.
   Future<List<int>> captureScreenshotAsList() async {
     var base64Encoded = captureScreenshotAsBase64();
     return base64.decode(await base64Encoded);
+  }
+
+  /// Take a screenshot of the current page as PNG as stream of uint8.
+  ///
+  /// Don't use this method. Prefer [captureScreenshotAsBase64] or
+  /// [captureScreenshotAsList]. Returning the data as Stream<int> can be very
+  /// slow.
+  @Deprecated('Use captureScreenshotAsBase64 or captureScreenshotAsList!')
+  Stream<int> captureScreenshot() async* {
+    yield* new Stream.fromIterable(await captureScreenshotAsList());
   }
 
   /// Inject a snippet of JavaScript into the page for execution in the context
@@ -160,9 +226,10 @@ class WebDriver implements SearchContext {
   /// Arguments may be any JSON-able object. WebElements will be converted to
   /// the corresponding DOM element. Likewise, any DOM Elements in the script
   /// result will be converted to WebElements.
-  Future executeAsync(String script, List args) =>
-      postRequest('execute_async', {'script': script, 'args': args})
-          .then(_recursiveElementify);
+  Future executeAsync(String script, List args) => _client.send(
+      _handler.core.buildExecuteAsyncRequest(script, args),
+      (response) => _handler.core.parseExecuteAsyncResponse(
+          response, (elementId) => getElement(elementId, this, 'javascript')));
 
   /// Inject a snippet of JavaScript into the page for execution in the context
   /// of the currently selected frame. The executed script is assumed to be
@@ -176,116 +243,33 @@ class WebDriver implements SearchContext {
   /// Arguments may be any JSON-able object. WebElements will be converted to
   /// the corresponding DOM element. Likewise, any DOM Elements in the script
   /// result will be converted to WebElements.
-  Future execute(String script, List args) =>
-      postRequest('execute', {'script': script, 'args': args})
-          .then(_recursiveElementify);
+  Future execute(String script, List args) => _client.send(
+      _handler.core.buildExecuteRequest(script, args),
+      (response) => _handler.core.parseExecuteResponse(
+          response, (elementId) => getElement(elementId, this, 'javascript')));
 
-  dynamic _recursiveElementify(result) {
-    if (result is Map) {
-      if (result.length == 1 && result.containsKey(_element)) {
-        return new WebElement(
-            this, result[_element] as String, this, 'javascript');
-      } else {
-        var newResult = {};
-        result.forEach((key, value) {
-          newResult[key] = _recursiveElementify(value);
-        });
-        return newResult;
-      }
-    } else if (result is List) {
-      return result.map(_recursiveElementify).toList();
-    } else {
-      return result;
-    }
-  }
+  Future<dynamic> postRequest(String command, [params]) => _client.send(
+      _handler.buildGeneralRequest(HttpMethod.httpPost, command, params),
+      (response) => _handler.parseGeneralResponse(
+          response, (elementId) => getElement(elementId, this)));
 
-  Future<T> postRequest<T>(String command, [params]) =>
-      _performRequestWithLog<T>(
-          () => _commandProcessor.post(_resolve(command), params),
-          'POST',
-          command,
-          params);
+  Future<dynamic> getRequest(String command) => _client.send(
+      _handler.buildGeneralRequest(HttpMethod.httpGet, command),
+      (response) => _handler.parseGeneralResponse(
+          response, (elementId) => getElement(elementId, this)));
 
-  Future<T> getRequest<T>(String command) => _performRequestWithLog<T>(
-      () => _commandProcessor.get(_resolve(command)), 'GET', command, null);
+  Future<dynamic> deleteRequest(String command) => _client.send(
+      _handler.buildGeneralRequest(HttpMethod.httpDelete, command),
+      (response) => _handler.parseGeneralResponse(
+          response, (elementId) => getElement(elementId, this)));
 
-  Future<T> deleteRequest<T>(String command) => _performRequestWithLog<T>(
-      () => _commandProcessor.delete(_resolve(command)),
-      'DELETE',
-      command,
-      null);
-
-  // Performs request and sends the result to listeners/onCommandController.
-  // This is typically always what you want to use.
-  Future<T> _performRequestWithLog<T>(
-      Function fn, String method, String command, params) async {
-    return await _performRequest<T>(fn, method, command, params)
-        .whenComplete(() async {
-      if (notifyListeners) {
-        if (_previousEvent == null) {
-          throw new Error(); // This should be impossible.
-        }
-        for (WebDriverListener listener in _commandListeners) {
-          await listener(_previousEvent);
-        }
-      }
-    });
-  }
-
-  // This is an ugly hack, I know, but I dunno how to cleanly do this.
-  WebDriverCommandEvent _previousEvent;
-
-  // Performs the request. This will not notify any listeners or
-  // onCommandController. This should only be called from
-  // _performRequestWithLog.
-  Future<T> _performRequest<T>(
-      Function fn, String method, String command, params) async {
-    var startTime = new DateTime.now();
-    var trace = new Chain.current();
-    if (filterStackTraces) {
-      trace = trace.foldFrames(
-          (f) => f.library.startsWith('package:webdriver/'),
-          terse: true);
-    }
-    Object result;
-    Object exception;
-    try {
-      if (stepper == null || await stepper.step(method, command, params)) {
-        result = await fn();
-        return result;
-      } else {
-        result = 'skipped';
-        return null;
-      }
-    } catch (e) {
-      exception = e;
-      return new Future.error(e, trace);
-    } finally {
-      if (notifyListeners) {
-        _previousEvent = new WebDriverCommandEvent(
-            method: method,
-            endPoint: command,
-            params: params,
-            startTime: startTime,
-            endTime: new DateTime.now(),
-            exception: exception,
-            result: result,
-            stackTrace: trace);
-      }
-    }
-  }
-
-  Uri _resolve(String command) {
-    var uri = _prefix.resolve(command);
-    if (uri.path.endsWith('/')) {
-      uri = uri.replace(path: uri.path.substring(0, uri.path.length - 1));
-    }
-    return uri;
-  }
+  WebElement getElement(String elementId, [context, locator, index]) =>
+      new WebElement(
+          this, _client, _handler, elementId, context, locator, index);
 
   @override
   WebDriver get driver => this;
 
   @override
-  String toString() => 'WebDriver($_prefix)';
+  String toString() => '$_handler.webdriver($_client)';
 }

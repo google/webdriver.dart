@@ -15,29 +15,30 @@
 @TestOn('vm')
 library webdriver.target_locator_test;
 
+import 'dart:io';
+
 import 'package:test/test.dart';
 import 'package:webdriver/sync_core.dart';
 
-import 'sync_io_config.dart' as config;
+import '../configs/sync_io_config.dart' as config;
 
 /// Tests for switchTo.frame(). switchTo.window() and switchTo.alert are tested
 /// in other classes.
-void runTests(config.createTestDriver createTestDriver) {
+void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
   group('TargetLocator', () {
     WebDriver driver;
     WebElement frame;
+    HttpServer server;
 
-    setUp(() {
-      driver = createTestDriver();
-      driver.get(config.testPagePath);
-      frame = driver.findElement(const By.name('frame'));
+    setUp(() async {
+      driver = config.createTestDriver(spec: spec);
+      server = await config.createTestServerAndGoToTestPage(driver);
+      frame = driver.findElement(const By.id('frame'));
     });
 
-    tearDown(() {
-      if (driver != null) {
-        driver.quit();
-      }
-      driver = null;
+    tearDown(() async {
+      driver?.quit();
+      await server?.close(force: true);
     });
 
     test('frame index', () {
@@ -45,17 +46,9 @@ void runTests(config.createTestDriver createTestDriver) {
       expect(driver.pageSource, contains('this is a frame'));
     });
 
-    // Both the JSON and W3C specs allow passing strings. In the JSON spec, we
-    // expect this to work (finds a frame with the name of the string). In the
-    // W3C spec we expect this to fail with an exception thrown by the driver.
     test('frame name', () {
-      try {
-        driver.switchTo.frame('frame');
-        print('FINISHED SWITCH');
-        expect(driver.pageSource, contains('this is a frame')); // JSON.
-      } on Exception catch (e) {
-        expect(e.toString(), contains('frame id has unexpected type')); // W3C.
-      }
+      driver.switchTo.frame('frame');
+      expect(driver.pageSource, contains('this is a frame'));
     });
 
     test('frame element', () {

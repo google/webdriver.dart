@@ -79,21 +79,21 @@ class WebDriverForwarder {
   Future<Null> forward(HttpRequest request) async {
     try {
       if (!request.uri.path.startsWith(prefix)) {
-        request.response.statusCode = HttpStatus.notFound;
+        request.response.statusCode = HttpStatus.NOT_FOUND;
         return;
       }
-      request.response.statusCode = HttpStatus.ok;
+      request.response.statusCode = HttpStatus.OK;
       request.response.headers.contentType = _contentTypeJson;
 
       var endpoint = request.uri.path.replaceFirst(prefix, '');
       if (endpoint.startsWith('/')) {
         endpoint = endpoint.substring(1);
       }
-      Map params;
+      Map<dynamic, dynamic> params;
       if (request.method == 'POST') {
         String requestBody = await utf8.decodeStream(request);
         if (requestBody != null && requestBody.isNotEmpty) {
-          params = json.decode(requestBody) as Map;
+          params = json.decode(requestBody) as Map<dynamic, dynamic>;
         }
       }
       var value = await _forward(request.method, endpoint, params);
@@ -115,7 +115,7 @@ class WebDriverForwarder {
   }
 
   Future<dynamic> _forward(String method, String endpoint,
-      [Map params]) async {
+      [Map<dynamic, dynamic> params]) async {
     List<String> endpointTokens = path.split(endpoint);
     if (endpointTokens.isEmpty) {
       endpointTokens = [''];
@@ -168,7 +168,7 @@ class WebDriverForwarder {
       case 'execute_async':
         // /execute and /execute_async allow arbitrary JSON objects with
         // embedded WebElememt ids.
-        params = await _deepCopy(params) as Map;
+        params = await _deepCopy(params) as Map<dynamic, dynamic>;
         break;
     }
 

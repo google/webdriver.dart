@@ -13,8 +13,9 @@
 // limitations under the License.
 
 import 'sync/command_event.dart';
-import 'sync/sync_io_config.dart' as config;
+import 'configs/sync_io_config.dart' as config;
+import 'package:webdriver/sync_core.dart';
 
 void main() {
-  runTests(config.createFirefoxTestDriver);
+  runTests(spec: WebDriverSpec.W3c);
 }

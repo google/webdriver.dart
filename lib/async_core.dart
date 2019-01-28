@@ -14,55 +14,123 @@
 
 library webdriver.core;
 
-import 'dart:async' show Future, Stream;
+import 'dart:async' show Future;
 import 'dart:collection' show UnmodifiableMapView;
-import 'dart:convert' show base64;
-import 'dart:math' show Point, Rectangle;
 
-import 'package:stack_trace/stack_trace.dart' show Chain;
+import 'package:webdriver/src/async/web_driver.dart';
+import 'package:webdriver/src/common/capabilities.dart';
+import 'package:webdriver/src/common/request_client.dart';
+import 'package:webdriver/src/common/spec.dart';
+import 'package:webdriver/src/common/utils.dart';
 
-import 'package:webdriver/src/async/command_processor.dart'
-    show CommandProcessor;
-import 'package:webdriver/src/async/stepper.dart' show Stepper;
-
-export 'package:webdriver/src/async/exception.dart';
-
-part 'package:webdriver/src/async/alert.dart';
-part 'package:webdriver/src/async/capabilities.dart';
-part 'package:webdriver/src/async/command_event.dart';
-part 'package:webdriver/src/async/common.dart';
-part 'package:webdriver/src/async/keyboard.dart';
-part 'package:webdriver/src/async/logs.dart';
-part 'package:webdriver/src/async/mouse.dart';
-part 'package:webdriver/src/async/navigation.dart';
-part 'package:webdriver/src/async/options.dart';
-part 'package:webdriver/src/async/target_locator.dart';
-part 'package:webdriver/src/async/web_driver.dart';
-part 'package:webdriver/src/async/web_element.dart';
-part 'package:webdriver/src/async/window.dart';
+export 'package:webdriver/src/async/alert.dart';
+export 'package:webdriver/src/async/common.dart';
+export 'package:webdriver/src/async/cookies.dart';
+export 'package:webdriver/src/async/keyboard.dart';
+export 'package:webdriver/src/async/logs.dart';
+export 'package:webdriver/src/async/mouse.dart';
+export 'package:webdriver/src/async/target_locator.dart';
+export 'package:webdriver/src/async/timeouts.dart';
+export 'package:webdriver/src/async/web_driver.dart';
+export 'package:webdriver/src/async/web_element.dart';
+export 'package:webdriver/src/async/window.dart';
+export 'package:webdriver/src/common/by.dart';
+export 'package:webdriver/src/common/capabilities.dart';
+export 'package:webdriver/src/common/command_event.dart';
+export 'package:webdriver/src/common/cookie.dart';
+export 'package:webdriver/src/common/exception.dart';
+export 'package:webdriver/src/common/log.dart';
+export 'package:webdriver/src/common/mouse.dart';
+export 'package:webdriver/src/common/spec.dart';
 
 final Uri defaultUri = Uri.parse('http://127.0.0.1:4444/wd/hub/');
 
-Future<WebDriver> createDriver(CommandProcessor processor,
-    {Uri uri, Map<String, dynamic> desired}) async {
+/// Creates a new async WebDriver.
+///
+/// This is intended for internal use! Please use [createDriver] from
+/// async_io.dart or async_html.dart.
+Future<WebDriver> createDriver(
+    AsyncRequestClient Function(Uri prefix) createRequestClient,
+    {Uri uri,
+    Map<String, dynamic> desired,
+    WebDriverSpec spec = WebDriverSpec.Auto}) async {
   uri ??= defaultUri;
 
-  desired ??= Capabilities.empty;
+  // This client's prefix at root, it has no session prefix in it.
+  final client = createRequestClient(uri);
 
-  Map<String, dynamic> response = new Map.from(await processor.post(
-      uri.resolve('session'), {'desiredCapabilities': desired},
-      value: false));
-  return new WebDriver(processor, uri, response['sessionId'],
-      new UnmodifiableMapView(response['value'] as Map<String, dynamic>));
+  final handler = getHandler(spec);
+
+  final session = await client.send(
+      handler.session.buildCreateRequest(desired: desired),
+      handler.session.parseCreateResponse);
+
+  if (session.spec != WebDriverSpec.JsonWire &&
+      session.spec != WebDriverSpec.W3c) {
+    throw 'Unexpected spec: ${session.spec}';
+  }
+
+  return new WebDriver(
+      uri,
+      session.id,
+      new UnmodifiableMapView(session.capabilities),
+      createRequestClient(uri.resolve('session/${session.id}/')),
+      session.spec);
 }
 
+/// Creates an async WebDriver from existing session.
+///
+/// This is intended for internal use! Please use [fromExistingSession] from
+/// async_io.dart or async_html.dart.
 Future<WebDriver> fromExistingSession(
-    CommandProcessor processor, String sessionId,
-    {Uri uri}) async {
+    AsyncRequestClient Function(Uri prefix) createRequestClient,
+    String sessionId,
+    {Uri uri,
+    WebDriverSpec spec = WebDriverSpec.Auto}) async {
   uri ??= defaultUri;
 
-  Map<String, dynamic> response =
-      new Map.from(await processor.get(uri.resolve('session/$sessionId')));
+  // This client's prefix at root, it has no session prefix in it.
+  final client = createRequestClient(uri);
+
+  final handler = getHandler(spec);
+
+  final session = await client.send(handler.session.buildInfoRequest(sessionId),
+      handler.session.parseInfoResponse);
+
+  if (session.spec != WebDriverSpec.JsonWire &&
+      session.spec != WebDriverSpec.W3c) {
+    throw 'Unexpected spec: ${session.spec}';
+  }
+
   return new WebDriver(
-      processor, uri, sessionId, new UnmodifiableMapView(response));
+      uri,
+      session.id,
+      new UnmodifiableMapView(session.capabilities),
+      createRequestClient(uri.resolve('session/${session.id}/')),
+      session.spec);
+}
+
+/// Creates an async WebDriver from existing session with a sync function.
+///
+/// This will be helpful when you can't use async when creating WebDriver. For
+/// example in a consctructor.
+///
+/// This is intended for internal use! Please use [fromExistingSessionSync] from
+/// async_io.dart or async_html.dart.
+WebDriver fromExistingSessionSync(
+    AsyncRequestClient Function(Uri prefix) createRequestClient,
+    String sessionId,
+    WebDriverSpec spec,
+    {Uri uri,
+    Map<String, dynamic> capabilities}) {
+  uri ??= defaultUri;
+
+  capabilities ??= Capabilities.empty;
+
+  if (spec != WebDriverSpec.JsonWire && spec != WebDriverSpec.W3c) {
+    throw 'Unexpected spec: $spec';
+  }
+
+  return new WebDriver(uri, sessionId, new UnmodifiableMapView(capabilities),
+      createRequestClient(uri.resolve('session/${sessionId}/')), spec);
 }

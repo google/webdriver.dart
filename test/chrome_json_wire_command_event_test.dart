@@ -12,9 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import 'package:webdriver/sync_core.dart';
+
 import 'sync/command_event.dart';
-import 'sync/sync_io_config.dart' as config;
 
 void main() {
-  runTests(config.createChromeTestDriver);
+  runTests(spec: WebDriverSpec.JsonWire);
 }

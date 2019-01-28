@@ -53,8 +53,8 @@ class Clock {
       {matcher,
       Duration timeout: defaultTimeout,
       Duration interval: defaultInterval}) async {
-    if (matcher != null && matcher is! m.Matcher) {
-      matcher = m.equals(matcher);
+    if (matcher != null) {
+      matcher = m.wrapMatcher(matcher);
     }
 
     var endTime = now.add(timeout);

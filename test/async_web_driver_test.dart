@@ -16,41 +16,42 @@
 library webdriver.web_driver_test;
 
 import 'dart:async';
+import 'dart:io';
 
 import 'package:test/test.dart';
 import 'package:webdriver/core.dart';
 
-import 'io_config.dart' as config;
+import 'configs/async_io_config.dart' as config;
 
 void main() {
   group('WebDriver', () {
     group('create', () {
       test('default', () async {
         WebDriver driver = await config.createTestDriver();
-        await driver.get(config.testPagePath);
+        final server = await config.createTestServerAndGoToTestPage(driver);
         var element = await driver.findElement(const By.tagName('button'));
         expect(await element.name, 'button');
         await driver.quit();
+        await server.close(force: true);
       });
     });
 
     group('methods', () {
       WebDriver driver;
+      HttpServer server;
 
       setUp(() async {
         driver = await config.createTestDriver();
-        await driver.get(config.testPagePath);
+        server = await config.createTestServerAndGoToTestPage(driver);
       });
 
       tearDown(() async {
-        if (driver != null) {
-          await driver.quit();
-        }
-        driver = null;
+        await driver?.quit();
+        await server?.close(force: true);
       });
 
       test('get', () async {
-        await driver.get(config.testPagePath);
+        server = await config.createTestServerAndGoToTestPage(driver);
         await driver.findElement(const By.tagName('button'));
       });
 
@@ -102,7 +103,7 @@ void main() {
         await (await driver.findElement(const By.partialLinkText('Open copy')))
             .click();
         expect(await driver.windows.toList(), hasLength(numHandles + 1));
-        await driver.close();
+        await (await driver.window).close();
         expect(await driver.windows.toList(), hasLength(numHandles));
       });
 
@@ -120,7 +121,7 @@ void main() {
           }
         }
         expect(await driver.window, equals(next));
-        await driver.close();
+        await (await driver.window).close();
       });
 
       test('activeElement', () async {
@@ -136,7 +137,7 @@ void main() {
       test('windows', () async {
         var windows = await driver.windows.toList();
         expect(windows, hasLength(isPositive));
-        expect(windows, everyElement(const TypeMatcher<Window>()));
+        expect(windows, everyElement(const isInstanceOf<Window>()));
       });
 
       test('execute', () async {
@@ -159,6 +160,12 @@ void main() {
         expect(await e.text, 'new text');
       });
 
+      test('captureScreenshot', () async {
+        var screenshot = await driver.captureScreenshot().toList();
+        expect(screenshot, hasLength(isPositive));
+        expect(screenshot, everyElement(const isInstanceOf<int>()));
+      });
+
       test('captureScreenshotAsList', () async {
         var screenshot = await driver.captureScreenshotAsList();
         expect(screenshot, hasLength(isPositive));
@@ -178,11 +185,11 @@ void main() {
         });
 
         try {
-          await driver.timeouts.setScriptTimeout(const Duration(seconds: 1));
+          driver.timeouts.setScriptTimeout(const Duration(seconds: 1));
           await driver.executeAsync('', []);
           fail('Did not throw timeout as expected');
         } catch (e) {
-          expect(e.toString(), contains('asynchronous script timeout'));
+          expect(e, const TypeMatcher<ScriptTimeoutException>());
         }
       });
 

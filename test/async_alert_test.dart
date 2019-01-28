@@ -15,39 +15,45 @@
 @TestOn('vm')
 library webdriver.alert_test;
 
+import 'dart:io';
+
 import 'package:test/test.dart';
 import 'package:webdriver/async_core.dart';
 
-import 'io_config.dart' as config;
+import 'configs/async_io_config.dart' as config;
 
 void main() {
   group('Alert', () {
     WebDriver driver;
     WebElement button;
     WebElement output;
+    HttpServer server;
 
     setUp(() async {
       driver = await config.createTestDriver();
-      await driver.get(config.testPagePath);
+      server = await config.createTestServerAndGoToTestPage(driver);
       button = await driver.findElement(const By.tagName('button'));
       output = await driver.findElement(const By.id('settable'));
     });
 
     tearDown(() async {
-      if (driver != null) {
-        await driver.quit();
-      }
-      driver = null;
+      await driver?.quit();
+      await server?.close(force: true);
     });
 
-    test('no alert', () {
-      expect(driver.switchTo.alert, throwsA(anything));
+    test('no alert', () async {
+      try {
+        await driver.switchTo.alert.text;
+        fail('Expected exception on no alert');
+      } catch (e) {
+        expect(e, const TypeMatcher<NoSuchAlertException>());
+      }
     });
 
     test('text', () async {
       await button.click();
-      var alert = await driver.switchTo.alert;
-      expect(alert.text, 'button clicked');
+      var alert = driver.switchTo.alert;
+      expect(await alert.text, 'button clicked');
       await alert.dismiss();
     });
 

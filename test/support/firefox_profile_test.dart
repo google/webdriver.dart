@@ -32,7 +32,7 @@ void main() {
           r'extensions/{972ce4c6-7e08-4474-a285-3208198ce6fd}\",\"e\":true,\'
           r'"v\":\"40.0\",\"st\":1439535413000,\"mt\":1438968709000}}}");';
       var option = new PrefsOption.parse(value);
-      expect(option, const TypeMatcher<StringOption>());
+      expect(option, const isInstanceOf<StringOption>());
       expect(option.asPrefString, value);
     });
 
@@ -40,21 +40,21 @@ void main() {
       const value = r'user_pref("browser.cache.disk.parent_directory", '
           r'"\\\\volume\\web\\cache\\mz");';
       var option = new PrefsOption.parse(value);
-      expect(option, const TypeMatcher<StringOption>());
+      expect(option, const isInstanceOf<StringOption>());
       expect(option.asPrefString, value);
     });
 
     test('parse and serialize integer value', () {
       const value = r'user_pref("browser.cache.frecency_experiment", 3);';
       var option = new PrefsOption.parse(value);
-      expect(option, const TypeMatcher<IntegerOption>());
+      expect(option, const isInstanceOf<IntegerOption>());
       expect(option.asPrefString, value);
     });
 
     test('parse and serialize negative integer value', () {
       const value = r'user_pref("browser.cache.frecency_experiment", -3);';
       var option = new PrefsOption.parse(value);
-      expect(option, const TypeMatcher<IntegerOption>());
+      expect(option, const isInstanceOf<IntegerOption>());
       expect(option.asPrefString, value);
     });
 
@@ -62,7 +62,7 @@ void main() {
       const value =
           r'user_pref("browser.cache.disk.smart_size.first_run", true);';
       var option = new PrefsOption.parse(value);
-      expect(option, const TypeMatcher<BooleanOption>());
+      expect(option, const isInstanceOf<BooleanOption>());
       expect(option.asPrefString, value);
     });
 
@@ -70,7 +70,7 @@ void main() {
       const value =
           r'user_pref("browser.cache.disk.smart_size.first_run", false);';
       var option = new PrefsOption.parse(value);
-      expect(option, const TypeMatcher<BooleanOption>());
+      expect(option, const isInstanceOf<BooleanOption>());
       expect(option.asPrefString, value);
     });
 
@@ -78,7 +78,7 @@ void main() {
       const value =
           r'user_pref("browser.cache.disk.smart_size.first_run", True);';
       var option = new PrefsOption.parse(value);
-      expect(option, const TypeMatcher<BooleanOption>());
+      expect(option, const isInstanceOf<BooleanOption>());
       expect(option.value, true);
     });
 

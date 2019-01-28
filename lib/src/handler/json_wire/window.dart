@@ -1,0 +1,146 @@
+// Copyright 2017 Google Inc. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//    http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+import 'dart:math';
+
+import 'package:webdriver/src/common/request.dart';
+import 'package:webdriver/src/common/webdriver_handler.dart';
+import 'package:webdriver/src/handler/json_wire/utils.dart';
+
+class JsonWireWindowHandler extends WindowHandler {
+  @override
+  WebDriverRequest buildGetWindowsRequest() =>
+      new WebDriverRequest.getRequest('window_handles');
+
+  @override
+  List<String> parseGetWindowsResponse(WebDriverResponse response) =>
+      parseJsonWireResponse(response).cast<String>();
+
+  @override
+  WebDriverRequest buildGetActiveWindowRequest() =>
+      new WebDriverRequest.getRequest('window_handle');
+
+  @override
+  String parseGetActiveWindowResponse(WebDriverResponse response) =>
+      parseJsonWireResponse(response);
+
+  @override
+  WebDriverRequest buildSetActiveRequest(String windowId) =>
+      new WebDriverRequest.postRequest('window', {'name': windowId});
+
+  @override
+  void parseSetActiveResponse(WebDriverResponse response) {
+    parseJsonWireResponse(response);
+  }
+
+  @override
+  WebDriverRequest buildLocationRequest() =>
+      new WebDriverRequest.getRequest('window/current/position');
+
+  @override
+  Point<int> parseLocationResponse(WebDriverResponse response) {
+    final point = parseJsonWireResponse(response);
+    return new Point(point['x'].toInt(), point['y'].toInt());
+  }
+
+  @override
+  WebDriverRequest buildSizeRequest() =>
+      new WebDriverRequest.getRequest('window/current/size');
+
+  @override
+  Rectangle<int> parseSizeResponse(WebDriverResponse response) {
+    final size = parseJsonWireResponse(response);
+    return new Rectangle<int>(
+        0, 0, size['width'].toInt(), size['height'].toInt());
+  }
+
+  @override
+  WebDriverRequest buildRectRequest() {
+    throw new UnsupportedError('Get Window Rect is not supported in JsonWire.');
+  }
+
+  @override
+  Rectangle<int> parseRectResponse(WebDriverResponse response) {
+    throw new UnsupportedError('Get Window Rect is not supported in JsonWire.');
+  }
+
+  @override
+  WebDriverRequest buildSetLocationRequest(Point<int> location) =>
+      new WebDriverRequest.postRequest('window/current/position',
+          {'x': location.x.toInt(), 'y': location.y.toInt()});
+
+  @override
+  void parseSetLocationResponse(WebDriverResponse response) {
+    parseJsonWireResponse(response);
+  }
+
+  @override
+  WebDriverRequest buildSetSizeRequest(Rectangle<int> size) =>
+      new WebDriverRequest.postRequest('window/current/size',
+          {'width': size.width.toInt(), 'height': size.height.toInt()});
+
+  @override
+  void parseSetSizeResponse(WebDriverResponse response) {
+    parseJsonWireResponse(response);
+  }
+
+  @override
+  WebDriverRequest buildSetRectRequest(Rectangle<int> rect) {
+    throw new UnsupportedError('Set Window Rect is not supported in JsonWire.');
+  }
+
+  @override
+  void parseSetRectResponse(WebDriverResponse response) {
+    throw new UnsupportedError('Set Window Rect is not supported in JsonWire.');
+  }
+
+  @override
+  WebDriverRequest buildMaximizeRequest() =>
+      new WebDriverRequest.postRequest('window/current/maximize');
+
+  @override
+  void parseMaximizeResponse(WebDriverResponse response) {
+    parseJsonWireResponse(response);
+  }
+
+  @override
+  WebDriverRequest buildMinimizeRequest() => throw 'Unsupported in JsonWire';
+
+  @override
+  void parseMinimizeResponse(WebDriverResponse response) =>
+      throw 'Unsupported in JsonWire';
+
+  @override
+  WebDriverRequest buildCloseRequest() =>
+      new WebDriverRequest.deleteRequest('window');
+
+  @override
+  void parseCloseResponse(WebDriverResponse response) {
+    parseJsonWireResponse(response);
+  }
+
+  @override
+  WebDriverRequest buildInnerSizeRequest() =>
+      new WebDriverRequest.postRequest('execute', {
+        'script':
+            'return { width: window.innerWidth, height: window.innerHeight };',
+        'args': []
+      });
+
+  @override
+  Rectangle<int> parseInnerSizeResponse(WebDriverResponse response) {
+    final size = parseJsonWireResponse(response);
+    return Rectangle(0, 0, size['width'], size['height']);
+  }
+}

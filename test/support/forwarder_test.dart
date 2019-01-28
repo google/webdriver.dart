@@ -17,12 +17,11 @@ library webdriver.support.forwarder_test;
 
 import 'dart:io';
 
-import 'package:path/path.dart' as path;
 import 'package:test/test.dart';
 import 'package:webdriver/io.dart';
 import 'package:webdriver/support/forwarder.dart';
 
-import '../io_config.dart' as config;
+import '../configs/async_io_config.dart' as config;
 
 const buttonClicked = 'Button clicked';
 const buttonNotClicked = 'Button not clicked';
@@ -40,14 +39,14 @@ void main() {
       forwarder =
           new WebDriverForwarder(driver, prefix: '/webdriver/session/1');
 
-      server = await HttpServer.bind(InternetAddress.anyIPv4, 0);
+      server = await config.createLocalServer();
       server.listen((request) {
         if (request.uri.path.startsWith('/webdriver')) {
           forwarder.forward(request);
         } else if (request.method == 'GET' &&
             request.uri.path.endsWith('test_page.html')) {
-          File file = new File(
-              path.join('test', 'support', 'forwarder_test_page.html'));
+          String testPagePath = config.forwarderTestPagePath;
+          File file = new File(testPagePath);
           request.response
             ..statusCode = HttpStatus.ok
             ..headers.set('Content-type', 'text/html');
@@ -59,7 +58,8 @@ void main() {
         }
       });
       address = new Uri.http('localhost:${server.port}', '/webdriver/');
-      forwardedDriver = await fromExistingSession('1', uri: address);
+      forwardedDriver =
+          fromExistingSessionSync('1', WebDriverSpec.JsonWire, uri: address);
 
       await forwardedDriver.get(address.resolve('/test_page.html'));
     });
@@ -139,7 +139,7 @@ void main() {
           await forwardedDriver.getRequest('element/div/text'), buttonClicked);
 
       await forwardedDriver.postRequest('enabledeep');
-      await forwardedDriver.navigate.refresh();
+      await forwardedDriver.refresh();
 
       expect(await forwardedDriver.getRequest('element/div/text'),
           buttonNotClicked);
@@ -150,7 +150,7 @@ void main() {
     });
 
     test('window close', () async {
-      await forwardedDriver.close();
+      await (await forwardedDriver.window).close();
     });
   }, timeout: const Timeout(const Duration(minutes: 2)));
 }

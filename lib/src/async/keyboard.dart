@@ -12,9 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-part of webdriver.core;
+import 'dart:async';
 
-class Keyboard extends _WebDriverBase {
+import '../common/request_client.dart';
+import '../common/webdriver_handler.dart';
+
+class Keyboard {
   static const String nullChar = '\uE000';
   static const String cancel = '\uE001';
   static const String help = '\uE002';
@@ -72,37 +75,30 @@ class Keyboard extends _WebDriverBase {
   static const String command = '\uE03D';
   static const String meta = command;
 
-  Keyboard._(WebDriver driver) : super(driver, '');
+  final AsyncRequestClient _client;
+  final WebDriverHandler _handler;
+
+  Keyboard(this._client, this._handler);
 
   /// Simulate pressing many keys at once as a 'chord'.
-  Future sendChord(Iterable<String> chordToSend) async {
-    await sendKeys(createChord(chordToSend));
-  }
-
-  /// Creates a string representation of a chord suitable for use in WebDriver.
-  String createChord(Iterable<String> chord) {
-    StringBuffer chordString = new StringBuffer();
-    for (String s in chord) {
-      chordString.write(s);
-    }
-    chordString.write(nullChar);
-
-    return chordString.toString();
-  }
+  Future sendChord(Iterable<String> chordToSend) => _client.send(
+      _handler.keyboard.buildSendChordRequest(chordToSend),
+      _handler.keyboard.parseSendChordResponse);
 
   /// Send [keysToSend] to the active element.
-  Future sendKeys(String keysToSend) async {
-    await _post('keys', {
-      'value': [keysToSend]
-    });
-  }
+  Future sendKeys(String keysToSend) => _client.send(
+      _handler.keyboard.buildSendKeysRequest(keysToSend),
+      _handler.keyboard.parseSendKeysResponse);
 
   @override
-  String toString() => '$driver.keyboard';
+  String toString() => '$_handler.keyboard($_client)';
 
   @override
-  int get hashCode => driver.hashCode;
+  int get hashCode => _client.hashCode;
 
   @override
-  bool operator ==(other) => other is Keyboard && other.driver == driver;
+  bool operator ==(other) =>
+      other is Keyboard &&
+      _handler == other._handler &&
+      _client == other._client;
 }

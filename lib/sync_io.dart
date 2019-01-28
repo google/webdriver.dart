@@ -14,14 +14,17 @@
 
 library webdriver.sync_io;
 
+import 'package:webdriver/src/request/sync_http_request_client.dart';
+
 import 'package:webdriver/sync_core.dart' as core
     show createDriver, fromExistingSession, WebDriver, WebDriverSpec;
 
 export 'package:webdriver/sync_core.dart'
     hide createDriver, fromExistingSession;
 
-/// Creates a WebDriver instance connected to the specified WebDriver server.
+/// Creates a new sync WebDriver using [SyncHttpRequestClient].
 ///
+/// This will bring in dependency on `dart:io`.
 /// Note: WebDriver endpoints will be constructed using [resolve] against
 /// [uri]. Therefore, if [uri] does not end with a trailing slash, the
 /// last path component will be dropped.
@@ -29,13 +32,24 @@ core.WebDriver createDriver(
         {Uri uri,
         Map<String, dynamic> desired,
         core.WebDriverSpec spec = core.WebDriverSpec.Auto}) =>
-    core.createDriver(uri: uri, desired: desired, spec: spec);
+    core.createDriver((prefix) => new SyncHttpRequestClient(prefix),
+        uri: uri, desired: desired, spec: spec);
 
-/// Creates a WebDriver instance connected to an existing session.
+/// Creates a sync WebDriver from existing session using
+/// [SyncHttpRequestClient].
 ///
+/// It will not make a call to WebDriver server if both [spec] (other than
+/// [core.WebDriverSpec.Auto]) and [capabilities] are provided (empty is fine).
+/// Otherwise, [capabilities] will be ignored.
+///
+/// This will bring in dependency on `dart:io`.
 /// Note: WebDriver endpoints will be constructed using [resolve] against
 /// [uri]. Therefore, if [uri] does not end with a trailing slash, the
 /// last path component will be dropped.
 core.WebDriver fromExistingSession(String sessionId,
-        {Uri uri, core.WebDriverSpec spec = core.WebDriverSpec.JsonWire}) =>
-    core.fromExistingSession(sessionId, uri: uri, spec: spec);
+        {Uri uri,
+        core.WebDriverSpec spec = core.WebDriverSpec.Auto,
+        Map<String, dynamic> capabilities}) =>
+    core.fromExistingSession(
+        sessionId, (prefix) => new SyncHttpRequestClient(prefix),
+        uri: uri, spec: spec, capabilities: capabilities);

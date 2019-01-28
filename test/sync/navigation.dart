@@ -18,14 +18,14 @@ library webdriver.navigation_test;
 import 'package:test/test.dart';
 import 'package:webdriver/sync_core.dart';
 
-import 'sync_io_config.dart' as config;
+import '../configs/sync_io_config.dart' as config;
 
-void runTests(config.createTestDriver createTestDriver) {
+void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
   group('Navigation', () {
     WebDriver driver;
 
     setUp(() {
-      driver = createTestDriver();
+      driver = config.createTestDriver(spec: spec);
       driver.get(config.testPagePath);
     });
 
@@ -38,7 +38,7 @@ void runTests(config.createTestDriver createTestDriver) {
 
     test('refresh', () {
       var element = driver.findElement(const By.tagName('button'));
-      driver.navigate.refresh();
+      driver.refresh();
       try {
         element.name;
       } on Exception {

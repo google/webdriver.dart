@@ -1,19 +1,22 @@
+## v2.1.0
+* Full support of JsonWire and W3C protocol specs in sync and async WebDriver.
+
 ## v2.0.0
 
 * Dropped support for `pkg:unittest`.
 * Add W3C spec mouse and keyboard support.
 * Remove deprecated methods in async WebDriver.
 
-The two big changes are the addition of support for synchronous communication 
+The two big changes are the addition of support for synchronous communication
 via the `package:sync_http` (along with an accompanying synchronous API) and
-support for the W3C spec. 
+support for the W3C spec.
 
 Currently, only the synchronous API supports the W3C spec, but in the future
 both asynchronous and synchronous APIs will support this.
- 
+
 ## v1.2.4
-* Adds Adds null check for status before checking status code. 
-  Avoids throwing exceptions if status code is not present. (Due to 
+* Adds null check for status before checking status code.
+  Avoids throwing exceptions if status code is not present. (Due to
   oversight this was never properly released.)
 
 ## v1.2.3

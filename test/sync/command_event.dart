@@ -19,23 +19,23 @@ import 'package:stack_trace/stack_trace.dart';
 import 'package:test/test.dart';
 import 'package:webdriver/sync_core.dart';
 
-import 'sync_io_config.dart' as config;
+import '../configs/sync_io_config.dart' as config;
 
-void runTests(config.createTestDriver createTestDriver) {
+void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
   group('CommandEvent', () {
     WebDriver driver;
 
     var events = <WebDriverCommandEvent>[];
 
     setUp(() {
-      driver = createTestDriver();
+      driver = config.createTestDriver(spec: spec);
       driver.addEventListener(events.add);
       driver.get(config.testPagePath);
     });
 
     tearDown(() {
-      events.clear();
       driver.quit();
+      events.clear();
       driver = null;
     });
 
@@ -46,10 +46,10 @@ void runTests(config.createTestDriver createTestDriver) {
       } catch (NoSuchAlertException) {}
       expect(events[1].method, 'GET');
       expect(events[1].endPoint, contains('alert'));
-      expect(events[1].exception, const TypeMatcher<WebDriverException>());
+      expect(events[1].exception, const isInstanceOf<WebDriverException>());
       expect(events[1].result, isNull);
       expect(events[1].startTime.isBefore(events[1].endTime), isTrue);
-      expect(events[1].stackTrace, const TypeMatcher<Chain>());
+      expect(events[1].stackTrace, const isInstanceOf<Chain>());
     });
 
     test('handles normal operation', () {
@@ -57,7 +57,7 @@ void runTests(config.createTestDriver createTestDriver) {
       expect(events[1].method, 'POST');
       expect(events[1].endPoint, contains('elements'));
       expect(events[1].exception, isNull);
-      expect(events[1].result, hasLength(0));
+      expect(events[1].result, isNotNull);
       expect(events[1].startTime.isBefore(events[1].endTime), isTrue);
       expect(events[1].stackTrace, const TypeMatcher<Chain>());
     });

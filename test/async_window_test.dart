@@ -15,13 +15,14 @@
 @TestOn('vm')
 library webdriver.window_test;
 
+import 'dart:async';
 import 'dart:math' show Point, Rectangle;
 
 import 'package:test/test.dart';
 import 'package:webdriver/support/async.dart';
 import 'package:webdriver/async_core.dart';
 
-import 'io_config.dart' as config;
+import 'configs/async_io_config.dart' as config;
 
 void main() {
   group('Window', () {
@@ -41,6 +42,9 @@ void main() {
     test('size', () async {
       var window = await driver.window;
       var size = const Rectangle<int>(0, 0, 600, 400);
+
+      // Firefox may take a bit longer to do the resize.
+      await new Future.delayed(const Duration(seconds: 1));
       await window.setSize(size);
       expect(await window.size, size);
     });

@@ -252,6 +252,7 @@ class FirefoxProfile {
         userPrefs.map((option) => option.asPrefString).join('\n').codeUnits;
     archive.addFile(
         new ArchiveFile('user.js', userJsContent.length, userJsContent));
+
     final zipData = new ZipEncoder().encode(archive);
     return {'firefox_profile': base64.encode(zipData)};
   }

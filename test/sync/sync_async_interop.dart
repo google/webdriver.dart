@@ -14,38 +14,39 @@
 
 library webdriver.support.async_test;
 
+import 'dart:io';
+
 import 'package:test/test.dart';
-import 'package:webdriver/sync_io.dart';
 import 'package:webdriver/async_core.dart' as async_core;
+import 'package:webdriver/sync_io.dart';
 
-import 'sync_io_config.dart' as config;
+import '../configs/async_io_config.dart' as async_config;
+import '../configs/sync_io_config.dart' as config;
 
-void runTests(config.createTestDriver createTestDriver) {
+void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
   group('Sync-async interop', () {
     WebDriver driver;
+    async_core.WebDriver asyncDriver;
+    HttpServer server;
 
-    setUp(() {
-      driver = createTestDriver();
+    setUp(() async {
+      driver = config.createTestDriver(spec: spec);
+
+      asyncDriver = driver.asyncDriver;
+      expect(asyncDriver, const TypeMatcher<async_core.WebDriver>());
+      server = await async_config.createTestServerAndGoToTestPage(asyncDriver);
     });
 
-    tearDown(() {
-      if (driver != null) {
-        driver.quit();
-      }
-      driver = null;
+    tearDown(() async {
+      driver?.quit();
+      await server?.close(force: true);
     });
 
     test('sync to async driver works', () async {
-      final asyncDriver = driver.asyncDriver;
-      expect(asyncDriver, const TypeMatcher<async_core.WebDriver>());
-      await asyncDriver.get(config.testPagePath);
       driver.findElement(const By.tagName('button'));
     });
 
     test('sync to async web element works', () async {
-      final asyncDriver = driver.asyncDriver;
-      expect(asyncDriver, const TypeMatcher<async_core.WebDriver>());
-      await asyncDriver.get(config.testPagePath);
       final button = driver.findElement(const By.tagName('button'));
       final asyncButton = button.asyncElement;
 
@@ -56,10 +57,6 @@ void runTests(config.createTestDriver createTestDriver) {
     });
 
     test('sync to async web element finding works', () async {
-      final asyncDriver = driver.asyncDriver;
-      expect(asyncDriver, const TypeMatcher<async_core.WebDriver>());
-      await asyncDriver.get(config.testPagePath);
-
       final table = driver.findElement(const By.tagName('table'));
       final asyncTable = table.asyncElement;
       final element = table.findElement(const By.tagName('tr'));

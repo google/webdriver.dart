@@ -12,64 +12,37 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-part of webdriver.core;
+import 'dart:async';
 
-class MouseButton {
-  /// The primary button is usually the left button or the only button on
-  /// single-button devices, used to activate a user interface control or select
-  /// text.
-  static const MouseButton primary = const MouseButton._(0);
+import 'package:webdriver/src/async/web_element.dart';
+import 'package:webdriver/src/common/mouse.dart';
+import 'package:webdriver/src/common/request_client.dart';
+import 'package:webdriver/src/common/webdriver_handler.dart';
 
-  /// The auxiliary button is usually the middle button, often combined with a
-  /// mouse wheel.
-  static const MouseButton auxiliary = const MouseButton._(1);
+class Mouse {
+  final AsyncRequestClient _client;
+  final WebDriverHandler _handler;
 
-  /// The secondary button is usually the right button, often used to display a
-  /// context menu.
-  static const MouseButton secondary = const MouseButton._(2);
-
-  final int value;
-
-  /// [value] for a mouse button is defined in
-  /// https://w3c.github.io/uievents/#widl-MouseEvent-button
-  const MouseButton._(this.value);
-}
-
-class Mouse extends _WebDriverBase {
-  Mouse._(WebDriver driver) : super(driver, '');
+  Mouse(this._client, this._handler);
 
   /// Click any mouse button (at the coordinates set by the last moveTo).
-  Future click([MouseButton button]) async {
-    var json = {};
-    if (button is MouseButton) {
-      json['button'] = button.value;
-    }
-    await _post('click', json);
-  }
+  Future click([MouseButton button = MouseButton.primary]) => _client.send(
+      _handler.mouse.buildClickRequest(button),
+      _handler.mouse.parseClickResponse);
 
   /// Click and hold any mouse button (at the coordinates set by the last
   /// moveTo command).
-  Future down([MouseButton button]) async {
-    var json = {};
-    if (button is MouseButton) {
-      json['button'] = button.value;
-    }
-    await _post('buttondown', json);
-  }
+  Future down([MouseButton button = MouseButton.primary]) => _client.send(
+      _handler.mouse.buildDownRequest(button),
+      _handler.mouse.parseDownResponse);
 
   /// Releases the mouse button previously held (where the mouse is currently at).
-  Future up([MouseButton button]) async {
-    var json = {};
-    if (button is MouseButton) {
-      json['button'] = button.value;
-    }
-    await _post('buttonup', json);
-  }
+  Future up([MouseButton button = MouseButton.primary]) => _client.send(
+      _handler.mouse.buildUpRequest(button), _handler.mouse.parseUpResponse);
 
   /// Double-clicks at the current mouse coordinates (set by moveTo).
-  Future doubleClick() async {
-    await _post('doubleclick');
-  }
+  Future doubleClick() => _client.send(_handler.mouse.buildDoubleClickRequest(),
+      _handler.mouse.parseDoubleClickResponse);
 
   /// Move the mouse.
   ///
@@ -81,25 +54,31 @@ class Mouse extends _WebDriverBase {
   ///
   /// If all three are specified, will move the mouse to the offset relative to
   /// the top-left corner of the [element].
+  ///
   /// All other combinations of parameters are illegal.
-  Future moveTo({WebElement element, int xOffset, int yOffset}) async {
-    var json = {};
-    if (element is WebElement) {
-      json['element'] = element.id;
-    }
-    if (xOffset is num && yOffset is num) {
-      json['xoffset'] = xOffset.floor();
-      json['yoffset'] = yOffset.floor();
-    }
-    await _post('moveto', json);
-  }
+  ///
+  /// Special notes for W3C, if the destination is out of the current viewport,
+  /// an 'MoveTargetOutOfBounds' exception will be thrown.
+  Future moveTo(
+          {WebElement element,
+          int xOffset,
+          int yOffset,
+          bool absolute = false}) =>
+      _client.send(
+          _handler.mouse.buildMoveToRequest(
+              elementId: element?.id,
+              xOffset: xOffset,
+              yOffset: yOffset,
+              absolute: absolute),
+          _handler.mouse.parseMoveToResponse);
 
   @override
-  String toString() => '$driver.mouse';
+  String toString() => '$_handler.mouse($_client)';
 
   @override
-  int get hashCode => driver.hashCode;
+  int get hashCode => _client.hashCode;
 
   @override
-  bool operator ==(other) => other is Mouse && other.driver == driver;
+  bool operator ==(other) =>
+      other is Mouse && _handler == other._handler && _client == other._client;
 }

@@ -14,94 +14,180 @@
 
 import 'dart:math' show Point, Rectangle;
 
-import '../../async_core.dart' as async_core;
+import 'package:webdriver/src/common/request_client.dart';
+import 'package:webdriver/src/common/webdriver_handler.dart';
+import 'package:webdriver/src/common/web_element.dart' as common;
 
+import '../../async_core.dart' as async_core;
+import '../common/by.dart';
 import 'common.dart';
 import 'web_driver.dart';
 
+// ignore: uri_does_not_exist
+import 'common_stub.dart'
+    // ignore: uri_does_not_exist
+    if (dart.library.io) 'common_io.dart';
+
 /// WebDriver representation and interactions with an HTML element.
-abstract class WebElement implements SearchContext {
-  String get id;
+class WebElement extends common.WebElement implements SearchContext {
+  @override
+  final String id;
 
   /// Produces a compatible [async_core.WebElement]. Allows backwards
   /// compatibility with other frameworks.
-  async_core.WebElement get asyncElement;
-
-  /// The context from which this element was found.
-  SearchContext get context;
+  async_core.WebElement get asyncElement => createAsyncWebElement(this);
 
   @override
-  WebDriver get driver;
+  async_core.SearchContext get asyncContext => asyncElement;
+
+  /// The context from which this element was found.
+  final SearchContext context;
+
+  @override
+  final WebDriver driver;
+
+  final SyncRequestClient _client;
+
+  final WebDriverHandler _handler;
 
   /// How the element was located from the context.
-  dynamic /* String | Finder */ get locator;
+  final dynamic /* String | Finder */ locator;
 
   /// The index of this element in the set of element founds. If the method
   /// used to find this element always returns one element, then this is null.
-  int get index;
+  final int index;
+
+  WebElement(this.driver, this._client, this._handler, this.id,
+      [this.context, this.locator, this.index]);
 
   /// Click on this element.
-  void click();
-
-  /// Submit this element if it is part of a form.
-  void submit();
+  void click() {
+    _client.send(_handler.element.buildClickRequest(id),
+        _handler.element.parseClickResponse);
+  }
 
   /// Send [keysToSend] to this element.
-  void sendKeys(String keysToSend);
+  void sendKeys(String keysToSend) {
+    _client.send(_handler.element.buildSendKeysRequest(id, keysToSend),
+        _handler.element.parseSendKeysResponse);
+  }
 
   /// Clear the content of a text element.
-  void clear();
+  void clear() {
+    _client.send(_handler.element.buildClearRequest(id),
+        _handler.element.parseClearResponse);
+  }
 
   /// Is this radio button/checkbox selected?
-  bool get selected;
+  bool get selected => _client.send(_handler.element.buildSelectedRequest(id),
+      _handler.element.parseSelectedResponse);
 
   /// Is this form element enabled?
-  bool get enabled;
+  bool get enabled => _client.send(_handler.element.buildEnabledRequest(id),
+      _handler.element.parseEnabledResponse);
 
   /// Is this element visible in the page?
-  bool get displayed;
+  bool get displayed => _client.send(_handler.element.buildDisplayedRequest(id),
+      _handler.element.parseDisplayedResponse);
 
   /// The location of the element.
   ///
   /// This is assumed to be the upper left corner of the element, but its
   /// implementation is not well defined in the JSON spec.
-  Point get location;
+  Point get location => _client.send(_handler.element.buildLocationRequest(id),
+      _handler.element.parseLocationResponse);
 
   /// The size of this element.
-  Rectangle<int> get size;
+  Rectangle<int> get size => _client.send(_handler.element.buildSizeRequest(id),
+      _handler.element.parseSizeResponse);
 
   /// The bounds of this element.
-  ///
-  /// This the W3C spec compatible approach.
-  Rectangle<int> get rect;
+  Rectangle<int> get rect {
+    final location = this.location;
+    final size = this.size;
+    return new Rectangle<int>(location.x, location.y, size.width, size.height);
+  }
 
   /// The tag name for this element.
-  String get name;
+  String get name => _client.send(_handler.element.buildNameRequest(id),
+      _handler.element.parseNameResponse);
 
   ///  Visible text within this element.
-  String get text;
+  String get text => _client.send(_handler.element.buildTextRequest(id),
+      _handler.element.parseTextResponse);
 
   ///Find an element nested within this element.
   ///
   /// Throws [NoSuchElementException] if matching element is not found.
   @override
-  WebElement findElement(By by);
+  WebElement findElement(By by) => new WebElement(
+      driver,
+      _client,
+      _handler,
+      _client.send(_handler.elementFinder.buildFindElementRequest(by, id),
+          _handler.elementFinder.parseFindElementResponse),
+      this,
+      by);
 
   /// Find multiple elements nested within this element.
   @override
-  List<WebElement> findElements(By by);
+  List<WebElement> findElements(By by) {
+    final ids = _client.send(
+        _handler.elementFinder.buildFindElementsRequest(by, id),
+        _handler.elementFinder.parseFindElementsResponse);
+
+    final elements = <WebElement>[];
+    int i = 0;
+    for (final id in ids) {
+      elements
+          .add(new WebElement(driver, _client, _handler, id, this, by, i++));
+    }
+
+    return elements;
+  }
 
   /// Access to the HTML attributes of this tag.
-  Attributes get attributes;
+  Attributes get attributes => new Attributes((name) => _client.send(
+      _handler.element.buildAttributeRequest(id, name),
+      _handler.element.parseAttributeResponse));
 
   /// Access to the HTML properties of this tag.
-  Attributes get properties;
+  Attributes get properties => new Attributes((name) => _client.send(
+      _handler.element.buildPropertyRequest(id, name),
+      _handler.element.parsePropertyResponse));
 
   /// Access to the cssProperties of this element.
-  Attributes get cssProperties;
+  Attributes get cssProperties => new Attributes((name) => _client.send(
+      _handler.element.buildCssPropertyRequest(id, name),
+      _handler.element.parseCssPropertyResponse));
 
   /// Are these two elements the same underlying element in the DOM.
-  bool equals(WebElement other);
+  bool equals(WebElement other) =>
+      other is WebElement && other.driver == this.driver && other.id == this.id;
 
-  Map<String, String> toJson();
+  @override
+  int get hashCode => driver.hashCode * 3 + id.hashCode;
+
+  @override
+  bool operator ==(other) =>
+      other is WebElement && other.driver == this.driver && other.id == this.id;
+
+  @override
+  String toString() {
+    final out = new StringBuffer()..write(context);
+    if (locator is By) {
+      if (index == null) {
+        out.write('.findElement(');
+      } else {
+        out.write('.findElements(');
+      }
+      out..write(locator)..write(')');
+    } else {
+      out..write('.')..write(locator);
+    }
+    if (index != null) {
+      out..write('[')..write(index)..write(']');
+    }
+    return out.toString();
+  }
 }

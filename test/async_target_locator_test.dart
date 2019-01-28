@@ -15,10 +15,12 @@
 @TestOn('vm')
 library webdriver.target_locator_test;
 
+import 'dart:io';
+
 import 'package:test/test.dart';
 import 'package:webdriver/async_core.dart';
 
-import 'io_config.dart' as config;
+import 'configs/async_io_config.dart' as config;
 
 /// Tests for switchTo.frame(). switchTo.window() and switchTo.alert are tested
 /// in other classes.
@@ -26,18 +28,17 @@ void main() {
   group('TargetLocator', () {
     WebDriver driver;
     WebElement frame;
+    HttpServer server;
 
     setUp(() async {
       driver = await config.createTestDriver();
-      await driver.get(config.testPagePath);
-      frame = await driver.findElement(const By.name('frame'));
+      server = await config.createTestServerAndGoToTestPage(driver);
+      frame = await driver.findElement(const By.id('frame'));
     });
 
     tearDown(() async {
-      if (driver != null) {
-        await driver.quit();
-      }
-      driver = null;
+      await driver?.quit();
+      await server?.close(force: true);
     });
 
     test('frame index', () async {
@@ -45,7 +46,7 @@ void main() {
       expect(await driver.pageSource, contains('this is a frame'));
     });
 
-    test('frame name', () async {
+    test('frame id', () async {
       await driver.switchTo.frame('frame');
       expect(await driver.pageSource, contains('this is a frame'));
     });

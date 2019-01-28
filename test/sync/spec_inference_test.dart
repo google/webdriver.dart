@@ -16,11 +16,9 @@
 library webdriver.spec_inference_test;
 
 import 'package:test/test.dart';
-import 'package:webdriver/src/sync/json_wire_spec/exception.dart' as json;
-import 'package:webdriver/src/sync/w3c_spec/exception.dart' as w3c;
 import 'package:webdriver/sync_core.dart';
 
-import 'sync_io_config.dart' as config;
+import '../configs/sync_io_config.dart' as config;
 
 void main() {
   group('Spec inference', () {
@@ -35,30 +33,34 @@ void main() {
       driver = null;
     });
 
-    test('chrome works', () {
-      driver = config.createChromeTestDriver(spec: WebDriverSpec.Auto);
-      driver.get(config.testPagePath);
+    test('chrome works', () async {
+      driver = config.createTestDriver(spec: WebDriverSpec.W3c);
+      final server = await config.createTestServerAndGoToTestPage(driver);
       final button = driver.findElement(const By.tagName('button'));
       try {
         button.findElement(const By.tagName('tr'));
         throw 'Expected NoSuchElementException';
       } catch (e) {
-        expect(e, const TypeMatcher<json.NoSuchElementException>());
+        expect(e, const TypeMatcher<NoSuchElementException>());
         expect(e.toString(), contains('Unable to locate element'));
       }
+
+      await server.close(force: true);
     });
 
-    test('firefox work', () {
-      driver = config.createFirefoxTestDriver(spec: WebDriverSpec.Auto);
-      driver.get(config.testPagePath);
+    test('firefox work', () async {
+      driver = config.createTestDriver(spec: WebDriverSpec.JsonWire);
+      final server = await config.createTestServerAndGoToTestPage(driver);
       final button = driver.findElement(const By.tagName('button'));
       try {
         button.findElement(const By.tagName('tr'));
         throw 'Expected W3cWebDriverException';
       } catch (e) {
-        expect(e, const TypeMatcher<w3c.W3cWebDriverException>());
+        expect(e, const TypeMatcher<NoSuchElementException>());
         expect(e.toString(), contains('Unable to locate element'));
       }
+
+      await server.close(force: true);
     });
   }, timeout: const Timeout(const Duration(minutes: 2)));
 }
