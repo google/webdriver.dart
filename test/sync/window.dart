@@ -66,5 +66,5 @@ void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
       expect(finalRect.width, greaterThan(300));
       expect(finalRect.height, greaterThan(300));
     }, skip: 'Unreliable on Travis');
-  }, timeout: const Timeout(const Duration(minutes: 2)));
+  }, timeout: const Timeout(Duration(minutes: 2)));
 }

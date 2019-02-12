@@ -44,7 +44,7 @@ void main() {
       var size = const Rectangle<int>(0, 0, 600, 400);
 
       // Firefox may take a bit longer to do the resize.
-      await new Future.delayed(const Duration(seconds: 1));
+      await Future.delayed(const Duration(seconds: 1));
       await window.setSize(size);
       expect(await window.size, size);
     });
@@ -75,5 +75,5 @@ void main() {
       expect(size.height, greaterThan(200));
       expect(size.width, greaterThan(300));
     }, skip: 'unreliable');
-  }, timeout: const Timeout(const Duration(minutes: 2)));
+  }, timeout: const Timeout(Duration(minutes: 2)));
 }

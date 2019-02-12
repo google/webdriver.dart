@@ -18,7 +18,7 @@ import 'package:webdriver/src/handler/json_wire/utils.dart';
 
 class JsonWireTimeoutsHandler extends TimeoutsHandler {
   WebDriverRequest _buildSetTimeoutRequest(String type, Duration timeout) =>
-      new WebDriverRequest.postRequest(
+      WebDriverRequest.postRequest(
           'timeouts', {'type': type, 'ms': timeout.inMilliseconds});
 
   @override

@@ -8,9 +8,9 @@ class HttpMethod {
   @override
   String toString() => 'HttpMethod.$name';
 
-  static const httpGet = const HttpMethod._('GET');
-  static const httpPost = const HttpMethod._('POST');
-  static const httpDelete = const HttpMethod._('DELETE');
+  static const httpGet = HttpMethod._('GET');
+  static const httpPost = HttpMethod._('POST');
+  static const httpDelete = HttpMethod._('DELETE');
 }
 
 /// Request data to send to WebDriver.

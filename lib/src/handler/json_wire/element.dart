@@ -8,7 +8,7 @@ import 'utils.dart';
 class JsonWireElementHandler extends ElementHandler {
   @override
   WebDriverRequest buildClickRequest(String elementId) {
-    return new WebDriverRequest.postRequest('${elementPrefix(elementId)}click');
+    return WebDriverRequest.postRequest('${elementPrefix(elementId)}click');
   }
 
   @override
@@ -18,8 +18,7 @@ class JsonWireElementHandler extends ElementHandler {
 
   @override
   WebDriverRequest buildSendKeysRequest(String elementId, String keysToSend) {
-    return new WebDriverRequest.postRequest(
-        '${elementPrefix(elementId)}value', {
+    return WebDriverRequest.postRequest('${elementPrefix(elementId)}value', {
       'value': [keysToSend]
     });
   }
@@ -31,7 +30,7 @@ class JsonWireElementHandler extends ElementHandler {
 
   @override
   WebDriverRequest buildClearRequest(String elementId) {
-    return new WebDriverRequest.postRequest('${elementPrefix(elementId)}clear');
+    return WebDriverRequest.postRequest('${elementPrefix(elementId)}clear');
   }
 
   @override
@@ -77,7 +76,7 @@ class JsonWireElementHandler extends ElementHandler {
   @override
   Point<int> parseLocationResponse(WebDriverResponse response) {
     final point = parseJsonWireResponse(response);
-    return new Point(point['x'].toInt(), point['y'].toInt());
+    return Point(point['x'].toInt(), point['y'].toInt());
   }
 
   @override
@@ -88,8 +87,7 @@ class JsonWireElementHandler extends ElementHandler {
   @override
   Rectangle<int> parseSizeResponse(WebDriverResponse response) {
     final size = parseJsonWireResponse(response);
-    return new Rectangle<int>(
-        0, 0, size['width'].toInt(), size['height'].toInt());
+    return Rectangle<int>(0, 0, size['width'].toInt(), size['height'].toInt());
   }
 
   @override
@@ -180,6 +178,6 @@ class JsonWireElementHandler extends ElementHandler {
   }
 
   /// Convert hyphenated-properties to camelCase.
-  String _cssPropName(String name) => name.splitMapJoin(new RegExp(r'-(\w)'),
+  String _cssPropName(String name) => name.splitMapJoin(RegExp(r'-(\w)'),
       onMatch: (m) => m.group(1).toUpperCase(), onNonMatch: (m) => m);
 }

@@ -45,7 +45,7 @@ Future<HttpServer> createTestServerAndGoToTestPage(WebDriver driver) async {
   server.listen((request) {
     if (request.method == 'GET' && request.uri.path.endsWith('.html')) {
       String testPagePath = '$testHomePath${request.uri.path}';
-      File file = new File(testPagePath);
+      File file = File(testPagePath);
       if (file.existsSync()) {
         request.response
           ..statusCode = HttpStatus.ok

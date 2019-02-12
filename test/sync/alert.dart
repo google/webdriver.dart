@@ -78,5 +78,5 @@ void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
       alert.accept();
       expect(output.text, endsWith('some keys'));
     });
-  }, timeout: const Timeout(const Duration(minutes: 2)));
+  }, timeout: const Timeout(Duration(minutes: 2)));
 }

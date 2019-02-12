@@ -11,15 +11,14 @@ abstract class RequestClient {
 
   RequestClient(this._prefix);
 
-  Uri resolve(String command) => _prefix.resolve(command.isEmpty
-      ? _prefix.path.replaceFirst(new RegExp('/\$'), '')
-      : command);
+  Uri resolve(String command) => _prefix.resolve(
+      command.isEmpty ? _prefix.path.replaceFirst(RegExp('/\$'), '') : command);
 
   @override
   String toString() => _prefix.toString();
 }
 
-typedef void SyncWebDriverListener(WebDriverCommandEvent event);
+typedef SyncWebDriverListener = void Function(WebDriverCommandEvent event);
 
 /// Sync client to send to and receive from WebDriver.
 abstract class SyncRequestClient extends RequestClient {
@@ -33,11 +32,11 @@ abstract class SyncRequestClient extends RequestClient {
 
   T send<T>(WebDriverRequest request, T Function(WebDriverResponse) process) {
     if (request.method == null) {
-      return process(new WebDriverResponse(200, null, request.body));
+      return process(WebDriverResponse(200, null, request.body));
     }
 
-    final startTime = new DateTime.now();
-    var trace = new Chain.current();
+    final startTime = DateTime.now();
+    var trace = Chain.current();
     trace = trace.foldFrames((f) => f.library.startsWith('package:webdriver/'),
         terse: true);
 
@@ -50,12 +49,12 @@ abstract class SyncRequestClient extends RequestClient {
       exception = e;
       rethrow;
     } finally {
-      final event = new WebDriverCommandEvent(
+      final event = WebDriverCommandEvent(
           method: request.method.name,
           endPoint: resolve(request.uri).toString(),
           params: request.body,
           startTime: startTime,
-          endTime: new DateTime.now(),
+          endTime: DateTime.now(),
           exception: exception,
           result: response,
           stackTrace: trace);
@@ -68,7 +67,7 @@ abstract class SyncRequestClient extends RequestClient {
   WebDriverResponse sendRaw(WebDriverRequest request);
 }
 
-typedef Future AsyncWebDriverListener(WebDriverCommandEvent event);
+typedef AsyncWebDriverListener = Future Function(WebDriverCommandEvent event);
 
 /// Async client to send to and receive from WebDriver.
 abstract class AsyncRequestClient extends RequestClient {
@@ -83,11 +82,11 @@ abstract class AsyncRequestClient extends RequestClient {
   Future<T> send<T>(
       WebDriverRequest request, T Function(WebDriverResponse) process) async {
     if (request.method == null) {
-      return process(new WebDriverResponse(200, null, request.body));
+      return process(WebDriverResponse(200, null, request.body));
     }
 
-    final startTime = new DateTime.now();
-    var trace = new Chain.current();
+    final startTime = DateTime.now();
+    var trace = Chain.current();
     trace = trace.foldFrames((f) => f.library.startsWith('package:webdriver/'),
         terse: true);
 
@@ -100,12 +99,12 @@ abstract class AsyncRequestClient extends RequestClient {
       exception = e;
       rethrow;
     } finally {
-      final event = new WebDriverCommandEvent(
+      final event = WebDriverCommandEvent(
           method: request.method.name,
           endPoint: resolve(request.uri).toString(),
           params: request.body,
           startTime: startTime,
-          endTime: new DateTime.now(),
+          endTime: DateTime.now(),
           exception: exception,
           result: response,
           stackTrace: trace);

@@ -65,5 +65,5 @@ void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
       expect(element.id, asyncElement.id);
       expect(element.name, await asyncElement.name);
     });
-  }, timeout: const Timeout(const Duration(minutes: 2)));
+  }, timeout: const Timeout(Duration(minutes: 2)));
 }

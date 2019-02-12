@@ -69,12 +69,8 @@ WebDriver createDriver(
     throw 'Unexpected spec: ${session.spec}';
   }
 
-  return new WebDriver(
-      uri,
-      session.id,
-      new UnmodifiableMapView(session.capabilities),
-      createRequestClient(uri.resolve('session/${session.id}/')),
-      session.spec);
+  return WebDriver(uri, session.id, UnmodifiableMapView(session.capabilities),
+      createRequestClient(uri.resolve('session/${session.id}/')), session.spec);
 }
 
 /// Creates a sync WebDriver from existing session.
@@ -88,7 +84,7 @@ WebDriver fromExistingSession(String sessionId,
     Map<String, dynamic> capabilities}) {
   uri ??= defaultUri;
 
-  var session = new SessionInfo(sessionId, spec, capabilities);
+  var session = SessionInfo(sessionId, spec, capabilities);
 
   // Update session info if not all is provided.
   if (spec == WebDriverSpec.Auto || capabilities == null) {
@@ -106,10 +102,6 @@ WebDriver fromExistingSession(String sessionId,
     throw 'Unexpected spec: ${session.spec}';
   }
 
-  return new WebDriver(
-      uri,
-      session.id,
-      new UnmodifiableMapView(session.capabilities),
-      createRequestClient(uri.resolve('session/${session.id}/')),
-      session.spec);
+  return WebDriver(uri, session.id, UnmodifiableMapView(session.capabilities),
+      createRequestClient(uri.resolve('session/${session.id}/')), session.spec);
 }

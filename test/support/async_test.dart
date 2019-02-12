@@ -22,7 +22,7 @@ import 'package:webdriver/support/async.dart';
 void main() {
   group('Lock', () {
     test('basic acquire/release', () async {
-      var lock = new Lock();
+      var lock = Lock();
       expect(lock.isHeld, isFalse);
       await lock.acquire();
       expect(lock.isHeld, isTrue);
@@ -34,26 +34,26 @@ void main() {
     });
 
     test('release without acquiring fails', () {
-      var lock = new Lock();
+      var lock = Lock();
       expect(() => lock.release(), throwsA(const isInstanceOf<StateError>()));
     });
 
     test('locking prevents acquisition of lock', () async {
-      var lock = new Lock();
+      var lock = Lock();
       var secondLockAcquired = false;
       await lock.acquire();
       lock.acquire().then((_) => secondLockAcquired = true);
       // Make sure that lock is not unacquired just because of timing
-      await new Future.delayed(const Duration(seconds: 1));
+      await Future.delayed(const Duration(seconds: 1));
       expect(secondLockAcquired, isFalse);
       lock.release();
       // Make sure that enough time has occurred that lock is acquired
-      await new Future.delayed(const Duration(seconds: 1));
+      await Future.delayed(const Duration(seconds: 1));
       expect(secondLockAcquired, isTrue);
     });
 
     test('awaitChecking throws exception on acquire of held lock', () async {
-      var lock = new Lock(awaitChecking: true);
+      var lock = Lock(awaitChecking: true);
       await lock.acquire();
       expect(lock.acquire(), throwsA(anything));
       lock.release();
@@ -63,7 +63,7 @@ void main() {
   });
 
   group('Clock.waitFor', () {
-    var clock = new FakeClock();
+    var clock = FakeClock();
 
     test('that returns a string', () async {
       var count = 0;
@@ -128,7 +128,7 @@ void main() {
     });
 
     test('uses Future value', () async {
-      var result = await clock.waitFor(() => new Future.value('a value'),
+      var result = await clock.waitFor(() => Future.value('a value'),
           matcher: 'a value');
       expect(result, 'a value');
     });
@@ -137,7 +137,7 @@ void main() {
       var exception;
 
       try {
-        await clock.waitFor(() => new Future.error('an exception'));
+        await clock.waitFor(() => Future.error('an exception'));
       } catch (e) {
         exception = e;
       }
@@ -179,12 +179,12 @@ void main() {
       }
       expect(exception, isNotNull);
     });
-  }, timeout: const Timeout(const Duration(minutes: 2)));
+  }, timeout: const Timeout(Duration(minutes: 2)));
 }
 
 /// FakeClock for testing waitFor functionality.
 class FakeClock extends Clock {
-  var _now = new DateTime(2020);
+  var _now = DateTime(2020);
 
   @override
   DateTime get now => _now;
@@ -192,6 +192,6 @@ class FakeClock extends Clock {
   @override
   Future sleep([Duration interval = defaultInterval]) {
     _now = _now.add(interval);
-    return new Future.value();
+    return Future.value();
   }
 }

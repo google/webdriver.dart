@@ -4,9 +4,9 @@ import 'package:webdriver/sync_core.dart' as sync_core;
 
 /// Returns a [sync_core.WebDriver] with the same URI + session ID.
 sync_core.WebDriver createSyncWebDriver(WebDriver driver) =>
-    new sync_core.WebDriver(
+    sync_core.WebDriver(
         driver.uri,
         driver.id,
         driver.capabilities,
-        new SyncHttpRequestClient(driver.uri.resolve('session/${driver.id}/')),
+        SyncHttpRequestClient(driver.uri.resolve('session/${driver.id}/')),
         driver.spec);

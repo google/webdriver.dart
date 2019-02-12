@@ -21,8 +21,7 @@ import 'package:webdriver/src/handler/json_wire/utils.dart';
 class JsonWireCookiesHandler extends CookiesHandler {
   @override
   WebDriverRequest buildAddCookieRequest(Cookie cookie) =>
-      new WebDriverRequest.postRequest(
-          'cookie', {'cookie': _serialize(cookie)});
+      WebDriverRequest.postRequest('cookie', {'cookie': _serialize(cookie)});
 
   @override
   void parseAddCookieResponse(WebDriverResponse response) {
@@ -31,7 +30,7 @@ class JsonWireCookiesHandler extends CookiesHandler {
 
   @override
   WebDriverRequest buildDeleteCookieRequest(String name) =>
-      new WebDriverRequest.deleteRequest('cookie/$name');
+      WebDriverRequest.deleteRequest('cookie/$name');
 
   @override
   void parseDeleteCookieResponse(WebDriverResponse response) {
@@ -40,7 +39,7 @@ class JsonWireCookiesHandler extends CookiesHandler {
 
   @override
   WebDriverRequest buildDeleteAllCookiesRequest() =>
-      new WebDriverRequest.deleteRequest('cookie');
+      WebDriverRequest.deleteRequest('cookie');
 
   @override
   void parseDeleteAllCookiesResponse(WebDriverResponse response) {
@@ -57,11 +56,11 @@ class JsonWireCookiesHandler extends CookiesHandler {
   Cookie parseGetCookieResponse(WebDriverResponse response, String name) =>
       parseGetAllCookiesResponse(response).firstWhere((c) => c.name == name,
           orElse: () =>
-              throw new NoSuchCookieException(0, 'Cookie $name is not found.'));
+              throw NoSuchCookieException(0, 'Cookie $name is not found.'));
 
   @override
   WebDriverRequest buildGetAllCookiesRequest() =>
-      new WebDriverRequest.getRequest('cookie');
+      WebDriverRequest.getRequest('cookie');
 
   @override
   List<Cookie> parseGetAllCookiesResponse(WebDriverResponse response) =>
@@ -75,5 +74,5 @@ class JsonWireCookiesHandler extends CookiesHandler {
   /// Deserializes the json object to get the cookie according to the spec.
   ///
   /// The spec is deserializing the same we do in [Cookie.fromJson].
-  Cookie _deserialize(dynamic content) => new Cookie.fromJson(content);
+  Cookie _deserialize(dynamic content) => Cookie.fromJson(content);
 }

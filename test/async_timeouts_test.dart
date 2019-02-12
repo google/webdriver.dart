@@ -41,5 +41,5 @@ void main() {
       await driver.timeouts.setImplicitTimeout(const Duration(seconds: 1));
       await driver.timeouts.setPageLoadTimeout(const Duration(seconds: 10));
     });
-  }, timeout: const Timeout(const Duration(minutes: 2)));
+  }, timeout: const Timeout(Duration(minutes: 2)));
 }

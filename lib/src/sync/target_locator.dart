@@ -46,7 +46,7 @@ class TargetLocator {
       _client.send(_handler.frame.buildSwitchByElementRequest(frame.id),
           _handler.frame.parseSwitchByElementResponse);
     } else if (frame is String) {
-      final frameId = _driver.findElement(new By.id(frame)).id;
+      final frameId = _driver.findElement(By.id(frame)).id;
       _client.send(_handler.frame.buildSwitchByElementRequest(frameId),
           _handler.frame.parseSwitchByElementResponse);
     } else {
@@ -73,7 +73,7 @@ class TargetLocator {
   ///
   /// In implementation, just getting alert won't trigger anything. Call
   /// `alert.text` or other action to really switch to alert.
-  Alert get alert => new Alert(_client, _handler);
+  Alert get alert => Alert(_client, _handler);
 
   @override
   String toString() => '$_driver.switchTo';

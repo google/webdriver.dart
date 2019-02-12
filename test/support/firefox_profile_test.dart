@@ -31,7 +31,7 @@ void main() {
           r'7e08-4474-a285-3208198ce6fd}\":{\"d\":\"/opt/firefox/browser/'
           r'extensions/{972ce4c6-7e08-4474-a285-3208198ce6fd}\",\"e\":true,\'
           r'"v\":\"40.0\",\"st\":1439535413000,\"mt\":1438968709000}}}");';
-      var option = new PrefsOption.parse(value);
+      var option = PrefsOption.parse(value);
       expect(option, const isInstanceOf<StringOption>());
       expect(option.asPrefString, value);
     });
@@ -39,21 +39,21 @@ void main() {
     test('parse and serialize string value with backslash', () {
       const value = r'user_pref("browser.cache.disk.parent_directory", '
           r'"\\\\volume\\web\\cache\\mz");';
-      var option = new PrefsOption.parse(value);
+      var option = PrefsOption.parse(value);
       expect(option, const isInstanceOf<StringOption>());
       expect(option.asPrefString, value);
     });
 
     test('parse and serialize integer value', () {
       const value = r'user_pref("browser.cache.frecency_experiment", 3);';
-      var option = new PrefsOption.parse(value);
+      var option = PrefsOption.parse(value);
       expect(option, const isInstanceOf<IntegerOption>());
       expect(option.asPrefString, value);
     });
 
     test('parse and serialize negative integer value', () {
       const value = r'user_pref("browser.cache.frecency_experiment", -3);';
-      var option = new PrefsOption.parse(value);
+      var option = PrefsOption.parse(value);
       expect(option, const isInstanceOf<IntegerOption>());
       expect(option.asPrefString, value);
     });
@@ -61,7 +61,7 @@ void main() {
     test('parse and serialize boolean true', () {
       const value =
           r'user_pref("browser.cache.disk.smart_size.first_run", true);';
-      var option = new PrefsOption.parse(value);
+      var option = PrefsOption.parse(value);
       expect(option, const isInstanceOf<BooleanOption>());
       expect(option.asPrefString, value);
     });
@@ -69,7 +69,7 @@ void main() {
     test('parse and serialize boolean false', () {
       const value =
           r'user_pref("browser.cache.disk.smart_size.first_run", false);';
-      var option = new PrefsOption.parse(value);
+      var option = PrefsOption.parse(value);
       expect(option, const isInstanceOf<BooleanOption>());
       expect(option.asPrefString, value);
     });
@@ -77,15 +77,15 @@ void main() {
     test('parse boolean uppercase True', () {
       const value =
           r'user_pref("browser.cache.disk.smart_size.first_run", True);';
-      var option = new PrefsOption.parse(value);
+      var option = PrefsOption.parse(value);
       expect(option, const isInstanceOf<BooleanOption>());
       expect(option.value, true);
     });
 
     test('added value should be in prefs', () {
-      var profile = new FirefoxProfile();
+      var profile = FirefoxProfile();
       var option =
-          new PrefsOption('browser.bookmarks.restore_default_bookmarks', false);
+          PrefsOption('browser.bookmarks.restore_default_bookmarks', false);
 
       expect(profile.setOption(option), true);
 
@@ -96,8 +96,8 @@ void main() {
     });
 
     test('overriding locked value should be ignored', () {
-      var profile = new FirefoxProfile();
-      var lockedOption = new PrefsOption('javascript.enabled', false);
+      var profile = FirefoxProfile();
+      var lockedOption = PrefsOption('javascript.enabled', false);
       var lockedOptionOrig =
           profile.prefs.firstWhere((e) => e.name == lockedOption.name);
       expect(lockedOption.value, isNot(lockedOptionOrig.value));
@@ -110,8 +110,8 @@ void main() {
     });
 
     test('removing locked value should be ignored', () {
-      var profile = new FirefoxProfile();
-      var lockedOption = new PrefsOption('javascript.enabled', false);
+      var profile = FirefoxProfile();
+      var lockedOption = PrefsOption('javascript.enabled', false);
       var lockedOptionOrig =
           profile.prefs.firstWhere((e) => e.name == lockedOption.name);
       expect(lockedOption.value, isNot(lockedOptionOrig.value));
@@ -124,8 +124,8 @@ void main() {
     });
 
     test('encode/decode "user.js" in-memory', () {
-      var profile = new FirefoxProfile();
-      profile.setOption(new PrefsOption(Capabilities.hasNativeEvents, true));
+      var profile = FirefoxProfile();
+      profile.setOption(PrefsOption(Capabilities.hasNativeEvents, true));
 
       var archive = unpackArchiveData(profile.toJson());
 
@@ -134,9 +134,8 @@ void main() {
       expectedFiles.forEach((f) => expect(
           archive.files, anyElement((ArchiveFile f) => f.name == 'prefs.js')));
 
-      var prefs = FirefoxProfile.loadPrefsFile(new MockFile(
-          new String.fromCharCodes(
-              archive.files.firstWhere((f) => f.name == 'user.js').content)));
+      var prefs = FirefoxProfile.loadPrefsFile(MockFile(String.fromCharCodes(
+          archive.files.firstWhere((f) => f.name == 'user.js').content)));
       expect(
           prefs,
           anyElement((PrefsOption o) =>
@@ -144,9 +143,9 @@ void main() {
     });
 
     test('encode/decode profile directory from disk', () {
-      var profile = new FirefoxProfile(
-          profileDirectory: new io.Directory('test/support/firefox_profile'));
-      profile.setOption(new PrefsOption(Capabilities.hasNativeEvents, true));
+      var profile = FirefoxProfile(
+          profileDirectory: io.Directory('test/support/firefox_profile'));
+      profile.setOption(PrefsOption(Capabilities.hasNativeEvents, true));
 
       var archive = unpackArchiveData(profile.toJson());
 
@@ -161,20 +160,19 @@ void main() {
       expectedFiles.forEach((f) => expect(
           archive.files, anyElement((ArchiveFile f) => f.name == 'prefs.js')));
 
-      var prefs = FirefoxProfile.loadPrefsFile(new MockFile(
-          new String.fromCharCodes(
-              archive.files.firstWhere((f) => f.name == 'user.js').content)));
+      var prefs = FirefoxProfile.loadPrefsFile(MockFile(String.fromCharCodes(
+          archive.files.firstWhere((f) => f.name == 'user.js').content)));
       expect(
           prefs,
           anyElement((PrefsOption o) =>
               o.name == Capabilities.hasNativeEvents && o.value == true));
     });
-  }, timeout: const Timeout(const Duration(minutes: 2)));
+  }, timeout: const Timeout(Duration(minutes: 2)));
 }
 
 Archive unpackArchiveData(Map profileData) {
   var zipArchive = base64.decode(profileData['firefox_profile']);
-  return new ZipDecoder().decodeBytes(zipArchive, verify: true);
+  return ZipDecoder().decodeBytes(zipArchive, verify: true);
 }
 
 /// Simulate file for `FirefoxProfile.loadPrefsFile()`
@@ -184,7 +182,7 @@ class MockFile implements io.File {
   MockFile(this.content);
 
   @override
-  String readAsStringSync({Encoding encoding: utf8}) => content;
+  String readAsStringSync({Encoding encoding = utf8}) => content;
 
   @override
   dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);

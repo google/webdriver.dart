@@ -37,15 +37,15 @@ void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
     });
 
     test('add simple cookie and get', () {
-      driver.cookies.add(new Cookie('mycookie', 'myvalue'));
+      driver.cookies.add(Cookie('mycookie', 'myvalue'));
 
       final cookie = driver.cookies.getCookie('mycookie');
       expect(cookie.value, 'myvalue');
     });
 
     test('add complex cookie and get', () {
-      var date = new DateTime.utc(2020);
-      driver.cookies.add(new Cookie('mycookie', 'myvalue',
+      var date = DateTime.utc(2020);
+      driver.cookies.add(Cookie('mycookie', 'myvalue',
           path: '/', domain: '.google.com', secure: false, expiry: date));
 
       final cookie = driver.cookies.getCookie('mycookie');
@@ -54,9 +54,9 @@ void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
     });
 
     test('get all cookies', () {
-      driver.cookies.add(new Cookie('mycookie', 'myvalue'));
-      var date = new DateTime.utc(2020);
-      driver.cookies.add(new Cookie('mycomplexcookie', 'mycomplexvalue',
+      driver.cookies.add(Cookie('mycookie', 'myvalue'));
+      var date = DateTime.utc(2020);
+      driver.cookies.add(Cookie('mycomplexcookie', 'mycomplexvalue',
           path: '/', domain: '.google.com', secure: false, expiry: date));
 
       bool found = false;
@@ -83,7 +83,7 @@ void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
     });
 
     test('delete cookie', () {
-      driver.cookies.add(new Cookie('mycookie', 'myvalue'));
+      driver.cookies.add(Cookie('mycookie', 'myvalue'));
       driver.cookies.delete('mycookie');
       bool found = false;
       for (var cookie in driver.cookies.all) {
@@ -100,9 +100,9 @@ void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
       // "come back" after a short amount of time.
       // So instead, we plant two cookies and test that they are actually
       // removed by [deleteAll].
-      driver.cookies.add(new Cookie('mycookie', 'myvalue'));
-      var date = new DateTime.utc(2020);
-      driver.cookies.add(new Cookie('mycomplexcookie', 'mycomplexvalue',
+      driver.cookies.add(Cookie('mycookie', 'myvalue'));
+      var date = DateTime.utc(2020);
+      driver.cookies.add(Cookie('mycomplexcookie', 'mycomplexvalue',
           path: '/', domain: '.google.com', secure: false, expiry: date));
 
       driver.cookies.deleteAll();
@@ -117,5 +117,5 @@ void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
 
       expect(found, isFalse);
     });
-  }, timeout: const Timeout(const Duration(minutes: 2)));
+  }, timeout: const Timeout(Duration(minutes: 2)));
 }

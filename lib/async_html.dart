@@ -37,7 +37,7 @@ Future<core.WebDriver> createDriver(
         {Uri uri,
         Map<String, dynamic> desired,
         WebDriverSpec spec = WebDriverSpec.Auto}) =>
-    core.createDriver((prefix) => new AsyncXhrRequestClient(prefix),
+    core.createDriver((prefix) => AsyncXhrRequestClient(prefix),
         uri: uri, desired: desired, spec: spec);
 
 /// Creates an async WebDriver from existing session using
@@ -50,7 +50,7 @@ Future<core.WebDriver> createDriver(
 Future<core.WebDriver> fromExistingSession(String sessionId,
         {Uri uri, WebDriverSpec spec = WebDriverSpec.Auto}) =>
     core.fromExistingSession(
-        (prefix) => new AsyncXhrRequestClient(prefix), sessionId,
+        (prefix) => AsyncXhrRequestClient(prefix), sessionId,
         uri: uri, spec: spec);
 
 /// Creates an async WebDriver from existing session with a sync function using
@@ -67,5 +67,5 @@ Future<core.WebDriver> fromExistingSession(String sessionId,
 core.WebDriver fromExistingSessionSync(String sessionId, WebDriverSpec spec,
         {Uri uri, Map<String, dynamic> capabilities}) =>
     core.fromExistingSessionSync(
-        (prefix) => new AsyncXhrRequestClient(prefix), sessionId, spec,
+        (prefix) => AsyncXhrRequestClient(prefix), sessionId, spec,
         uri: uri, capabilities: capabilities);

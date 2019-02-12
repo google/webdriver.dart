@@ -19,7 +19,7 @@ import 'package:webdriver/src/handler/w3c/utils.dart';
 class W3cAlertHandler implements AlertHandler {
   @override
   WebDriverRequest buildGetTextRequest() =>
-      new WebDriverRequest.getRequest('alert/text');
+      WebDriverRequest.getRequest('alert/text');
 
   @override
   String parseGetTextResponse(WebDriverResponse response) =>
@@ -27,7 +27,7 @@ class W3cAlertHandler implements AlertHandler {
 
   @override
   WebDriverRequest buildAcceptRequest() =>
-      new WebDriverRequest.postRequest('alert/accept');
+      WebDriverRequest.postRequest('alert/accept');
 
   @override
   void parseAcceptResponse(WebDriverResponse response) {
@@ -36,7 +36,7 @@ class W3cAlertHandler implements AlertHandler {
 
   @override
   WebDriverRequest buildDismissRequest() =>
-      new WebDriverRequest.postRequest('alert/dismiss');
+      WebDriverRequest.postRequest('alert/dismiss');
 
   @override
   void parseDismissResponse(WebDriverResponse response) {
@@ -47,7 +47,7 @@ class W3cAlertHandler implements AlertHandler {
   // But this is what geckodriver uses.
   @override
   WebDriverRequest buildSendTextRequest(String keysToSend) =>
-      new WebDriverRequest.postRequest('alert/text', {'text': keysToSend});
+      WebDriverRequest.postRequest('alert/text', {'text': keysToSend});
 
   @override
   void parseSendTextResponse(WebDriverResponse response) {

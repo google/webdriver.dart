@@ -5,15 +5,14 @@ import 'package:webdriver/src/handler/json_wire/utils.dart';
 class JsonWireCoreHandler extends CoreHandler {
   @override
   WebDriverRequest buildCurrentUrlRequest() =>
-      new WebDriverRequest.getRequest('url');
+      WebDriverRequest.getRequest('url');
 
   @override
   String parseCurrentUrlResponse(WebDriverResponse response) =>
       parseJsonWireResponse(response);
 
   @override
-  WebDriverRequest buildTitleRequest() =>
-      new WebDriverRequest.getRequest('title');
+  WebDriverRequest buildTitleRequest() => WebDriverRequest.getRequest('title');
 
   @override
   String parseTitleResponse(WebDriverResponse response) =>
@@ -21,7 +20,7 @@ class JsonWireCoreHandler extends CoreHandler {
 
   @override
   WebDriverRequest buildPageSourceRequest() =>
-      new WebDriverRequest.getRequest('source');
+      WebDriverRequest.getRequest('source');
 
   @override
   String parsePageSourceResponse(WebDriverResponse response) =>
@@ -29,7 +28,7 @@ class JsonWireCoreHandler extends CoreHandler {
 
   @override
   WebDriverRequest buildScreenshotRequest() =>
-      new WebDriverRequest.getRequest('screenshot');
+      WebDriverRequest.getRequest('screenshot');
 
   @override
   String parseScreenshotResponse(WebDriverResponse response) =>
@@ -37,7 +36,7 @@ class JsonWireCoreHandler extends CoreHandler {
 
   @override
   WebDriverRequest buildExecuteAsyncRequest(String script, List args) =>
-      new WebDriverRequest.postRequest(
+      WebDriverRequest.postRequest(
           'execute_async', {'script': script, 'args': serialize(args)});
 
   @override
@@ -47,7 +46,7 @@ class JsonWireCoreHandler extends CoreHandler {
 
   @override
   WebDriverRequest buildExecuteRequest(String script, List args) =>
-      new WebDriverRequest.postRequest(
+      WebDriverRequest.postRequest(
           'execute', {'script': script, 'args': serialize(args)});
 
   @override
@@ -57,7 +56,7 @@ class JsonWireCoreHandler extends CoreHandler {
 
   @override
   WebDriverRequest buildDeleteSessionRequest() =>
-      new WebDriverRequest.deleteRequest('');
+      WebDriverRequest.deleteRequest('');
 
   @override
   void parseDeleteSessionResponse(WebDriverResponse response) {

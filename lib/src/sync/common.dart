@@ -25,7 +25,7 @@ const String jsonWireElementStr = 'ELEMENT';
 // Source: https://www.w3.org/TR/webdriver/#elements
 const String w3cElementStr = 'element-6066-11e4-a52e-4f735466cecf';
 
-typedef String GetAttribute(String name);
+typedef GetAttribute = String Function(String name);
 
 /// Simple class to provide access to indexed properties such as WebElement
 /// attributes or css styles.

@@ -39,7 +39,7 @@ Future<core.WebDriver> createDriver(
         {Uri uri,
         Map<String, dynamic> desired,
         core.WebDriverSpec spec = core.WebDriverSpec.Auto}) =>
-    core.createDriver((prefix) => new AsyncIoRequestClient(prefix),
+    core.createDriver((prefix) => AsyncIoRequestClient(prefix),
         uri: uri, desired: desired, spec: spec);
 
 /// Creates an async WebDriver from existing session using
@@ -52,7 +52,7 @@ Future<core.WebDriver> createDriver(
 Future<core.WebDriver> fromExistingSession(String sessionId,
         {Uri uri, core.WebDriverSpec spec = core.WebDriverSpec.Auto}) =>
     core.fromExistingSession(
-        (prefix) => new AsyncIoRequestClient(prefix), sessionId,
+        (prefix) => AsyncIoRequestClient(prefix), sessionId,
         uri: uri, spec: spec);
 
 /// Creates an async WebDriver from existing session with a sync function using
@@ -70,5 +70,5 @@ core.WebDriver fromExistingSessionSync(
         String sessionId, core.WebDriverSpec spec,
         {Uri uri, Map<String, dynamic> capabilities}) =>
     core.fromExistingSessionSync(
-        (prefix) => new AsyncIoRequestClient(prefix), sessionId, spec,
+        (prefix) => AsyncIoRequestClient(prefix), sessionId, spec,
         uri: uri, capabilities: capabilities);

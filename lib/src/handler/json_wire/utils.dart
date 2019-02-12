@@ -18,7 +18,7 @@ dynamic parseJsonWireResponse(WebDriverResponse response,
     final rawBody = response.body == null || response.body.isEmpty
         ? '<empty response>'
         : response.body;
-    throw new WebDriverException(
+    throw WebDriverException(
         response.statusCode, 'Error parsing response body: $rawBody');
   }
 
@@ -32,58 +32,57 @@ dynamic parseJsonWireResponse(WebDriverResponse response,
 
     switch (status) {
       case 0:
-        throw new StateError(
-            'Not a WebDriverError Status: 0 Message: $message');
+        throw StateError('Not a WebDriverError Status: 0 Message: $message');
       case 6:
-        throw new NoSuchDriverException(status, message);
+        throw NoSuchDriverException(status, message);
       case 7:
-        throw new NoSuchElementException(status, message);
+        throw NoSuchElementException(status, message);
       case 8:
-        throw new NoSuchFrameException(status, message);
+        throw NoSuchFrameException(status, message);
       case 9:
-        throw new UnknownCommandException(status, message);
+        throw UnknownCommandException(status, message);
       case 10:
-        throw new StaleElementReferenceException(status, message);
+        throw StaleElementReferenceException(status, message);
       case 11:
-        throw new ElementNotVisibleException(status, message);
+        throw ElementNotVisibleException(status, message);
       case 12:
-        throw new InvalidElementStateException(status, message);
+        throw InvalidElementStateException(status, message);
       case 15:
-        throw new ElementIsNotSelectableException(status, message);
+        throw ElementIsNotSelectableException(status, message);
       case 17:
-        throw new JavaScriptException(status, message);
+        throw JavaScriptException(status, message);
       case 19:
-        throw new XPathLookupException(status, message);
+        throw XPathLookupException(status, message);
       case 21:
-        throw new TimeoutException(status, message);
+        throw TimeoutException(status, message);
       case 23:
-        throw new NoSuchWindowException(status, message);
+        throw NoSuchWindowException(status, message);
       case 24:
-        throw new InvalidCookieDomainException(status, message);
+        throw InvalidCookieDomainException(status, message);
       case 25:
-        throw new UnableToSetCookieException(status, message);
+        throw UnableToSetCookieException(status, message);
       case 26:
-        throw new UnexpectedAlertOpenException(status, message);
+        throw UnexpectedAlertOpenException(status, message);
       case 27:
-        throw new NoSuchAlertException(status, message);
+        throw NoSuchAlertException(status, message);
       case 28:
-        throw new ScriptTimeoutException(status, message);
+        throw ScriptTimeoutException(status, message);
       case 29:
-        throw new InvalidElementCoordinatesException(status, message);
+        throw InvalidElementCoordinatesException(status, message);
       case 30:
-        throw new IMENotAvailableException(status, message);
+        throw IMENotAvailableException(status, message);
       case 31:
-        throw new IMEEngineActivationFailedException(status, message);
+        throw IMEEngineActivationFailedException(status, message);
       case 32:
-        throw new InvalidSelectorException(status, message);
+        throw InvalidSelectorException(status, message);
       case 33:
-        throw new SessionNotCreatedException(status, message);
+        throw SessionNotCreatedException(status, message);
       case 34:
-        throw new MoveTargetOutOfBoundsException(status, message);
+        throw MoveTargetOutOfBoundsException(status, message);
       case 13:
-        throw new UnknownException(status, message);
+        throw UnknownException(status, message);
       default:
-        throw new WebDriverException(status, message);
+        throw WebDriverException(status, message);
     }
   }
 

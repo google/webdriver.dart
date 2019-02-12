@@ -78,5 +78,5 @@ void main() {
       await alert.accept();
       expect(await output.text, endsWith('some keys'));
     });
-  }, timeout: const Timeout(const Duration(minutes: 2)));
+  }, timeout: const Timeout(Duration(minutes: 2)));
 }

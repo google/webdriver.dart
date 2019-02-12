@@ -32,7 +32,7 @@ core.WebDriver createDriver(
         {Uri uri,
         Map<String, dynamic> desired,
         core.WebDriverSpec spec = core.WebDriverSpec.Auto}) =>
-    core.createDriver((prefix) => new SyncHttpRequestClient(prefix),
+    core.createDriver((prefix) => SyncHttpRequestClient(prefix),
         uri: uri, desired: desired, spec: spec);
 
 /// Creates a sync WebDriver from existing session using
@@ -51,5 +51,5 @@ core.WebDriver fromExistingSession(String sessionId,
         core.WebDriverSpec spec = core.WebDriverSpec.Auto,
         Map<String, dynamic> capabilities}) =>
     core.fromExistingSession(
-        sessionId, (prefix) => new SyncHttpRequestClient(prefix),
+        sessionId, (prefix) => SyncHttpRequestClient(prefix),
         uri: uri, spec: spec, capabilities: capabilities);

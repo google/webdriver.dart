@@ -12,7 +12,7 @@ class JsonWireKeyboardHandler extends KeyboardHandler {
 
   @override
   WebDriverRequest buildSendKeysRequest(String keysToSend) {
-    return new WebDriverRequest.postRequest('keys', {
+    return WebDriverRequest.postRequest('keys', {
       'value': [keysToSend]
     });
   }
@@ -23,7 +23,7 @@ class JsonWireKeyboardHandler extends KeyboardHandler {
   }
 
   String _createChord(Iterable<String> chord) {
-    StringBuffer chordString = new StringBuffer();
+    StringBuffer chordString = StringBuffer();
     for (String s in chord) {
       chordString.write(s);
     }

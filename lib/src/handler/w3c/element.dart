@@ -8,7 +8,7 @@ import 'utils.dart';
 class W3cElementHandler extends ElementHandler {
   @override
   WebDriverRequest buildClickRequest(String elementId) {
-    return new WebDriverRequest.postRequest('${elementPrefix(elementId)}click');
+    return WebDriverRequest.postRequest('${elementPrefix(elementId)}click');
   }
 
   @override
@@ -18,8 +18,7 @@ class W3cElementHandler extends ElementHandler {
 
   @override
   WebDriverRequest buildSendKeysRequest(String elementId, String keysToSend) {
-    return new WebDriverRequest.postRequest(
-        '${elementPrefix(elementId)}value', {
+    return WebDriverRequest.postRequest('${elementPrefix(elementId)}value', {
       'text': keysToSend, // What geckodriver really wants.
       'value': keysToSend // Actual W3C spec.
     });
@@ -32,7 +31,7 @@ class W3cElementHandler extends ElementHandler {
 
   @override
   WebDriverRequest buildClearRequest(String elementId) {
-    return new WebDriverRequest.postRequest('${elementPrefix(elementId)}clear');
+    return WebDriverRequest.postRequest('${elementPrefix(elementId)}clear');
   }
 
   @override
@@ -88,16 +87,16 @@ class W3cElementHandler extends ElementHandler {
   @override
   Rectangle<int> parseSizeResponse(WebDriverResponse response) {
     final rect = _parseRectResponse(response);
-    return new Rectangle(0, 0, rect.width, rect.height);
+    return Rectangle(0, 0, rect.width, rect.height);
   }
 
   WebDriverRequest _buildRectRequest(String elementId) {
-    return new WebDriverRequest.getRequest('${elementPrefix(elementId)}rect');
+    return WebDriverRequest.getRequest('${elementPrefix(elementId)}rect');
   }
 
   Rectangle<int> _parseRectResponse(WebDriverResponse response) {
     final rect = parseW3cResponse(response);
-    return new Rectangle(rect['x'].toInt(), rect['y'].toInt(),
+    return Rectangle(rect['x'].toInt(), rect['y'].toInt(),
         rect['width'].toInt(), rect['height'].toInt());
   }
 

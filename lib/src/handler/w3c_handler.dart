@@ -18,49 +18,49 @@ import 'package:webdriver/src/handler/w3c/window.dart';
 
 class W3cWebDriverHandler extends WebDriverHandler {
   @override
-  final SessionHandler session = new W3cSessionHandler();
+  final SessionHandler session = W3cSessionHandler();
 
   @override
-  final CoreHandler core = new W3cCoreHandler();
+  final CoreHandler core = W3cCoreHandler();
 
   @override
-  final KeyboardHandler keyboard = new W3cKeyboardHandler();
+  final KeyboardHandler keyboard = W3cKeyboardHandler();
 
   @override
-  final MouseHandler mouse = new W3cMouseHandler();
+  final MouseHandler mouse = W3cMouseHandler();
 
   @override
-  final ElementFinder elementFinder = new W3cElementFinder();
+  final ElementFinder elementFinder = W3cElementFinder();
 
   @override
-  final ElementHandler element = new W3cElementHandler();
+  final ElementHandler element = W3cElementHandler();
 
   @override
-  final AlertHandler alert = new W3cAlertHandler();
+  final AlertHandler alert = W3cAlertHandler();
 
   @override
-  final NavigationHandler navigation = new W3cNavigationHandler();
+  final NavigationHandler navigation = W3cNavigationHandler();
 
   @override
-  final WindowHandler window = new W3cWindowHandler();
+  final WindowHandler window = W3cWindowHandler();
 
   @override
-  final FrameHandler frame = new W3cFrameHandler();
+  final FrameHandler frame = W3cFrameHandler();
 
   @override
-  final CookiesHandler cookies = new W3cCookiesHandler();
+  final CookiesHandler cookies = W3cCookiesHandler();
 
   @override
-  TimeoutsHandler timeouts = new W3cTimeoutsHandler();
+  TimeoutsHandler timeouts = W3cTimeoutsHandler();
 
   @override
   LogsHandler get logs =>
-      throw new UnsupportedError('Unsupported for W3cWebDriverHandler');
+      throw UnsupportedError('Unsupported for W3cWebDriverHandler');
 
   @override
   WebDriverRequest buildGeneralRequest(HttpMethod method, String uri,
           [params]) =>
-      new WebDriverRequest(
+      WebDriverRequest(
           method, uri, params == null ? null : json.encode(serialize(params)));
 
   @override

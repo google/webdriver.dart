@@ -61,5 +61,5 @@ void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
       driver.switchTo.frame();
       driver.findElement(const By.tagName('button'));
     });
-  }, timeout: const Timeout(const Duration(minutes: 2)));
+  }, timeout: const Timeout(Duration(minutes: 2)));
 }

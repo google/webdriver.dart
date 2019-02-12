@@ -43,7 +43,7 @@ class TargetLocator {
       await _client.send(_handler.frame.buildSwitchByElementRequest(frame.id),
           _handler.frame.parseSwitchByElementResponse);
     } else if (frame is String) {
-      final frameId = (await _driver.findElement(new By.id(frame))).id;
+      final frameId = (await _driver.findElement(By.id(frame))).id;
       await _client.send(_handler.frame.buildSwitchByElementRequest(frameId),
           _handler.frame.parseSwitchByElementResponse);
     } else {
@@ -66,7 +66,7 @@ class TargetLocator {
   /// instance.
   ///
   /// Throws [NoSuchAlertException] if there is not currently an alert.
-  Alert get alert => new Alert(_client, _handler);
+  Alert get alert => Alert(_client, _handler);
 
   @override
   String toString() => '$_driver.switchTo';

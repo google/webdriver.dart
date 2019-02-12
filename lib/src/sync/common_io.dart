@@ -6,11 +6,11 @@ import 'web_element.dart';
 
 /// Returns an [async_core.WebDriver] with the same URI + session ID.
 async_core.WebDriver createAsyncWebDriver(WebDriver driver) =>
-    new async_core.WebDriver(
+    async_core.WebDriver(
         driver.uri,
         driver.id,
         driver.capabilities,
-        new AsyncIoRequestClient(driver.uri.resolve('session/${driver.id}/')),
+        AsyncIoRequestClient(driver.uri.resolve('session/${driver.id}/')),
         driver.spec);
 
 /// Returns an [async_core.WebElement] based on a current [WebElement].

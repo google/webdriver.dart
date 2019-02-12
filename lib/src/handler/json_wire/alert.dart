@@ -19,7 +19,7 @@ import 'package:webdriver/src/handler/json_wire/utils.dart';
 class JsonWireAlertHandler implements AlertHandler {
   @override
   WebDriverRequest buildGetTextRequest() =>
-      new WebDriverRequest.getRequest('alert_text');
+      WebDriverRequest.getRequest('alert_text');
 
   @override
   String parseGetTextResponse(WebDriverResponse response) =>
@@ -27,7 +27,7 @@ class JsonWireAlertHandler implements AlertHandler {
 
   @override
   WebDriverRequest buildAcceptRequest() =>
-      new WebDriverRequest.postRequest('accept_alert');
+      WebDriverRequest.postRequest('accept_alert');
 
   @override
   void parseAcceptResponse(WebDriverResponse response) {
@@ -36,7 +36,7 @@ class JsonWireAlertHandler implements AlertHandler {
 
   @override
   WebDriverRequest buildDismissRequest() =>
-      new WebDriverRequest.postRequest('dismiss_alert');
+      WebDriverRequest.postRequest('dismiss_alert');
 
   @override
   void parseDismissResponse(WebDriverResponse response) {
@@ -45,7 +45,7 @@ class JsonWireAlertHandler implements AlertHandler {
 
   @override
   WebDriverRequest buildSendTextRequest(String keysToSend) =>
-      new WebDriverRequest.postRequest('alert_text', {'text': keysToSend});
+      WebDriverRequest.postRequest('alert_text', {'text': keysToSend});
 
   @override
   void parseSendTextResponse(WebDriverResponse response) {

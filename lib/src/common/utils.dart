@@ -7,12 +7,12 @@ import 'package:webdriver/src/handler/w3c_handler.dart';
 WebDriverHandler getHandler(WebDriverSpec spec) {
   switch (spec) {
     case WebDriverSpec.JsonWire:
-      return new JsonWireWebDriverHandler();
+      return JsonWireWebDriverHandler();
     case WebDriverSpec.W3c:
-      return new W3cWebDriverHandler();
+      return W3cWebDriverHandler();
     case WebDriverSpec.Auto:
-      return new InferWebDriverHandler();
+      return InferWebDriverHandler();
     default:
-      throw new UnsupportedError('Unexpected web driver spec: $spec.');
+      throw UnsupportedError('Unexpected web driver spec: $spec.');
   }
 }

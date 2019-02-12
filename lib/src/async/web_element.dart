@@ -118,7 +118,7 @@ class WebElement extends common.WebElement implements SearchContext {
   /// Access to the HTML attributes of this tag.
   ///
   /// TODO(DrMarcII): consider special handling of boolean attributes.
-  Attributes get attributes => new Attributes((name) => _client.send(
+  Attributes get attributes => Attributes((name) => _client.send(
       _handler.element.buildAttributeRequest(id, name),
       _handler.element.parseAttributeResponse));
 
@@ -126,12 +126,12 @@ class WebElement extends common.WebElement implements SearchContext {
   ///
   /// This is deprecated, only used to support old pageloader.
   @deprecated
-  Attributes get seleniumAttributes => new Attributes((name) => _client.send(
+  Attributes get seleniumAttributes => Attributes((name) => _client.send(
       _handler.element.buildSeleniumAttributeRequest(id, name),
       _handler.element.parseSeleniumAttributeResponse));
 
   /// Access to the HTML properties of this tag.
-  Attributes get properties => new Attributes((name) => _client.send(
+  Attributes get properties => Attributes((name) => _client.send(
       _handler.element.buildPropertyRequest(id, name),
       _handler.element.parsePropertyResponse));
 
@@ -139,7 +139,7 @@ class WebElement extends common.WebElement implements SearchContext {
   ///
   /// TODO(DrMarcII): consider special handling of color and possibly other
   /// properties.
-  Attributes get cssProperties => new Attributes((name) => _client.send(
+  Attributes get cssProperties => Attributes((name) => _client.send(
       _handler.element.buildCssPropertyRequest(id, name),
       _handler.element.parseCssPropertyResponse));
 
@@ -155,7 +155,7 @@ class WebElement extends common.WebElement implements SearchContext {
 
   @override
   String toString() {
-    var out = new StringBuffer()..write(context);
+    var out = StringBuffer()..write(context);
     if (locator is By) {
       if (index == null) {
         out..write('.findElement(');

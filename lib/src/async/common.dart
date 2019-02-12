@@ -18,7 +18,7 @@ import 'package:webdriver/src/common/by.dart';
 import 'package:webdriver/src/async/web_driver.dart';
 import 'package:webdriver/src/async/web_element.dart';
 
-typedef Future<String> GetAttribute(String name);
+typedef GetAttribute = Future<String> Function(String name);
 
 /// Simple class to provide access to indexed properties such as WebElement
 /// attributes or css styles.

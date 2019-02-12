@@ -9,9 +9,9 @@ import '../common/request_client.dart';
 
 /// Async request client using dart:io package.
 class AsyncIoRequestClient extends AsyncRequestClient {
-  final HttpClient client = new HttpClient();
+  final HttpClient client = HttpClient();
 
-  final Lock _lock = new Lock();
+  final Lock _lock = Lock();
 
   AsyncIoRequestClient(Uri prefix) : super(prefix);
 
@@ -39,7 +39,7 @@ class AsyncIoRequestClient extends AsyncRequestClient {
 
     if (request.body != null && request.body.isNotEmpty) {
       httpRequest.headers.contentType =
-          new ContentType('application', 'json', charset: 'utf-8');
+          ContentType('application', 'json', charset: 'utf-8');
       final body = utf8.encode(request.body);
       httpRequest.contentLength = body.length;
       httpRequest.add(body);
@@ -48,7 +48,7 @@ class AsyncIoRequestClient extends AsyncRequestClient {
     try {
       final response = await httpRequest.close();
 
-      return new WebDriverResponse(response.statusCode, response.reasonPhrase,
+      return WebDriverResponse(response.statusCode, response.reasonPhrase,
           await utf8.decodeStream(response));
     } finally {
       _lock.release();

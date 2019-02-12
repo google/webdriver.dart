@@ -72,5 +72,5 @@ void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
       driver.keyboard.sendKeys('xxx');
       expect(textInput.properties['value'], 'xxx');
     });
-  }, timeout: const Timeout(const Duration(minutes: 2)));
+  }, timeout: const Timeout(Duration(minutes: 2)));
 }

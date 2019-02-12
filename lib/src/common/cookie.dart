@@ -38,11 +38,11 @@ class Cookie {
   factory Cookie.fromJson(Map<String, dynamic> json) {
     DateTime expiry;
     if (json['expiry'] is num) {
-      expiry = new DateTime.fromMillisecondsSinceEpoch(
+      expiry = DateTime.fromMillisecondsSinceEpoch(
           json['expiry'].toInt() * 1000,
           isUtc: true);
     }
-    return new Cookie(json['name'], json['value'],
+    return Cookie(json['name'], json['value'],
         path: json['path'],
         domain: json['domain'],
         secure: json['secure'],

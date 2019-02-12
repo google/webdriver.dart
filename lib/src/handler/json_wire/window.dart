@@ -21,7 +21,7 @@ import 'package:webdriver/src/handler/json_wire/utils.dart';
 class JsonWireWindowHandler extends WindowHandler {
   @override
   WebDriverRequest buildGetWindowsRequest() =>
-      new WebDriverRequest.getRequest('window_handles');
+      WebDriverRequest.getRequest('window_handles');
 
   @override
   List<String> parseGetWindowsResponse(WebDriverResponse response) =>
@@ -29,7 +29,7 @@ class JsonWireWindowHandler extends WindowHandler {
 
   @override
   WebDriverRequest buildGetActiveWindowRequest() =>
-      new WebDriverRequest.getRequest('window_handle');
+      WebDriverRequest.getRequest('window_handle');
 
   @override
   String parseGetActiveWindowResponse(WebDriverResponse response) =>
@@ -37,7 +37,7 @@ class JsonWireWindowHandler extends WindowHandler {
 
   @override
   WebDriverRequest buildSetActiveRequest(String windowId) =>
-      new WebDriverRequest.postRequest('window', {'name': windowId});
+      WebDriverRequest.postRequest('window', {'name': windowId});
 
   @override
   void parseSetActiveResponse(WebDriverResponse response) {
@@ -46,38 +46,37 @@ class JsonWireWindowHandler extends WindowHandler {
 
   @override
   WebDriverRequest buildLocationRequest() =>
-      new WebDriverRequest.getRequest('window/current/position');
+      WebDriverRequest.getRequest('window/current/position');
 
   @override
   Point<int> parseLocationResponse(WebDriverResponse response) {
     final point = parseJsonWireResponse(response);
-    return new Point(point['x'].toInt(), point['y'].toInt());
+    return Point(point['x'].toInt(), point['y'].toInt());
   }
 
   @override
   WebDriverRequest buildSizeRequest() =>
-      new WebDriverRequest.getRequest('window/current/size');
+      WebDriverRequest.getRequest('window/current/size');
 
   @override
   Rectangle<int> parseSizeResponse(WebDriverResponse response) {
     final size = parseJsonWireResponse(response);
-    return new Rectangle<int>(
-        0, 0, size['width'].toInt(), size['height'].toInt());
+    return Rectangle<int>(0, 0, size['width'].toInt(), size['height'].toInt());
   }
 
   @override
   WebDriverRequest buildRectRequest() {
-    throw new UnsupportedError('Get Window Rect is not supported in JsonWire.');
+    throw UnsupportedError('Get Window Rect is not supported in JsonWire.');
   }
 
   @override
   Rectangle<int> parseRectResponse(WebDriverResponse response) {
-    throw new UnsupportedError('Get Window Rect is not supported in JsonWire.');
+    throw UnsupportedError('Get Window Rect is not supported in JsonWire.');
   }
 
   @override
   WebDriverRequest buildSetLocationRequest(Point<int> location) =>
-      new WebDriverRequest.postRequest('window/current/position',
+      WebDriverRequest.postRequest('window/current/position',
           {'x': location.x.toInt(), 'y': location.y.toInt()});
 
   @override
@@ -87,7 +86,7 @@ class JsonWireWindowHandler extends WindowHandler {
 
   @override
   WebDriverRequest buildSetSizeRequest(Rectangle<int> size) =>
-      new WebDriverRequest.postRequest('window/current/size',
+      WebDriverRequest.postRequest('window/current/size',
           {'width': size.width.toInt(), 'height': size.height.toInt()});
 
   @override
@@ -97,17 +96,17 @@ class JsonWireWindowHandler extends WindowHandler {
 
   @override
   WebDriverRequest buildSetRectRequest(Rectangle<int> rect) {
-    throw new UnsupportedError('Set Window Rect is not supported in JsonWire.');
+    throw UnsupportedError('Set Window Rect is not supported in JsonWire.');
   }
 
   @override
   void parseSetRectResponse(WebDriverResponse response) {
-    throw new UnsupportedError('Set Window Rect is not supported in JsonWire.');
+    throw UnsupportedError('Set Window Rect is not supported in JsonWire.');
   }
 
   @override
   WebDriverRequest buildMaximizeRequest() =>
-      new WebDriverRequest.postRequest('window/current/maximize');
+      WebDriverRequest.postRequest('window/current/maximize');
 
   @override
   void parseMaximizeResponse(WebDriverResponse response) {
@@ -123,7 +122,7 @@ class JsonWireWindowHandler extends WindowHandler {
 
   @override
   WebDriverRequest buildCloseRequest() =>
-      new WebDriverRequest.deleteRequest('window');
+      WebDriverRequest.deleteRequest('window');
 
   @override
   void parseCloseResponse(WebDriverResponse response) {
@@ -132,7 +131,7 @@ class JsonWireWindowHandler extends WindowHandler {
 
   @override
   WebDriverRequest buildInnerSizeRequest() =>
-      new WebDriverRequest.postRequest('execute', {
+      WebDriverRequest.postRequest('execute', {
         'script':
             'return { width: window.innerWidth, height: window.innerHeight };',
         'args': []

@@ -9,7 +9,7 @@ class JsonWireSessionHandler extends SessionHandler {
   @override
   WebDriverRequest buildCreateRequest({Map<String, dynamic> desired}) {
     desired ??= Capabilities.empty;
-    return new WebDriverRequest.postRequest(
+    return WebDriverRequest.postRequest(
         'session', {'desiredCapabilities': desired});
   }
 
@@ -19,12 +19,12 @@ class JsonWireSessionHandler extends SessionHandler {
 
   @override
   WebDriverRequest buildInfoRequest(String id) =>
-      new WebDriverRequest.getRequest('session/$id');
+      WebDriverRequest.getRequest('session/$id');
 
   @override
   SessionInfo parseInfoResponse(WebDriverResponse response) {
     final session = parseJsonWireResponse(response, valueOnly: false);
-    return new SessionInfo(
+    return SessionInfo(
         session['sessionId'], WebDriverSpec.JsonWire, session['value']);
   }
 }

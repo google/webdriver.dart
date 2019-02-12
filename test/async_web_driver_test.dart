@@ -180,7 +180,7 @@ void main() {
 
       test('future based event listeners work with script timeouts', () async {
         driver.addEventListener((WebDriverCommandEvent e) async {
-          return await new Future.delayed(
+          return await Future.delayed(
               const Duration(milliseconds: 1000), (() {}));
         });
 
@@ -198,8 +198,7 @@ void main() {
         int millisDelay = 2000;
         int current = 0;
         driver.addEventListener((WebDriverCommandEvent e) async {
-          return await new Future.delayed(
-              new Duration(milliseconds: millisDelay), (() {
+          return await Future.delayed(Duration(milliseconds: millisDelay), (() {
             eventList.add(current++);
             millisDelay = (millisDelay / 2).round();
           }));
@@ -214,5 +213,5 @@ void main() {
         }
       });
     });
-  }, timeout: const Timeout(const Duration(minutes: 2)));
+  }, timeout: const Timeout(Duration(minutes: 2)));
 }

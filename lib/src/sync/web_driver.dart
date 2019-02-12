@@ -110,7 +110,7 @@ class WebDriver implements SearchContext {
     final elements = <WebElement>[];
     int i = 0;
     for (final id in ids) {
-      elements.add(new WebElement(this, _client, _handler, id, this, by, i++));
+      elements.add(WebElement(this, _client, _handler, id, this, by, i++));
     }
 
     return elements;
@@ -119,7 +119,7 @@ class WebDriver implements SearchContext {
   /// Search for an element within the entire current page.
   /// Throws [NoSuchElementException] if a matching element is not found.
   @override
-  WebElement findElement(By by) => new WebElement(
+  WebElement findElement(By by) => WebElement(
       this,
       _client,
       _handler,
@@ -133,7 +133,7 @@ class WebDriver implements SearchContext {
       _handler.core.parsePageSourceResponse);
 
   /// Quits the browser.
-  void quit({bool closeSession: true}) {
+  void quit({bool closeSession = true}) {
     if (closeSession) {
       _client.send(_handler.core.buildDeleteSessionRequest(),
           _handler.core.parseDeleteSessionResponse);
@@ -154,13 +154,13 @@ class WebDriver implements SearchContext {
       _handler.window.buildGetWindowsRequest(),
       (response) => _handler.window
           .parseGetWindowsResponse(response)
-          .map<Window>((w) => new Window(_client, _handler, w))
+          .map<Window>((w) => Window(_client, _handler, w))
           .toList());
 
   /// Handle for the active tab/window.
   Window get window => _client.send(
       _handler.window.buildGetActiveWindowRequest(),
-      (response) => new Window(_client, _handler,
+      (response) => Window(_client, _handler,
           _handler.window.parseGetActiveWindowResponse(response)));
 
   /// The currently focused element, or the body element if no element has
@@ -170,7 +170,7 @@ class WebDriver implements SearchContext {
         _handler.elementFinder.buildFindActiveElementRequest(),
         _handler.elementFinder.parseFindActiveElementResponse);
     if (id != null) {
-      return new WebElement(this, _client, _handler, id, this, 'activeElement');
+      return WebElement(this, _client, _handler, id, this, 'activeElement');
     }
     return null;
   }
@@ -178,9 +178,9 @@ class WebDriver implements SearchContext {
   /// Changes focus to specified targets.
   ///
   /// Available targets are window, frame, and the current alert.
-  TargetLocator get switchTo => new TargetLocator(this, _client, _handler);
+  TargetLocator get switchTo => TargetLocator(this, _client, _handler);
 
-  Cookies get cookies => new Cookies(_client, _handler);
+  Cookies get cookies => Cookies(_client, _handler);
 
   /// [logs.get(logType)] will give list of logs captured in browser.
   ///
@@ -188,13 +188,13 @@ class WebDriver implements SearchContext {
   /// list of logs, as the spec for this in W3C is not agreed on and Firefox
   /// refuses to support non-spec features. See
   /// https://github.com/w3c/webdriver/issues/406.
-  Logs get logs => new Logs(_client, _handler);
+  Logs get logs => Logs(_client, _handler);
 
-  Timeouts get timeouts => new Timeouts(_client, _handler);
+  Timeouts get timeouts => Timeouts(_client, _handler);
 
-  Keyboard get keyboard => new Keyboard(_client, _handler);
+  Keyboard get keyboard => Keyboard(_client, _handler);
 
-  Mouse get mouse => new Mouse(_client, _handler);
+  Mouse get mouse => Mouse(_client, _handler);
 
   /// Take a screenshot of the current page as PNG and return it as
   /// base64-encoded string.
@@ -230,7 +230,7 @@ class WebDriver implements SearchContext {
       _handler.core.buildExecuteAsyncRequest(script, args),
       (response) => _handler.core.parseExecuteAsyncResponse(
           response,
-          (elementId) => new WebElement(
+          (elementId) => WebElement(
               this, _client, _handler, elementId, this, 'javascript')));
 
   /// Inject a snippet of JavaScript into the page for execution in the context
@@ -249,7 +249,7 @@ class WebDriver implements SearchContext {
       _handler.core.buildExecuteRequest(script, args),
       (response) => _handler.core.parseExecuteResponse(
           response,
-          (elementId) => new WebElement(
+          (elementId) => WebElement(
               this, _client, _handler, elementId, this, 'javascript')));
 
   /// Performs post request on command to the WebDriver server.
@@ -277,8 +277,7 @@ class WebDriver implements SearchContext {
           response, (elementId) => getElement(elementId, this)));
 
   WebElement getElement(String elementId, [context, locator, index]) =>
-      new WebElement(
-          this, _client, _handler, elementId, context, locator, index);
+      WebElement(this, _client, _handler, elementId, context, locator, index);
 
   @override
   WebDriver get driver => this;

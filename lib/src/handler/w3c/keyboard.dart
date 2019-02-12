@@ -12,7 +12,7 @@ class W3cKeyboardHandler extends KeyboardHandler {
       keyUpActions.add({'type': 'keyUp', 'value': s});
     }
 
-    return new WebDriverRequest.postRequest('actions', {
+    return WebDriverRequest.postRequest('actions', {
       'actions': [
         {
           'type': 'key',
@@ -36,7 +36,7 @@ class W3cKeyboardHandler extends KeyboardHandler {
       keyActions.add({'type': 'keyDown', 'value': keysToSend[i]});
       keyActions.add({'type': 'keyUp', 'value': keysToSend[i]});
     }
-    return new WebDriverRequest.postRequest('actions', {
+    return WebDriverRequest.postRequest('actions', {
       'actions': [
         {'type': 'key', 'id': 'keys', 'actions': keyActions}
       ]

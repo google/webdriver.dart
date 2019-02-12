@@ -7,21 +7,21 @@ class MouseButton {
   /// The primary button is usually the left button or the only button on
   /// single-button devices, used to activate a user interface control or select
   /// text.
-  static const MouseButton primary = const MouseButton(0);
+  static const MouseButton primary = MouseButton(0);
 
   /// The auxiliary button is usually the middle button, often combined with a
   /// mouse wheel.
-  static const MouseButton auxiliary = const MouseButton(1);
+  static const MouseButton auxiliary = MouseButton(1);
 
   /// The secondary button is usually the right button, often used to display a
   /// context menu.
-  static const MouseButton secondary = const MouseButton(2);
+  static const MouseButton secondary = MouseButton(2);
 
   /// Optional button to fire back action on a mouse. Defined in W3C.
-  static const MouseButton x1 = const MouseButton(3);
+  static const MouseButton x1 = MouseButton(3);
 
   /// Optional button to fire forward action on a mouse. Defined in W3C.
-  static const MouseButton x2 = const MouseButton(4);
+  static const MouseButton x2 = MouseButton(4);
 
   final int value;
 

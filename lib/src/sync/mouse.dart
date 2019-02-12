@@ -69,7 +69,7 @@ class Mouse {
   /// Special notes for W3C, if the destination is out of the current viewport,
   /// an 'MoveTargetOutOfBounds' exception will be thrown.
   void moveTo(
-      {WebElement element, int xOffset, int yOffset, bool absolute: false}) {
+      {WebElement element, int xOffset, int yOffset, bool absolute = false}) {
     _client.send(
         _handler.mouse.buildMoveToRequest(
             elementId: element?.id,

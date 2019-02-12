@@ -24,7 +24,7 @@ LineReader _stdinLineReader;
 
 /// A [LineReader] instance connected to 'dart:io' [stdin].
 LineReader get stdinLineReader {
-  _stdinLineReader ??= new LineReader(stdin);
+  _stdinLineReader ??= LineReader(stdin);
   return _stdinLineReader;
 }
 
@@ -52,7 +52,7 @@ class StdioStepper implements Stepper {
           return false;
         case 'break':
         case 'b':
-          throw new Exception('process ended by user.');
+          throw Exception('process ended by user.');
         case 'help':
         case 'h':
           _printUsage();
@@ -69,7 +69,7 @@ class StdioStepper implements Stepper {
           print('invalid command: `$command` enter `h` or `help` for help.');
       }
     }
-    throw new Exception('stdin has been closed');
+    throw Exception('stdin has been closed');
   }
 
   void _printUsage() {
@@ -90,14 +90,14 @@ class LineReader {
 
   bool _crPrevious = false;
   final _bytes = <int>[];
-  final _controller = new StreamController<String>.broadcast();
+  final _controller = StreamController<String>.broadcast();
 
   final Encoding encoding;
 
   /// Only encodings that are a superset of ASCII are supported
   /// TODO(DrMarcII): Support arbitrary encodings
   LineReader(Stream /* <List<int> | int> */ stream,
-      {this.encoding: SYSTEM_ENCODING}) {
+      {this.encoding = SYSTEM_ENCODING}) {
     if (stream is Stdin) {
       stdin.lineMode = false;
     }

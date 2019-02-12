@@ -19,7 +19,7 @@ class SyncHttpRequestClient extends SyncRequestClient {
       case HttpMethod.httpPost:
         httpRequest = SyncHttpClient.postUrl(resolve(request.uri));
         httpRequest.headers.contentType =
-            new ContentType('application', 'json', charset: 'utf-8');
+            ContentType('application', 'json', charset: 'utf-8');
         httpRequest.write(request.body);
         break;
       case HttpMethod.httpDelete:
@@ -32,7 +32,7 @@ class SyncHttpRequestClient extends SyncRequestClient {
 
     final httpResponse = httpRequest.close();
 
-    return new WebDriverResponse(
+    return WebDriverResponse(
         httpResponse.statusCode, httpResponse.reasonPhrase, httpResponse.body);
   }
 

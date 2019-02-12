@@ -41,5 +41,5 @@ void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
       driver.timeouts.setImplicitTimeout(const Duration(seconds: 1));
       driver.timeouts.setPageLoadTimeout(const Duration(seconds: 10));
     });
-  }, timeout: const Timeout(const Duration(minutes: 2)));
+  }, timeout: const Timeout(Duration(minutes: 2)));
 }

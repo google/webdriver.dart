@@ -19,15 +19,15 @@ import 'dart:async' show Completer, Future, FutureOr;
 import 'package:matcher/matcher.dart' as m;
 import 'package:stack_trace/stack_trace.dart' show Chain;
 
-const defaultInterval = const Duration(milliseconds: 500);
-const defaultTimeout = const Duration(seconds: 5);
+const defaultInterval = Duration(milliseconds: 500);
+const defaultTimeout = Duration(seconds: 5);
 
-const clock = const Clock();
+const clock = Clock();
 
 Future<T> waitFor<T>(FutureOr<T> condition(),
         {matcher,
-        Duration timeout: defaultTimeout,
-        Duration interval: defaultInterval}) =>
+        Duration timeout = defaultTimeout,
+        Duration interval = defaultInterval}) =>
     clock.waitFor<T>(condition,
         matcher: matcher, timeout: timeout, interval: interval);
 
@@ -36,10 +36,10 @@ class Clock {
 
   /// Sleep for the specified time.
   Future sleep([Duration interval = defaultInterval]) =>
-      new Future.delayed(interval);
+      Future.delayed(interval);
 
   /// The current time.
-  DateTime get now => new DateTime.now();
+  DateTime get now => DateTime.now();
 
   /// Waits until [condition] evaluates to a value that matches [matcher] or
   /// until [timeout] time has passed. If [condition] returns a [Future], then
@@ -51,8 +51,8 @@ class Clock {
   /// thrown.
   Future<T> waitFor<T>(FutureOr<T> condition(),
       {matcher,
-      Duration timeout: defaultTimeout,
-      Duration interval: defaultInterval}) async {
+      Duration timeout = defaultTimeout,
+      Duration interval = defaultInterval}) async {
     if (matcher != null) {
       matcher = m.wrapMatcher(matcher);
     }
@@ -81,7 +81,7 @@ void _matcherExpect(value, m.Matcher matcher) {
   if (matcher.matches(value, matchState)) {
     return;
   }
-  var desc = new m.StringDescription()
+  var desc = m.StringDescription()
     ..add('Expected: ')
     ..addDescriptionOf(matcher)
     ..add('\n')
@@ -89,12 +89,12 @@ void _matcherExpect(value, m.Matcher matcher) {
     ..addDescriptionOf(value)
     ..add('\n');
 
-  var mismatchDescription = new m.StringDescription();
+  var mismatchDescription = m.StringDescription();
   matcher.describeMismatch(value, mismatchDescription, matchState, true);
   if (mismatchDescription.length > 0) {
     desc.add('   Which: $mismatchDescription\n');
   }
-  throw new Exception(desc.toString());
+  throw Exception(desc.toString());
 }
 
 class Lock {
@@ -103,31 +103,31 @@ class Lock {
 
   final bool awaitChecking;
 
-  Lock({this.awaitChecking: false});
+  Lock({this.awaitChecking = false});
 
   Future acquire() {
     if (awaitChecking) {
       if (isHeld) {
-        return new Future.error(new StateError(
+        return Future.error(StateError(
             'Maybe you missed an await? Lock is already held by:\n$_stack'));
       } else {
-        _stack = new Chain.current().terse;
-        _lock = new Completer();
-        return new Future.value();
+        _stack = Chain.current().terse;
+        _lock = Completer();
+        return Future.value();
       }
     } else {
       return () async {
         while (isHeld) {
           await _lock.future;
         }
-        _lock = new Completer();
+        _lock = Completer();
       }();
     }
   }
 
   void release() {
     if (!isHeld) {
-      throw new StateError('No lock to release');
+      throw StateError('No lock to release');
     }
     _lock.complete();
     _lock = null;

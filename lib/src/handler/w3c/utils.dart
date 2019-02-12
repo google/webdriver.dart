@@ -16,7 +16,7 @@ dynamic parseW3cResponse(WebDriverResponse response) {
     final rawBody = response.body == null || response.body.isEmpty
         ? '<empty response>'
         : response.body;
-    throw new WebDriverException(
+    throw WebDriverException(
         response.statusCode, 'Error parsing response body: $rawBody');
   }
 
@@ -25,100 +25,94 @@ dynamic parseW3cResponse(WebDriverResponse response) {
     // See https://www.w3.org/TR/webdriver/#handling-errors
     switch (value['error']) {
       case 'element click intercepted':
-        throw new ElementClickInterceptedException(
+        throw ElementClickInterceptedException(
             response.statusCode, value['message']);
 
       case 'element not interactable':
-        throw new ElementNotInteractableException(
+        throw ElementNotInteractableException(
             response.statusCode, value['message']);
 
       case 'insecure certificate':
-        throw new InsecureCertificateException(
+        throw InsecureCertificateException(
             response.statusCode, value['message']);
 
       case 'invalid argument':
-        throw new InvalidArgumentException(
-            response.statusCode, value['message']);
+        throw InvalidArgumentException(response.statusCode, value['message']);
 
       case 'invalid cookie domain':
-        throw new InvalidCookieDomainException(
+        throw InvalidCookieDomainException(
             response.statusCode, value['message']);
 
       case 'invalid element state':
-        throw new InvalidElementStateException(
+        throw InvalidElementStateException(
             response.statusCode, value['message']);
 
       case 'invalid selector':
-        throw new InvalidSelectorException(
-            response.statusCode, value['message']);
+        throw InvalidSelectorException(response.statusCode, value['message']);
 
       case 'invalid session id':
-        throw new InvalidSessionIdException(
-            response.statusCode, value['message']);
+        throw InvalidSessionIdException(response.statusCode, value['message']);
 
       case 'javascript error':
-        throw new JavaScriptException(response.statusCode, value['message']);
+        throw JavaScriptException(response.statusCode, value['message']);
 
       case 'move target out of bounds':
-        throw new MoveTargetOutOfBoundsException(
+        throw MoveTargetOutOfBoundsException(
             response.statusCode, value['message']);
 
       case 'no such alert':
-        throw new NoSuchAlertException(response.statusCode, value['message']);
+        throw NoSuchAlertException(response.statusCode, value['message']);
 
       case 'no such cookie':
-        throw new NoSuchCookieException(response.statusCode, value['message']);
+        throw NoSuchCookieException(response.statusCode, value['message']);
 
       case 'no such element':
-        throw new NoSuchElementException(response.statusCode, value['message']);
+        throw NoSuchElementException(response.statusCode, value['message']);
 
       case 'no such frame':
-        throw new NoSuchFrameException(response.statusCode, value['message']);
+        throw NoSuchFrameException(response.statusCode, value['message']);
 
       case 'no such window':
-        throw new NoSuchWindowException(response.statusCode, value['message']);
+        throw NoSuchWindowException(response.statusCode, value['message']);
 
       case 'script timeout':
-        throw new ScriptTimeoutException(response.statusCode, value['message']);
+        throw ScriptTimeoutException(response.statusCode, value['message']);
 
       case 'session not created':
-        throw new SessionNotCreatedException(
-            response.statusCode, value['message']);
+        throw SessionNotCreatedException(response.statusCode, value['message']);
 
       case 'stale element reference':
-        throw new StaleElementReferenceException(
+        throw StaleElementReferenceException(
             response.statusCode, value['message']);
 
       case 'timeout':
-        throw new TimeoutException(response.statusCode, value['message']);
+        throw TimeoutException(response.statusCode, value['message']);
 
       case 'unable to set cookie':
-        throw new UnableToSetCookieException(
-            response.statusCode, value['message']);
+        throw UnableToSetCookieException(response.statusCode, value['message']);
 
       case 'unable to capture screen':
-        throw new UnableToCaptureScreenException(
+        throw UnableToCaptureScreenException(
             response.statusCode, value['message']);
 
       case 'unexpected alert open':
-        throw new UnexpectedAlertOpenException(
+        throw UnexpectedAlertOpenException(
             response.statusCode, value['message']);
 
       case 'unknown command':
-        throw new UnknownCommandException(
-            response.statusCode, value['message']);
+        throw UnknownCommandException(response.statusCode, value['message']);
 
       case 'unknown error':
-        throw new UnknownException(response.statusCode, value['message']);
+        throw UnknownException(response.statusCode, value['message']);
 
       case 'unknown method':
-        throw new UnknownMethodException(response.statusCode, value['message']);
+        throw UnknownMethodException(response.statusCode, value['message']);
 
       case 'unsupported operation':
-        throw new UnsupportedOperationException(
+        throw UnsupportedOperationException(
             response.statusCode, value['message']);
       default:
-        throw new WebDriverException(response.statusCode, value['message']);
+        throw WebDriverException(response.statusCode, value['message']);
     }
   }
 

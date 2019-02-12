@@ -23,77 +23,77 @@ import 'package:path/path.dart' as path;
 
 /// Unmodifiable defaults for 'prefs.js' and 'user.js'.
 final List<PrefsOption> lockedPrefs = <PrefsOption>[
-  new BooleanOption('app.update.auto', false),
-  new BooleanOption('app.update.enabled', false),
-  new IntegerOption('browser.displayedE10SNotice', 4),
-  new BooleanOption('browser.download.manager.showWhenStarting', false),
-  new BooleanOption('browser.EULA.override', true),
-  new BooleanOption('browser.EULA.3.accepted', true),
-  new IntegerOption('browser.link.open_external', 2),
-  new IntegerOption('browser.link.open_newwindow', 2),
-  new BooleanOption('browser.offline', false),
-  new BooleanOption('browser.reader.detectedFirstArticle', true),
-  new BooleanOption('browser.safebrowsing.enabled', false),
-  new BooleanOption('browser.safebrowsing.malware.enabled', false),
-  new BooleanOption('browser.search.update', false),
-  new StringOption('browser.selfsupport.url', ''),
-  new BooleanOption('browser.sessionstore.resume_from_crash', false),
-  new BooleanOption('browser.shell.checkDefaultBrowser', false),
-  new BooleanOption('browser.tabs.warnOnClose', false),
-  new BooleanOption('browser.tabs.warnOnOpen', false),
-  new BooleanOption('datareporting.healthreport.service.enabled', false),
-  new BooleanOption('datareporting.healthreport.uploadEnabled', false),
-  new BooleanOption('datareporting.healthreport.service.firstRun', false),
-  new BooleanOption('datareporting.healthreport.logging.consoleEnabled', false),
-  new BooleanOption('datareporting.policy.dataSubmissionEnabled', false),
-  new BooleanOption('datareporting.policy.dataSubmissionPolicyAccepted', false),
-  new BooleanOption('devtools.errorconsole.enabled', true),
-  new BooleanOption('dom.disable_open_during_load', false),
-  new IntegerOption('extensions.autoDisableScopes', 10),
-  new BooleanOption('extensions.blocklist.enabled', false),
-  new BooleanOption('extensions.logging.enabled', true),
-  new BooleanOption('extensions.update.enabled', false),
-  new BooleanOption('extensions.update.notifyUser', false),
-  new BooleanOption('javascript.enabled', true),
-  new BooleanOption('network.manage-offline-status', false),
-  new IntegerOption('network.http.phishy-userpass-length', 255),
-  new BooleanOption('offline-apps.allow_by_default', true),
-  new BooleanOption('prompts.tab_modal.enabled', false),
-  new BooleanOption('security.csp.enable', false),
-  new IntegerOption('security.fileuri.origin_policy', 3),
-  new BooleanOption('security.fileuri.strict_origin_policy', false),
-  new BooleanOption('security.warn_entering_secure', false),
-  new BooleanOption('security.warn_entering_secure.show_once', false),
-  new BooleanOption('security.warn_entering_weak', false),
-  new BooleanOption('security.warn_entering_weak.show_once', false),
-  new BooleanOption('security.warn_leaving_secure', false),
-  new BooleanOption('security.warn_leaving_secure.show_once', false),
-  new BooleanOption('security.warn_submit_insecure', false),
-  new BooleanOption('security.warn_viewing_mixed', false),
-  new BooleanOption('security.warn_viewing_mixed.show_once', false),
-  new BooleanOption('signon.rememberSignons', false),
-  new BooleanOption('toolkit.networkmanager.disable', true),
-  new IntegerOption('toolkit.telemetry.prompted', 2),
-  new BooleanOption('toolkit.telemetry.enabled', false),
-  new BooleanOption('toolkit.telemetry.rejected', true),
-  new BooleanOption('xpinstall.signatures.required', false),
+  BooleanOption('app.update.auto', false),
+  BooleanOption('app.update.enabled', false),
+  IntegerOption('browser.displayedE10SNotice', 4),
+  BooleanOption('browser.download.manager.showWhenStarting', false),
+  BooleanOption('browser.EULA.override', true),
+  BooleanOption('browser.EULA.3.accepted', true),
+  IntegerOption('browser.link.open_external', 2),
+  IntegerOption('browser.link.open_newwindow', 2),
+  BooleanOption('browser.offline', false),
+  BooleanOption('browser.reader.detectedFirstArticle', true),
+  BooleanOption('browser.safebrowsing.enabled', false),
+  BooleanOption('browser.safebrowsing.malware.enabled', false),
+  BooleanOption('browser.search.update', false),
+  StringOption('browser.selfsupport.url', ''),
+  BooleanOption('browser.sessionstore.resume_from_crash', false),
+  BooleanOption('browser.shell.checkDefaultBrowser', false),
+  BooleanOption('browser.tabs.warnOnClose', false),
+  BooleanOption('browser.tabs.warnOnOpen', false),
+  BooleanOption('datareporting.healthreport.service.enabled', false),
+  BooleanOption('datareporting.healthreport.uploadEnabled', false),
+  BooleanOption('datareporting.healthreport.service.firstRun', false),
+  BooleanOption('datareporting.healthreport.logging.consoleEnabled', false),
+  BooleanOption('datareporting.policy.dataSubmissionEnabled', false),
+  BooleanOption('datareporting.policy.dataSubmissionPolicyAccepted', false),
+  BooleanOption('devtools.errorconsole.enabled', true),
+  BooleanOption('dom.disable_open_during_load', false),
+  IntegerOption('extensions.autoDisableScopes', 10),
+  BooleanOption('extensions.blocklist.enabled', false),
+  BooleanOption('extensions.logging.enabled', true),
+  BooleanOption('extensions.update.enabled', false),
+  BooleanOption('extensions.update.notifyUser', false),
+  BooleanOption('javascript.enabled', true),
+  BooleanOption('network.manage-offline-status', false),
+  IntegerOption('network.http.phishy-userpass-length', 255),
+  BooleanOption('offline-apps.allow_by_default', true),
+  BooleanOption('prompts.tab_modal.enabled', false),
+  BooleanOption('security.csp.enable', false),
+  IntegerOption('security.fileuri.origin_policy', 3),
+  BooleanOption('security.fileuri.strict_origin_policy', false),
+  BooleanOption('security.warn_entering_secure', false),
+  BooleanOption('security.warn_entering_secure.show_once', false),
+  BooleanOption('security.warn_entering_weak', false),
+  BooleanOption('security.warn_entering_weak.show_once', false),
+  BooleanOption('security.warn_leaving_secure', false),
+  BooleanOption('security.warn_leaving_secure.show_once', false),
+  BooleanOption('security.warn_submit_insecure', false),
+  BooleanOption('security.warn_viewing_mixed', false),
+  BooleanOption('security.warn_viewing_mixed.show_once', false),
+  BooleanOption('signon.rememberSignons', false),
+  BooleanOption('toolkit.networkmanager.disable', true),
+  IntegerOption('toolkit.telemetry.prompted', 2),
+  BooleanOption('toolkit.telemetry.enabled', false),
+  BooleanOption('toolkit.telemetry.rejected', true),
+  BooleanOption('xpinstall.signatures.required', false),
 ];
 
 /// Default values for 'user.js'.
 final List<PrefsOption> defaultUserPrefs = <PrefsOption>[
-  new BooleanOption('browser.dom.window.dump.enabled', true),
-  new StringOption('browser.newtab.url', 'about:blank'),
-  new BooleanOption('browser.newtabpage.enabled', false),
-  new IntegerOption('browser.startup.page', 0),
-  new StringOption('browser.startup.homepage', 'about:blank'),
-  new IntegerOption('dom.max_chrome_script_run_time', 30),
-  new IntegerOption('dom.max_script_run_time', 30),
-  new BooleanOption('dom.report_all_js_exceptions', true),
-  new BooleanOption('javascript.options.showInConsole', true),
-  new IntegerOption('network.http.max-connections-per-server', 10),
-  new StringOption('startup.homepage_welcome_url', 'about:blank'),
-  new BooleanOption('webdriver_accept_untrusted_certs', true),
-  new BooleanOption('webdriver_assume_untrusted_issuer', true),
+  BooleanOption('browser.dom.window.dump.enabled', true),
+  StringOption('browser.newtab.url', 'about:blank'),
+  BooleanOption('browser.newtabpage.enabled', false),
+  IntegerOption('browser.startup.page', 0),
+  StringOption('browser.startup.homepage', 'about:blank'),
+  IntegerOption('dom.max_chrome_script_run_time', 30),
+  IntegerOption('dom.max_script_run_time', 30),
+  BooleanOption('dom.report_all_js_exceptions', true),
+  BooleanOption('javascript.options.showInConsole', true),
+  IntegerOption('network.http.max-connections-per-server', 10),
+  StringOption('startup.homepage_welcome_url', 'about:blank'),
+  BooleanOption('webdriver_accept_untrusted_certs', true),
+  BooleanOption('webdriver_assume_untrusted_issuer', true),
 ];
 
 /// Creates a Firefox profile in a format so it can be passed using the
@@ -101,19 +101,19 @@ final List<PrefsOption> defaultUserPrefs = <PrefsOption>[
 class FirefoxProfile {
   final io.Directory profileDirectory;
 
-  Set<PrefsOption> _prefs = new Set<PrefsOption>();
+  Set<PrefsOption> _prefs = Set<PrefsOption>();
 
   /// The read-only settings of the `prefs.js` file of the profile directory.
-  List<PrefsOption> get prefs => new UnmodifiableListView<PrefsOption>(_prefs);
+  List<PrefsOption> get prefs => UnmodifiableListView<PrefsOption>(_prefs);
 
   /// The settings of the `user.js` file of the profile directory overridden by
   /// the settings in [lockedPrefs].
   /// [setOption] and [removeOption] allow to update, add, and remove settings
   /// except these included in [lockedPrefs].
-  Set<PrefsOption> _userPrefs = new Set<PrefsOption>();
+  Set<PrefsOption> _userPrefs = Set<PrefsOption>();
 
   List<PrefsOption> get userPrefs =>
-      new UnmodifiableListView<PrefsOption>(_userPrefs);
+      UnmodifiableListView<PrefsOption>(_userPrefs);
 
   /// Creates a new FirefoxProfile.
   ///
@@ -131,13 +131,13 @@ class FirefoxProfile {
     _userPrefs.addAll(defaultUserPrefs);
     if (profileDirectory != null) {
       final prefsFile =
-          new io.File(path.join(profileDirectory.absolute.path, 'prefs.js'));
+          io.File(path.join(profileDirectory.absolute.path, 'prefs.js'));
       if (prefsFile.existsSync()) {
         _prefs = loadPrefsFile(prefsFile);
       }
 
       final userPrefsFile =
-          new io.File(path.join(profileDirectory.absolute.path, 'user.js'));
+          io.File(path.join(profileDirectory.absolute.path, 'user.js'));
       if (userPrefsFile.existsSync()) {
         _userPrefs = loadPrefsFile(userPrefsFile)
             .where((option) => !lockedPrefs.contains(option))
@@ -168,7 +168,7 @@ class FirefoxProfile {
   /// contains it.
   bool removeOption(String name) {
     final option = _userPrefs.firstWhere((o) => o.name == name,
-        orElse: () => new InvalidOption(name));
+        orElse: () => InvalidOption(name));
     if (option is InvalidOption) {
       return false;
     }
@@ -195,13 +195,13 @@ class FirefoxProfile {
   /// is otherwise ignored.
   /// Comments, lines starting with `//` are silently ignored.
   static Set<PrefsOption> loadPrefsFile(io.File file) {
-    final prefs = new Set<PrefsOption>();
+    final prefs = Set<PrefsOption>();
     final lines = LineSplitter.split(file.readAsStringSync())
         .where((line) => !_ignoreLine(line));
     bool canNotParseCaption = true;
 
     for (final line in lines) {
-      final option = new PrefsOption.parse(line);
+      final option = PrefsOption.parse(line);
       if (option is InvalidOption) {
         if (canNotParseCaption) {
           print('Can\'t parse lines from file "${file.path}":');
@@ -223,19 +223,19 @@ class FirefoxProfile {
   /// It can be uses like
   /// `var desired = Capabilities.firefox..addAll(firefoxProfile.toJson()}`
   Map toJson() {
-    Archive archive = new Archive();
+    Archive archive = Archive();
     if (profileDirectory != null) {
       profileDirectory.listSync(recursive: true).forEach((f) {
         ArchiveFile archiveFile;
         final name = path.relative(f.path, from: profileDirectory.path);
         if (f is io.Directory) {
-          archiveFile = new ArchiveFile('$name/', 0, <int>[]);
+          archiveFile = ArchiveFile('$name/', 0, <int>[]);
         } else if (f is io.File) {
           if (name == 'prefs.js' || name == 'user.js') {
             return;
           }
           archiveFile =
-              new ArchiveFile(name, f.statSync().size, (f).readAsBytesSync());
+              ArchiveFile(name, f.statSync().size, (f).readAsBytesSync());
         } else {
           throw 'Invalid file type for file "${f.path}" '
               '(${io.FileSystemEntity.typeSync(f.path)}).';
@@ -246,14 +246,14 @@ class FirefoxProfile {
     final prefsJsContent =
         prefs.map((option) => option.asPrefString).join('\n').codeUnits;
     archive.addFile(
-        new ArchiveFile('prefs.js', prefsJsContent.length, prefsJsContent));
+        ArchiveFile('prefs.js', prefsJsContent.length, prefsJsContent));
 
     final userJsContent =
         userPrefs.map((option) => option.asPrefString).join('\n').codeUnits;
-    archive.addFile(
-        new ArchiveFile('user.js', userJsContent.length, userJsContent));
+    archive
+        .addFile(ArchiveFile('user.js', userJsContent.length, userJsContent));
 
-    final zipData = new ZipEncoder().encode(archive);
+    final zipData = ZipEncoder().encode(archive);
     return {'firefox_profile': base64.encode(zipData)};
   }
 }
@@ -267,7 +267,7 @@ abstract class PrefsOption<T> {
   /// this pattern will not match that line because Firefox never generates
   /// lines like that.
   static final RegExp _preferencePattern =
-      new RegExp(r'user_pref\("([^"]+)", ("?.+?"?)\);');
+      RegExp(r'user_pref\("([^"]+)", ("?.+?"?)\);');
 
   final String name;
   T _value;
@@ -277,11 +277,11 @@ abstract class PrefsOption<T> {
   factory PrefsOption(String name, value) {
     assert(value is bool || value is int || value is String);
     if (value is bool) {
-      return new BooleanOption(name, value) as PrefsOption<T>;
+      return BooleanOption(name, value) as PrefsOption<T>;
     } else if (value is int) {
-      return new IntegerOption(name, value) as PrefsOption<T>;
+      return IntegerOption(name, value) as PrefsOption<T>;
     } else if (value is String) {
-      return new StringOption(name, value) as PrefsOption<T>;
+      return StringOption(name, value) as PrefsOption<T>;
     }
     return null;
   }
@@ -289,7 +289,7 @@ abstract class PrefsOption<T> {
   factory PrefsOption.parse(String prefs) {
     final match = _preferencePattern.firstMatch(prefs);
     if (match == null) {
-      return new InvalidOption('Not a valid prefs option: "$prefs".')
+      return InvalidOption('Not a valid prefs option: "$prefs".')
           as PrefsOption<T>;
     }
     final name = match.group(1);
@@ -299,18 +299,18 @@ abstract class PrefsOption<T> {
           .substring(1, valueString.length - 1)
           .replaceAll(r'\"', r'"')
           .replaceAll(r'\\', r'\');
-      return new StringOption(name, value) as PrefsOption<T>;
+      return StringOption(name, value) as PrefsOption<T>;
     }
     if (valueString.toLowerCase() == 'true') {
-      return new BooleanOption(name, true) as PrefsOption<T>;
+      return BooleanOption(name, true) as PrefsOption<T>;
     } else if (valueString.toLowerCase() == 'false') {
-      return new BooleanOption(name, false) as PrefsOption<T>;
+      return BooleanOption(name, false) as PrefsOption<T>;
     }
     try {
       int value = int.parse(valueString);
-      return new IntegerOption(name, value) as PrefsOption<T>;
+      return IntegerOption(name, value) as PrefsOption<T>;
     } catch (_) {}
-    return new InvalidOption('Not a valid prefs option: "$prefs".')
+    return InvalidOption('Not a valid prefs option: "$prefs".')
         as PrefsOption<T>;
   }
 

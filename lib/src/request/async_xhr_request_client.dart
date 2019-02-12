@@ -10,7 +10,7 @@ import '../common/request_client.dart';
 ///
 /// On the low level, it's using XMLHttpRequest object (XHR).
 class AsyncXhrRequestClient extends AsyncRequestClient {
-  final Lock _lock = new Lock();
+  final Lock _lock = Lock();
 
   AsyncXhrRequestClient(Uri prefix) : super(prefix);
 
@@ -36,7 +36,7 @@ class AsyncXhrRequestClient extends AsyncRequestClient {
       _lock.release();
     }
 
-    return new WebDriverResponse(
+    return WebDriverResponse(
         httpRequest.status, httpRequest.statusText, httpRequest.response);
   }
 

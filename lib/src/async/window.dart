@@ -54,8 +54,7 @@ class Window {
       // Delegate to other methods.
       final location = await this.location;
       final size = await this.size;
-      return new Rectangle<int>(
-          location.x, location.y, size.width, size.height);
+      return Rectangle<int>(location.x, location.y, size.width, size.height);
     }
   }
 
@@ -79,7 +78,7 @@ class Window {
       // JsonWire cannot implement this API in one call.
       // Delegate to other methods.
       await setLocation(rect.topLeft);
-      await setSize(new Rectangle(0, 0, rect.width, rect.height));
+      await setSize(Rectangle(0, 0, rect.width, rect.height));
     }
   }
 

@@ -36,8 +36,7 @@ void main() {
 
     setUp(() async {
       driver = await config.createTestDriver();
-      forwarder =
-          new WebDriverForwarder(driver, prefix: '/webdriver/session/1');
+      forwarder = WebDriverForwarder(driver, prefix: '/webdriver/session/1');
 
       server = await config.createLocalServer();
       server.listen((request) {
@@ -46,7 +45,7 @@ void main() {
         } else if (request.method == 'GET' &&
             request.uri.path.endsWith('test_page.html')) {
           String testPagePath = config.forwarderTestPagePath;
-          File file = new File(testPagePath);
+          File file = File(testPagePath);
           request.response
             ..statusCode = HttpStatus.ok
             ..headers.set('Content-type', 'text/html');
@@ -57,7 +56,7 @@ void main() {
             ..close();
         }
       });
-      address = new Uri.http('localhost:${server.port}', '/webdriver/');
+      address = Uri.http('localhost:${server.port}', '/webdriver/');
       forwardedDriver =
           fromExistingSessionSync('1', WebDriverSpec.JsonWire, uri: address);
 
@@ -152,5 +151,5 @@ void main() {
     test('window close', () async {
       await (await forwardedDriver.window).close();
     });
-  }, timeout: const Timeout(const Duration(minutes: 2)));
+  }, timeout: const Timeout(Duration(minutes: 2)));
 }

@@ -20,11 +20,11 @@ import 'package:webdriver/src/handler/json_wire/utils.dart';
 class JsonWireLogsHandler extends LogsHandler {
   @override
   WebDriverRequest buildGetLogsRequest(String logType) =>
-      new WebDriverRequest.postRequest('log', {'type': logType});
+      WebDriverRequest.postRequest('log', {'type': logType});
 
   @override
   List<LogEntry> parseGetLogsResponse(WebDriverResponse response) =>
       parseJsonWireResponse(response)
-          .map<LogEntry>((e) => new LogEntry.fromMap(e))
+          .map<LogEntry>((e) => LogEntry.fromMap(e))
           .toList();
 }

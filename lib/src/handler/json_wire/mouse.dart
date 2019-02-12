@@ -8,7 +8,7 @@ class JsonWireMouseHandler extends MouseHandler {
   @override
   WebDriverRequest buildClickRequest(
           [MouseButton button = MouseButton.primary]) =>
-      new WebDriverRequest.postRequest('click', {'button': button.value});
+      WebDriverRequest.postRequest('click', {'button': button.value});
 
   @override
   void parseClickResponse(WebDriverResponse response) {
@@ -18,7 +18,7 @@ class JsonWireMouseHandler extends MouseHandler {
   @override
   WebDriverRequest buildDownRequest(
           [MouseButton button = MouseButton.primary]) =>
-      new WebDriverRequest.postRequest('buttondown', {'button': button.value});
+      WebDriverRequest.postRequest('buttondown', {'button': button.value});
 
   @override
   void parseDownResponse(WebDriverResponse response) {
@@ -27,7 +27,7 @@ class JsonWireMouseHandler extends MouseHandler {
 
   @override
   WebDriverRequest buildUpRequest([MouseButton button = MouseButton.primary]) =>
-      new WebDriverRequest.postRequest('buttonup', {'button': button.value});
+      WebDriverRequest.postRequest('buttonup', {'button': button.value});
 
   @override
   void parseUpResponse(WebDriverResponse response) {
@@ -36,7 +36,7 @@ class JsonWireMouseHandler extends MouseHandler {
 
   @override
   WebDriverRequest buildDoubleClickRequest() =>
-      new WebDriverRequest.postRequest('doubleclick');
+      WebDriverRequest.postRequest('doubleclick');
 
   @override
   void parseDoubleClickResponse(WebDriverResponse response) {
@@ -45,9 +45,9 @@ class JsonWireMouseHandler extends MouseHandler {
 
   @override
   WebDriverRequest buildMoveToRequest(
-      {String elementId, int xOffset, int yOffset, bool absolute: false}) {
+      {String elementId, int xOffset, int yOffset, bool absolute = false}) {
     if (absolute) {
-      throw new InvalidArgumentException(
+      throw InvalidArgumentException(
           0, 'Move to an absolute location is only supported in W3C spec.');
     }
 
@@ -61,7 +61,7 @@ class JsonWireMouseHandler extends MouseHandler {
       body['yoffset'] = yOffset.floor();
     }
 
-    return new WebDriverRequest.postRequest('moveto', body);
+    return WebDriverRequest.postRequest('moveto', body);
   }
 
   @override

@@ -56,13 +56,13 @@ class Capabilities {
   static const String enableProfiling = 'webdriver.logging.profiler.enabled';
 
   static Map<String, dynamic> get chrome =>
-      new Map.from(empty)..[browserName] = Browser.chrome;
+      Map.from(empty)..[browserName] = Browser.chrome;
 
   static Map<String, dynamic> get firefox =>
-      new Map.from(empty)..[browserName] = Browser.firefox;
+      Map.from(empty)..[browserName] = Browser.firefox;
 
   static Map<String, dynamic> get android =>
-      new Map.from(empty)..[browserName] = Browser.android;
+      Map.from(empty)..[browserName] = Browser.android;
 
   static Map<String, dynamic> get empty => <String, dynamic>{};
 }

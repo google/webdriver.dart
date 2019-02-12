@@ -18,8 +18,7 @@ import 'package:webdriver/src/handler/w3c/utils.dart';
 
 class W3cTimeoutsHandler extends TimeoutsHandler {
   WebDriverRequest _buildSetTimeoutRequest(String type, Duration timeout) =>
-      new WebDriverRequest.postRequest(
-          'timeouts', {type: timeout.inMilliseconds});
+      WebDriverRequest.postRequest('timeouts', {type: timeout.inMilliseconds});
 
   @override
   WebDriverRequest buildSetScriptTimeoutRequest(Duration timeout) =>

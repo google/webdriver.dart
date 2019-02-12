@@ -46,5 +46,5 @@ void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
       }
       return 'expected Exception';
     });
-  }, timeout: const Timeout(const Duration(minutes: 2)));
+  }, timeout: const Timeout(Duration(minutes: 2)));
 }

@@ -19,7 +19,7 @@ import 'package:webdriver/src/handler/w3c/utils.dart';
 class W3cNavigationHandler extends NavigationHandler {
   @override
   WebDriverRequest buildNavigateToRequest(String url) =>
-      new WebDriverRequest.postRequest('url', {'url': url});
+      WebDriverRequest.postRequest('url', {'url': url});
 
   @override
   void parseNavigateToResponse(WebDriverResponse response) {
@@ -28,7 +28,7 @@ class W3cNavigationHandler extends NavigationHandler {
 
   @override
   WebDriverRequest buildForwardRequest() =>
-      new WebDriverRequest.postRequest('forward');
+      WebDriverRequest.postRequest('forward');
 
   @override
   void parseForwardResponse(WebDriverResponse response) {
@@ -36,8 +36,7 @@ class W3cNavigationHandler extends NavigationHandler {
   }
 
   @override
-  WebDriverRequest buildBackRequest() =>
-      new WebDriverRequest.postRequest('back');
+  WebDriverRequest buildBackRequest() => WebDriverRequest.postRequest('back');
 
   @override
   void parseBackResponse(WebDriverResponse response) {
@@ -46,7 +45,7 @@ class W3cNavigationHandler extends NavigationHandler {
 
   @override
   WebDriverRequest buildRefreshRequest() =>
-      new WebDriverRequest.postRequest('refresh');
+      WebDriverRequest.postRequest('refresh');
 
   @override
   void parseRefreshResponse(WebDriverResponse response) {

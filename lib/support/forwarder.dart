@@ -22,8 +22,7 @@ import 'package:path/path.dart' as path;
 import 'package:webdriver/async_core.dart'
     show By, WebDriver, WebDriverException;
 
-final _contentTypeJson =
-    new ContentType('application', 'json', charset: 'utf-8');
+final _contentTypeJson = ContentType('application', 'json', charset: 'utf-8');
 
 /// Attribute on elements used to locate them on passed WebDriver commands.
 const wdElementIdAttribute = 'wd-element-id';
@@ -69,7 +68,7 @@ class WebDriverForwarder {
   bool useDeep;
 
   WebDriverForwarder(this.driver,
-      {this.prefix: '/webdriver', Directory outputDir, this.useDeep: false})
+      {this.prefix = '/webdriver', Directory outputDir, this.useDeep = false})
       : this.outputDir = outputDir == null
             ? Directory.systemTemp.createTempSync()
             : outputDir;
@@ -132,7 +131,7 @@ class WebDriverForwarder {
       case 'screenshot':
         if (method == 'POST') {
           // take a screenshot and save to file system
-          var file = new File(path.join(outputDir.path, params['file']));
+          var file = File(path.join(outputDir.path, params['file']));
           await file.writeAsBytes(await driver.captureScreenshotAsList());
           return null;
         }
@@ -140,7 +139,7 @@ class WebDriverForwarder {
       case 'source':
         if (method == 'POST') {
           // grab page source and save to file system
-          await new File(path.join(outputDir.path, params['file']))
+          await File(path.join(outputDir.path, params['file']))
               .writeAsString(await driver.pageSource);
           return null;
         }
@@ -160,7 +159,7 @@ class WebDriverForwarder {
         // several /touch/... endpoints and the /moveto endpoint have an
         // optional 'element' param with a WebElement id value
         if (params['element'] != null) {
-          params = new Map.from(params);
+          params = Map.from(params);
           params['element'] = await _findElement(params['element']);
         }
         break;
@@ -189,8 +188,7 @@ class WebDriverForwarder {
     if (useDeep) {
       selector = '* /deep/ $selector';
     }
-    var elements =
-        await driver.findElements(new By.cssSelector(selector)).toList();
+    var elements = await driver.findElements(By.cssSelector(selector)).toList();
     return elements.single.id;
   }
 

@@ -37,7 +37,7 @@ class W3cElementFinder extends ElementFinder {
   @override
   WebDriverRequest buildFindElementsRequest(By by, [String contextElementId]) {
     String uri = '${elementPrefix(contextElementId)}elements';
-    return new WebDriverRequest.postRequest(uri, _byToJson(by));
+    return WebDriverRequest.postRequest(uri, _byToJson(by));
   }
 
   @override
@@ -51,7 +51,7 @@ class W3cElementFinder extends ElementFinder {
   @override
   WebDriverRequest buildFindElementRequest(By by, [String contextElementId]) {
     String uri = '${elementPrefix(contextElementId)}element';
-    return new WebDriverRequest.postRequest(uri, _byToJson(by));
+    return WebDriverRequest.postRequest(uri, _byToJson(by));
   }
 
   @override
@@ -61,7 +61,7 @@ class W3cElementFinder extends ElementFinder {
 
   @override
   WebDriverRequest buildFindActiveElementRequest() {
-    return new WebDriverRequest.getRequest('element/active');
+    return WebDriverRequest.getRequest('element/active');
   }
 
   @override

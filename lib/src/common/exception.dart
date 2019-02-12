@@ -214,63 +214,62 @@ WebDriverException getExceptionFromJsonWireResponse(
 
     switch (status) {
       case 0:
-        throw new StateError(
-            'Not a WebDriverError Status: 0 Message: $message');
+        throw StateError('Not a WebDriverError Status: 0 Message: $message');
       case 6: // NoSuchDriver
-        return new NoSuchDriverException(status, message);
+        return NoSuchDriverException(status, message);
       case 7: // NoSuchElement
-        return new NoSuchElementException(status, message);
+        return NoSuchElementException(status, message);
       case 8: // NoSuchFrame
-        return new NoSuchFrameException(status, message);
+        return NoSuchFrameException(status, message);
       case 9: // UnknownCommand
-        return new UnknownCommandException(status, message);
+        return UnknownCommandException(status, message);
       case 10: // StaleElementReferenceException
-        return new StaleElementReferenceException(status, message);
+        return StaleElementReferenceException(status, message);
       case 11: // ElementNotVisible
-        return new ElementNotVisibleException(status, message);
+        return ElementNotVisibleException(status, message);
       case 12: // InvalidElementState
-        return new InvalidElementStateException(status, message);
+        return InvalidElementStateException(status, message);
       case 15: // ElementIsNotSelectable
-        return new ElementIsNotSelectableException(status, message);
+        return ElementIsNotSelectableException(status, message);
       case 17: // JavaScriptError
-        return new JavaScriptException(status, message);
+        return JavaScriptException(status, message);
       case 19: // XPathLookupError
-        return new XPathLookupException(status, message);
+        return XPathLookupException(status, message);
       case 21: // Timeout
-        return new TimeoutException(status, message);
+        return TimeoutException(status, message);
       case 23: // NoSuchWindow
-        return new NoSuchWindowException(status, message);
+        return NoSuchWindowException(status, message);
       case 24: // InvalidCookieDomain
-        return new InvalidCookieDomainException(status, message);
+        return InvalidCookieDomainException(status, message);
       case 25: // UnableToSetCookie
-        return new UnableToSetCookieException(status, message);
+        return UnableToSetCookieException(status, message);
       case 26: // UnexpectedAlertOpen
-        return new UnexpectedAlertOpenException(status, message);
+        return UnexpectedAlertOpenException(status, message);
       case 27: // NoSuchAlert
-        return new NoSuchAlertException(status, message);
+        return NoSuchAlertException(status, message);
       case 28: // ScriptTimeout
-        return new ScriptTimeoutException(status, message);
+        return ScriptTimeoutException(status, message);
       case 29: // InvalidElementCoordinates
-        return new InvalidElementCoordinatesException(status, message);
+        return InvalidElementCoordinatesException(status, message);
       case 30: // IMENotAvailable
-        return new IMENotAvailableException(status, message);
+        return IMENotAvailableException(status, message);
       case 31: // IMEEngineActivationFailed
-        return new IMEEngineActivationFailedException(status, message);
+        return IMEEngineActivationFailedException(status, message);
       case 32: // InvalidSelector
-        return new InvalidSelectorException(status, message);
+        return InvalidSelectorException(status, message);
       case 33: // SessionNotCreatedException
-        return new SessionNotCreatedException(status, message);
+        return SessionNotCreatedException(status, message);
       case 34: // MoveTargetOutOfBounds
-        return new MoveTargetOutOfBoundsException(status, message);
+        return MoveTargetOutOfBoundsException(status, message);
       case 13: // UnknownError
       default: // new error?
-        return new UnknownException(status, message);
+        return UnknownException(status, message);
     }
   }
   if (jsonResp != null) {
-    return new InvalidRequestException(httpStatusCode, jsonResp);
+    return InvalidRequestException(httpStatusCode, jsonResp);
   }
-  return new InvalidRequestException(httpStatusCode, httpReasonPhrase);
+  return InvalidRequestException(httpStatusCode, httpReasonPhrase);
 }
 
 /// Temporary method to emulate the original w3c exception parsing logic.
@@ -281,13 +280,13 @@ WebDriverException getExceptionFromW3cResponse(
 
     switch (value['error']) {
       case 'invalid argument':
-        return new InvalidArgumentException(httpStatusCode, value['message']);
+        return InvalidArgumentException(httpStatusCode, value['message']);
       case 'no such element':
-        return new NoSuchElementException(httpStatusCode, value['message']);
+        return NoSuchElementException(httpStatusCode, value['message']);
       default:
-        return new WebDriverException(httpStatusCode, value['message']);
+        return WebDriverException(httpStatusCode, value['message']);
     }
   }
 
-  return new InvalidResponseException(httpStatusCode, jsonResp.toString());
+  return InvalidResponseException(httpStatusCode, jsonResp.toString());
 }

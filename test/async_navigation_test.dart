@@ -50,5 +50,5 @@ void main() {
         return 'expected StaleElementReferenceException';
       });
     });
-  }, timeout: const Timeout(const Duration(minutes: 2)));
+  }, timeout: const Timeout(Duration(minutes: 2)));
 }

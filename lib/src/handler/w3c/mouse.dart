@@ -7,7 +7,7 @@ class W3cMouseHandler extends MouseHandler {
   @override
   WebDriverRequest buildClickRequest(
           [MouseButton button = MouseButton.primary]) =>
-      new WebDriverRequest.postRequest('actions', {
+      WebDriverRequest.postRequest('actions', {
         'actions': [
           {
             'type': 'pointer',
@@ -28,7 +28,7 @@ class W3cMouseHandler extends MouseHandler {
   @override
   WebDriverRequest buildDownRequest(
           [MouseButton button = MouseButton.primary]) =>
-      new WebDriverRequest.postRequest('actions', {
+      WebDriverRequest.postRequest('actions', {
         'actions': [
           {
             'type': 'pointer',
@@ -47,7 +47,7 @@ class W3cMouseHandler extends MouseHandler {
 
   @override
   WebDriverRequest buildUpRequest([MouseButton button = MouseButton.primary]) =>
-      new WebDriverRequest.postRequest('actions', {
+      WebDriverRequest.postRequest('actions', {
         'actions': [
           {
             'type': 'pointer',
@@ -66,7 +66,7 @@ class W3cMouseHandler extends MouseHandler {
 
   @override
   WebDriverRequest buildDoubleClickRequest() =>
-      new WebDriverRequest.postRequest('actions', {
+      WebDriverRequest.postRequest('actions', {
         'actions': [
           {
             'type': 'pointer',
@@ -88,8 +88,11 @@ class W3cMouseHandler extends MouseHandler {
 
   @override
   WebDriverRequest buildMoveToRequest(
-          {String elementId, int xOffset, int yOffset, bool absolute: false}) =>
-      new WebDriverRequest.postRequest('actions', {
+          {String elementId,
+          int xOffset,
+          int yOffset,
+          bool absolute = false}) =>
+      WebDriverRequest.postRequest('actions', {
         'actions': [
           {
             'type': 'pointer',

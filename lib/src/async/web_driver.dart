@@ -125,10 +125,10 @@ class WebDriver implements SearchContext {
       _handler.core.parsePageSourceResponse);
 
   /// Quits the browser.
-  Future quit({bool closeSession: true}) => closeSession
+  Future quit({bool closeSession = true}) => closeSession
       ? _client.send(_handler.core.buildDeleteSessionRequest(),
           _handler.core.parseDeleteSessionResponse)
-      : new Future.value();
+      : Future.value();
 
   /// Closes the current window.
   ///
@@ -143,7 +143,7 @@ class WebDriver implements SearchContext {
         _handler.window.buildGetWindowsRequest(),
         (response) => _handler.window
             .parseGetWindowsResponse(response)
-            .map<Window>((w) => new Window(_client, _handler, w)));
+            .map<Window>((w) => Window(_client, _handler, w)));
     for (final window in windows) {
       yield window;
     }
@@ -152,7 +152,7 @@ class WebDriver implements SearchContext {
   /// Handle for the active tab/window.
   Future<Window> get window => _client.send(
       _handler.window.buildGetActiveWindowRequest(),
-      (response) => new Window(_client, _handler,
+      (response) => Window(_client, _handler,
           _handler.window.parseGetActiveWindowResponse(response)));
 
   /// The currently focused element, or the body element if no element has
@@ -168,9 +168,9 @@ class WebDriver implements SearchContext {
   }
 
   TargetLocator get switchTo =>
-      new TargetLocator(this, this._client, this._handler);
+      TargetLocator(this, this._client, this._handler);
 
-  Cookies get cookies => new Cookies(_client, _handler);
+  Cookies get cookies => Cookies(_client, _handler);
 
   /// [logs.get(logType)] will give list of logs captured in browser.
   ///
@@ -178,13 +178,13 @@ class WebDriver implements SearchContext {
   /// list of logs, as the spec for this in W3C is not agreed on and Firefox
   /// refuses to support non-spec features. See
   /// https://github.com/w3c/webdriver/issues/406.
-  Logs get logs => new Logs(_client, _handler);
+  Logs get logs => Logs(_client, _handler);
 
-  Timeouts get timeouts => new Timeouts(_client, _handler);
+  Timeouts get timeouts => Timeouts(_client, _handler);
 
-  Keyboard get keyboard => new Keyboard(this._client, this._handler);
+  Keyboard get keyboard => Keyboard(this._client, this._handler);
 
-  Mouse get mouse => new Mouse(this._client, this._handler);
+  Mouse get mouse => Mouse(this._client, this._handler);
 
   /// Take a screenshot of the current page as PNG and return it as
   /// base64-encoded string.
@@ -205,7 +205,7 @@ class WebDriver implements SearchContext {
   /// slow.
   @Deprecated('Use captureScreenshotAsBase64 or captureScreenshotAsList!')
   Stream<int> captureScreenshot() async* {
-    yield* new Stream.fromIterable(await captureScreenshotAsList());
+    yield* Stream.fromIterable(await captureScreenshotAsList());
   }
 
   /// Inject a snippet of JavaScript into the page for execution in the context
@@ -264,8 +264,7 @@ class WebDriver implements SearchContext {
           response, (elementId) => getElement(elementId, this)));
 
   WebElement getElement(String elementId, [context, locator, index]) =>
-      new WebElement(
-          this, _client, _handler, elementId, context, locator, index);
+      WebElement(this, _client, _handler, elementId, context, locator, index);
 
   @override
   WebDriver get driver => this;

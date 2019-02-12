@@ -21,7 +21,7 @@ import 'package:webdriver/src/handler/w3c/utils.dart';
 class W3cWindowHandler extends WindowHandler {
   @override
   WebDriverRequest buildGetWindowsRequest() =>
-      new WebDriverRequest.getRequest('window/handles');
+      WebDriverRequest.getRequest('window/handles');
 
   @override
   List<String> parseGetWindowsResponse(WebDriverResponse response) =>
@@ -29,7 +29,7 @@ class W3cWindowHandler extends WindowHandler {
 
   @override
   WebDriverRequest buildGetActiveWindowRequest() =>
-      new WebDriverRequest.getRequest('window');
+      WebDriverRequest.getRequest('window');
 
   @override
   String parseGetActiveWindowResponse(WebDriverResponse response) =>
@@ -37,7 +37,7 @@ class W3cWindowHandler extends WindowHandler {
 
   @override
   WebDriverRequest buildSetActiveRequest(String windowId) =>
-      new WebDriverRequest.postRequest('window', {'handle': windowId});
+      WebDriverRequest.postRequest('window', {'handle': windowId});
 
   @override
   void parseSetActiveResponse(WebDriverResponse response) {
@@ -57,23 +57,23 @@ class W3cWindowHandler extends WindowHandler {
   @override
   Rectangle<int> parseSizeResponse(WebDriverResponse response) {
     final rect = parseRectResponse(response);
-    return new Rectangle(0, 0, rect.width, rect.height);
+    return Rectangle(0, 0, rect.width, rect.height);
   }
 
   @override
   WebDriverRequest buildRectRequest() =>
-      new WebDriverRequest.getRequest('window/rect');
+      WebDriverRequest.getRequest('window/rect');
 
   @override
   Rectangle<int> parseRectResponse(WebDriverResponse response) {
     final rect = parseW3cResponse(response);
-    return new Rectangle(rect['x'].toInt(), rect['y'].toInt(),
+    return Rectangle(rect['x'].toInt(), rect['y'].toInt(),
         rect['width'].toInt(), rect['height'].toInt());
   }
 
   @override
   WebDriverRequest buildSetLocationRequest(Point<int> location) =>
-      new WebDriverRequest.postRequest(
+      WebDriverRequest.postRequest(
           'window/rect', {'x': location.x, 'y': location.y});
 
   @override
@@ -83,7 +83,7 @@ class W3cWindowHandler extends WindowHandler {
 
   @override
   WebDriverRequest buildSetSizeRequest(Rectangle<int> size) =>
-      new WebDriverRequest.postRequest(
+      WebDriverRequest.postRequest(
           'window/rect', {'width': size.width, 'height': size.height});
 
   @override
@@ -93,7 +93,7 @@ class W3cWindowHandler extends WindowHandler {
 
   @override
   WebDriverRequest buildSetRectRequest(Rectangle<int> rect) =>
-      new WebDriverRequest.postRequest('window/rect', {
+      WebDriverRequest.postRequest('window/rect', {
         'x': rect.left,
         'y': rect.top,
         'width': rect.width,
@@ -107,7 +107,7 @@ class W3cWindowHandler extends WindowHandler {
 
   @override
   WebDriverRequest buildMaximizeRequest() =>
-      new WebDriverRequest.postRequest('window/maximize');
+      WebDriverRequest.postRequest('window/maximize');
 
   @override
   void parseMaximizeResponse(WebDriverResponse response) {
@@ -116,7 +116,7 @@ class W3cWindowHandler extends WindowHandler {
 
   @override
   WebDriverRequest buildMinimizeRequest() =>
-      new WebDriverRequest.postRequest('window/minimize');
+      WebDriverRequest.postRequest('window/minimize');
 
   @override
   void parseMinimizeResponse(WebDriverResponse response) {
@@ -125,7 +125,7 @@ class W3cWindowHandler extends WindowHandler {
 
   @override
   WebDriverRequest buildCloseRequest() =>
-      new WebDriverRequest.deleteRequest('window');
+      WebDriverRequest.deleteRequest('window');
 
   @override
   void parseCloseResponse(WebDriverResponse response) {
@@ -134,7 +134,7 @@ class W3cWindowHandler extends WindowHandler {
 
   @override
   WebDriverRequest buildInnerSizeRequest() =>
-      new WebDriverRequest.postRequest('execute/sync', {
+      WebDriverRequest.postRequest('execute/sync', {
         'script':
             'return { width: window.innerWidth, height: window.innerHeight };',
         'args': []

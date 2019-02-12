@@ -70,12 +70,8 @@ Future<WebDriver> createDriver(
     throw 'Unexpected spec: ${session.spec}';
   }
 
-  return new WebDriver(
-      uri,
-      session.id,
-      new UnmodifiableMapView(session.capabilities),
-      createRequestClient(uri.resolve('session/${session.id}/')),
-      session.spec);
+  return WebDriver(uri, session.id, UnmodifiableMapView(session.capabilities),
+      createRequestClient(uri.resolve('session/${session.id}/')), session.spec);
 }
 
 /// Creates an async WebDriver from existing session.
@@ -102,12 +98,8 @@ Future<WebDriver> fromExistingSession(
     throw 'Unexpected spec: ${session.spec}';
   }
 
-  return new WebDriver(
-      uri,
-      session.id,
-      new UnmodifiableMapView(session.capabilities),
-      createRequestClient(uri.resolve('session/${session.id}/')),
-      session.spec);
+  return WebDriver(uri, session.id, UnmodifiableMapView(session.capabilities),
+      createRequestClient(uri.resolve('session/${session.id}/')), session.spec);
 }
 
 /// Creates an async WebDriver from existing session with a sync function.
@@ -131,6 +123,6 @@ WebDriver fromExistingSessionSync(
     throw 'Unexpected spec: $spec';
   }
 
-  return new WebDriver(uri, sessionId, new UnmodifiableMapView(capabilities),
+  return WebDriver(uri, sessionId, UnmodifiableMapView(capabilities),
       createRequestClient(uri.resolve('session/${sessionId}/')), spec);
 }

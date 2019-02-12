@@ -45,5 +45,5 @@ void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
     test('can do basic delete', () {
       driver.cookies.deleteAll(); // This is a DELETE request.
     });
-  }, timeout: const Timeout(const Duration(minutes: 2)));
+  }, timeout: const Timeout(Duration(minutes: 2)));
 }

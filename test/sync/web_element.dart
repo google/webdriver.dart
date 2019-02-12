@@ -219,5 +219,5 @@ void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
       var element = driver.findElement(const By.cssSelector('table'));
       expect(element.equals(table), isTrue);
     });
-  }, timeout: const Timeout(const Duration(minutes: 2)));
+  }, timeout: const Timeout(Duration(minutes: 2)));
 }

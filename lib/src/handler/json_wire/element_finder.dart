@@ -13,7 +13,7 @@ class JsonWireElementFinder extends ElementFinder {
     String uri = contextElementId == null
         ? 'elements'
         : 'element/$contextElementId/elements';
-    return new WebDriverRequest.postRequest(uri, _byToJson(by));
+    return WebDriverRequest.postRequest(uri, _byToJson(by));
   }
 
   @override
@@ -29,7 +29,7 @@ class JsonWireElementFinder extends ElementFinder {
     String uri = contextElementId == null
         ? 'element'
         : 'element/$contextElementId/element';
-    return new WebDriverRequest.postRequest(uri, _byToJson(by));
+    return WebDriverRequest.postRequest(uri, _byToJson(by));
   }
 
   @override
@@ -39,7 +39,7 @@ class JsonWireElementFinder extends ElementFinder {
 
   @override
   WebDriverRequest buildFindActiveElementRequest() {
-    return new WebDriverRequest.getRequest('element/active');
+    return WebDriverRequest.getRequest('element/active');
   }
 
   @override

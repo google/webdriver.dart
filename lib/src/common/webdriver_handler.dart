@@ -272,7 +272,7 @@ abstract class MouseHandler {
 
   /// Builds request for 'Mouse Move To'.
   WebDriverRequest buildMoveToRequest(
-      {String elementId, int xOffset, int yOffset, bool absolute: false});
+      {String elementId, int xOffset, int yOffset, bool absolute = false});
 
   /// Parses response for 'Mouse Move To'.
   void parseMoveToResponse(WebDriverResponse response);

@@ -105,7 +105,7 @@ class WebElement extends common.WebElement implements SearchContext {
   Rectangle<int> get rect {
     final location = this.location;
     final size = this.size;
-    return new Rectangle<int>(location.x, location.y, size.width, size.height);
+    return Rectangle<int>(location.x, location.y, size.width, size.height);
   }
 
   /// The tag name for this element.
@@ -120,7 +120,7 @@ class WebElement extends common.WebElement implements SearchContext {
   ///
   /// Throws [NoSuchElementException] if matching element is not found.
   @override
-  WebElement findElement(By by) => new WebElement(
+  WebElement findElement(By by) => WebElement(
       driver,
       _client,
       _handler,
@@ -139,25 +139,24 @@ class WebElement extends common.WebElement implements SearchContext {
     final elements = <WebElement>[];
     int i = 0;
     for (final id in ids) {
-      elements
-          .add(new WebElement(driver, _client, _handler, id, this, by, i++));
+      elements.add(WebElement(driver, _client, _handler, id, this, by, i++));
     }
 
     return elements;
   }
 
   /// Access to the HTML attributes of this tag.
-  Attributes get attributes => new Attributes((name) => _client.send(
+  Attributes get attributes => Attributes((name) => _client.send(
       _handler.element.buildAttributeRequest(id, name),
       _handler.element.parseAttributeResponse));
 
   /// Access to the HTML properties of this tag.
-  Attributes get properties => new Attributes((name) => _client.send(
+  Attributes get properties => Attributes((name) => _client.send(
       _handler.element.buildPropertyRequest(id, name),
       _handler.element.parsePropertyResponse));
 
   /// Access to the cssProperties of this element.
-  Attributes get cssProperties => new Attributes((name) => _client.send(
+  Attributes get cssProperties => Attributes((name) => _client.send(
       _handler.element.buildCssPropertyRequest(id, name),
       _handler.element.parseCssPropertyResponse));
 
@@ -174,7 +173,7 @@ class WebElement extends common.WebElement implements SearchContext {
 
   @override
   String toString() {
-    final out = new StringBuffer()..write(context);
+    final out = StringBuffer()..write(context);
     if (locator is By) {
       if (index == null) {
         out.write('.findElement(');

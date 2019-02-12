@@ -37,15 +37,15 @@ void main() {
     });
 
     test('add simple cookie and get', () async {
-      await driver.cookies.add(new Cookie('mycookie', 'myvalue'));
+      await driver.cookies.add(Cookie('mycookie', 'myvalue'));
 
       final cookie = await driver.cookies.getCookie('mycookie');
       expect(cookie.value, 'myvalue');
     });
 
     test('add complex cookie and get', () async {
-      var date = new DateTime.utc(2020);
-      await driver.cookies.add(new Cookie('mycookie', 'myvalue',
+      var date = DateTime.utc(2020);
+      await driver.cookies.add(Cookie('mycookie', 'myvalue',
           path: '/', domain: '.google.com', secure: false, expiry: date));
 
       final cookie = await driver.cookies.getCookie('mycookie');
@@ -54,9 +54,9 @@ void main() {
     });
 
     test('get all cookies', () async {
-      await driver.cookies.add(new Cookie('mycookie', 'myvalue'));
-      var date = new DateTime.utc(2020);
-      await driver.cookies.add(new Cookie('mycomplexcookie', 'mycomplexvalue',
+      await driver.cookies.add(Cookie('mycookie', 'myvalue'));
+      var date = DateTime.utc(2020);
+      await driver.cookies.add(Cookie('mycomplexcookie', 'mycomplexvalue',
           path: '/', domain: '.google.com', secure: false, expiry: date));
 
       bool found = false;
@@ -84,7 +84,7 @@ void main() {
     });
 
     test('delete cookie', () async {
-      await driver.cookies.add(new Cookie('mycookie', 'myvalue'));
+      await driver.cookies.add(Cookie('mycookie', 'myvalue'));
       await driver.cookies.delete('mycookie');
       bool found = false;
       await for (var cookie in driver.cookies.all) {
@@ -101,9 +101,9 @@ void main() {
       // "come back" after a short amount of time.
       // So instead, we plant two cookies and test that they are actually
       // removed by [deleteAll].
-      await driver.cookies.add(new Cookie('mycookie', 'myvalue'));
-      var date = new DateTime.utc(2020);
-      await driver.cookies.add(new Cookie('mycomplexcookie', 'mycomplexvalue',
+      await driver.cookies.add(Cookie('mycookie', 'myvalue'));
+      var date = DateTime.utc(2020);
+      await driver.cookies.add(Cookie('mycomplexcookie', 'mycomplexvalue',
           path: '/', domain: '.google.com', secure: false, expiry: date));
 
       await driver.cookies.deleteAll();

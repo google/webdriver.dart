@@ -102,5 +102,5 @@ void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
       var alert = driver.switchTo.alert;
       alert.dismiss();
     });
-  }, timeout: const Timeout(const Duration(minutes: 2)));
+  }, timeout: const Timeout(Duration(minutes: 2)));
 }

@@ -8,7 +8,7 @@ class LogEntry {
   LogEntry.fromMap(Map map)
       : this(
             map['message'],
-            new DateTime.fromMillisecondsSinceEpoch(map['timestamp'].toInt(),
+            DateTime.fromMillisecondsSinceEpoch(map['timestamp'].toInt(),
                 isUtc: true),
             map['level']);
 

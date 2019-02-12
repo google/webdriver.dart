@@ -49,5 +49,5 @@ void main() {
         expect(entry.level, equals(LogLevel.info));
       });
     });
-  }, timeout: const Timeout(const Duration(minutes: 2)));
+  }, timeout: const Timeout(Duration(minutes: 2)));
 }

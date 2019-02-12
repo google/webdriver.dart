@@ -61,5 +61,5 @@ void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
       expect(events[1].startTime.isBefore(events[1].endTime), isTrue);
       expect(events[1].stackTrace, const TypeMatcher<Chain>());
     });
-  }, timeout: const Timeout(const Duration(minutes: 2)));
+  }, timeout: const Timeout(Duration(minutes: 2)));
 }

@@ -19,7 +19,7 @@ import 'package:webdriver/src/handler/w3c/utils.dart';
 class W3cFrameHandler extends FrameHandler {
   @override
   WebDriverRequest buildSwitchByIdRequest([int id]) =>
-      new WebDriverRequest.postRequest('frame', {'id': id});
+      WebDriverRequest.postRequest('frame', {'id': id});
 
   @override
   void parseSwitchByIdResponse(WebDriverResponse response) {
@@ -28,7 +28,7 @@ class W3cFrameHandler extends FrameHandler {
 
   @override
   WebDriverRequest buildSwitchByElementRequest(String elementId) =>
-      new WebDriverRequest.postRequest('frame', {
+      WebDriverRequest.postRequest('frame', {
         'id': {w3cElementStr: elementId}
       });
 
@@ -39,7 +39,7 @@ class W3cFrameHandler extends FrameHandler {
 
   @override
   WebDriverRequest buildSwitchToParentRequest() =>
-      new WebDriverRequest.postRequest('frame/parent');
+      WebDriverRequest.postRequest('frame/parent');
 
   @override
   void parseSwitchToParentResponse(WebDriverResponse response) {

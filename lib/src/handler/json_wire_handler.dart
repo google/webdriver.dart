@@ -19,48 +19,48 @@ import 'package:webdriver/src/handler/json_wire/window.dart';
 
 class JsonWireWebDriverHandler extends WebDriverHandler {
   @override
-  SessionHandler get session => new JsonWireSessionHandler();
+  SessionHandler get session => JsonWireSessionHandler();
 
   @override
-  final CoreHandler core = new JsonWireCoreHandler();
+  final CoreHandler core = JsonWireCoreHandler();
 
   @override
-  final KeyboardHandler keyboard = new JsonWireKeyboardHandler();
+  final KeyboardHandler keyboard = JsonWireKeyboardHandler();
 
   @override
-  final MouseHandler mouse = new JsonWireMouseHandler();
+  final MouseHandler mouse = JsonWireMouseHandler();
 
   @override
-  final ElementFinder elementFinder = new JsonWireElementFinder();
+  final ElementFinder elementFinder = JsonWireElementFinder();
 
   @override
-  final ElementHandler element = new JsonWireElementHandler();
+  final ElementHandler element = JsonWireElementHandler();
 
   @override
-  final AlertHandler alert = new JsonWireAlertHandler();
+  final AlertHandler alert = JsonWireAlertHandler();
 
   @override
-  final NavigationHandler navigation = new JsonWireNavigationHandler();
+  final NavigationHandler navigation = JsonWireNavigationHandler();
 
   @override
-  final WindowHandler window = new JsonWireWindowHandler();
+  final WindowHandler window = JsonWireWindowHandler();
 
   @override
-  final FrameHandler frame = new JsonWireFrameHandler();
+  final FrameHandler frame = JsonWireFrameHandler();
 
   @override
-  final CookiesHandler cookies = new JsonWireCookiesHandler();
+  final CookiesHandler cookies = JsonWireCookiesHandler();
 
   @override
-  final TimeoutsHandler timeouts = new JsonWireTimeoutsHandler();
+  final TimeoutsHandler timeouts = JsonWireTimeoutsHandler();
 
   @override
-  final LogsHandler logs = new JsonWireLogsHandler();
+  final LogsHandler logs = JsonWireLogsHandler();
 
   @override
   WebDriverRequest buildGeneralRequest(HttpMethod method, String uri,
           [params]) =>
-      new WebDriverRequest(
+      WebDriverRequest(
           method, uri, params == null ? null : json.encode(serialize(params)));
 
   @override
