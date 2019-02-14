@@ -26,7 +26,7 @@ class Window {
   Window(this._client, this._handler, this.id);
 
   /// Sets the window as active.
-  Future setAsActive() => _client.send(
+  Future<void> setAsActive() => _client.send(
       _handler.window.buildSetActiveRequest(id),
       _handler.window.parseSetActiveResponse);
 
@@ -59,17 +59,17 @@ class Window {
   }
 
   /// Sets the window location.
-  Future setLocation(Point<int> point) => _client.send(
+  Future<void> setLocation(Point<int> point) => _client.send(
       _handler.window.buildSetLocationRequest(point),
       _handler.window.parseSetLocationResponse);
 
   /// Sets the window size.
-  Future setSize(Rectangle<int> size) => _client.send(
+  Future<void> setSize(Rectangle<int> size) => _client.send(
       _handler.window.buildSetSizeRequest(size),
       _handler.window.parseSetSizeResponse);
 
   /// The location and size of the window.
-  Future setRect(Rectangle<int> rect) async {
+  Future<void> setRect(Rectangle<int> rect) async {
     try {
       await _client.send(_handler.window.buildSetRectRequest(rect),
           _handler.window.parseSetRectResponse);
@@ -83,13 +83,15 @@ class Window {
   }
 
   /// Maximizes the window.
-  Future maximize() => _client.send(_handler.window.buildMaximizeRequest(),
+  Future<void> maximize() => _client.send(
+      _handler.window.buildMaximizeRequest(),
       _handler.window.parseMaximizeResponse);
 
   /// Minimizes the window.
   ///
   /// Unsupported in JsonWire WebDriver.
-  Future minimize() => _client.send(_handler.window.buildMinimizeRequest(),
+  Future<void> minimize() => _client.send(
+      _handler.window.buildMinimizeRequest(),
       _handler.window.parseMinimizeResponse);
 
   /// Closes the window.

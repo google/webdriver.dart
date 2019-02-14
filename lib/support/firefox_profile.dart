@@ -222,7 +222,7 @@ class FirefoxProfile {
   /// `prefs` and `userPrefs`.
   /// It can be uses like
   /// `var desired = Capabilities.firefox..addAll(firefoxProfile.toJson()}`
-  Map toJson() {
+  Map<String, dynamic> toJson() {
     Archive archive = Archive();
     if (profileDirectory != null) {
       profileDirectory.listSync(recursive: true).forEach((f) {
@@ -270,11 +270,9 @@ abstract class PrefsOption<T> {
       RegExp(r'user_pref\("([^"]+)", ("?.+?"?)\);');
 
   final String name;
-  T _value;
+  final T value;
 
-  dynamic get value => _value;
-
-  factory PrefsOption(String name, value) {
+  factory PrefsOption(String name, T value) {
     assert(value is bool || value is int || value is String);
     if (value is bool) {
       return BooleanOption(name, value) as PrefsOption<T>;
@@ -314,7 +312,7 @@ abstract class PrefsOption<T> {
         as PrefsOption<T>;
   }
 
-  PrefsOption._(this.name, [this._value]) : assert(name.isNotEmpty);
+  PrefsOption._(this.name, [this.value]) : assert(name.isNotEmpty);
 
   @override
   bool operator ==(Object other) {
@@ -362,7 +360,7 @@ class IntegerOption extends PrefsOption<int> {
 class StringOption extends PrefsOption<String> {
   StringOption(String name, String value) : super._(name, value);
 
-  String _escape(String value) =>
+  static String _escape(String value) =>
       value.replaceAll(r'\', r'\\').replaceAll('"', r'\"');
 
   @override

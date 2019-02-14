@@ -35,7 +35,7 @@ class TargetLocator {
   ///   not provided: selects the first frame on the page or the main document.
   ///
   ///   Throws [NoSuchFrameException] if the specified frame can't be found.
-  Future frame([/* int | WebElement | String */ frame]) async {
+  Future<void> frame([/* int | WebElement | String */ frame]) async {
     if (frame == null || frame is int) {
       await _client.send(_handler.frame.buildSwitchByIdRequest(frame),
           _handler.frame.parseSwitchByIdResponse);
@@ -52,7 +52,7 @@ class TargetLocator {
   }
 
   /// Changes focus to the parent frame of the current one.
-  Future parentFrame() => _client.send(
+  Future<void> parentFrame() => _client.send(
       _handler.frame.buildSwitchToParentRequest(),
       _handler.frame.parseSwitchToParentResponse);
 
@@ -60,7 +60,7 @@ class TargetLocator {
   /// given name/handle.
   ///
   /// Throws [NoSuchWindowException] if the specified window can't be found.
-  Future window(Window window) => window.setAsActive();
+  Future<void> window(Window window) => window.setAsActive();
 
   /// Switches to the currently active modal dialog for this particular driver
   /// instance.

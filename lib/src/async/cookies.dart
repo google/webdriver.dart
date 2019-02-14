@@ -25,17 +25,17 @@ class Cookies {
   Cookies(this._client, this._handler);
 
   /// Sets a cookie.
-  Future add(Cookie cookie) => _client.send(
+  Future<void> add(Cookie cookie) => _client.send(
       _handler.cookies.buildAddCookieRequest(cookie),
       _handler.cookies.parseAddCookieResponse);
 
   /// Deletes the cookie with the given [name].
-  Future delete(String name) => _client.send(
+  Future<void> delete(String name) => _client.send(
       _handler.cookies.buildDeleteCookieRequest(name),
       _handler.cookies.parseDeleteCookieResponse);
 
   /// Deletes all cookies visible to the current page.
-  Future deleteAll() => _client.send(
+  Future<void> deleteAll() => _client.send(
       _handler.cookies.buildDeleteAllCookiesRequest(),
       _handler.cookies.parseDeleteAllCookiesResponse);
 

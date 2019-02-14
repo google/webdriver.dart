@@ -24,17 +24,17 @@ class Timeouts {
   Timeouts(this._client, this._handler);
 
   /// Sets the script timeout.
-  Future setScriptTimeout(Duration duration) => _client.send(
+  Future<void> setScriptTimeout(Duration duration) => _client.send(
       _handler.timeouts.buildSetScriptTimeoutRequest(duration),
       _handler.timeouts.parseSetScriptTimeoutResponse);
 
   /// Sets the implicit timeout.
-  Future setImplicitTimeout(Duration duration) => _client.send(
+  Future<void> setImplicitTimeout(Duration duration) => _client.send(
       _handler.timeouts.buildSetImplicitTimeoutRequest(duration),
       _handler.timeouts.parseSetImplicitTimeoutResponse);
 
   /// Sets the page load timeout.
-  Future setPageLoadTimeout(Duration duration) => _client.send(
+  Future<void> setPageLoadTimeout(Duration duration) => _client.send(
       _handler.timeouts.buildSetPageLoadTimeoutRequest(duration),
       _handler.timeouts.parseSetPageLoadTimeoutResponse);
 

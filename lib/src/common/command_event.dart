@@ -15,12 +15,12 @@
 class WebDriverCommandEvent {
   final String method;
   final String endPoint;
-  final params;
+  final dynamic params;
   final StackTrace stackTrace;
   final DateTime startTime;
   final DateTime endTime;
-  final exception;
-  final result;
+  final dynamic exception;
+  final dynamic result;
 
   WebDriverCommandEvent(
       {this.method,

@@ -27,8 +27,8 @@ dynamic parseJsonWireResponse(WebDriverResponse response,
       (responseBody is Map &&
           responseBody['status'] != null &&
           responseBody['status'] != 0)) {
-    final status = responseBody['status'];
-    final message = responseBody['value']['message'];
+    final status = responseBody['status'] as int;
+    final message = responseBody['value']['message'] as String;
 
     switch (status) {
       case 0:
@@ -135,7 +135,7 @@ dynamic serialize(dynamic obj) {
   }
 
   if (obj is List) {
-    return obj.map((item) => serialize(item)).toList();
+    return obj.map(serialize).toList();
   }
 
   return obj;

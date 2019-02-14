@@ -47,7 +47,7 @@ class JsonWireMouseHandler extends MouseHandler {
   WebDriverRequest buildMoveToRequest(
       {String elementId, int xOffset, int yOffset, bool absolute = false}) {
     if (absolute) {
-      throw InvalidArgumentException(
+      throw const InvalidArgumentException(
           0, 'Move to an absolute location is only supported in W3C spec.');
     }
 

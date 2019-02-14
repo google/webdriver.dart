@@ -47,16 +47,16 @@ class WebElement extends common.WebElement implements SearchContext {
       [this.context, this.locator, this.index]);
 
   /// Click on this element.
-  Future click() => _client.send(_handler.element.buildClickRequest(id),
+  Future<void> click() => _client.send(_handler.element.buildClickRequest(id),
       _handler.element.parseClickResponse);
 
   /// Send [keysToSend] to this element.
-  Future sendKeys(String keysToSend) => _client.send(
+  Future<void> sendKeys(String keysToSend) => _client.send(
       _handler.element.buildSendKeysRequest(id, keysToSend),
       _handler.element.parseSendKeysResponse);
 
   /// Clear the content of a text element.
-  Future clear() => _client.send(_handler.element.buildClearRequest(id),
+  Future<void> clear() => _client.send(_handler.element.buildClearRequest(id),
       _handler.element.parseClearResponse);
 
   /// Is this radio button/checkbox selected?

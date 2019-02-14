@@ -69,5 +69,5 @@ class W3cWebDriverHandler extends WebDriverHandler {
       deserialize(parseW3cResponse(response), createElement);
 
   @override
-  String toString() => "W3C";
+  String toString() => 'W3C';
 }

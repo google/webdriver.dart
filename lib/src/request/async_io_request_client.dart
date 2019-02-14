@@ -56,5 +56,5 @@ class AsyncIoRequestClient extends AsyncRequestClient {
   }
 
   @override
-  String toString() => "AsyncIo";
+  String toString() => 'AsyncIo';
 }

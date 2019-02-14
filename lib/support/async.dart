@@ -35,7 +35,7 @@ class Clock {
   const Clock();
 
   /// Sleep for the specified time.
-  Future sleep([Duration interval = defaultInterval]) =>
+  Future<void> sleep([Duration interval = defaultInterval]) =>
       Future.delayed(interval);
 
   /// The current time.
@@ -53,16 +53,13 @@ class Clock {
       {matcher,
       Duration timeout = defaultTimeout,
       Duration interval = defaultInterval}) async {
-    if (matcher != null) {
-      matcher = m.wrapMatcher(matcher);
-    }
-
+    m.Matcher mMatcher = matcher == null ? null : m.wrapMatcher(matcher);
     var endTime = now.add(timeout);
     while (true) {
       try {
         var value = await condition();
-        if (matcher is m.Matcher) {
-          _matcherExpect(value, matcher);
+        if (mMatcher != null) {
+          _matcherExpect(value, mMatcher);
         }
         return value;
       } catch (e) {
@@ -98,14 +95,14 @@ void _matcherExpect(value, m.Matcher matcher) {
 }
 
 class Lock {
-  Completer _lock;
+  Completer<void> _lock;
   Chain _stack;
 
   final bool awaitChecking;
 
   Lock({this.awaitChecking = false});
 
-  Future acquire() {
+  Future<void> acquire() {
     if (awaitChecking) {
       if (isHeld) {
         return Future.error(StateError(

@@ -32,21 +32,21 @@ class Alert {
   /// object was created).
   ///
   ///  Throws [NoSuchAlertException] if there isn't currently an alert.
-  Future accept() => _client.send(
+  Future<void> accept() => _client.send(
       _handler.alert.buildAcceptRequest(), _handler.alert.parseAcceptResponse);
 
   /// Dismisses the currently displayed alert (may not be the alert for which
   /// this object was created).
   ///
   ///  Throws [NoSuchAlertException] if there isn't currently an alert.
-  Future dismiss() => _client.send(_handler.alert.buildDismissRequest(),
+  Future<void> dismiss() => _client.send(_handler.alert.buildDismissRequest(),
       _handler.alert.parseDismissResponse);
 
   /// Sends keys to the currently displayed alert (may not be the alert for
   /// which this object was created).
   ///
   /// Throws [NoSuchAlertException] if there isn't currently an alert
-  Future sendKeys(String keysToSend) => _client.send(
+  Future<void> sendKeys(String keysToSend) => _client.send(
       _handler.alert.buildSendTextRequest(keysToSend),
       _handler.alert.parseSendTextResponse);
 

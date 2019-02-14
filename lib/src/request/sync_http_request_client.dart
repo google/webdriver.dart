@@ -37,5 +37,5 @@ class SyncHttpRequestClient extends SyncRequestClient {
   }
 
   @override
-  String toString() => "SyncHttp";
+  String toString() => 'SyncHttp';
 }

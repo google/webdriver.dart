@@ -41,5 +41,5 @@ class AsyncXhrRequestClient extends AsyncRequestClient {
   }
 
   @override
-  String toString() => "AsyncXhr";
+  String toString() => 'AsyncXhr';
 }

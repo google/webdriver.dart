@@ -9,8 +9,8 @@ class W3cElementFinder extends ElementFinder {
   /// In principle, W3C spec implementations should be nearly the same as
   /// the existing JSON wire spec. In practice compliance is uneven.
   Map<String, String> _byToJson(By by) {
-    var using;
-    var value;
+    String using;
+    String value;
 
     switch (by.using) {
       case 'id': // This doesn't exist in the W3C spec.
@@ -42,10 +42,9 @@ class W3cElementFinder extends ElementFinder {
 
   @override
   List<String> parseFindElementsResponse(WebDriverResponse response) {
-    return parseW3cResponse(response)
-        .map((e) => e[w3cElementStr])
-        .toList()
-        .cast<String>();
+    return (parseW3cResponse(response) as List)
+        .map<String>((e) => e[w3cElementStr])
+        .toList();
   }
 
   @override

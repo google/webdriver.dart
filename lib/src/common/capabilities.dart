@@ -55,16 +55,13 @@ class Capabilities {
   @Deprecated('This is not supported in the W3C spec.')
   static const String enableProfiling = 'webdriver.logging.profiler.enabled';
 
-  static Map<String, dynamic> get chrome =>
-      Map.from(empty)..[browserName] = Browser.chrome;
+  static Map<String, dynamic> get chrome => {browserName: Browser.chrome};
 
-  static Map<String, dynamic> get firefox =>
-      Map.from(empty)..[browserName] = Browser.firefox;
+  static Map<String, dynamic> get firefox => {browserName: Browser.firefox};
 
-  static Map<String, dynamic> get android =>
-      Map.from(empty)..[browserName] = Browser.android;
+  static Map<String, dynamic> get android => {browserName: Browser.android};
 
-  static Map<String, dynamic> get empty => <String, dynamic>{};
+  static Map<String, dynamic> get empty => {};
 }
 
 /// Browser name constants.

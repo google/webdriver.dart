@@ -9,6 +9,7 @@ import '../../common/request.dart';
 const String w3cElementStr = 'element-6066-11e4-a52e-4f735466cecf';
 
 dynamic parseW3cResponse(WebDriverResponse response) {
+  final int statusCode = response.statusCode;
   Map responseBody;
   try {
     responseBody = json.decode(response.body);
@@ -17,110 +18,99 @@ dynamic parseW3cResponse(WebDriverResponse response) {
         ? '<empty response>'
         : response.body;
     throw WebDriverException(
-        response.statusCode, 'Error parsing response body: $rawBody');
+        statusCode, 'Error parsing response body: $rawBody');
   }
 
-  if (response.statusCode < 200 || response.statusCode > 299) {
-    final value = responseBody['value'];
+  if (statusCode < 200 || statusCode > 299) {
+    final Map value = responseBody['value'];
+    final String message = value['message'];
+
     // See https://www.w3.org/TR/webdriver/#handling-errors
     switch (value['error']) {
       case 'element click intercepted':
-        throw ElementClickInterceptedException(
-            response.statusCode, value['message']);
+        throw ElementClickInterceptedException(statusCode, message);
 
       case 'element not interactable':
-        throw ElementNotInteractableException(
-            response.statusCode, value['message']);
+        throw ElementNotInteractableException(statusCode, message);
 
       case 'insecure certificate':
-        throw InsecureCertificateException(
-            response.statusCode, value['message']);
+        throw InsecureCertificateException(statusCode, message);
 
       case 'invalid argument':
-        throw InvalidArgumentException(response.statusCode, value['message']);
+        throw InvalidArgumentException(statusCode, message);
 
       case 'invalid cookie domain':
-        throw InvalidCookieDomainException(
-            response.statusCode, value['message']);
+        throw InvalidCookieDomainException(statusCode, message);
 
       case 'invalid element state':
-        throw InvalidElementStateException(
-            response.statusCode, value['message']);
+        throw InvalidElementStateException(statusCode, message);
 
       case 'invalid selector':
-        throw InvalidSelectorException(response.statusCode, value['message']);
+        throw InvalidSelectorException(statusCode, message);
 
       case 'invalid session id':
-        throw InvalidSessionIdException(response.statusCode, value['message']);
+        throw InvalidSessionIdException(statusCode, message);
 
       case 'javascript error':
-        throw JavaScriptException(response.statusCode, value['message']);
+        throw JavaScriptException(statusCode, message);
 
       case 'move target out of bounds':
-        throw MoveTargetOutOfBoundsException(
-            response.statusCode, value['message']);
+        throw MoveTargetOutOfBoundsException(statusCode, message);
 
       case 'no such alert':
-        throw NoSuchAlertException(response.statusCode, value['message']);
+        throw NoSuchAlertException(statusCode, message);
 
       case 'no such cookie':
-        throw NoSuchCookieException(response.statusCode, value['message']);
+        throw NoSuchCookieException(statusCode, message);
 
       case 'no such element':
-        throw NoSuchElementException(response.statusCode, value['message']);
+        throw NoSuchElementException(statusCode, message);
 
       case 'no such frame':
-        throw NoSuchFrameException(response.statusCode, value['message']);
+        throw NoSuchFrameException(statusCode, message);
 
       case 'no such window':
-        throw NoSuchWindowException(response.statusCode, value['message']);
+        throw NoSuchWindowException(statusCode, message);
 
       case 'script timeout':
-        throw ScriptTimeoutException(response.statusCode, value['message']);
+        throw ScriptTimeoutException(statusCode, message);
 
       case 'session not created':
-        throw SessionNotCreatedException(response.statusCode, value['message']);
+        throw SessionNotCreatedException(statusCode, message);
 
       case 'stale element reference':
-        throw StaleElementReferenceException(
-            response.statusCode, value['message']);
+        throw StaleElementReferenceException(statusCode, message);
 
       case 'timeout':
-        throw TimeoutException(response.statusCode, value['message']);
+        throw TimeoutException(statusCode, message);
 
       case 'unable to set cookie':
-        throw UnableToSetCookieException(response.statusCode, value['message']);
+        throw UnableToSetCookieException(statusCode, message);
 
       case 'unable to capture screen':
-        throw UnableToCaptureScreenException(
-            response.statusCode, value['message']);
+        throw UnableToCaptureScreenException(statusCode, message);
 
       case 'unexpected alert open':
-        throw UnexpectedAlertOpenException(
-            response.statusCode, value['message']);
+        throw UnexpectedAlertOpenException(statusCode, message);
 
       case 'unknown command':
-        throw UnknownCommandException(response.statusCode, value['message']);
+        throw UnknownCommandException(statusCode, message);
 
       case 'unknown error':
-        throw UnknownException(response.statusCode, value['message']);
+        throw UnknownException(statusCode, message);
 
       case 'unknown method':
-        throw UnknownMethodException(response.statusCode, value['message']);
+        throw UnknownMethodException(statusCode, message);
 
       case 'unsupported operation':
-        throw UnsupportedOperationException(
-            response.statusCode, value['message']);
+        throw UnsupportedOperationException(statusCode, message);
+
       default:
-        throw WebDriverException(response.statusCode, value['message']);
+        throw WebDriverException(statusCode, message);
     }
   }
 
-  if (responseBody is Map) {
-    return responseBody['value'];
-  }
-
-  return responseBody;
+  return responseBody == null ? null : responseBody['value'];
 }
 
 /// Prefix to represent element in webdriver uri.
@@ -162,7 +152,7 @@ dynamic serialize(dynamic obj) {
   }
 
   if (obj is List) {
-    return obj.map((item) => serialize(item)).toList();
+    return obj.map(serialize).toList();
   }
 
   return obj;

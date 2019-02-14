@@ -81,12 +81,12 @@ class Keyboard {
   Keyboard(this._client, this._handler);
 
   /// Simulate pressing many keys at once as a 'chord'.
-  Future sendChord(Iterable<String> chordToSend) => _client.send(
+  Future<void> sendChord(Iterable<String> chordToSend) => _client.send(
       _handler.keyboard.buildSendChordRequest(chordToSend),
       _handler.keyboard.parseSendChordResponse);
 
   /// Send [keysToSend] to the active element.
-  Future sendKeys(String keysToSend) => _client.send(
+  Future<void> sendKeys(String keysToSend) => _client.send(
       _handler.keyboard.buildSendKeysRequest(keysToSend),
       _handler.keyboard.parseSendKeysResponse);
 

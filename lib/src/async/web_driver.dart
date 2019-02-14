@@ -76,21 +76,23 @@ class WebDriver implements SearchContext {
       _handler.core.parseCurrentUrlResponse);
 
   /// Navigates to the specified url
-  Future get(/* Uri | String */ url) => _client.send(
+  Future<void> get(/* Uri | String */ url) => _client.send(
       _handler.navigation
           .buildNavigateToRequest((url is Uri) ? url.toString() : url),
       _handler.navigation.parseNavigateToResponse);
 
   ///  Navigates forwards in the browser history, if possible.
-  Future forward() => _client.send(_handler.navigation.buildForwardRequest(),
+  Future<void> forward() => _client.send(
+      _handler.navigation.buildForwardRequest(),
       _handler.navigation.parseForwardResponse);
 
   /// Navigates backwards in the browser history, if possible.
-  Future back() => _client.send(_handler.navigation.buildBackRequest(),
+  Future<void> back() => _client.send(_handler.navigation.buildBackRequest(),
       _handler.navigation.parseBackResponse);
 
   /// Refreshes the current page.
-  Future refresh() => _client.send(_handler.navigation.buildRefreshRequest(),
+  Future<void> refresh() => _client.send(
+      _handler.navigation.buildRefreshRequest(),
       _handler.navigation.parseRefreshResponse);
 
   /// The title of the current page.
@@ -125,7 +127,7 @@ class WebDriver implements SearchContext {
       _handler.core.parsePageSourceResponse);
 
   /// Quits the browser.
-  Future quit({bool closeSession = true}) => closeSession
+  Future<void> quit({bool closeSession = true}) => closeSession
       ? _client.send(_handler.core.buildDeleteSessionRequest(),
           _handler.core.parseDeleteSessionResponse)
       : Future.value();
@@ -226,7 +228,7 @@ class WebDriver implements SearchContext {
   /// Arguments may be any JSON-able object. WebElements will be converted to
   /// the corresponding DOM element. Likewise, any DOM Elements in the script
   /// result will be converted to WebElements.
-  Future executeAsync(String script, List args) => _client.send(
+  Future<dynamic> executeAsync(String script, List args) => _client.send(
       _handler.core.buildExecuteAsyncRequest(script, args),
       (response) => _handler.core.parseExecuteAsyncResponse(
           response, (elementId) => getElement(elementId, this, 'javascript')));
@@ -243,7 +245,7 @@ class WebDriver implements SearchContext {
   /// Arguments may be any JSON-able object. WebElements will be converted to
   /// the corresponding DOM element. Likewise, any DOM Elements in the script
   /// result will be converted to WebElements.
-  Future execute(String script, List args) => _client.send(
+  Future<dynamic> execute(String script, List args) => _client.send(
       _handler.core.buildExecuteRequest(script, args),
       (response) => _handler.core.parseExecuteResponse(
           response, (elementId) => getElement(elementId, this, 'javascript')));

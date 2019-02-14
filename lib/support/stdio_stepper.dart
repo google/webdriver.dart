@@ -16,7 +16,7 @@ library webdriver.support.stdio_stepper;
 
 import 'dart:async' show Future, Stream, StreamController;
 import 'dart:convert' show Encoding, json;
-import 'dart:io' show exit, Stdin, stdin, SYSTEM_ENCODING;
+import 'dart:io' show exit, Stdin, stdin, systemEncoding;
 
 import 'package:webdriver/src/async/stepper.dart';
 
@@ -35,8 +35,7 @@ class StdioStepper implements Stepper {
 
   final LineReader _reader;
 
-  StdioStepper({LineReader reader})
-      : _reader = reader == null ? stdinLineReader : reader;
+  StdioStepper({LineReader reader}) : _reader = reader ?? stdinLineReader;
 
   @override
   Future<bool> step(String method, String command, params) async {
@@ -97,7 +96,7 @@ class LineReader {
   /// Only encodings that are a superset of ASCII are supported
   /// TODO(DrMarcII): Support arbitrary encodings
   LineReader(Stream /* <List<int> | int> */ stream,
-      {this.encoding = SYSTEM_ENCODING}) {
+      {this.encoding = systemEncoding}) {
     if (stream is Stdin) {
       stdin.lineMode = false;
     }

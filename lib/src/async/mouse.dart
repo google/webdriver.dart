@@ -26,22 +26,23 @@ class Mouse {
   Mouse(this._client, this._handler);
 
   /// Click any mouse button (at the coordinates set by the last moveTo).
-  Future click([MouseButton button = MouseButton.primary]) => _client.send(
-      _handler.mouse.buildClickRequest(button),
-      _handler.mouse.parseClickResponse);
+  Future<void> click([MouseButton button = MouseButton.primary]) =>
+      _client.send(_handler.mouse.buildClickRequest(button),
+          _handler.mouse.parseClickResponse);
 
   /// Click and hold any mouse button (at the coordinates set by the last
   /// moveTo command).
-  Future down([MouseButton button = MouseButton.primary]) => _client.send(
+  Future<void> down([MouseButton button = MouseButton.primary]) => _client.send(
       _handler.mouse.buildDownRequest(button),
       _handler.mouse.parseDownResponse);
 
   /// Releases the mouse button previously held (where the mouse is currently at).
-  Future up([MouseButton button = MouseButton.primary]) => _client.send(
+  Future<void> up([MouseButton button = MouseButton.primary]) => _client.send(
       _handler.mouse.buildUpRequest(button), _handler.mouse.parseUpResponse);
 
   /// Double-clicks at the current mouse coordinates (set by moveTo).
-  Future doubleClick() => _client.send(_handler.mouse.buildDoubleClickRequest(),
+  Future<void> doubleClick() => _client.send(
+      _handler.mouse.buildDoubleClickRequest(),
       _handler.mouse.parseDoubleClickResponse);
 
   /// Move the mouse.
@@ -59,7 +60,7 @@ class Mouse {
   ///
   /// Special notes for W3C, if the destination is out of the current viewport,
   /// an 'MoveTargetOutOfBounds' exception will be thrown.
-  Future moveTo(
+  Future<void> moveTo(
           {WebElement element,
           int xOffset,
           int yOffset,

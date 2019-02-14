@@ -75,13 +75,13 @@ class WebDriverForwarder {
 
   /// Forward [request] to [driver] and respond to the request with the returned
   /// value or any thrown exceptions.
-  Future<Null> forward(HttpRequest request) async {
+  Future<void> forward(HttpRequest request) async {
     try {
       if (!request.uri.path.startsWith(prefix)) {
-        request.response.statusCode = HttpStatus.NOT_FOUND;
+        request.response.statusCode = HttpStatus.notFound;
         return;
       }
-      request.response.statusCode = HttpStatus.OK;
+      request.response.statusCode = HttpStatus.ok;
       request.response.headers.contentType = _contentTypeJson;
 
       var endpoint = request.uri.path.replaceFirst(prefix, '');
