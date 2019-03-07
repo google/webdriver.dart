@@ -189,4 +189,6 @@ class WebElement extends common.WebElement implements SearchContext {
     }
     return out.toString();
   }
+
+  String toStringDeep() => "<$name>\n\nHTML:\n${properties['outerHTML']}";
 }

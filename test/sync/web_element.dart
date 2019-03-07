@@ -219,5 +219,28 @@ void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
       var element = driver.findElement(const By.cssSelector('table'));
       expect(element.equals(table), isTrue);
     });
+
+    test('toStringDeep()', () {
+      expect(
+          form.toStringDeep(),
+          '<form>\n'
+          '\n'
+          'HTML:\n'
+          '<form onsubmit="alert(&quot;form submitted&quot;)">\n'
+          '    <input type="text">\n'
+          '    <input type="checkbox">\n'
+          '    <input type="password" disabled="">\n'
+          '    <input type="submit">\n'
+          '</form>');
+      expect(
+          form
+              .findElements(const By.cssSelector('input[type=text]'))
+              .first
+              .toStringDeep(),
+          '<input>\n'
+          '\n'
+          'HTML:\n'
+          '<input type="text">');
+    });
   }, timeout: const Timeout(Duration(minutes: 2)));
 }
