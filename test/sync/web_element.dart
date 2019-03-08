@@ -33,7 +33,6 @@ void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
     WebElement checkbox;
     WebElement disabled;
     WebElement invisible;
-    WebElement inner;
     HttpServer server;
 
     setUp(() async {
@@ -48,8 +47,7 @@ void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
           driver.findElement(const By.cssSelector('input[type=checkbox]'));
       disabled =
           driver.findElement(const By.cssSelector('input[type=password]'));
-      invisible = await driver.findElement(const By.id('invisible-div'));
-      inner = await driver.findElement(const By.id('inner-div'));
+      invisible = driver.findElement(const By.tagName('div'));
     });
 
     tearDown(() async {
@@ -98,7 +96,6 @@ void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
       expect(checkbox.displayed, isTrue);
       expect(disabled.displayed, isTrue);
       expect(invisible.displayed, isFalse);
-      expect(inner.displayed, isFalse);
     });
 
     test('rect -- table', () {
@@ -115,8 +112,13 @@ void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
       expect(rect, config.isRectangle);
       expect(rect.left, 0);
       expect(rect.top, 0);
-      expect(rect.width, isNonNegative);
-      expect(rect.height, isNonNegative);
+      if (driver.spec == WebDriverSpec.W3c) {
+        expect(rect.width, 0);
+        expect(rect.height, 0);
+      } else {
+        expect(rect.width, isNonNegative);
+        expect(rect.height, isNonNegative);
+      }
     });
 
     test('location -- table', () {
@@ -143,8 +145,13 @@ void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
     test('size -- invisible', () {
       var size = invisible.size;
       expect(size, config.isRectangle);
-      expect(size.width, isNonNegative);
-      expect(size.height, isNonNegative);
+      if (driver.spec == WebDriverSpec.W3c) {
+        expect(size.width, 0);
+        expect(size.height, 0);
+      } else {
+        expect(size.width, isNonNegative);
+        expect(size.height, isNonNegative);
+      }
     });
 
     test('name', () {

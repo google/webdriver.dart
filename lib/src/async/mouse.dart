@@ -18,8 +18,6 @@ import 'package:webdriver/src/async/web_element.dart';
 import 'package:webdriver/src/common/mouse.dart';
 import 'package:webdriver/src/common/request_client.dart';
 import 'package:webdriver/src/common/webdriver_handler.dart';
-import 'package:webdriver/src/handler/json_wire_handler.dart';
-import 'package:webdriver/src/handler/w3c_handler.dart';
 
 class Mouse {
   final AsyncRequestClient _client;
@@ -55,12 +53,8 @@ class Mouse {
   /// If [xOffset] and [yOffset] are specified, will move the mouse that distance
   /// from its current location.
   ///
-  /// If all three are specified, the behavior will be different
-  /// for W3C and JsonWire. For W3C, it will use [element] center as the
-  /// origin, while for JsonWire, it will use [element] top left corner.
-  /// To get a consistent behavior across browsers, you can try
-  /// [moveToElementCenter] and [moveToElementTopLeft] to specify the origin you
-  /// would like to use.
+  /// If all three are specified, will move the mouse to the offset relative to
+  /// the top-left corner of the [element].
   ///
   /// All other combinations of parameters are illegal.
   ///
@@ -78,47 +72,6 @@ class Mouse {
               yOffset: yOffset,
               absolute: absolute),
           _handler.mouse.parseMoveToResponse);
-
-  /// Moves to [element], with an offset of [xOffset] and [yOffset] based on the
-  /// center of [element].
-  Future<void> moveToElementCenter(WebElement element,
-      {int xOffset, int yOffset}) async {
-    if (_handler is JsonWireWebDriverHandler) {
-      final size = await element.size;
-      await moveTo(
-          element: element,
-          xOffset: (xOffset ?? 0) + size.width ~/ 2,
-          yOffset: (yOffset ?? 0) + size.height ~/ 2);
-    } else {
-      await moveTo(element: element, xOffset: xOffset, yOffset: yOffset);
-    }
-  }
-
-  /// Moves to [element], with an offset of [xOffset] and [yOffset] based on the
-  /// top left corner of [element].
-  Future<void> moveToElementTopLeft(WebElement element,
-      {int xOffset, int yOffset}) async {
-    if (_handler is W3cWebDriverHandler) {
-      final size = await element.size;
-      await moveTo(
-          element: element,
-          xOffset: (xOffset ?? 0) - size.width ~/ 2,
-          yOffset: (yOffset ?? 0) - size.height ~/ 2);
-    } else {
-      await moveTo(element: element, xOffset: xOffset, yOffset: yOffset);
-    }
-  }
-
-  /// Moves the mouse away to hide its effect, like hover over element.
-  ///
-  /// For W3C, the mouse cannot move out of the screen, the workaround would be
-  /// to move to somewhere on edge where it's not on any element. You can
-  /// configure the location with [w3cXOffset] and [w3cYOffset]. By default,
-  /// it's at (100, 0).
-  Future<void> hide({int w3cXOffset = 100, int w3cYOffset = 0}) =>
-      _handler is W3cWebDriverHandler
-          ? moveTo(xOffset: w3cXOffset, yOffset: w3cYOffset, absolute: true)
-          : moveTo(xOffset: -10000, yOffset: -10000);
 
   @override
   String toString() => '$_handler.mouse($_client)';

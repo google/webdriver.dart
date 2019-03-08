@@ -22,8 +22,7 @@ class JsonWireSessionHandler extends SessionHandler {
       WebDriverRequest.getRequest('session/$id');
 
   @override
-  SessionInfo parseInfoResponse(WebDriverResponse response,
-      [String sessionId]) {
+  SessionInfo parseInfoResponse(WebDriverResponse response) {
     final session = parseJsonWireResponse(response, valueOnly: false);
     return SessionInfo(
         session['sessionId'], WebDriverSpec.JsonWire, session['value']);

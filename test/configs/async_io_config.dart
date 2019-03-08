@@ -16,6 +16,7 @@ import 'dart:async' show Future;
 import 'dart:io';
 
 import 'package:matcher/matcher.dart';
+import 'package:path/path.dart' as path;
 import 'package:webdriver/async_core.dart'
     show WebDriver, WebDriverSpec, WebElement;
 import 'package:webdriver/async_io.dart' show createDriver;
@@ -28,15 +29,16 @@ final Matcher isWebElement = const TypeMatcher<WebElement>();
 
 Future<WebDriver> createTestDriver(
     {Map<String, dynamic> additionalCapabilities,
-    WebDriverSpec spec = defaultSpec}) {
+    WebDriverSpec spec = WebDriverSpec.Auto}) {
   final capabilities = getCapabilities(spec);
   if (additionalCapabilities != null) {
     capabilities.addAll(additionalCapabilities);
   }
-
-  return createDriver(
-      desired: capabilities, uri: getWebDriverUri(spec), spec: spec);
+  return createDriver(desired: capabilities, uri: getWebDriverUri(spec));
 }
+
+String get forwarderTestPagePath =>
+    path.join(testHomePath, 'support', 'forwarder_test_page.html');
 
 Future<HttpServer> createTestServerAndGoToTestPage(WebDriver driver) async {
   final server = await createLocalServer();
@@ -48,7 +50,7 @@ Future<HttpServer> createTestServerAndGoToTestPage(WebDriver driver) async {
         request.response
           ..statusCode = HttpStatus.ok
           ..headers.set('Content-type', 'text/html');
-        file.openRead().cast<List<int>>().pipe(request.response);
+        file.openRead().pipe(request.response);
       } else {
         request.response
           ..statusCode = HttpStatus.notFound
@@ -61,7 +63,7 @@ Future<HttpServer> createTestServerAndGoToTestPage(WebDriver driver) async {
     }
   });
 
-  await driver.get('http://$testHostname:${server.port}/test_page.html');
+  await driver.get('http://localhost:${server.port}/test_page.html');
 
   return server;
 }

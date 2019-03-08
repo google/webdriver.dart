@@ -14,7 +14,6 @@
 
 import 'dart:async';
 
-import 'package:webdriver/src/common/exception.dart';
 import 'package:webdriver/src/common/log.dart';
 import 'package:webdriver/src/common/request_client.dart';
 import 'package:webdriver/src/common/webdriver_handler.dart';
@@ -33,8 +32,8 @@ class Logs {
       for (var entry in entries) {
         yield entry;
       }
-    } on UnknownCommandException {
-      // Produces no entries for Firefox.
+    } on UnsupportedError {
+      // Produces no entries for W3C/Firefox.
     }
   }
 

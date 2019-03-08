@@ -23,15 +23,11 @@ import 'package:webdriver/async_core.dart';
 final Uri _defaultChromeUri = Uri.parse('http://127.0.0.1:4444/wd/hub/');
 final Uri _defaultFirefoxUri = Uri.parse('http://127.0.0.1:4445/');
 
-const WebDriverSpec defaultSpec = WebDriverSpec.JsonWire;
-
 final Matcher isRectangle = const TypeMatcher<Rectangle<int>>();
 final Matcher isPoint = const TypeMatcher<Point<int>>();
 
 Future<HttpServer> createLocalServer() =>
     HttpServer.bind(InternetAddress.anyIPv4, 0);
-
-String get testHostname => '127.0.0.1';
 
 String get testHomePath => path.absolute('test');
 

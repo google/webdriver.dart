@@ -69,5 +69,5 @@ class JsonWireWebDriverHandler extends WebDriverHandler {
       deserialize(parseJsonWireResponse(response), createElement);
 
   @override
-  String toString() => 'JsonWire';
+  String toString() => "JsonWire";
 }

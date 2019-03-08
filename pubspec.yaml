@@ -1,5 +1,5 @@
 name: webdriver
-version: 2.1.2
+version: 2.1.0
 authors:
   - Marc Fisher II <fisherii@google.com>
   - Matt Staats<staats@google.com>
@@ -9,12 +9,12 @@ description: >
   Requires the use of WebDriver remote server.
 homepage: https://github.com/google/webdriver.dart
 environment:
-  sdk: '>=2.0.0 <3.0.0'
+  sdk: '>=2.0.0-dev.23.0 <3.0.0'
 dependencies:
   archive: '>=1.0.0 <3.0.0'
   matcher: ^0.12.3
   path: ^1.3.0
   stack_trace: ^1.3.0
-  sync_http: '>=0.1.1 <0.3.0'
+  sync_http: ^0.1.1
 dev_dependencies:
   test: '^1.0.0'

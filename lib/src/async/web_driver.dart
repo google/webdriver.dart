@@ -194,21 +194,9 @@ class WebDriver implements SearchContext {
       _handler.core.buildScreenshotRequest(),
       _handler.core.parseScreenshotResponse);
 
-  /// Take a screenshot of the specified element as PNG and return it as
-  /// base64-encoded string.
-  Future<String> captureElementScreenshotAsBase64(WebElement element) =>
-      _client.send(_handler.core.buildElementScreenshotRequest(element.id),
-          _handler.core.parseScreenshotResponse);
-
   /// Take a screenshot of the current page as PNG as list of uint8.
   Future<List<int>> captureScreenshotAsList() async {
     var base64Encoded = captureScreenshotAsBase64();
-    return base64.decode(await base64Encoded);
-  }
-
-  /// Take a screenshot of the specified element as PNG as list of uint8.
-  Future<List<int>> captureElementScreenshotAsList(WebElement element) async {
-    var base64Encoded = captureElementScreenshotAsBase64(element);
     return base64.decode(await base64Encoded);
   }
 

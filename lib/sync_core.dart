@@ -94,7 +94,7 @@ WebDriver fromExistingSession(String sessionId,
     final handler = getHandler(spec);
 
     session = client.send(handler.session.buildInfoRequest(sessionId),
-        (response) => handler.session.parseInfoResponse(response, sessionId));
+        handler.session.parseInfoResponse);
   }
 
   if (session.spec != WebDriverSpec.JsonWire &&

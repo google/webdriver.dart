@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import 'package:webdriver/src/common/exception.dart';
 import 'package:webdriver/src/common/log.dart';
 import 'package:webdriver/src/common/request_client.dart';
 import 'package:webdriver/src/common/webdriver_handler.dart';
@@ -27,8 +26,8 @@ class Logs {
     try {
       return _client.send(_handler.logs.buildGetLogsRequest(logType),
           _handler.logs.parseGetLogsResponse);
-    } on UnknownCommandException {
-      // Produces no entries for Firefox.
+    } on UnsupportedError {
+      // Produces no entries for W3C/Firefox.
       return <LogEntry>[];
     }
   }

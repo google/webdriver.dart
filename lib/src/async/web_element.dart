@@ -84,13 +84,6 @@ class WebElement extends common.WebElement implements SearchContext {
       _handler.element.buildSizeRequest(id),
       _handler.element.parseSizeResponse);
 
-  /// The bounds of this element.
-  Future<Rectangle<int>> get rect async {
-    final location = await this.location;
-    final size = await this.size;
-    return Rectangle<int>(location.x, location.y, size.width, size.height);
-  }
-
   /// The tag name for this element.
   Future<String> get name => _client.send(_handler.element.buildNameRequest(id),
       _handler.element.parseNameResponse);
