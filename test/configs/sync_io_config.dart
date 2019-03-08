@@ -29,14 +29,12 @@ final Matcher isWebElement = const TypeMatcher<WebElement>();
 
 WebDriver createTestDriver(
     {Map<String, dynamic> additionalCapabilities,
-    WebDriverSpec spec = defaultSpec}) {
+    WebDriverSpec spec = WebDriverSpec.W3c}) {
   final capabilities = getCapabilities(spec);
   if (additionalCapabilities != null) {
     capabilities.addAll(additionalCapabilities);
   }
-
-  return createDriver(
-      desired: capabilities, uri: getWebDriverUri(spec), spec: spec);
+  return createDriver(desired: capabilities, uri: getWebDriverUri(spec));
 }
 
 Future<HttpServer> createTestServerAndGoToTestPage(WebDriver driver) async {
@@ -49,7 +47,7 @@ Future<HttpServer> createTestServerAndGoToTestPage(WebDriver driver) async {
         request.response
           ..statusCode = HttpStatus.ok
           ..headers.set('Content-type', 'text/html');
-        file.openRead().cast<List<int>>().pipe(request.response);
+        file.openRead().pipe(request.response);
       } else {
         request.response
           ..statusCode = HttpStatus.notFound
@@ -63,7 +61,7 @@ Future<HttpServer> createTestServerAndGoToTestPage(WebDriver driver) async {
   });
 
   await driver.asyncDriver
-      .get('http://$testHostname:${server.port}/test_page.html');
+      .get('http://localhost:${server.port}/test_page.html');
 
   return server;
 }

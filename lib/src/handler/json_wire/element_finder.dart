@@ -44,6 +44,6 @@ class JsonWireElementFinder extends ElementFinder {
 
   @override
   String parseFindElementResponse(WebDriverResponse response) {
-    return (parseJsonWireResponse(response) ?? {})[jsonWireElementStr];
+    return parseJsonWireResponse(response)[jsonWireElementStr];
   }
 }

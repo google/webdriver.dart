@@ -112,8 +112,7 @@ class InferSessionHandler extends SessionHandler {
       WebDriverRequest.getRequest('session/$id');
 
   @override
-  SessionInfo parseInfoResponse(WebDriverResponse response,
-      [String sessionId]) {
+  SessionInfo parseInfoResponse(WebDriverResponse response) {
     if (response.statusCode == 404) {
       // May be W3C, as it will throw an unknown command exception.
       Map body;
@@ -136,6 +135,9 @@ class InferSessionHandler extends SessionHandler {
             'produced by W3C WebDriver): ${response.body}');
       }
 
+      final sessionId = RegExp(r'/session/([0-9a-f-]*) ')
+          .firstMatch(body['message'] as String)
+          .group(1);
       return SessionInfo(sessionId, WebDriverSpec.W3c, Capabilities.empty);
     }
 

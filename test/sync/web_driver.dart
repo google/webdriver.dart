@@ -172,22 +172,8 @@ void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
         expect(screenshot, everyElement(const isInstanceOf<int>()));
       });
 
-      test('captureElementScreenshotAsList', () {
-        var element = driver.findElement(const By.tagName('tr'));
-        var screenshot = driver.captureElementScreenshotAsList(element);
-        expect(screenshot, hasLength(isPositive));
-        expect(screenshot, everyElement(const isInstanceOf<int>()));
-      });
-
       test('captureScreenshotAsBase64', () {
         var screenshot = driver.captureScreenshotAsBase64();
-        expect(screenshot, hasLength(isPositive));
-        expect(screenshot, const isInstanceOf<String>());
-      });
-
-      test('captureElementScreenshotAsBase64', () {
-        var element = driver.findElement(const By.tagName('tr'));
-        var screenshot = driver.captureElementScreenshotAsBase64(element);
         expect(screenshot, hasLength(isPositive));
         expect(screenshot, const isInstanceOf<String>());
       });

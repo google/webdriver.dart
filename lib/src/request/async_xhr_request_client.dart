@@ -11,11 +11,8 @@ import '../common/request_client.dart';
 /// On the low level, it's using XMLHttpRequest object (XHR).
 class AsyncXhrRequestClient extends AsyncRequestClient {
   final Lock _lock = Lock();
-  final Map<String, String> _headers;
 
-  AsyncXhrRequestClient(Uri prefix, {Map<String, String> headers = const {}})
-      : _headers = headers,
-        super(prefix);
+  AsyncXhrRequestClient(Uri prefix) : super(prefix);
 
   @override
   Future<WebDriverResponse> sendRaw(WebDriverRequest request) async {
@@ -24,8 +21,6 @@ class AsyncXhrRequestClient extends AsyncRequestClient {
     final headers = {
       'Accept': 'application/json',
     };
-
-    headers.addAll(_headers);
 
     HttpRequest httpRequest;
 

@@ -10,13 +10,10 @@ import '../common/request_client.dart';
 /// Async request client using dart:io package.
 class AsyncIoRequestClient extends AsyncRequestClient {
   final HttpClient client = HttpClient();
-  final Map<String, String> _headers;
 
   final Lock _lock = Lock();
 
-  AsyncIoRequestClient(Uri prefix, {Map<String, String> headers = const {}})
-      : _headers = headers,
-        super(prefix);
+  AsyncIoRequestClient(Uri prefix) : super(prefix);
 
   @override
   Future<WebDriverResponse> sendRaw(WebDriverRequest request) async {
@@ -36,7 +33,6 @@ class AsyncIoRequestClient extends AsyncRequestClient {
     }
 
     httpRequest.followRedirects = true;
-    _headers.forEach(httpRequest.headers.add);
     httpRequest.headers.add(HttpHeaders.acceptHeader, 'application/json');
     httpRequest.headers.add(HttpHeaders.acceptCharsetHeader, utf8.name);
     httpRequest.headers.add(HttpHeaders.cacheControlHeader, 'no-cache');
@@ -53,7 +49,7 @@ class AsyncIoRequestClient extends AsyncRequestClient {
       final response = await httpRequest.close();
 
       return WebDriverResponse(response.statusCode, response.reasonPhrase,
-          await utf8.decodeStream(response.cast<List<int>>()));
+          await utf8.decodeStream(response));
     } finally {
       _lock.release();
     }

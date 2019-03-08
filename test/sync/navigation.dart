@@ -15,8 +15,6 @@
 @TestOn('vm')
 library webdriver.navigation_test;
 
-import 'dart:io';
-
 import 'package:test/test.dart';
 import 'package:webdriver/sync_core.dart';
 
@@ -25,25 +23,22 @@ import '../configs/sync_io_config.dart' as config;
 void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
   group('Navigation', () {
     WebDriver driver;
-    HttpServer server;
 
-    setUp(() async {
+    setUp(() {
       driver = config.createTestDriver(spec: spec);
-      server = await config.createTestServerAndGoToTestPage(driver);
+      driver.get(config.testPagePath);
     });
 
-    tearDown(() async {
+    tearDown(() {
       if (driver != null) {
         driver.quit();
       }
       driver = null;
-
-      await server?.close(force: true);
     });
 
-    test('refresh', () async {
+    test('refresh', () {
       var element = driver.findElement(const By.tagName('button'));
-      await driver.asyncDriver.refresh();
+      driver.refresh();
       try {
         element.name;
       } on Exception {

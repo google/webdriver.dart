@@ -23,7 +23,7 @@ typedef GetAttribute = Future<String> Function(String name);
 /// Simple class to provide access to indexed properties such as WebElement
 /// attributes or css styles.
 class Attributes {
-  final GetAttribute _getAttribute;
+  GetAttribute _getAttribute;
 
   Attributes(this._getAttribute);
 

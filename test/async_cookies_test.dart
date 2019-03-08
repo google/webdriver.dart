@@ -20,8 +20,6 @@ import 'package:webdriver/async_core.dart';
 
 import 'configs/async_io_config.dart' as config;
 
-final _expiryDate = DateTime.now().add(const Duration(days: 180));
-
 void main() {
   group('Cookies', () {
     WebDriver driver;
@@ -46,8 +44,9 @@ void main() {
     });
 
     test('add complex cookie and get', () async {
+      var date = DateTime.utc(2020);
       await driver.cookies.add(Cookie('mycookie', 'myvalue',
-          path: '/', domain: '.google.com', secure: false, expiry: _expiryDate));
+          path: '/', domain: '.google.com', secure: false, expiry: date));
 
       final cookie = await driver.cookies.getCookie('mycookie');
       expect(cookie.value, 'myvalue');
@@ -56,8 +55,9 @@ void main() {
 
     test('get all cookies', () async {
       await driver.cookies.add(Cookie('mycookie', 'myvalue'));
+      var date = DateTime.utc(2020);
       await driver.cookies.add(Cookie('mycomplexcookie', 'mycomplexvalue',
-          path: '/', domain: '.google.com', secure: false, expiry: _expiryDate));
+          path: '/', domain: '.google.com', secure: false, expiry: date));
 
       bool found = false;
       await for (var cookie in driver.cookies.all) {
@@ -102,8 +102,9 @@ void main() {
       // So instead, we plant two cookies and test that they are actually
       // removed by [deleteAll].
       await driver.cookies.add(Cookie('mycookie', 'myvalue'));
+      var date = DateTime.utc(2020);
       await driver.cookies.add(Cookie('mycomplexcookie', 'mycomplexvalue',
-          path: '/', domain: '.google.com', secure: false, expiry: _expiryDate));
+          path: '/', domain: '.google.com', secure: false, expiry: date));
 
       await driver.cookies.deleteAll();
 
@@ -117,5 +118,5 @@ void main() {
 
       expect(found, isFalse);
     });
-  }, timeout: const Timeout(Duration(minutes: 2)));
+  });
 }

@@ -7,10 +7,7 @@ import '../common/request_client.dart';
 
 /// Sync request client using sync_http package.
 class SyncHttpRequestClient extends SyncRequestClient {
-  final Map<String, String> _headers;
-  SyncHttpRequestClient(Uri prefix, {Map<String, String> headers = const {}})
-      : _headers = headers,
-        super(prefix);
+  SyncHttpRequestClient(Uri prefix) : super(prefix);
 
   @override
   WebDriverResponse sendRaw(WebDriverRequest request) {
@@ -30,7 +27,6 @@ class SyncHttpRequestClient extends SyncRequestClient {
         break;
     }
 
-    _headers.forEach(httpRequest.headers.add);
     httpRequest.headers.add(HttpHeaders.acceptHeader, 'application/json');
     httpRequest.headers.add(HttpHeaders.cacheControlHeader, 'no-cache');
 

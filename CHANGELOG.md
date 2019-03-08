@@ -1,14 +1,4 @@
-## v2.1.2
-
-* Updated to latest version of sync_http.
-
-## v2.1.1
-
-* Forward-compatible fix for upcoming Dart SDK breaking change
-  (`HttpClientResponse` implementing `Stream<Uint8List>`)
-
 ## v2.1.0
-
 * Full support of JsonWire and W3C protocol specs in sync and async WebDriver.
 
 ## v2.0.0
