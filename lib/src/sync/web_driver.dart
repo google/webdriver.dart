@@ -128,6 +128,10 @@ class WebDriver implements SearchContext {
       this,
       by);
 
+  /// Search for an element by xpath within the entire current page.
+  /// Throws [NoSuchElementException] if a matching element is not found.
+  WebElement findElementByXpath(String by) => findElement(By.xpath(by));
+
   /// An artist's rendition of the current page's source.
   String get pageSource => _client.send(_handler.core.buildPageSourceRequest(),
       _handler.core.parsePageSourceResponse);
