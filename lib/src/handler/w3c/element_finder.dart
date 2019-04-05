@@ -65,6 +65,6 @@ class W3cElementFinder extends ElementFinder {
 
   @override
   String parseFindElementResponse(WebDriverResponse response) {
-    return parseW3cResponse(response)[w3cElementStr];
+    return (parseW3cResponse(response) ?? {})[w3cElementStr];
   }
 }
