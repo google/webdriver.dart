@@ -67,13 +67,27 @@ class WebElement extends common.WebElement implements SearchContext {
       _client.send(_handler.element.buildPropertyRequest(id, 'parentElement'),
           _handler.elementFinder.parseFindElementResponse));
 
+  static final _parentCache = <String, String>{};
+
   /// Gets a chain of parent elements, including the element itself.
   List<String> get parents {
     var p = this;
     final result = <String>[];
-    while (p != null && p.id != null) {
+    while (p.id != null) {
+      if (_parentCache.containsKey(p.id)) {
+        break;
+      }
       result.add(p.id);
-      p = p.parent;
+      _parentCache[p.id] = (p = p.parent).id;
+    }
+
+    if (p.id != null) {
+      // Hit cache in the previous loop.
+      var id = p.id;
+      while (id != null) {
+        result.add(id);
+        id = _parentCache[id];
+      }
     }
 
     return result;
