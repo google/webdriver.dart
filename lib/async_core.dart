@@ -91,7 +91,7 @@ Future<WebDriver> fromExistingSession(
   final handler = getHandler(spec);
 
   final session = await client.send(handler.session.buildInfoRequest(sessionId),
-      handler.session.parseInfoResponse);
+      (response) => handler.session.parseInfoResponse(response, sessionId));
 
   if (session.spec != WebDriverSpec.JsonWire &&
       session.spec != WebDriverSpec.W3c) {
