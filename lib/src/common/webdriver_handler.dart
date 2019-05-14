@@ -66,7 +66,7 @@ abstract class SessionHandler {
   WebDriverRequest buildInfoRequest(String id);
 
   /// Parses response for 'Get Session Info'.
-  SessionInfo parseInfoResponse(WebDriverResponse response);
+  SessionInfo parseInfoResponse(WebDriverResponse response, [String sessionId]);
 }
 
 abstract class CoreHandler {
