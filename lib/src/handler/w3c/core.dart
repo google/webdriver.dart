@@ -31,6 +31,10 @@ class W3cCoreHandler extends CoreHandler {
       WebDriverRequest.getRequest('screenshot');
 
   @override
+  WebDriverRequest buildElementScreenshotRequest(String elementId) =>
+      new WebDriverRequest.getRequest('${elementPrefix(elementId)}screenshot');
+
+  @override
   String parseScreenshotResponse(WebDriverResponse response) =>
       parseW3cResponse(response);
 
