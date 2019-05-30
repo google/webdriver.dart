@@ -172,8 +172,22 @@ void main() {
         expect(screenshot, everyElement(const TypeMatcher<int>()));
       });
 
+      test('captureElementScreenshotAsList', () async {
+        var element = await driver.findElement(const By.tagName('tr'));
+        var screenshot = await driver.captureElementScreenshotAsList(element);
+        expect(screenshot, hasLength(isPositive));
+        expect(screenshot, everyElement(const TypeMatcher<int>()));
+      });
+
       test('captureScreenshotAsBase64', () async {
         var screenshot = await driver.captureScreenshotAsBase64();
+        expect(screenshot, hasLength(isPositive));
+        expect(screenshot, const TypeMatcher<String>());
+      });
+
+      test('captureElementScreenshotAsBase64', () async {
+        var element = await driver.findElement(const By.tagName('tr'));
+        var screenshot = await driver.captureElementScreenshotAsBase64(element);
         expect(screenshot, hasLength(isPositive));
         expect(screenshot, const TypeMatcher<String>());
       });
