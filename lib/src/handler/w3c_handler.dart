@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:webdriver/src/common/log.dart';
 import 'package:webdriver/src/common/request.dart';
 import 'package:webdriver/src/common/webdriver_handler.dart';
 import 'package:webdriver/src/handler/w3c/alert.dart';
@@ -54,8 +55,7 @@ class W3cWebDriverHandler extends WebDriverHandler {
   TimeoutsHandler timeouts = W3cTimeoutsHandler();
 
   @override
-  LogsHandler get logs =>
-      throw UnsupportedError('Unsupported for W3cWebDriverHandler');
+  LogsHandler get logs => W3cLogsHandler();
 
   @override
   WebDriverRequest buildGeneralRequest(HttpMethod method, String uri,
@@ -70,4 +70,16 @@ class W3cWebDriverHandler extends WebDriverHandler {
 
   @override
   String toString() => 'W3C';
+}
+
+class W3cLogsHandler extends LogsHandler {
+  @override
+  WebDriverRequest buildGetLogsRequest(String logType) =>
+      WebDriverRequest.postRequest('log', {'type': logType});
+
+  @override
+  List<LogEntry> parseGetLogsResponse(WebDriverResponse response) =>
+      parseW3cResponse(response)
+          .map<LogEntry>((e) => LogEntry.fromMap(e))
+          .toList();
 }
