@@ -44,7 +44,12 @@ void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
 
     test('get logs', () {
       List<LogEntry> logs = driver.logs.get(LogType.performance).toList();
-      expect(logs.length, greaterThan(0));
+      if (driver.capabilities['browserName'] == 'firefox') {
+        expect(logs, isEmpty);
+        return;
+      }
+
+      expect(logs, isNotEmpty);
       logs.forEach((entry) {
         expect(entry.level, equals(LogLevel.info));
       });
