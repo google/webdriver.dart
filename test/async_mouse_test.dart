@@ -28,6 +28,20 @@ void main() {
     WebElement button;
     HttpServer server;
 
+    Future<bool> hasAlert() async {
+      try {
+        await driver.switchTo.alert.dismiss();
+        return true;
+      } on NoSuchAlertException {
+        return false;
+      }
+    }
+
+    Future<bool> mouseOnButton() async {
+      await driver.mouse.click();
+      return await hasAlert();
+    }
+
     setUp(() async {
       driver = await config.createTestDriver();
       server = await config.createTestServerAndGoToTestPage(driver);
@@ -41,24 +55,39 @@ void main() {
 
     test('moveTo element/click', () async {
       await driver.mouse.moveTo(element: button);
-      await driver.mouse.click();
-      var alert = await driver.switchTo.alert;
-      await alert.dismiss();
+      expect(await mouseOnButton(), true);
     });
 
     test('moveTo coordinates/click', () async {
       var pos = await button.location;
       await driver.mouse.moveTo(xOffset: pos.x + 5, yOffset: pos.y + 5);
-      await driver.mouse.click();
-      var alert = await driver.switchTo.alert;
-      await alert.dismiss();
+      expect(await mouseOnButton(), true);
     });
 
     test('moveTo element coordinates/click', () async {
-      await driver.mouse.moveTo(element: button, xOffset: 5, yOffset: 5);
-      await driver.mouse.click();
-      var alert = await driver.switchTo.alert;
-      await alert.dismiss();
+      await driver.mouse.moveTo(element: button, xOffset: 15, yOffset: 15);
+      // W3C uses center and JsonWire uses top left corner.
+      expect(await mouseOnButton(), driver.spec == WebDriverSpec.JsonWire);
+    });
+
+    test('moveTo element coordinates outside of element/click', () async {
+      await driver.mouse.moveTo(element: button, xOffset: -5, yOffset: -5);
+      // W3C uses center and JsonWire uses top left corner.
+      expect(await mouseOnButton(), driver.spec == WebDriverSpec.W3c);
+    });
+
+    test('moveToElementCenter moves to correct positions', () async {
+      await driver.mouse.moveToElementCenter(button, xOffset: -5, yOffset: -5);
+      expect(await mouseOnButton(), true);
+      await driver.mouse.moveToElementCenter(button, xOffset: 15, yOffset: 15);
+      expect(await mouseOnButton(), false);
+    });
+
+    test('moveToElementTopLeft moves to correct positions', () async {
+      await driver.mouse.moveToElementTopLeft(button, xOffset: -5, yOffset: -5);
+      expect(await mouseOnButton(), false);
+      await driver.mouse.moveToElementTopLeft(button, xOffset: 15, yOffset: 15);
+      expect(await mouseOnButton(), true);
     });
 
     // TODO(DrMarcII): Better up/down tests
@@ -66,16 +95,14 @@ void main() {
       await driver.mouse.moveTo(element: button);
       await driver.mouse.down();
       await driver.mouse.up();
-      var alert = await driver.switchTo.alert;
-      await alert.dismiss();
+      expect(await hasAlert(), true);
     });
 
     // TODO(DrMarcII): Better double click test
     test('doubleClick', () async {
       await driver.mouse.moveTo(element: button);
       await driver.mouse.doubleClick();
-      var alert = await driver.switchTo.alert;
-      await alert.dismiss();
+      expect(await hasAlert(), true);
     });
   }, timeout: const Timeout(Duration(minutes: 2)));
 }
