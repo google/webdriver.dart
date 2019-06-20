@@ -112,6 +112,25 @@ void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
       expect(mouseOnButton(), true);
     });
 
+    test('hide moves away from the current location', () {
+      driver.mouse.moveTo(element: button);
+      expect(mouseOnButton(), true);
+      driver.mouse.hide();
+      expect(mouseOnButton(), false);
+    });
+
+    test('hide moves to given location in w3c.', () {
+      if (driver.spec == WebDriverSpec.W3c) {
+        var pos = button.location;
+        driver.mouse.moveTo(element: button);
+        expect(mouseOnButton(), true);
+        driver.mouse.moveTo(xOffset: 0, yOffset: 0, absolute: true);
+        expect(mouseOnButton(), false);
+        driver.mouse.hide(w3cXOffset: pos.x + 5, w3cYOffset: pos.y + 5);
+        expect(mouseOnButton(), true);
+      }
+    });
+
     // TODO(DrMarcII): Better up/down tests
     test('down/up', () {
       driver.mouse.moveTo(element: button);

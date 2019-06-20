@@ -90,6 +90,25 @@ void main() {
       expect(await mouseOnButton(), true);
     });
 
+    test('hide moves away from the current location', () async {
+      await driver.mouse.moveTo(element: button);
+      expect(await mouseOnButton(), true);
+      await driver.mouse.hide();
+      expect(await mouseOnButton(), false);
+    });
+
+    test('hide moves to given location in w3c.', () async {
+      if (driver.spec == WebDriverSpec.W3c) {
+        var pos = await button.location;
+        await driver.mouse.moveTo(element: button);
+        expect(await mouseOnButton(), true);
+        await driver.mouse.moveTo(xOffset: 0, yOffset: 0, absolute: true);
+        expect(await mouseOnButton(), false);
+        await driver.mouse.hide(w3cXOffset: pos.x + 5, w3cYOffset: pos.y + 5);
+        expect(await mouseOnButton(), true);
+      }
+    });
+
     // TODO(DrMarcII): Better up/down tests
     test('down/up', () async {
       await driver.mouse.moveTo(element: button);
