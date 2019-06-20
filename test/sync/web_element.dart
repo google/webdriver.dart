@@ -112,13 +112,8 @@ void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
       expect(rect, config.isRectangle);
       expect(rect.left, 0);
       expect(rect.top, 0);
-      if (driver.spec == WebDriverSpec.W3c) {
-        expect(rect.width, 0);
-        expect(rect.height, 0);
-      } else {
-        expect(rect.width, isNonNegative);
-        expect(rect.height, isNonNegative);
-      }
+      expect(rect.width, isNonNegative);
+      expect(rect.height, isNonNegative);
     });
 
     test('location -- table', () {
@@ -145,13 +140,8 @@ void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
     test('size -- invisible', () {
       var size = invisible.size;
       expect(size, config.isRectangle);
-      if (driver.spec == WebDriverSpec.W3c) {
-        expect(size.width, 0);
-        expect(size.height, 0);
-      } else {
-        expect(size.width, isNonNegative);
-        expect(size.height, isNonNegative);
-      }
+      expect(size.width, isNonNegative);
+      expect(size.height, isNonNegative);
     });
 
     test('name', () {

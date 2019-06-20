@@ -124,7 +124,6 @@ void main() {
     test('size -- invisible', () async {
       var size = await invisible.size;
       expect(size, config.isRectangle);
-      // TODO(DrMarcII): I thought these should be 0
       expect(size.width, isNonNegative);
       expect(size.height, isNonNegative);
     });
