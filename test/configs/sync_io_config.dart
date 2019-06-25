@@ -47,7 +47,7 @@ Future<HttpServer> createTestServerAndGoToTestPage(WebDriver driver) async {
         request.response
           ..statusCode = HttpStatus.ok
           ..headers.set('Content-type', 'text/html');
-        file.openRead().pipe(request.response);
+        file.openRead().cast<List<int>>().pipe(request.response);
       } else {
         request.response
           ..statusCode = HttpStatus.notFound
