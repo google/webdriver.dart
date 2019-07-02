@@ -1,4 +1,4 @@
-## v2.1.0+1
+## v2.1.1
 
 * Forward-compatible fix for upcoming Dart SDK breaking change
   (`HttpClientResponse` implementing `Stream<Uint8List>`)
