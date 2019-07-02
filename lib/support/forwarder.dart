@@ -90,7 +90,7 @@ class WebDriverForwarder {
       }
       Map<dynamic, dynamic> params;
       if (request.method == 'POST') {
-        String requestBody = await utf8.decodeStream(request);
+        String requestBody = await utf8.decodeStream(request.cast<List<int>>());
         if (requestBody != null && requestBody.isNotEmpty) {
           params = json.decode(requestBody) as Map<dynamic, dynamic>;
         }
