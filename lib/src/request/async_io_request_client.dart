@@ -49,7 +49,7 @@ class AsyncIoRequestClient extends AsyncRequestClient {
       final response = await httpRequest.close();
 
       return WebDriverResponse(response.statusCode, response.reasonPhrase,
-          await utf8.decodeStream(response));
+          await utf8.decodeStream(response.cast<List<int>>()));
     } finally {
       _lock.release();
     }
