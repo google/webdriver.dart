@@ -63,7 +63,7 @@ Future<HttpServer> createTestServerAndGoToTestPage(WebDriver driver) async {
     }
   });
 
-  await driver.get('http://localhost:${server.port}/test_page.html');
+  await driver.get('http://$testHostname:${server.port}/test_page.html');
 
   return server;
 }

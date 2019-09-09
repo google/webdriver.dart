@@ -29,6 +29,8 @@ final Matcher isPoint = const TypeMatcher<Point<int>>();
 Future<HttpServer> createLocalServer() =>
     HttpServer.bind(InternetAddress.anyIPv4, 0);
 
+String get testHostname => '127.0.0.1';
+
 String get testHomePath => path.absolute('test');
 
 Uri getWebDriverUri(WebDriverSpec spec) {

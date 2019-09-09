@@ -61,12 +61,12 @@ class W3cElementHandler extends ElementHandler {
 
   @override
   WebDriverRequest buildDisplayedRequest(String elementId) {
-    return buildCssPropertyRequest(elementId, 'display');
+    return WebDriverRequest.getRequest('${elementPrefix(elementId)}displayed');
   }
 
   @override
   bool parseDisplayedResponse(WebDriverResponse response) {
-    return parseCssPropertyResponse(response) != 'none';
+    return parseW3cResponse(response);
   }
 
   @override

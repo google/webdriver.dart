@@ -15,6 +15,8 @@
 @TestOn('vm')
 library webdriver.navigation_test;
 
+import 'dart:io';
+
 import 'package:test/test.dart';
 import 'package:webdriver/sync_core.dart';
 
@@ -23,22 +25,26 @@ import '../configs/sync_io_config.dart' as config;
 void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
   group('Navigation', () {
     WebDriver driver;
+    HttpServer server;
 
-    setUp(() {
+    setUp(() async {
       driver = config.createTestDriver(spec: spec);
-      driver.get(config.testPagePath);
+      server = await config.createTestServerAndGoToTestPage(driver);
     });
 
-    tearDown(() {
+    tearDown(() async {
       if (driver != null) {
         driver.quit();
       }
       driver = null;
+
+      await server?.close(force: true);
     });
 
-    test('refresh', () {
+    test('refresh', () async {
       var element = driver.findElement(const By.tagName('button'));
-      driver.refresh();
+      // TODO(b/140553567): Use sync driver when we have a separate server.
+      await driver.asyncDriver.refresh();
       try {
         element.name;
       } on Exception {

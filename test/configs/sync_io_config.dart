@@ -60,8 +60,9 @@ Future<HttpServer> createTestServerAndGoToTestPage(WebDriver driver) async {
     }
   });
 
+  // TODO(b/140553567): Use sync driver when we have a separate server.
   await driver.asyncDriver
-      .get('http://localhost:${server.port}/test_page.html');
+      .get('http://$testHostname:${server.port}/test_page.html');
 
   return server;
 }

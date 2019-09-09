@@ -118,5 +118,5 @@ void main() {
 
       expect(found, isFalse);
     });
-  });
+  }, timeout: const Timeout(Duration(minutes: 2)));
 }

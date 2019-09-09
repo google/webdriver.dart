@@ -68,5 +68,5 @@ void main() {
       expect(events[1].startTime.isBefore(events[1].endTime), isTrue);
       expect(events[1].stackTrace, const TypeMatcher<Chain>());
     });
-  }, testOn: '!js');
+  }, testOn: '!js', timeout: const Timeout(Duration(minutes: 2)));
 }

@@ -33,6 +33,7 @@ void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
     WebElement checkbox;
     WebElement disabled;
     WebElement invisible;
+    WebElement inner;
     HttpServer server;
 
     setUp(() async {
@@ -47,7 +48,8 @@ void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
           driver.findElement(const By.cssSelector('input[type=checkbox]'));
       disabled =
           driver.findElement(const By.cssSelector('input[type=password]'));
-      invisible = driver.findElement(const By.tagName('div'));
+      invisible = await driver.findElement(const By.id('invisible-div'));
+      inner = await driver.findElement(const By.id('inner-div'));
     });
 
     tearDown(() async {
@@ -96,6 +98,7 @@ void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
       expect(checkbox.displayed, isTrue);
       expect(disabled.displayed, isTrue);
       expect(invisible.displayed, isFalse);
+      expect(inner.displayed, isFalse);
     });
 
     test('rect -- table', () {
