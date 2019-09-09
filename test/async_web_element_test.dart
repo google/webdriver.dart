@@ -33,6 +33,7 @@ void main() {
     WebElement checkbox;
     WebElement disabled;
     WebElement invisible;
+    WebElement inner;
     HttpServer server;
 
     setUp(() async {
@@ -49,7 +50,8 @@ void main() {
           .findElement(const By.cssSelector('input[type=checkbox]'));
       disabled = await driver
           .findElement(const By.cssSelector('input[type=password]'));
-      invisible = await driver.findElement(const By.tagName('div'));
+      invisible = await driver.findElement(const By.id('invisible-div'));
+      inner = await driver.findElement(const By.id('inner-div'));
     });
 
     tearDown(() async {
@@ -98,6 +100,7 @@ void main() {
       expect(await checkbox.displayed, isTrue);
       expect(await disabled.displayed, isTrue);
       expect(await invisible.displayed, isFalse);
+      expect(await inner.displayed, isFalse);
     });
 
     test('location -- table', () async {
