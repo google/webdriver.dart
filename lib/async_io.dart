@@ -38,9 +38,13 @@ export 'package:webdriver/src/request/async_io_request_client.dart';
 Future<core.WebDriver> createDriver(
         {Uri uri,
         Map<String, dynamic> desired,
-        core.WebDriverSpec spec = core.WebDriverSpec.Auto}) =>
-    core.createDriver((prefix) => AsyncIoRequestClient(prefix),
-        uri: uri, desired: desired, spec: spec);
+        core.WebDriverSpec spec = core.WebDriverSpec.Auto,
+        Map<String, String> webDriverHeaders = const {}}) =>
+    core.createDriver(
+        (prefix) => AsyncIoRequestClient(prefix, headers: webDriverHeaders),
+        uri: uri,
+        desired: desired,
+        spec: spec);
 
 /// Creates an async WebDriver from existing session using
 /// [AsyncIoRequestClient].
