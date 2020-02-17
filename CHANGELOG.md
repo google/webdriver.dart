@@ -1,3 +1,7 @@
+## v2.1.2
+
+* Widen constraint on `package:sync_http` in `pubspec.yaml`.
+
 ## v2.1.1
 
 * Forward-compatible fix for upcoming Dart SDK breaking change
