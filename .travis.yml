@@ -11,7 +11,7 @@ dart:
 before_install:
   - export CHROMEDRIVER_BINARY=/usr/bin/google-chrome
   - export CHROMEDRIVER_ARGS=--no-sandbox
-  - chrome --version
+  - google-chrome --version
   - firefox --version
 
   - export DISPLAY=:99.0
