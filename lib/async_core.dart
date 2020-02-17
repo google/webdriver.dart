@@ -124,5 +124,5 @@ WebDriver fromExistingSessionSync(
   }
 
   return WebDriver(uri, sessionId, UnmodifiableMapView(capabilities),
-      createRequestClient(uri.resolve('session/${sessionId}/')), spec);
+      createRequestClient(uri.resolve('session/$sessionId/')), spec);
 }
