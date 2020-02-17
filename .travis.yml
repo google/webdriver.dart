@@ -18,7 +18,7 @@ before_install:
   - sh -e /etc/init.d/xvfb start
 
 before_script:
-  - wget http://chromedriver.storage.googleapis.com/2.35/chromedriver_linux64.zip
+  - wget http://chromedriver.storage.googleapis.com/80.0.3987.106/chromedriver_linux64.zip
   - unzip chromedriver_linux64.zip
   - export PATH=$PATH:$PWD
   - wget https://github.com/mozilla/geckodriver/releases/download/v0.21.0/geckodriver-v0.21.0-linux64.tar.gz
