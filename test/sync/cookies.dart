@@ -54,7 +54,7 @@ void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
 
       final cookie = driver.cookies.getCookie('mycookie');
       expect(cookie.value, 'myvalue');
-      expect(cookie.domain, anyOf('.google.com', 'google.com'));
+      expect(cookie.domain, '.google.com');
     });
 
     test('get all cookies', () {
@@ -80,7 +80,7 @@ void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
         if (cookie.name == 'mycomplexcookie') {
           found = true;
           expect(cookie.value, 'mycomplexvalue');
-          expect(cookie.domain, anyOf('.google.com', 'google.com'));
+          expect(cookie.domain, '.google.com');
           break;
         }
       }

@@ -54,7 +54,7 @@ void main() {
 
       final cookie = await driver.cookies.getCookie('mycookie');
       expect(cookie.value, 'myvalue');
-      expect(cookie.domain, anyOf('.google.com', 'google.com'));
+      expect(cookie.domain, '.google.com');
     });
 
     test('get all cookies', () async {
@@ -81,7 +81,7 @@ void main() {
         if (cookie.name == 'mycomplexcookie') {
           found = true;
           expect(cookie.value, 'mycomplexvalue');
-          expect(cookie.domain, anyOf('.google.com', 'google.com'));
+          expect(cookie.domain, '.google.com');
           break;
         }
       }
