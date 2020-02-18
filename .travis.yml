@@ -13,13 +13,7 @@ addons:
 
 dart:
   - dev
-  - stable
-
-with_content_shell: false
-
-matrix:
-  allow_failures:
-    - dart: dev
+  - 2.0.0
 
 before_install:
   - export CHROMEDRIVER_BINARY=/usr/bin/google-chrome

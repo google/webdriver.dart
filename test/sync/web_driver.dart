@@ -160,6 +160,12 @@ void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
         expect(e.text, 'new text');
       });
 
+      test('captureScreenshot', () {
+        var screenshot = driver.captureScreenshotAsList().toList();
+        expect(screenshot, hasLength(isPositive));
+        expect(screenshot, everyElement(const isInstanceOf<int>()));
+      });
+
       test('captureScreenshotAsList', () {
         var screenshot = driver.captureScreenshotAsList();
         expect(screenshot, hasLength(isPositive));
