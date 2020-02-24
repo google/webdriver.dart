@@ -128,6 +128,10 @@ class WebDriver implements SearchContext {
       this,
       by);
 
+  /// Search for an element by xpath within the entire current page.
+  /// Throws [NoSuchElementException] if a matching element is not found.
+  WebElement findElementByXpath(String by) => findElement(By.xpath(by));
+
   /// An artist's rendition of the current page's source.
   String get pageSource => _client.send(_handler.core.buildPageSourceRequest(),
       _handler.core.parsePageSourceResponse);
@@ -202,9 +206,21 @@ class WebDriver implements SearchContext {
       _handler.core.buildScreenshotRequest(),
       _handler.core.parseScreenshotResponse);
 
+  /// Take a screenshot of the specified element as PNG and return it as
+  /// base64-encoded string.
+  String captureElementScreenshotAsBase64(WebElement element) => _client.send(
+      _handler.core.buildElementScreenshotRequest(element.id),
+      _handler.core.parseScreenshotResponse);
+
   /// Take a screenshot of the current page as PNG as list of uint8.
   List<int> captureScreenshotAsList() {
     final base64Encoded = captureScreenshotAsBase64();
+    return base64.decode(base64Encoded);
+  }
+
+  /// Take a screenshot of the specified element as PNG as list of uint8.
+  List<int> captureElementScreenshotAsList(WebElement element) {
+    final base64Encoded = captureElementScreenshotAsBase64(element);
     return base64.decode(base64Encoded);
   }
 

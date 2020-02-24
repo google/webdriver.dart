@@ -31,9 +31,13 @@ export 'package:webdriver/sync_core.dart'
 core.WebDriver createDriver(
         {Uri uri,
         Map<String, dynamic> desired,
-        core.WebDriverSpec spec = core.WebDriverSpec.Auto}) =>
-    core.createDriver((prefix) => SyncHttpRequestClient(prefix),
-        uri: uri, desired: desired, spec: spec);
+        core.WebDriverSpec spec = core.WebDriverSpec.Auto,
+        Map<String, String> webDriverHeaders = const {}}) =>
+    core.createDriver(
+        (prefix) => SyncHttpRequestClient(prefix, headers: webDriverHeaders),
+        uri: uri,
+        desired: desired,
+        spec: spec);
 
 /// Creates a sync WebDriver from existing session using
 /// [SyncHttpRequestClient].

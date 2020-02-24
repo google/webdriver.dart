@@ -36,9 +36,13 @@ final Uri defaultUri = Uri.parse('http://127.0.0.1:4444/wd/hub/');
 Future<core.WebDriver> createDriver(
         {Uri uri,
         Map<String, dynamic> desired,
-        WebDriverSpec spec = WebDriverSpec.Auto}) =>
-    core.createDriver((prefix) => AsyncXhrRequestClient(prefix),
-        uri: uri, desired: desired, spec: spec);
+        WebDriverSpec spec = WebDriverSpec.Auto,
+        Map<String, String> webDriverHeaders = const {}}) =>
+    core.createDriver(
+        (prefix) => AsyncXhrRequestClient(prefix, headers: webDriverHeaders),
+        uri: uri,
+        desired: desired,
+        spec: spec);
 
 /// Creates an async WebDriver from existing session using
 /// [AsyncXhrRequestClient].

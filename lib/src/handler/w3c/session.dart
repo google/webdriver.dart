@@ -27,6 +27,7 @@ class W3cSessionHandler extends SessionHandler {
       WebDriverRequest.nullRequest(id);
 
   @override
-  SessionInfo parseInfoResponse(WebDriverResponse response) =>
+  SessionInfo parseInfoResponse(WebDriverResponse response,
+          [String sessionId]) =>
       SessionInfo(response.body, WebDriverSpec.W3c, Capabilities.empty);
 }

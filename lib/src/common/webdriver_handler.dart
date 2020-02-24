@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:webdriver/async_core.dart';
 import 'package:webdriver/src/common/cookie.dart';
 import 'package:webdriver/src/common/log.dart';
 import 'package:webdriver/src/common/mouse.dart';
@@ -66,7 +67,7 @@ abstract class SessionHandler {
   WebDriverRequest buildInfoRequest(String id);
 
   /// Parses response for 'Get Session Info'.
-  SessionInfo parseInfoResponse(WebDriverResponse response);
+  SessionInfo parseInfoResponse(WebDriverResponse response, [String sessionId]);
 }
 
 abstract class CoreHandler {
@@ -90,6 +91,9 @@ abstract class CoreHandler {
 
   /// Builds request for 'Take Screenshot'.
   WebDriverRequest buildScreenshotRequest();
+
+  /// Builds request for 'Take Screenshot of Element'.
+  WebDriverRequest buildElementScreenshotRequest(String elementId);
 
   /// Parses response for 'Take Screenshot' to get a base64 encoded image.
   String parseScreenshotResponse(WebDriverResponse response);

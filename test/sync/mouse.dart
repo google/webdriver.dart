@@ -28,6 +28,20 @@ void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
     WebElement button;
     HttpServer server;
 
+    bool hasAlert() {
+      try {
+        driver.switchTo.alert.dismiss();
+        return true;
+      } on NoSuchAlertException {
+        return false;
+      }
+    }
+
+    bool mouseOnButton() {
+      driver.mouse.click();
+      return hasAlert();
+    }
+
     setUp(() async {
       driver = config.createTestDriver(spec: spec);
       server = await config.createTestServerAndGoToTestPage(driver);
@@ -41,30 +55,23 @@ void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
 
     test('moveTo element/click', () {
       driver.mouse.moveTo(element: button);
-      driver.mouse.click();
-      var alert = driver.switchTo.alert;
-      alert.dismiss();
+      expect(mouseOnButton(), true);
     });
 
     test('moveTo coordinates/click', () {
       var pos = button.location;
       driver.mouse.moveTo(xOffset: pos.x + 5, yOffset: pos.y + 5);
-      driver.mouse.click();
-      var alert = driver.switchTo.alert;
-      alert.dismiss();
+      expect(mouseOnButton(), true);
     });
 
     test('moveTo absolute coordinates/click', () {
       if (driver.spec == WebDriverSpec.W3c) {
         var pos = button.location;
         driver.mouse.moveTo(xOffset: pos.x + 200, yOffset: pos.y + 200);
-        driver.mouse.click();
-        // Should have no alert
+        expect(mouseOnButton(), false);
         driver.mouse
             .moveTo(xOffset: pos.x + 5, yOffset: pos.y + 5, absolute: true);
-        driver.mouse.click();
-        var alert = driver.switchTo.alert;
-        alert.dismiss();
+        expect(mouseOnButton(), true);
       }
     });
 
@@ -80,10 +87,48 @@ void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
     });
 
     test('moveTo element coordinates/click', () {
-      driver.mouse.moveTo(element: button, xOffset: 5, yOffset: 5);
-      driver.mouse.click();
-      var alert = driver.switchTo.alert;
-      alert.dismiss();
+      driver.mouse.moveTo(element: button, xOffset: 15, yOffset: 15);
+      // W3C uses center and JsonWire uses top left corner.
+      expect(mouseOnButton(), driver.spec == WebDriverSpec.JsonWire);
+    });
+
+    test('moveTo element coordinates outside of element/click', () {
+      driver.mouse.moveTo(element: button, xOffset: -5, yOffset: -5);
+      // W3C uses center and JsonWire uses top left corner.
+      expect(mouseOnButton(), driver.spec == WebDriverSpec.W3c);
+    });
+
+    test('moveToElementCenter moves to correct positions', () {
+      driver.mouse.moveToElementCenter(button, xOffset: -5, yOffset: -5);
+      expect(mouseOnButton(), true);
+      driver.mouse.moveToElementCenter(button, xOffset: 15, yOffset: 15);
+      expect(mouseOnButton(), false);
+    });
+
+    test('moveToElementTopLeft moves to correct positions', () {
+      driver.mouse.moveToElementTopLeft(button, xOffset: -5, yOffset: -5);
+      expect(mouseOnButton(), false);
+      driver.mouse.moveToElementTopLeft(button, xOffset: 15, yOffset: 15);
+      expect(mouseOnButton(), true);
+    });
+
+    test('hide moves away from the current location', () {
+      driver.mouse.moveTo(element: button);
+      expect(mouseOnButton(), true);
+      driver.mouse.hide();
+      expect(mouseOnButton(), false);
+    });
+
+    test('hide moves to given location in w3c.', () {
+      if (driver.spec == WebDriverSpec.W3c) {
+        var pos = button.location;
+        driver.mouse.moveTo(element: button);
+        expect(mouseOnButton(), true);
+        driver.mouse.moveTo(xOffset: 0, yOffset: 0, absolute: true);
+        expect(mouseOnButton(), false);
+        driver.mouse.hide(w3cXOffset: pos.x + 5, w3cYOffset: pos.y + 5);
+        expect(mouseOnButton(), true);
+      }
     });
 
     // TODO(DrMarcII): Better up/down tests

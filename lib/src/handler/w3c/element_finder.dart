@@ -25,6 +25,10 @@ class W3cElementFinder extends ElementFinder {
         using = 'css selector';
         value = by.value;
         break;
+      case 'class name': // This doesn't exist in the W3C spec.
+        using = 'css selector';
+        value = '.${by.value}';
+        break;
       // xpath, css selector, link text, partial link text, seem fine.
       default:
         using = by.using;
@@ -65,6 +69,6 @@ class W3cElementFinder extends ElementFinder {
 
   @override
   String parseFindElementResponse(WebDriverResponse response) {
-    return parseW3cResponse(response)[w3cElementStr];
+    return (parseW3cResponse(response) ?? {})[w3cElementStr];
   }
 }

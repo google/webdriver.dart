@@ -25,7 +25,7 @@ import 'web_driver.dart';
 
 // ignore: uri_does_not_exist
 import 'common_stub.dart'
-    // ignore: uri_does_not_exist
+// ignore: uri_does_not_exist
     if (dart.library.io) 'common_io.dart';
 
 /// WebDriver representation and interactions with an HTML element.
@@ -59,6 +59,39 @@ class WebElement extends common.WebElement implements SearchContext {
 
   WebElement(this.driver, this._client, this._handler, this.id,
       [this.context, this.locator, this.index]);
+
+  WebElement get parent => WebElement(
+      driver,
+      _client,
+      _handler,
+      _client.send(_handler.element.buildPropertyRequest(id, 'parentElement'),
+          _handler.elementFinder.parseFindElementResponse));
+
+  static final _parentCache = <String, String>{};
+
+  /// Gets a chain of parent elements, including the element itself.
+  List<String> get parents {
+    var p = this;
+    final result = <String>[];
+    while (p.id != null) {
+      if (_parentCache.containsKey(p.id)) {
+        break;
+      }
+      result.add(p.id);
+      _parentCache[p.id] = (p = p.parent).id;
+    }
+
+    if (p.id != null) {
+      // Hit cache in the previous loop.
+      var id = p.id;
+      while (id != null) {
+        result.add(id);
+        id = _parentCache[id];
+      }
+    }
+
+    return result;
+  }
 
   /// Click on this element.
   void click() {
