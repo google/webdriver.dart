@@ -114,8 +114,8 @@ class Mouse {
   /// For W3C, the mouse cannot move out of the screen, the workaround would be
   /// to move to somewhere on edge where it's not on any element. You can
   /// configure the location with [w3cXOffset] and [w3cYOffset]. By default,
-  /// it's at (1000, 0).
-  Future<void> hide({int w3cXOffset = 1000, int w3cYOffset = 0}) =>
+  /// it's at (100, 0).
+  Future<void> hide({int w3cXOffset = 100, int w3cYOffset = 0}) =>
       _handler is W3cWebDriverHandler
           ? moveTo(xOffset: w3cXOffset, yOffset: w3cYOffset, absolute: true)
           : moveTo(xOffset: -10000, yOffset: -10000);
