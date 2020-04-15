@@ -39,9 +39,6 @@ Future<WebDriver> createTestDriver(
       desired: capabilities, uri: getWebDriverUri(spec), spec: spec);
 }
 
-String get forwarderTestPagePath =>
-    path.join(testHomePath, 'support', 'forwarder_test_page.html');
-
 Future<HttpServer> createTestServerAndGoToTestPage(WebDriver driver) async {
   final server = await createLocalServer();
   server.listen((request) {
