@@ -34,7 +34,7 @@ Future<WebDriver> createTestDriver(
   if (additionalCapabilities != null) {
     capabilities.addAll(additionalCapabilities);
   }
-  return createDriver(desired: capabilities, uri: getWebDriverUri(spec));
+  return createDriver(desired: capabilities, uri: getWebDriverUri(spec), spec: spec);
 }
 
 String get forwarderTestPagePath =>
