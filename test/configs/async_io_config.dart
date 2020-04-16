@@ -16,7 +16,6 @@ import 'dart:async' show Future;
 import 'dart:io';
 
 import 'package:matcher/matcher.dart';
-import 'package:path/path.dart' as path;
 import 'package:webdriver/async_core.dart'
     show WebDriver, WebDriverSpec, WebElement;
 import 'package:webdriver/async_io.dart' show createDriver;
