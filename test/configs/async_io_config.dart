@@ -16,7 +16,6 @@ import 'dart:async' show Future;
 import 'dart:io';
 
 import 'package:matcher/matcher.dart';
-import 'package:path/path.dart' as path;
 import 'package:webdriver/async_core.dart'
     show WebDriver, WebDriverSpec, WebElement;
 import 'package:webdriver/async_io.dart' show createDriver;
@@ -38,9 +37,6 @@ Future<WebDriver> createTestDriver(
   return createDriver(
       desired: capabilities, uri: getWebDriverUri(spec), spec: spec);
 }
-
-String get forwarderTestPagePath =>
-    path.join(testHomePath, 'support', 'forwarder_test_page.html');
 
 Future<HttpServer> createTestServerAndGoToTestPage(WebDriver driver) async {
   final server = await createLocalServer();
