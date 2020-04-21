@@ -29,7 +29,7 @@ final Matcher isWebElement = const TypeMatcher<WebElement>();
 
 WebDriver createTestDriver(
     {Map<String, dynamic> additionalCapabilities,
-    WebDriverSpec spec = WebDriverSpec.W3c}) {
+    WebDriverSpec spec = defaultSpec}) {
   final capabilities = getCapabilities(spec);
   if (additionalCapabilities != null) {
     capabilities.addAll(additionalCapabilities);

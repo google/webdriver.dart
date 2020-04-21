@@ -15,6 +15,7 @@
 @TestOn('vm')
 library webdriver.mouse_test;
 
+import 'dart:async';
 import 'dart:io';
 
 import 'package:test/test.dart';

@@ -23,8 +23,9 @@ class AsyncXhrRequestClient extends AsyncRequestClient {
 
     final headers = {
       'Accept': 'application/json',
-      ..._headers,
     };
+
+    headers.addAll(_headers);
 
     HttpRequest httpRequest;
 
