@@ -23,10 +23,7 @@ import 'package:webdriver/src/async/stepper.dart';
 LineReader _stdinLineReader;
 
 /// A [LineReader] instance connected to 'dart:io' [stdin].
-LineReader get stdinLineReader {
-  _stdinLineReader ??= LineReader(stdin);
-  return _stdinLineReader;
-}
+LineReader get stdinLineReader => _stdinLineReader ??= LineReader(stdin);
 
 /// Provides a command line interface for stepping through or skipping
 /// WebDriver commands.

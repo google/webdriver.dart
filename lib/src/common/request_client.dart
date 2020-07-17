@@ -43,8 +43,7 @@ abstract class SyncRequestClient extends RequestClient {
     var exception;
     T response;
     try {
-      response = process(sendRaw(request));
-      return response;
+      return response = process(sendRaw(request));
     } catch (e) {
       exception = e;
       rethrow;
@@ -93,8 +92,7 @@ abstract class AsyncRequestClient extends RequestClient {
     var exception;
     T response;
     try {
-      response = process(await sendRaw(request));
-      return response;
+      return response = process(await sendRaw(request));
     } catch (e) {
       exception = e;
       rethrow;
