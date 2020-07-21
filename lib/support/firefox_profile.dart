@@ -273,7 +273,6 @@ abstract class PrefsOption<T> {
   final T value;
 
   factory PrefsOption(String name, T value) {
-    assert(value is bool || value is int || value is String);
     if (value is bool) {
       return BooleanOption(name, value) as PrefsOption<T>;
     } else if (value is int) {
@@ -281,7 +280,8 @@ abstract class PrefsOption<T> {
     } else if (value is String) {
       return StringOption(name, value) as PrefsOption<T>;
     }
-    return null;
+    throw ArgumentError(
+        'Only `bool`, `int` and `String` are valid parameter types.');
   }
 
   factory PrefsOption.parse(String prefs) {
