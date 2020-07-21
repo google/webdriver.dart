@@ -127,7 +127,8 @@ class WebElement extends common.WebElement implements SearchContext {
   ///
   /// This is assumed to be the upper left corner of the element, but its
   /// implementation is not well defined in the JSON spec.
-  Point get location => _client.send(_handler.element.buildLocationRequest(id),
+  Point<int> get location => _client.send(
+      _handler.element.buildLocationRequest(id),
       _handler.element.parseLocationResponse);
 
   /// The size of this element.
