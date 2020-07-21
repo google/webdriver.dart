@@ -42,7 +42,7 @@ void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
       events.clear();
       driver = null;
 
-      await server?.close(force: true);
+      await server.close(force: true);
     });
 
     test('handles exceptions', () {

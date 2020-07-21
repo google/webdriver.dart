@@ -37,8 +37,8 @@ void main() {
     });
 
     tearDown(() async {
-      await driver?.quit();
-      await server?.close(force: true);
+      await driver.quit();
+      await server.close(force: true);
     });
 
     test('frame index', () async {

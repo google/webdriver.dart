@@ -38,7 +38,7 @@ void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
       }
       driver = null;
 
-      await server?.close(force: true);
+      await server.close(force: true);
     });
 
     test('refresh', () async {

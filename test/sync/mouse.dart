@@ -49,8 +49,8 @@ void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
     });
 
     tearDown(() async {
-      driver?.quit();
-      await server?.close(force: true);
+      driver.quit();
+      await server.close(force: true);
     });
 
     test('moveTo element/click', () {
