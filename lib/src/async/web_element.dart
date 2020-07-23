@@ -75,7 +75,7 @@ class WebElement extends common.WebElement implements SearchContext {
       _handler.element.parseDisplayedResponse);
 
   /// The location within the document of this element.
-  Future<Point> get location => _client.send(
+  Future<Point<int>> get location => _client.send(
       _handler.element.buildLocationRequest(id),
       _handler.element.parseLocationResponse);
 
