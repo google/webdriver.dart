@@ -66,7 +66,8 @@ abstract class SyncRequestClient extends RequestClient {
   WebDriverResponse sendRaw(WebDriverRequest request);
 }
 
-typedef AsyncWebDriverListener = Future Function(WebDriverCommandEvent event);
+typedef AsyncWebDriverListener = Future<dynamic> Function(
+    WebDriverCommandEvent event);
 
 /// Async client to send to and receive from WebDriver.
 abstract class AsyncRequestClient extends RequestClient {
@@ -74,7 +75,7 @@ abstract class AsyncRequestClient extends RequestClient {
 
   AsyncRequestClient(Uri prefix) : super(prefix);
 
-  void addEventListener(SyncWebDriverListener listener) {
+  void addEventListener(AsyncWebDriverListener listener) {
     _commandListeners.add(listener);
   }
 
