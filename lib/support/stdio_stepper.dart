@@ -60,6 +60,8 @@ class StdioStepper implements Stepper {
         case 'quit':
         case 'q':
           exit(-1);
+          // TODO(162213706): remove ignore below.
+          // ignore: dead_code
           return false;
         default:
           print('invalid command: `$command` enter `h` or `help` for help.');
