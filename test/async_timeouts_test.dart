@@ -29,10 +29,7 @@ void main() {
     });
 
     tearDown(() async {
-      if (driver != null) {
-        await driver.quit();
-      }
-      driver = null;
+      await driver.quit();
     });
 
     // TODO(DrMarcII): Figure out how to tell if timeouts are correctly set

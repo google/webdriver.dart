@@ -29,10 +29,7 @@ void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
     });
 
     tearDown(() {
-      if (driver != null) {
-        driver.quit();
-      }
-      driver = null;
+      driver.quit();
     });
 
     // TODO(DrMarcII): Figure out how to tell if timeouts are correctly set

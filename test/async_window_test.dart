@@ -33,10 +33,7 @@ void main() {
     });
 
     tearDown(() async {
-      if (driver != null) {
-        await driver.quit();
-      }
-      driver = null;
+      await driver.quit();
     });
 
     test('size', () async {

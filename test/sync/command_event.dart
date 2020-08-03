@@ -40,7 +40,6 @@ void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
     tearDown(() async {
       driver.quit();
       events.clear();
-      driver = null;
 
       await server.close(force: true);
     });

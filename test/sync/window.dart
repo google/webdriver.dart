@@ -32,10 +32,7 @@ void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
     });
 
     tearDown(() {
-      if (driver != null) {
-        driver.quit();
-      }
-      driver = null;
+      driver.quit();
     });
 
     test('size', () {
