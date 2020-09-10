@@ -53,7 +53,7 @@ abstract class WebDriverHandler {
 
   /// Parses general response got from web driver server.
   dynamic parseGeneralResponse(
-      WebDriverResponse response, dynamic Function(String) createElement);
+      WebDriverResponse response, dynamic Function(String /*!*/) createElement);
 }
 
 abstract class SessionHandler {
@@ -75,19 +75,19 @@ abstract class CoreHandler {
   WebDriverRequest buildCurrentUrlRequest();
 
   /// Parses response for 'Get Current URL'.
-  String parseCurrentUrlResponse(WebDriverResponse response);
+  String /*!*/ parseCurrentUrlResponse(WebDriverResponse response);
 
   /// Builds request for 'Get Title'.
   WebDriverRequest buildTitleRequest();
 
   /// Parses response for 'Get Title'.
-  String parseTitleResponse(WebDriverResponse response);
+  String /*!*/ parseTitleResponse(WebDriverResponse response);
 
   /// Builds request for 'Get Page Source'.
   WebDriverRequest buildPageSourceRequest();
 
   /// Parses response for 'Get Page Source'.
-  String parsePageSourceResponse(WebDriverResponse response);
+  String /*!*/ parsePageSourceResponse(WebDriverResponse response);
 
   /// Builds request for 'Take Screenshot'.
   WebDriverRequest buildScreenshotRequest();
@@ -96,21 +96,21 @@ abstract class CoreHandler {
   WebDriverRequest buildElementScreenshotRequest(String elementId);
 
   /// Parses response for 'Take Screenshot' to get a base64 encoded image.
-  String parseScreenshotResponse(WebDriverResponse response);
+  String /*!*/ parseScreenshotResponse(WebDriverResponse response);
 
   /// Builds request for 'Execute Async Script'.
   WebDriverRequest buildExecuteAsyncRequest(String script, List args);
 
   /// Parses response for 'Execute Async Script'.
   dynamic parseExecuteAsyncResponse(
-      WebDriverResponse response, dynamic Function(String) createElement);
+      WebDriverResponse response, dynamic Function(String /*!*/) createElement);
 
   /// Builds request for 'Execute Script'.
   WebDriverRequest buildExecuteRequest(String script, List args);
 
   /// Parses response for 'Execute Script'.
   dynamic parseExecuteResponse(
-      WebDriverResponse response, dynamic Function(String) createElement);
+      WebDriverResponse response, dynamic Function(String /*!*/) createElement);
 
   /// Builds request for 'Delete Session'.
   WebDriverRequest buildDeleteSessionRequest();
@@ -142,19 +142,19 @@ abstract class ElementHandler {
   WebDriverRequest buildSelectedRequest(String elementId);
 
   /// Parses response for 'Is Element Selected'.
-  bool parseSelectedResponse(WebDriverResponse response);
+  bool /*!*/ parseSelectedResponse(WebDriverResponse response);
 
   /// Builds request for 'Is Element Enabled'.
   WebDriverRequest buildEnabledRequest(String elementId);
 
   /// Parses response for 'Is Element Enabled'.
-  bool parseEnabledResponse(WebDriverResponse response);
+  bool /*!*/ parseEnabledResponse(WebDriverResponse response);
 
   /// Builds request for 'Is Element Displayed'.
   WebDriverRequest buildDisplayedRequest(String elementId);
 
   /// Parses response for 'Is Element Displayed'.
-  bool parseDisplayedResponse(WebDriverResponse response);
+  bool /*!*/ parseDisplayedResponse(WebDriverResponse response);
 
   /// Builds request for 'Element Location'.
   WebDriverRequest buildLocationRequest(String elementId);
@@ -174,13 +174,13 @@ abstract class ElementHandler {
   WebDriverRequest buildNameRequest(String elementId);
 
   /// Parses response for 'Element Name'.
-  String parseNameResponse(WebDriverResponse response);
+  String /*!*/ parseNameResponse(WebDriverResponse response);
 
   /// Builds request for 'Element Text'.
   WebDriverRequest buildTextRequest(String elementId);
 
   /// Parses response for 'Element Text'.
-  String parseTextResponse(WebDriverResponse response);
+  String /*!*/ parseTextResponse(WebDriverResponse response);
 
   /// Builds request for 'Element Attribute'.
   WebDriverRequest buildAttributeRequest(String elementId, String name);
@@ -218,13 +218,13 @@ abstract class ElementFinder {
   WebDriverRequest buildFindElementsRequest(By by, [String contextId]);
 
   /// Parses response got for finding elements to get [List] of element id.
-  List<String> parseFindElementsResponse(WebDriverResponse response);
+  List<String> /*!*/ parseFindElementsResponse(WebDriverResponse response);
 
   /// Builds request for finding a single element.
   WebDriverRequest buildFindElementRequest(By by, [String contextId]);
 
   /// Parses response got for finding element to get the element id.
-  String parseFindElementResponse(WebDriverResponse response);
+  String /*!*/ parseFindElementResponse(WebDriverResponse response);
 
   /// Builds request for finding the current active element.
   WebDriverRequest buildFindActiveElementRequest();
@@ -287,7 +287,7 @@ abstract class AlertHandler {
   WebDriverRequest buildGetTextRequest();
 
   /// Parses response for 'Get Alert Text'.
-  String parseGetTextResponse(WebDriverResponse response);
+  String /*!*/ parseGetTextResponse(WebDriverResponse response);
 
   /// Builds request for 'Accept Alert'.
   WebDriverRequest buildAcceptRequest();
@@ -349,7 +349,7 @@ abstract class WindowHandler {
   WebDriverRequest buildGetActiveWindowRequest();
 
   /// Parses response for 'Get Window Handle' to get window id.
-  String parseGetActiveWindowResponse(WebDriverResponse response);
+  String /*!*/ parseGetActiveWindowResponse(WebDriverResponse response);
 
   /// Builds request for 'Set Window Active'.
   WebDriverRequest buildSetActiveRequest(String windowId);
@@ -475,7 +475,7 @@ abstract class CookiesHandler {
   WebDriverRequest buildGetAllCookiesRequest();
 
   /// Parses response for 'Get All Cookies'.
-  List<Cookie> parseGetAllCookiesResponse(WebDriverResponse response);
+  List<Cookie> /*!*/ parseGetAllCookiesResponse(WebDriverResponse response);
 }
 
 /// Handler for Timeouts.
@@ -508,5 +508,5 @@ abstract class LogsHandler {
   WebDriverRequest buildGetLogsRequest(String logType);
 
   /// Parses response for 'Get Logs'.
-  List<LogEntry> parseGetLogsResponse(WebDriverResponse response);
+  List<LogEntry> /*!*/ parseGetLogsResponse(WebDriverResponse response);
 }

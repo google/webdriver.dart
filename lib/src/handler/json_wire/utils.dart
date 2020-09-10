@@ -96,13 +96,13 @@ dynamic parseJsonWireResponse(WebDriverResponse response,
 /// Prefix to represent element in webdriver uri.
 ///
 /// When [elementId] is null, it means root element.
-String elementPrefix(String elementId) =>
+String elementPrefix(String /*?*/ elementId) =>
     elementId == null ? '' : 'element/$elementId/';
 
 /// Deserializes json object returned by WebDriver server.
 ///
 /// Mainly it handles the element object rebuild.
-dynamic deserialize(result, dynamic Function(String) createElement) {
+dynamic deserialize(result, dynamic Function(String /*!*/) createElement) {
   if (result is Map) {
     if (result.containsKey(jsonWireElementStr)) {
       return createElement(result[jsonWireElementStr]);

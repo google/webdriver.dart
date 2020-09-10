@@ -176,7 +176,7 @@ class FirefoxProfile {
   }
 
   /// Helper for [loadPrefsFile]
-  static bool _ignoreLine(String line) {
+  static bool _ignoreLine(String /*?*/ line) {
     line ??= '';
     line = line.trim();
     if (line.isEmpty ||
@@ -290,8 +290,8 @@ abstract class PrefsOption<T> {
       return InvalidOption('Not a valid prefs option: "$prefs".')
           as PrefsOption<T>;
     }
-    final name = match.group(1);
-    final valueString = match.group(2);
+    final name = match.group(1) /*!*/;
+    final valueString = match.group(2) /*!*/;
     if (valueString.startsWith('"') && valueString.endsWith('"')) {
       final value = valueString
           .substring(1, valueString.length - 1)
