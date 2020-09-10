@@ -74,11 +74,12 @@ class WebElement extends common.WebElement implements SearchContext {
     var p = this;
     final result = <String>[];
     while (p.id != null) {
-      if (_parentCache.containsKey(p.id)) {
+      var id = p.id;
+      if (_parentCache.containsKey(id)) {
         break;
       }
-      result.add(p.id);
-      _parentCache[p.id] = (p = p.parent).id;
+      result.add(id);
+      _parentCache[id] = (p = p.parent).id;
     }
 
     if (p.id != null) {

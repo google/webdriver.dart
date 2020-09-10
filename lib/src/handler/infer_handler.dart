@@ -84,7 +84,7 @@ class InferSessionHandler extends SessionHandler {
 
   @override
   SessionInfo parseCreateResponse(WebDriverResponse response) {
-    Map responseBody;
+    Map /*!*/ responseBody;
     try {
       responseBody = json.decode(response.body);
     } catch (e) {

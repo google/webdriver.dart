@@ -202,15 +202,15 @@ class WebDriver implements SearchContext {
 
   /// Take a screenshot of the current page as PNG and return it as
   /// base64-encoded string.
-  String captureScreenshotAsBase64() => _client.send(
+  String /*!*/ captureScreenshotAsBase64() => _client.send(
       _handler.core.buildScreenshotRequest(),
       _handler.core.parseScreenshotResponse);
 
   /// Take a screenshot of the specified element as PNG and return it as
   /// base64-encoded string.
-  String captureElementScreenshotAsBase64(WebElement element) => _client.send(
-      _handler.core.buildElementScreenshotRequest(element.id),
-      _handler.core.parseScreenshotResponse);
+  String /*!*/ captureElementScreenshotAsBase64(WebElement element) =>
+      _client.send(_handler.core.buildElementScreenshotRequest(element.id),
+          _handler.core.parseScreenshotResponse);
 
   /// Take a screenshot of the current page as PNG as list of uint8.
   List<int> captureScreenshotAsList() {

@@ -57,7 +57,7 @@ class Clock {
     var endTime = now.add(timeout);
     while (true) {
       try {
-        var value = await condition();
+        T /*?*/ value = await condition();
         if (mMatcher != null) {
           _matcherExpect(value, mMatcher);
         }

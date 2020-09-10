@@ -2,7 +2,7 @@ import 'package:webdriver/src/common/spec.dart';
 
 class SessionInfo {
   /// Id of the session.
-  final String id;
+  final String /*!*/ id;
 
   /// Spec of the session.
   ///

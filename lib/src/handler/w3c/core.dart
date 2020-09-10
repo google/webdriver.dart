@@ -44,8 +44,8 @@ class W3cCoreHandler extends CoreHandler {
           'execute/async', {'script': script, 'args': serialize(args)});
 
   @override
-  dynamic parseExecuteAsyncResponse(
-          WebDriverResponse response, dynamic Function(String) createElement) =>
+  dynamic parseExecuteAsyncResponse(WebDriverResponse response,
+          dynamic Function(String /*!*/) createElement) =>
       deserialize(parseW3cResponse(response), createElement);
 
   @override
@@ -54,8 +54,8 @@ class W3cCoreHandler extends CoreHandler {
           'execute/sync', {'script': script, 'args': serialize(args)});
 
   @override
-  dynamic parseExecuteResponse(
-          WebDriverResponse response, dynamic Function(String) createElement) =>
+  dynamic parseExecuteResponse(WebDriverResponse response,
+          dynamic Function(String /*!*/) createElement) =>
       deserialize(parseW3cResponse(response), createElement);
 
   @override

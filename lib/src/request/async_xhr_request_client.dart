@@ -27,7 +27,7 @@ class AsyncXhrRequestClient extends AsyncRequestClient {
 
     headers.addAll(_headers);
 
-    HttpRequest httpRequest;
+    HttpRequest /*!*/ httpRequest;
 
     try {
       httpRequest = await HttpRequest.request(resolve(request.uri).toString(),

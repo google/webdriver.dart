@@ -119,7 +119,7 @@ dynamic parseW3cResponse(WebDriverResponse response) {
 String elementPrefix(String elementId) =>
     elementId == null ? '' : 'element/$elementId/';
 
-dynamic deserialize(result, dynamic Function(String) createElement) {
+dynamic deserialize(result, dynamic Function(String /*!*/) createElement) {
   if (result is Map) {
     if (result.containsKey(w3cElementStr)) {
       return createElement(result[w3cElementStr]);

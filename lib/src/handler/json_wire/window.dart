@@ -24,7 +24,7 @@ class JsonWireWindowHandler extends WindowHandler {
       WebDriverRequest.getRequest('window_handles');
 
   @override
-  List<String> parseGetWindowsResponse(WebDriverResponse response) =>
+  List<String> /*!*/ parseGetWindowsResponse(WebDriverResponse response) =>
       parseJsonWireResponse(response).cast<String>();
 
   @override
