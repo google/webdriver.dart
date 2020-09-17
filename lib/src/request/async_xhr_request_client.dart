@@ -27,16 +27,16 @@ class AsyncXhrRequestClient extends AsyncRequestClient {
 
     headers.addAll(_headers);
 
-    HttpRequest /*!*/ httpRequest;
+    HttpRequest httpRequest;
 
     try {
-      httpRequest = await HttpRequest.request(resolve(request.uri).toString(),
-          method: request.method.name,
+      httpRequest = await HttpRequest.request(resolve(request.uri!).toString(),
+          method: request.method!.name,
           requestHeaders: headers,
           sendData: request.body,
           mimeType: 'application/json');
     } on ProgressEvent catch (e) {
-      httpRequest = e.target;
+      httpRequest = e.target as HttpRequest;
     } finally {
       _lock.release();
     }

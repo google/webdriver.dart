@@ -75,7 +75,10 @@ class Mouse {
   /// Special notes for W3C, if the destination is out of the current viewport,
   /// an 'MoveTargetOutOfBounds' exception will be thrown.
   void moveTo(
-      {WebElement element, int xOffset, int yOffset, bool absolute = false}) {
+      {WebElement? element,
+      int? xOffset,
+      int? yOffset,
+      bool absolute = false}) {
     _client.send(
         _handler.mouse.buildMoveToRequest(
             elementId: element?.id,
@@ -87,7 +90,7 @@ class Mouse {
 
   /// Moves to [element], with an offset of [xOffset] and [yOffset] based on the
   /// center of [element].
-  void moveToElementCenter(WebElement element, {int xOffset, int yOffset}) {
+  void moveToElementCenter(WebElement element, {int? xOffset, int? yOffset}) {
     if (_handler is JsonWireWebDriverHandler) {
       final size = element.size;
       moveTo(
@@ -101,7 +104,7 @@ class Mouse {
 
   /// Moves to [element], with an offset of [xOffset] and [yOffset] based on the
   /// top left corner of [element].
-  void moveToElementTopLeft(WebElement element, {int xOffset, int yOffset}) {
+  void moveToElementTopLeft(WebElement element, {int? xOffset, int? yOffset}) {
     if (_handler is W3cWebDriverHandler) {
       final size = element.size;
       moveTo(

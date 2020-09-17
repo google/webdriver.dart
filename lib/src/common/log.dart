@@ -1,7 +1,7 @@
 class LogEntry {
-  final String message;
+  final String? message;
   final DateTime timestamp;
-  final String level;
+  final String? level;
 
   const LogEntry(this.message, this.timestamp, this.level);
 

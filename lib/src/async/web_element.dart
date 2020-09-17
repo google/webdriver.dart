@@ -30,14 +30,14 @@ class WebElement extends common.WebElement implements SearchContext {
   final String id;
 
   /// The context from which this element was found.
-  final SearchContext context;
+  final SearchContext? context;
 
   /// How the element was located from the context.
   final dynamic /* String | Finder */ locator;
 
   /// The index of this element in the set of element founds. If the method
   /// used to find this element always returns one element, then this is null.
-  final int index;
+  final int? index;
 
   final AsyncRequestClient _client;
 

@@ -7,7 +7,7 @@ import 'package:webdriver/src/handler/json_wire/utils.dart';
 
 class JsonWireSessionHandler extends SessionHandler {
   @override
-  WebDriverRequest buildCreateRequest({Map<String, dynamic> desired}) {
+  WebDriverRequest buildCreateRequest({Map<String, dynamic>? desired}) {
     desired ??= Capabilities.empty;
     return WebDriverRequest.postRequest(
         'session', {'desiredCapabilities': desired});
@@ -23,7 +23,7 @@ class JsonWireSessionHandler extends SessionHandler {
 
   @override
   SessionInfo parseInfoResponse(WebDriverResponse response,
-      [String sessionId]) {
+      [String? sessionId]) {
     final session = parseJsonWireResponse(response, valueOnly: false);
     return SessionInfo(
         session['sessionId'], WebDriverSpec.JsonWire, session['value']);

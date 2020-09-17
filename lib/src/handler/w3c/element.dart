@@ -127,7 +127,7 @@ class W3cElementHandler extends ElementHandler {
   }
 
   @override
-  String parseAttributeResponse(WebDriverResponse response) {
+  String? parseAttributeResponse(WebDriverResponse response) {
     return parseW3cResponse(response)?.toString();
   }
 
@@ -141,7 +141,7 @@ class W3cElementHandler extends ElementHandler {
 
   @override
   @deprecated
-  String parseSeleniumAttributeResponse(WebDriverResponse response) {
+  String? parseSeleniumAttributeResponse(WebDriverResponse response) {
     return parseW3cResponse(response)?.toString();
   }
 
@@ -151,7 +151,7 @@ class W3cElementHandler extends ElementHandler {
   }
 
   @override
-  String parseCssPropertyResponse(WebDriverResponse response) {
+  String? parseCssPropertyResponse(WebDriverResponse response) {
     return parseW3cResponse(response)?.toString();
   }
 
@@ -162,7 +162,7 @@ class W3cElementHandler extends ElementHandler {
   }
 
   @override
-  String parsePropertyResponse(WebDriverResponse response) {
+  String? parsePropertyResponse(WebDriverResponse response) {
     return parseW3cResponse(response)?.toString();
   }
 }

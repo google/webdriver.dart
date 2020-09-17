@@ -50,8 +50,8 @@ final Uri defaultUri = Uri.parse('http://127.0.0.1:4444/wd/hub/');
 /// sync_io.dart.
 WebDriver createDriver(
     SyncRequestClient Function(Uri prefix) createRequestClient,
-    {Uri uri,
-    Map<String, dynamic> desired,
+    {Uri? uri,
+    Map<String, dynamic>? desired,
     WebDriverSpec spec = WebDriverSpec.Auto}) {
   uri ??= defaultUri;
 
@@ -69,7 +69,7 @@ WebDriver createDriver(
     throw 'Unexpected spec: ${session.spec}';
   }
 
-  return WebDriver(uri, session.id, UnmodifiableMapView(session.capabilities),
+  return WebDriver(uri, session.id, UnmodifiableMapView(session.capabilities!),
       createRequestClient(uri.resolve('session/${session.id}/')), session.spec);
 }
 
@@ -79,9 +79,9 @@ WebDriver createDriver(
 /// sync_io.dart.
 WebDriver fromExistingSession(String sessionId,
     SyncRequestClient Function(Uri prefix) createRequestClient,
-    {Uri uri,
+    {Uri? uri,
     WebDriverSpec spec = WebDriverSpec.Auto,
-    Map<String, dynamic> capabilities}) {
+    Map<String, dynamic>? capabilities}) {
   uri ??= defaultUri;
 
   var session = SessionInfo(sessionId, spec, capabilities);
@@ -102,6 +102,10 @@ WebDriver fromExistingSession(String sessionId,
     throw 'Unexpected spec: ${session.spec}';
   }
 
-  return WebDriver(uri, session.id, UnmodifiableMapView(session.capabilities),
-      createRequestClient(uri.resolve('session/${session.id}/')), session.spec);
+  return WebDriver(
+      uri,
+      session.id,
+      UnmodifiableMapView(session.capabilities ?? {}),
+      createRequestClient(uri.resolve('session/${session.id}/')),
+      session.spec);
 }

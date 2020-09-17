@@ -26,9 +26,9 @@ import '../configs/sync_io_config.dart' as config;
 /// in other classes.
 void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
   group('TargetLocator', () {
-    WebDriver driver;
-    WebElement frame;
-    HttpServer server;
+    late WebDriver driver;
+    late WebElement frame;
+    late HttpServer server;
 
     setUp(() async {
       driver = config.createTestDriver(spec: spec);

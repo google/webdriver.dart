@@ -41,7 +41,7 @@ abstract class SyncRequestClient extends RequestClient {
         terse: true);
 
     var exception;
-    T response;
+    T? response;
     try {
       return response = process(sendRaw(request));
     } catch (e) {
@@ -49,8 +49,8 @@ abstract class SyncRequestClient extends RequestClient {
       rethrow;
     } finally {
       final event = WebDriverCommandEvent(
-          method: request.method.name,
-          endPoint: resolve(request.uri).toString(),
+          method: request.method!.name,
+          endPoint: resolve(request.uri!).toString(),
           params: request.body,
           startTime: startTime,
           endTime: DateTime.now(),
@@ -91,7 +91,7 @@ abstract class AsyncRequestClient extends RequestClient {
         terse: true);
 
     var exception;
-    T response;
+    T? response;
     try {
       return response = process(await sendRaw(request));
     } catch (e) {
@@ -99,8 +99,8 @@ abstract class AsyncRequestClient extends RequestClient {
       rethrow;
     } finally {
       final event = WebDriverCommandEvent(
-          method: request.method.name,
-          endPoint: resolve(request.uri).toString(),
+          method: request.method!.name,
+          endPoint: resolve(request.uri!).toString(),
           params: request.body,
           startTime: startTime,
           endTime: DateTime.now(),

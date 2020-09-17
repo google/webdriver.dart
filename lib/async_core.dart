@@ -51,8 +51,8 @@ final Uri defaultUri = Uri.parse('http://127.0.0.1:4444/wd/hub/');
 /// async_io.dart or async_html.dart.
 Future<WebDriver> createDriver(
     AsyncRequestClient Function(Uri prefix) createRequestClient,
-    {Uri uri,
-    Map<String, dynamic> desired,
+    {Uri? uri,
+    Map<String, dynamic>? desired,
     WebDriverSpec spec = WebDriverSpec.Auto}) async {
   uri ??= defaultUri;
 
@@ -70,7 +70,7 @@ Future<WebDriver> createDriver(
     throw 'Unexpected spec: ${session.spec}';
   }
 
-  return WebDriver(uri, session.id, UnmodifiableMapView(session.capabilities),
+  return WebDriver(uri, session.id, UnmodifiableMapView(session.capabilities!),
       createRequestClient(uri.resolve('session/${session.id}/')), session.spec);
 }
 
@@ -81,7 +81,7 @@ Future<WebDriver> createDriver(
 Future<WebDriver> fromExistingSession(
     AsyncRequestClient Function(Uri prefix) createRequestClient,
     String sessionId,
-    {Uri uri,
+    {Uri? uri,
     WebDriverSpec spec = WebDriverSpec.Auto}) async {
   uri ??= defaultUri;
 
@@ -98,7 +98,7 @@ Future<WebDriver> fromExistingSession(
     throw 'Unexpected spec: ${session.spec}';
   }
 
-  return WebDriver(uri, session.id, UnmodifiableMapView(session.capabilities),
+  return WebDriver(uri, session.id, UnmodifiableMapView(session.capabilities!),
       createRequestClient(uri.resolve('session/${session.id}/')), session.spec);
 }
 
@@ -113,8 +113,8 @@ WebDriver fromExistingSessionSync(
     AsyncRequestClient Function(Uri prefix) createRequestClient,
     String sessionId,
     WebDriverSpec spec,
-    {Uri uri,
-    Map<String, dynamic> capabilities}) {
+    {Uri? uri,
+    Map<String, dynamic>? capabilities}) {
   uri ??= defaultUri;
 
   capabilities ??= Capabilities.empty;

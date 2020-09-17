@@ -20,11 +20,11 @@ class HttpMethod {
 /// This is useful to remove dependency on implementation specific request
 /// class.
 class WebDriverRequest {
-  final HttpMethod method;
+  final HttpMethod? method;
 
-  final String uri;
+  final String? uri;
 
-  final String body;
+  final String? body;
 
   WebDriverRequest(this.method, this.uri, this.body);
 
@@ -49,7 +49,7 @@ class WebDriverRequest {
         this.uri = null;
 
   @override
-  String toString() => '${method.name} $uri: $body';
+  String toString() => '${method!.name} $uri: $body';
 }
 
 /// Request data got from WebDriver.
@@ -59,10 +59,10 @@ class WebDriverRequest {
 /// This is useful to remove dependency on implementation specific response
 /// class.
 class WebDriverResponse {
-  final int statusCode;
+  final int? statusCode;
 
-  final String reasonPhrase;
-  final String body;
+  final String? reasonPhrase;
+  final String? body;
 
   WebDriverResponse(this.statusCode, this.reasonPhrase, this.body);
 

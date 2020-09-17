@@ -34,8 +34,8 @@ final Uri defaultUri = Uri.parse('http://127.0.0.1:4444/wd/hub/');
 /// [uri]. Therefore, if [uri] does not end with a trailing slash, the
 /// last path component will be dropped.
 Future<core.WebDriver> createDriver(
-        {Uri uri,
-        Map<String, dynamic> desired,
+        {Uri? uri,
+        Map<String, dynamic>? desired,
         WebDriverSpec spec = WebDriverSpec.Auto,
         Map<String, String> webDriverHeaders = const {}}) =>
     core.createDriver(
@@ -52,7 +52,7 @@ Future<core.WebDriver> createDriver(
 /// [uri]. Therefore, if [uri] does not end with a trailing slash, the
 /// last path component will be dropped.
 Future<core.WebDriver> fromExistingSession(String sessionId,
-        {Uri uri, WebDriverSpec spec = WebDriverSpec.Auto}) =>
+        {Uri? uri, WebDriverSpec spec = WebDriverSpec.Auto}) =>
     core.fromExistingSession(
         (prefix) => AsyncXhrRequestClient(prefix), sessionId,
         uri: uri, spec: spec);
@@ -69,7 +69,7 @@ Future<core.WebDriver> fromExistingSession(String sessionId,
 /// [uri]. Therefore, if [uri] does not end with a trailing slash, the
 /// last path component will be dropped.
 core.WebDriver fromExistingSessionSync(String sessionId, WebDriverSpec spec,
-        {Uri uri, Map<String, dynamic> capabilities}) =>
+        {Uri? uri, Map<String, dynamic>? capabilities}) =>
     core.fromExistingSessionSync(
         (prefix) => AsyncXhrRequestClient(prefix), sessionId, spec,
         uri: uri, capabilities: capabilities);

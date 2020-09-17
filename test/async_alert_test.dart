@@ -24,10 +24,10 @@ import 'configs/async_io_config.dart' as config;
 
 void main() {
   group('Alert', () {
-    WebDriver driver;
-    WebElement button;
-    WebElement output;
-    HttpServer server;
+    late WebDriver driver;
+    late WebElement button;
+    late WebElement output;
+    late HttpServer server;
 
     setUp(() async {
       driver = await config.createTestDriver();

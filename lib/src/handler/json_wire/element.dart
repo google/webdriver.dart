@@ -128,7 +128,7 @@ class JsonWireElementHandler extends ElementHandler {
   }
 
   @override
-  String parseAttributeResponse(WebDriverResponse response) {
+  String? parseAttributeResponse(WebDriverResponse response) {
     return parseJsonWireResponse(response)?.toString();
   }
 
@@ -142,7 +142,7 @@ class JsonWireElementHandler extends ElementHandler {
 
   @override
   @deprecated
-  String parseSeleniumAttributeResponse(WebDriverResponse response) {
+  String? parseSeleniumAttributeResponse(WebDriverResponse response) {
     return parseJsonWireResponse(response)?.toString();
   }
 
@@ -158,7 +158,7 @@ class JsonWireElementHandler extends ElementHandler {
   }
 
   @override
-  String parseCssPropertyResponse(WebDriverResponse response) {
+  String? parseCssPropertyResponse(WebDriverResponse response) {
     return parseJsonWireResponse(response)?.toString();
   }
 
@@ -173,11 +173,11 @@ class JsonWireElementHandler extends ElementHandler {
   }
 
   @override
-  String parsePropertyResponse(WebDriverResponse response) {
+  String? parsePropertyResponse(WebDriverResponse response) {
     return parseJsonWireResponse(response)?.toString();
   }
 
   /// Convert hyphenated-properties to camelCase.
   String _cssPropName(String name) => name.splitMapJoin(RegExp(r'-(\w)'),
-      onMatch: (m) => m.group(1).toUpperCase(), onNonMatch: (m) => m);
+      onMatch: (m) => m.group(1)!.toUpperCase(), onNonMatch: (m) => m);
 }

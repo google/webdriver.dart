@@ -45,7 +45,7 @@ class WebDriver implements SearchContext {
   final Map<String, dynamic> capabilities;
   final String id;
   final Uri uri;
-  Stepper stepper;
+  Stepper? stepper;
 
   /// If true, WebDriver actions are recorded as [WebDriverCommandEvent]s.
   bool notifyListeners = true;
@@ -159,7 +159,7 @@ class WebDriver implements SearchContext {
 
   /// The currently focused element, or the body element if no element has
   /// focus.
-  Future<WebElement> get activeElement async {
+  Future<WebElement?> get activeElement async {
     final id = await _client.send(
         _handler.elementFinder.buildFindActiveElementRequest(),
         _handler.elementFinder.parseFindActiveElementResponse);
@@ -190,13 +190,13 @@ class WebDriver implements SearchContext {
 
   /// Take a screenshot of the current page as PNG and return it as
   /// base64-encoded string.
-  Future<String /*!*/ > captureScreenshotAsBase64() => _client.send(
+  Future<String> captureScreenshotAsBase64() => _client.send(
       _handler.core.buildScreenshotRequest(),
       _handler.core.parseScreenshotResponse);
 
   /// Take a screenshot of the specified element as PNG and return it as
   /// base64-encoded string.
-  Future<String /*!*/ > captureElementScreenshotAsBase64(WebElement element) =>
+  Future<String> captureElementScreenshotAsBase64(WebElement element) =>
       _client.send(_handler.core.buildElementScreenshotRequest(element.id),
           _handler.core.parseScreenshotResponse);
 

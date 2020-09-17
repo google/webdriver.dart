@@ -25,9 +25,9 @@ import 'configs/async_io_config.dart' as config;
 
 void main() {
   group('Mouse', () {
-    WebDriver driver;
-    WebElement button;
-    HttpServer server;
+    late WebDriver driver;
+    late WebElement button;
+    late HttpServer server;
 
     Future<bool> hasAlert() async {
       try {

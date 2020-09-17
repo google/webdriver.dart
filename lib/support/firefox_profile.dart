@@ -12,6 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// We should migrate this file to Null Safety once package:archive is migrated,
+// but for now annotate it with the older language version.
+// @dart = 2.9
+
 library webdriver.support.firefox_profile;
 
 import 'dart:collection';
@@ -176,7 +180,7 @@ class FirefoxProfile {
   }
 
   /// Helper for [loadPrefsFile]
-  static bool _ignoreLine(String /*?*/ line) {
+  static bool _ignoreLine(String line) {
     line ??= '';
     line = line.trim();
     if (line.isEmpty ||
@@ -290,8 +294,8 @@ abstract class PrefsOption<T> {
       return InvalidOption('Not a valid prefs option: "$prefs".')
           as PrefsOption<T>;
     }
-    final name = match.group(1) /*!*/;
-    final valueString = match.group(2) /*!*/;
+    final name = match.group(1);
+    final valueString = match.group(2);
     if (valueString.startsWith('"') && valueString.endsWith('"')) {
       final value = valueString
           .substring(1, valueString.length - 1)

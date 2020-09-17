@@ -22,7 +22,7 @@ import '../configs/sync_io_config.dart' as config;
 
 void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
   group('TimeOuts', () {
-    WebDriver driver;
+    late WebDriver driver;
 
     setUp(() {
       driver = config.createTestDriver(spec: spec);

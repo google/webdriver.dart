@@ -15,28 +15,28 @@
 /// Browser cookie.
 class Cookie {
   /// The name of the cookie.
-  final String name;
+  final String? name;
 
   /// The cookie value.
-  final String value;
+  final String? value;
 
   /// (Optional) The cookie path.
-  final String path;
+  final String? path;
 
   /// (Optional) The domain the cookie is visible to.
-  final String domain;
+  final String? domain;
 
   /// (Optional) Whether the cookie is a secure cookie.
-  final bool secure;
+  final bool? secure;
 
   /// (Optional) When the cookie expires.
-  final DateTime expiry;
+  final DateTime? expiry;
 
   Cookie(this.name, this.value,
       {this.path, this.domain, this.secure, this.expiry});
 
   factory Cookie.fromJson(Map<String, dynamic> json) {
-    DateTime expiry;
+    DateTime? expiry;
     if (json['expiry'] is num) {
       expiry = DateTime.fromMillisecondsSinceEpoch(
           json['expiry'].toInt() * 1000,
@@ -61,7 +61,7 @@ class Cookie {
       json['secure'] = secure;
     }
     if (expiry is DateTime) {
-      json['expiry'] = (expiry.millisecondsSinceEpoch / 1000).ceil();
+      json['expiry'] = (expiry!.millisecondsSinceEpoch / 1000).ceil();
     }
     return json;
   }

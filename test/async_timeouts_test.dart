@@ -22,7 +22,7 @@ import 'configs/async_io_config.dart' as config;
 
 void main() {
   group('TimeOuts', () {
-    WebDriver driver;
+    late WebDriver driver;
 
     setUp(() async {
       driver = await config.createTestDriver();

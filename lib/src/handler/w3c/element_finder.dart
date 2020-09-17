@@ -39,7 +39,7 @@ class W3cElementFinder extends ElementFinder {
   }
 
   @override
-  WebDriverRequest buildFindElementsRequest(By by, [String contextElementId]) {
+  WebDriverRequest buildFindElementsRequest(By by, [String? contextElementId]) {
     String uri = '${elementPrefix(contextElementId)}elements';
     return WebDriverRequest.postRequest(uri, _byToJson(by));
   }
@@ -47,18 +47,18 @@ class W3cElementFinder extends ElementFinder {
   @override
   List<String> parseFindElementsResponse(WebDriverResponse response) {
     return (parseW3cResponse(response) as List)
-        .map<String>((e) => e[w3cElementStr])
+        .map<String>((e) => e[w3cElementStr]!)
         .toList();
   }
 
   @override
-  WebDriverRequest buildFindElementRequest(By by, [String contextElementId]) {
+  WebDriverRequest buildFindElementRequest(By by, [String? contextElementId]) {
     String uri = '${elementPrefix(contextElementId)}element';
     return WebDriverRequest.postRequest(uri, _byToJson(by));
   }
 
   @override
-  String parseFindActiveElementResponse(WebDriverResponse response) {
+  String? parseFindActiveElementResponse(WebDriverResponse response) {
     return parseW3cResponse(response)[w3cElementStr];
   }
 

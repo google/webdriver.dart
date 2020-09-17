@@ -24,9 +24,9 @@ import '../configs/sync_io_config.dart' as config;
 
 void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
   group('Mouse', () {
-    WebDriver driver;
-    WebElement button;
-    HttpServer server;
+    late WebDriver driver;
+    late WebElement button;
+    late HttpServer server;
 
     bool hasAlert() {
       try {

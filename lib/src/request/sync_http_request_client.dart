@@ -14,19 +14,19 @@ class SyncHttpRequestClient extends SyncRequestClient {
 
   @override
   WebDriverResponse sendRaw(WebDriverRequest request) {
-    SyncHttpClientRequest httpRequest;
+    late SyncHttpClientRequest httpRequest;
     switch (request.method) {
       case HttpMethod.httpGet:
-        httpRequest = SyncHttpClient.getUrl(resolve(request.uri));
+        httpRequest = SyncHttpClient.getUrl(resolve(request.uri!));
         break;
       case HttpMethod.httpPost:
-        httpRequest = SyncHttpClient.postUrl(resolve(request.uri));
+        httpRequest = SyncHttpClient.postUrl(resolve(request.uri!));
         httpRequest.headers.contentType =
             ContentType('application', 'json', charset: 'utf-8');
-        httpRequest.write(request.body);
+        httpRequest.write(request.body!);
         break;
       case HttpMethod.httpDelete:
-        httpRequest = SyncHttpClient.deleteUrl(resolve(request.uri));
+        httpRequest = SyncHttpClient.deleteUrl(resolve(request.uri!));
         break;
     }
 
