@@ -27,7 +27,7 @@ export 'common_config.dart';
 final Matcher isWebElement = const TypeMatcher<WebElement>();
 
 Future<WebDriver> createTestDriver(
-    {Map<String, dynamic> additionalCapabilities,
+    {Map<String, dynamic>? additionalCapabilities,
     WebDriverSpec spec = defaultSpec}) {
   final capabilities = getCapabilities(spec);
   if (additionalCapabilities != null) {

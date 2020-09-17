@@ -24,7 +24,7 @@ class W3cWindowHandler extends WindowHandler {
       WebDriverRequest.getRequest('window/handles');
 
   @override
-  List<String> /*!*/ parseGetWindowsResponse(WebDriverResponse response) =>
+  List<String> parseGetWindowsResponse(WebDriverResponse response) =>
       parseW3cResponse(response).cast<String>();
 
   @override

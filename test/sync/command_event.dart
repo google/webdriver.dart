@@ -25,8 +25,8 @@ import '../configs/sync_io_config.dart' as config;
 
 void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
   group('CommandEvent', () {
-    WebDriver driver;
-    HttpServer server;
+    late WebDriver driver;
+    late HttpServer server;
 
     var events = <WebDriverCommandEvent>[];
 
@@ -55,7 +55,7 @@ void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
       expect(events[0].endPoint, contains('alert'));
       expect(events[0].exception, const TypeMatcher<WebDriverException>());
       expect(events[0].result, isNull);
-      expect(events[0].startTime.isBefore(events[0].endTime), isTrue);
+      expect(events[0].startTime!.isBefore(events[0].endTime!), isTrue);
       expect(events[0].stackTrace, const TypeMatcher<Chain>());
     });
 
@@ -67,7 +67,7 @@ void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
       expect(events[0].endPoint, contains('elements'));
       expect(events[0].exception, isNull);
       expect(events[0].result, isNotNull);
-      expect(events[0].startTime.isBefore(events[0].endTime), isTrue);
+      expect(events[0].startTime!.isBefore(events[0].endTime!), isTrue);
       expect(events[0].stackTrace, const TypeMatcher<Chain>());
     });
   }, timeout: const Timeout(Duration(minutes: 2)));

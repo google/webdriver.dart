@@ -24,17 +24,17 @@ import 'configs/async_io_config.dart' as config;
 
 void main() {
   group('WebElement', () {
-    WebDriver driver;
-    WebElement table;
-    WebElement button;
-    WebElement form;
-    WebElement formSubmit;
-    WebElement textInput;
-    WebElement checkbox;
-    WebElement disabled;
-    WebElement invisible;
-    WebElement inner;
-    HttpServer server;
+    late WebDriver driver;
+    late WebElement table;
+    late WebElement button;
+    late WebElement form;
+    late WebElement formSubmit;
+    late WebElement textInput;
+    late WebElement checkbox;
+    late WebElement disabled;
+    late WebElement invisible;
+    late WebElement inner;
+    late HttpServer server;
 
     setUp(() async {
       driver = await config.createTestDriver();

@@ -24,10 +24,10 @@ import 'configs/async_io_config.dart' as config;
 
 void main() {
   group('Keyboard', () {
-    WebDriver driver;
-    WebElement textInput;
+    late WebDriver driver;
+    late WebElement textInput;
     String ctrlCmdKey = '';
-    HttpServer server;
+    late HttpServer server;
 
     setUp(() async {
       if (Platform.isMacOS) {

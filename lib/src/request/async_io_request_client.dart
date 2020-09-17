@@ -21,17 +21,17 @@ class AsyncIoRequestClient extends AsyncRequestClient {
   @override
   Future<WebDriverResponse> sendRaw(WebDriverRequest request) async {
     await _lock.acquire();
-    HttpClientRequest httpRequest;
+    late HttpClientRequest httpRequest;
 
     switch (request.method) {
       case HttpMethod.httpGet:
-        httpRequest = await client.getUrl(resolve(request.uri));
+        httpRequest = await client.getUrl(resolve(request.uri!));
         break;
       case HttpMethod.httpPost:
-        httpRequest = await client.postUrl(resolve(request.uri));
+        httpRequest = await client.postUrl(resolve(request.uri!));
         break;
       case HttpMethod.httpDelete:
-        httpRequest = await client.deleteUrl(resolve(request.uri));
+        httpRequest = await client.deleteUrl(resolve(request.uri!));
         break;
     }
 
@@ -41,10 +41,10 @@ class AsyncIoRequestClient extends AsyncRequestClient {
     httpRequest.headers.add(HttpHeaders.acceptCharsetHeader, utf8.name);
     httpRequest.headers.add(HttpHeaders.cacheControlHeader, 'no-cache');
 
-    if (request.body != null && request.body.isNotEmpty) {
+    if (request.body != null && request.body!.isNotEmpty) {
       httpRequest.headers.contentType =
           ContentType('application', 'json', charset: 'utf-8');
-      final body = utf8.encode(request.body);
+      final body = utf8.encode(request.body!);
       httpRequest.contentLength = body.length;
       httpRequest.add(body);
     }

@@ -25,8 +25,8 @@ import 'configs/async_io_config.dart' as config;
 
 void main() {
   group('Navigation', () {
-    WebDriver driver;
-    HttpServer server;
+    late WebDriver driver;
+    late HttpServer server;
 
     setUp(() async {
       driver = await config.createTestDriver();

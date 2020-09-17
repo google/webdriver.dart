@@ -88,9 +88,9 @@ class W3cMouseHandler extends MouseHandler {
 
   @override
   WebDriverRequest buildMoveToRequest(
-          {String elementId,
-          int xOffset,
-          int yOffset,
+          {String? elementId,
+          int? xOffset,
+          int? yOffset,
           bool absolute = false}) =>
       WebDriverRequest.postRequest('actions', {
         'actions': [

@@ -13,12 +13,12 @@
 // limitations under the License.
 
 class WebDriverCommandEvent {
-  final String method;
-  final String endPoint;
+  final String? method;
+  final String? endPoint;
   final dynamic params;
-  final StackTrace stackTrace;
-  final DateTime startTime;
-  final DateTime endTime;
+  final StackTrace? stackTrace;
+  final DateTime? startTime;
+  final DateTime? endTime;
   final dynamic exception;
   final dynamic result;
 

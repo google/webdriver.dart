@@ -26,7 +26,7 @@ import 'configs/async_io_config.dart' as config;
 
 void main() {
   group('Window', () {
-    WebDriver driver;
+    late WebDriver driver;
 
     setUp(() async {
       driver = await config.createTestDriver();

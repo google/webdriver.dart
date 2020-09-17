@@ -29,8 +29,8 @@ export 'package:webdriver/sync_core.dart'
 /// [uri]. Therefore, if [uri] does not end with a trailing slash, the
 /// last path component will be dropped.
 core.WebDriver createDriver(
-        {Uri uri,
-        Map<String, dynamic> desired,
+        {Uri? uri,
+        Map<String, dynamic>? desired,
         core.WebDriverSpec spec = core.WebDriverSpec.Auto,
         Map<String, String> webDriverHeaders = const {}}) =>
     core.createDriver(
@@ -51,9 +51,9 @@ core.WebDriver createDriver(
 /// [uri]. Therefore, if [uri] does not end with a trailing slash, the
 /// last path component will be dropped.
 core.WebDriver fromExistingSession(String sessionId,
-        {Uri uri,
+        {Uri? uri,
         core.WebDriverSpec spec = core.WebDriverSpec.Auto,
-        Map<String, dynamic> capabilities}) =>
+        Map<String, dynamic>? capabilities}) =>
     core.fromExistingSession(
         sessionId, (prefix) => SyncHttpRequestClient(prefix),
         uri: uri, spec: spec, capabilities: capabilities);

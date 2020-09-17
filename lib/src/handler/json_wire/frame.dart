@@ -18,7 +18,7 @@ import 'package:webdriver/src/handler/json_wire/utils.dart';
 
 class JsonWireFrameHandler extends FrameHandler {
   @override
-  WebDriverRequest buildSwitchByIdRequest([int id]) =>
+  WebDriverRequest buildSwitchByIdRequest([int? id]) =>
       WebDriverRequest.postRequest('frame', {'id': id});
 
   @override

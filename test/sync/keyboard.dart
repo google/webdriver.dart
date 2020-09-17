@@ -24,9 +24,9 @@ import '../configs/sync_io_config.dart' as config;
 
 void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
   group('Keyboard', () {
-    WebDriver driver;
-    WebElement textInput;
-    HttpServer server;
+    late WebDriver driver;
+    late WebElement textInput;
+    late HttpServer server;
     String ctrlCmdKey = '';
 
     setUp(() async {

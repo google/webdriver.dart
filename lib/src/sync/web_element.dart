@@ -41,7 +41,7 @@ class WebElement extends common.WebElement implements SearchContext {
   async_core.SearchContext get asyncContext => asyncElement;
 
   /// The context from which this element was found.
-  final SearchContext context;
+  final SearchContext? context;
 
   @override
   final WebDriver driver;
@@ -55,7 +55,7 @@ class WebElement extends common.WebElement implements SearchContext {
 
   /// The index of this element in the set of element founds. If the method
   /// used to find this element always returns one element, then this is null.
-  final int index;
+  final int? index;
 
   WebElement(this.driver, this._client, this._handler, this.id,
       [this.context, this.locator, this.index]);
@@ -71,7 +71,7 @@ class WebElement extends common.WebElement implements SearchContext {
 
   /// Gets a chain of parent elements, including the element itself.
   List<String> get parents {
-    var p = this;
+    WebElement p = this;
     final result = <String>[];
     while (p.id != null) {
       var id = p.id;
@@ -84,7 +84,7 @@ class WebElement extends common.WebElement implements SearchContext {
 
     if (p.id != null) {
       // Hit cache in the previous loop.
-      var id = p.id;
+      String? id = p.id;
       while (id != null) {
         result.add(id);
         id = _parentCache[id];

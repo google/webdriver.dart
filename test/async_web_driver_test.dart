@@ -37,8 +37,8 @@ void main() {
     });
 
     group('methods', () {
-      WebDriver driver;
-      HttpServer server;
+      late WebDriver driver;
+      late HttpServer server;
 
       setUp(() async {
         driver = await config.createTestDriver();
@@ -109,7 +109,7 @@ void main() {
 
       test('window', () async {
         Window orig = await driver.window;
-        Window next;
+        Window? next;
 
         await (await driver.findElement(const By.partialLinkText('Open copy')))
             .click();
@@ -125,12 +125,12 @@ void main() {
       });
 
       test('activeElement', () async {
-        var element = await driver.activeElement;
+        var element = (await driver.activeElement)!;
         expect(await element.name, 'body');
         await (await driver
                 .findElement(const By.cssSelector('input[type=text]')))
             .click();
-        element = await driver.activeElement;
+        element = (await driver.activeElement)!;
         expect(await element.name, 'input');
       });
 

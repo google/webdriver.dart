@@ -36,8 +36,8 @@ void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
     });
 
     group('methods', () {
-      WebDriver driver;
-      HttpServer server;
+      late WebDriver driver;
+      late HttpServer server;
 
       setUp(() async {
         driver = config.createTestDriver(spec: spec);
@@ -113,7 +113,7 @@ void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
 
       test('window', () {
         Window orig = driver.window;
-        Window next;
+        Window? next;
 
         (driver.findElement(const By.partialLinkText('Open copy'))).click();
         sleep(const Duration(milliseconds: 500)); // Bit slow on Firefox.
@@ -129,10 +129,10 @@ void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
       });
 
       test('activeElement', () {
-        var element = driver.activeElement;
+        var element = driver.activeElement!;
         expect(element.name, 'body');
         (driver.findElement(const By.cssSelector('input[type=text]'))).click();
-        element = driver.activeElement;
+        element = driver.activeElement!;
         expect(element.name, 'input');
       });
 

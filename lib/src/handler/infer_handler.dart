@@ -76,7 +76,7 @@ class InferWebDriverHandler extends WebDriverHandler {
 
 class InferSessionHandler extends SessionHandler {
   @override
-  WebDriverRequest buildCreateRequest({Map<String, dynamic> desired}) =>
+  WebDriverRequest buildCreateRequest({Map<String, dynamic>? desired}) =>
       WebDriverRequest.postRequest('session', {
         'desiredCapabilities': desired,
         'capabilities': {'alwaysMatch': desired}
@@ -84,11 +84,11 @@ class InferSessionHandler extends SessionHandler {
 
   @override
   SessionInfo parseCreateResponse(WebDriverResponse response) {
-    Map /*!*/ responseBody;
+    Map responseBody;
     try {
-      responseBody = json.decode(response.body);
+      responseBody = json.decode(response.body!);
     } catch (e) {
-      final rawBody = response.body == null || response.body.isEmpty
+      final rawBody = response.body == null || response.body!.isEmpty
           ? '<empty response>'
           : response.body;
       throw WebDriverException(
@@ -113,14 +113,14 @@ class InferSessionHandler extends SessionHandler {
 
   @override
   SessionInfo parseInfoResponse(WebDriverResponse response,
-      [String sessionId]) {
+      [String? sessionId]) {
     if (response.statusCode == 404) {
       // May be W3C, as it will throw an unknown command exception.
-      Map body;
+      Map? body;
       try {
-        body = json.decode(response.body)['value'];
+        body = json.decode(response.body!)['value'];
       } catch (e) {
-        final rawBody = response.body == null || response.body.isEmpty
+        final rawBody = response.body?.isEmpty != false
             ? '<empty response>'
             : response.body;
         throw WebDriverException(
@@ -136,7 +136,7 @@ class InferSessionHandler extends SessionHandler {
             'produced by W3C WebDriver): ${response.body}');
       }
 
-      return SessionInfo(sessionId, WebDriverSpec.W3c, Capabilities.empty);
+      return SessionInfo(sessionId!, WebDriverSpec.W3c, Capabilities.empty);
     }
 
     return JsonWireSessionHandler().parseInfoResponse(response);

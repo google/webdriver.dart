@@ -9,7 +9,7 @@ class JsonWireElementFinder extends ElementFinder {
       {'using': by.using, 'value': by.value};
 
   @override
-  WebDriverRequest buildFindElementsRequest(By by, [String contextElementId]) {
+  WebDriverRequest buildFindElementsRequest(By by, [String? contextElementId]) {
     String uri = contextElementId == null
         ? 'elements'
         : 'element/$contextElementId/elements';
@@ -25,7 +25,7 @@ class JsonWireElementFinder extends ElementFinder {
   }
 
   @override
-  WebDriverRequest buildFindElementRequest(By by, [String contextElementId]) {
+  WebDriverRequest buildFindElementRequest(By by, [String? contextElementId]) {
     String uri = contextElementId == null
         ? 'element'
         : 'element/$contextElementId/element';
@@ -33,7 +33,7 @@ class JsonWireElementFinder extends ElementFinder {
   }
 
   @override
-  String parseFindActiveElementResponse(WebDriverResponse response) {
+  String? parseFindActiveElementResponse(WebDriverResponse response) {
     return parseJsonWireResponse(response)[jsonWireElementStr];
   }
 

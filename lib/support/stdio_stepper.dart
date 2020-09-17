@@ -20,7 +20,7 @@ import 'dart:io' show exit, Stdin, stdin, systemEncoding;
 
 import 'package:webdriver/src/async/stepper.dart';
 
-LineReader _stdinLineReader;
+LineReader? _stdinLineReader;
 
 /// A [LineReader] instance connected to 'dart:io' [stdin].
 LineReader get stdinLineReader => _stdinLineReader ??= LineReader(stdin);
@@ -32,7 +32,7 @@ class StdioStepper implements Stepper {
 
   final LineReader _reader;
 
-  StdioStepper({LineReader reader}) : _reader = reader ?? stdinLineReader;
+  StdioStepper({LineReader? reader}) : _reader = reader ?? stdinLineReader;
 
   @override
   Future<bool> step(String method, String command, params) async {

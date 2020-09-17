@@ -24,7 +24,7 @@ final _expiryDate = DateTime.now().add(const Duration(days: 180));
 
 void main() {
   group('Cookies', () {
-    WebDriver driver;
+    late WebDriver driver;
 
     setUp(() async {
       driver = await config.createTestDriver();

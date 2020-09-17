@@ -26,9 +26,9 @@ import 'configs/async_io_config.dart' as config;
 /// in other classes.
 void main() {
   group('TargetLocator', () {
-    WebDriver driver;
-    WebElement frame;
-    HttpServer server;
+    late WebDriver driver;
+    late WebElement frame;
+    late HttpServer server;
 
     setUp(() async {
       driver = await config.createTestDriver();

@@ -36,8 +36,8 @@ export 'package:webdriver/src/request/async_io_request_client.dart';
 /// [uri]. Therefore, if [uri] does not end with a trailing slash, the
 /// last path component will be dropped.
 Future<core.WebDriver> createDriver(
-        {Uri uri,
-        Map<String, dynamic> desired,
+        {Uri? uri,
+        Map<String, dynamic>? desired,
         core.WebDriverSpec spec = core.WebDriverSpec.Auto,
         Map<String, String> webDriverHeaders = const {}}) =>
     core.createDriver(
@@ -54,7 +54,7 @@ Future<core.WebDriver> createDriver(
 /// [uri]. Therefore, if [uri] does not end with a trailing slash, the
 /// last path component will be dropped.
 Future<core.WebDriver> fromExistingSession(String sessionId,
-        {Uri uri, core.WebDriverSpec spec = core.WebDriverSpec.Auto}) =>
+        {Uri? uri, core.WebDriverSpec spec = core.WebDriverSpec.Auto}) =>
     core.fromExistingSession(
         (prefix) => AsyncIoRequestClient(prefix), sessionId,
         uri: uri, spec: spec);
@@ -72,7 +72,7 @@ Future<core.WebDriver> fromExistingSession(String sessionId,
 /// last path component will be dropped.
 core.WebDriver fromExistingSessionSync(
         String sessionId, core.WebDriverSpec spec,
-        {Uri uri, Map<String, dynamic> capabilities}) =>
+        {Uri? uri, Map<String, dynamic>? capabilities}) =>
     core.fromExistingSessionSync(
         (prefix) => AsyncIoRequestClient(prefix), sessionId, spec,
         uri: uri, capabilities: capabilities);

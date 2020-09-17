@@ -24,7 +24,7 @@ const defaultTimeout = Duration(seconds: 5);
 
 const clock = Clock();
 
-Future<T> waitFor<T>(FutureOr<T> condition(),
+Future<T?> waitFor<T>(FutureOr<T> condition(),
         {matcher,
         Duration timeout = defaultTimeout,
         Duration interval = defaultInterval}) =>
@@ -49,15 +49,15 @@ class Clock {
   /// is returned. Otherwise, if [condition] throws, then that exception is
   /// rethrown. If [condition] doesn't throw then an [expect] exception is
   /// thrown.
-  Future<T> waitFor<T>(FutureOr<T> condition(),
+  Future<T?> waitFor<T>(FutureOr<T>? condition(),
       {matcher,
       Duration timeout = defaultTimeout,
       Duration interval = defaultInterval}) async {
-    m.Matcher mMatcher = matcher == null ? null : m.wrapMatcher(matcher);
+    m.Matcher? mMatcher = matcher == null ? null : m.wrapMatcher(matcher);
     var endTime = now.add(timeout);
     while (true) {
       try {
-        T /*?*/ value = await condition();
+        T? value = await condition();
         if (mMatcher != null) {
           _matcherExpect(value, mMatcher);
         }
@@ -95,8 +95,8 @@ void _matcherExpect(value, m.Matcher matcher) {
 }
 
 class Lock {
-  Completer<void> _lock;
-  Chain _stack;
+  Completer<void>? _lock;
+  Chain? _stack;
 
   final bool awaitChecking;
 
@@ -115,7 +115,7 @@ class Lock {
     } else {
       return () async {
         while (isHeld) {
-          await _lock.future;
+          await _lock!.future;
         }
         _lock = Completer();
       }();
@@ -126,7 +126,7 @@ class Lock {
     if (!isHeld) {
       throw StateError('No lock to release');
     }
-    _lock.complete();
+    _lock!.complete();
     _lock = null;
     _stack = null;
   }

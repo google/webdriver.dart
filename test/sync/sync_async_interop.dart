@@ -25,9 +25,9 @@ import '../configs/sync_io_config.dart' as config;
 
 void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
   group('Sync-async interop', () {
-    WebDriver driver;
+    late WebDriver driver;
     async_core.WebDriver asyncDriver;
-    HttpServer server;
+    late HttpServer server;
 
     setUp(() async {
       driver = config.createTestDriver(spec: spec);

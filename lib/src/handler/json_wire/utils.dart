@@ -11,24 +11,24 @@ const String jsonWireElementStr = 'ELEMENT';
 
 dynamic parseJsonWireResponse(WebDriverResponse response,
     {bool valueOnly = true}) {
-  Map responseBody;
+  Map? responseBody;
   try {
-    responseBody = json.decode(response.body);
+    responseBody = json.decode(response.body!);
   } catch (e) {
-    final rawBody = response.body == null || response.body.isEmpty
+    final rawBody = response.body == null || response.body!.isEmpty
         ? '<empty response>'
         : response.body;
     throw WebDriverException(
         response.statusCode, 'Error parsing response body: $rawBody');
   }
 
-  if (response.statusCode < 200 ||
-      response.statusCode > 299 ||
+  if (response.statusCode! < 200 ||
+      response.statusCode! > 299 ||
       (responseBody is Map &&
           responseBody['status'] != null &&
           responseBody['status'] != 0)) {
-    final status = responseBody['status'] as int;
-    final message = responseBody['value']['message'] as String;
+    final status = responseBody!['status'] as int?;
+    final message = responseBody['value']['message'] as String?;
 
     switch (status) {
       case 0:
@@ -96,13 +96,13 @@ dynamic parseJsonWireResponse(WebDriverResponse response,
 /// Prefix to represent element in webdriver uri.
 ///
 /// When [elementId] is null, it means root element.
-String elementPrefix(String /*?*/ elementId) =>
+String elementPrefix(String? elementId) =>
     elementId == null ? '' : 'element/$elementId/';
 
 /// Deserializes json object returned by WebDriver server.
 ///
 /// Mainly it handles the element object rebuild.
-dynamic deserialize(result, dynamic Function(String /*!*/) createElement) {
+dynamic deserialize(result, dynamic Function(String) createElement) {
   if (result is Map) {
     if (result.containsKey(jsonWireElementStr)) {
       return createElement(result[jsonWireElementStr]);

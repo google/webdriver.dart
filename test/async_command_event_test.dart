@@ -25,8 +25,8 @@ import 'configs/async_io_config.dart' as config;
 
 void main() {
   group('CommandEvent', () {
-    WebDriver driver;
-    HttpServer server;
+    late WebDriver driver;
+    late HttpServer server;
 
     var events = <WebDriverCommandEvent>[];
 
@@ -54,7 +54,7 @@ void main() {
       expect(events[1].endPoint, contains('alert'));
       expect(events[1].exception, const isInstanceOf<WebDriverException>());
       expect(events[1].result, isNull);
-      expect(events[1].startTime.isBefore(events[1].endTime), isTrue);
+      expect(events[1].startTime!.isBefore(events[1].endTime!), isTrue);
       expect(events[1].stackTrace, const isInstanceOf<Chain>());
     });
 
@@ -65,7 +65,7 @@ void main() {
       expect(events[1].endPoint, contains('elements'));
       expect(events[1].exception, isNull);
       expect(events[1].result, isNotNull);
-      expect(events[1].startTime.isBefore(events[1].endTime), isTrue);
+      expect(events[1].startTime!.isBefore(events[1].endTime!), isTrue);
       expect(events[1].stackTrace, const TypeMatcher<Chain>());
     });
   }, testOn: '!js', timeout: const Timeout(Duration(minutes: 2)));

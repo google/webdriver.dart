@@ -24,7 +24,7 @@ final _expiryDate = DateTime.now().add(const Duration(days: 180));
 
 void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
   group('Cookies', () {
-    WebDriver driver;
+    late WebDriver driver;
 
     setUp(() {
       driver = config.createTestDriver(spec: spec);

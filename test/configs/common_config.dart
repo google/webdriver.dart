@@ -35,7 +35,7 @@ String get testHostname => '127.0.0.1';
 
 String get testHomePath => path.absolute('test');
 
-Uri getWebDriverUri(WebDriverSpec spec) {
+Uri? getWebDriverUri(WebDriverSpec spec) {
   switch (spec) {
     case WebDriverSpec.W3c:
       return _defaultFirefoxUri;

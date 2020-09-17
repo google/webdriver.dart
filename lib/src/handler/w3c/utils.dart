@@ -9,12 +9,12 @@ import '../../common/request.dart';
 const String w3cElementStr = 'element-6066-11e4-a52e-4f735466cecf';
 
 dynamic parseW3cResponse(WebDriverResponse response) {
-  final int statusCode = response.statusCode;
-  Map responseBody;
+  final int statusCode = response.statusCode!;
+  Map? responseBody;
   try {
-    responseBody = json.decode(response.body);
+    responseBody = json.decode(response.body!);
   } catch (e) {
-    final rawBody = response.body == null || response.body.isEmpty
+    final rawBody = response.body == null || response.body!.isEmpty
         ? '<empty response>'
         : response.body;
     throw WebDriverException(
@@ -22,8 +22,8 @@ dynamic parseW3cResponse(WebDriverResponse response) {
   }
 
   if (statusCode < 200 || statusCode > 299) {
-    final Map value = responseBody['value'];
-    final String message = value['message'];
+    final Map value = responseBody!['value'];
+    final String? message = value['message'];
 
     // See https://www.w3.org/TR/webdriver/#handling-errors
     switch (value['error']) {
@@ -116,10 +116,10 @@ dynamic parseW3cResponse(WebDriverResponse response) {
 /// Prefix to represent element in webdriver uri.
 ///
 /// When [elementId] is null, it means root element.
-String elementPrefix(String elementId) =>
+String elementPrefix(String? elementId) =>
     elementId == null ? '' : 'element/$elementId/';
 
-dynamic deserialize(result, dynamic Function(String /*!*/) createElement) {
+dynamic deserialize(result, dynamic Function(String) createElement) {
   if (result is Map) {
     if (result.containsKey(w3cElementStr)) {
       return createElement(result[w3cElementStr]);

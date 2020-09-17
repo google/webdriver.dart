@@ -45,7 +45,7 @@ class JsonWireMouseHandler extends MouseHandler {
 
   @override
   WebDriverRequest buildMoveToRequest(
-      {String elementId, int xOffset, int yOffset, bool absolute = false}) {
+      {String? elementId, int? xOffset, int? yOffset, bool absolute = false}) {
     if (absolute) {
       throw const InvalidArgumentException(
           0, 'Move to an absolute location is only supported in W3C spec.');
@@ -56,7 +56,7 @@ class JsonWireMouseHandler extends MouseHandler {
       body['element'] = elementId;
     }
 
-    if (xOffset is num && yOffset is num) {
+    if (xOffset != null && yOffset != null) {
       body['xoffset'] = xOffset.floor();
       body['yoffset'] = yOffset.floor();
     }
