@@ -23,7 +23,7 @@ class SyncHttpRequestClient extends SyncRequestClient {
         httpRequest = SyncHttpClient.postUrl(resolve(request.uri!));
         httpRequest.headers.contentType =
             ContentType('application', 'json', charset: 'utf-8');
-        httpRequest.write(request.body!);
+        httpRequest.write(request.body);
         break;
       case HttpMethod.httpDelete:
         httpRequest = SyncHttpClient.deleteUrl(resolve(request.uri!));
