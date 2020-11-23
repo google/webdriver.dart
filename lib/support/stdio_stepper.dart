@@ -14,7 +14,7 @@
 
 library webdriver.support.stdio_stepper;
 
-import 'dart:async' show Future, Stream, StreamController;
+import 'dart:async' show StreamController;
 import 'dart:convert' show Encoding, json;
 import 'dart:io' show exit, Stdin, stdin, systemEncoding;
 

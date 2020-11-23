@@ -14,7 +14,7 @@
 
 library webdriver.support.async;
 
-import 'dart:async' show Completer, Future, FutureOr;
+import 'dart:async' show Completer, FutureOr;
 
 import 'package:matcher/matcher.dart' as m;
 import 'package:stack_trace/stack_trace.dart' show Chain;
