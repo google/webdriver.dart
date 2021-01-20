@@ -1,12 +1,8 @@
 import 'dart:math';
 
 import 'package:webdriver/async_core.dart';
-import 'package:webdriver/src/common/cookie.dart';
-import 'package:webdriver/src/common/log.dart';
-import 'package:webdriver/src/common/mouse.dart';
 import 'package:webdriver/src/common/session.dart';
 
-import 'by.dart';
 import 'request.dart';
 
 /// Handler for spec related request building and response parsing.

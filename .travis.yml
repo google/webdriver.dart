@@ -1,7 +1,6 @@
 language: dart
 # This is necessary to use proper Chrome. Travis's version of chromium is from
 # 2014.
-sudo: required
 dist: trusty
 addons:
   apt:
@@ -13,7 +12,6 @@ addons:
 
 dart:
   - dev
-  - 2.0.0
 
 before_install:
   - export CHROMEDRIVER_BINARY=/usr/bin/google-chrome

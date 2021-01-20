@@ -1,75 +1,37 @@
-# webdriver
-
 [![Build Status](https://travis-ci.org/google/webdriver.dart.svg?branch=master)](https://travis-ci.org/google/webdriver.dart)
 [![pub package](https://img.shields.io/pub/v/webdriver.svg)](https://pub.dartlang.org/packages/webdriver)
 
 Provides WebDriver bindings for Dart. These use the WebDriver JSON interface,
 and as such, require the use of the WebDriver remote server.
 
-## Installing
 
-1.  Depend on it
+In your Dart code, you can use:
 
-    Add this to your package's pubspec.yaml file:
+```dart
+import 'package:webdriver/io.dart';
 
-    ```YAML
-    dependencies:
-      webdriver: any
-    ```
+WebDriver driver = createDriver(...);
+```
 
-    If your package is an application package you should use any as the version
-    constraint.
+This will use by default the asynchronous, JSON wire spec implementation.
+You now can also use a synchronous version of WebDriver:
 
-2.  Install it
+```dart
+import 'package:webdriver/sync_io.dart';
 
-    If you're using IntelliJ, choose:
+final driver = createDriver(...);
+```
 
-    ```
-    Control + Shift + A > Pub: Get Dependencies
-    ```
+This version of WebDriver supports both the JSON wire spec and W3C spec,
+allowing use with modern versions of Firefox. This defaults to the JSON
+wire spec, but can also be configured to use the W3C spec or even to try
+and automatically infer the spec during session creation:
 
-    If you're using the Dart Editor, choose:
+```dart
+final w3cDriver = createDriver(spec: WebDriverSpec.W3c);  // Use W3C spec.
 
-    ```
-    Menu > Tools > Pub Install
-    ```
-
-    Or if you want to install from the command line, run:
-
-    ```
-    $ pub install
-    ```
-
-3.  Import it
-
-    Now in your Dart code, you can use:
-
-    ```Dart
-    import 'package:webdriver/io.dart';
-
-    WebDriver driver = createDriver(...);
-    ```
-    
-    This will use by default the asynchronous, JSON wire spec implementation.
-    You now can also use a synchronous version of WebDriver:
-    
-    ```Dart
-    
-    import 'package:webdriver/sync_io.dart';
-
-    final driver = createDriver(...);
-    ```
-    
-    This version of WebDriver supports both the JSON wire spec and W3C spec,
-    allowing use with modern versions of Firefox. This defaults to the JSON
-    wire spec, but can also be configured to use the W3C spec or even to try
-    and automatically infer the spec during session creation:
-    
-    ```Dart
-     final w3cDriver = createDriver(spec: WebDriverSpec.W3c);  // Use W3C spec.
- 
-     final anyDriver = createDriver(spec: WebDriverSpec.Auto); // Infer spec.
-     ```
+final anyDriver = createDriver(spec: WebDriverSpec.Auto); // Infer spec.
+```
 
 ## Testing
 
@@ -79,18 +41,18 @@ supported. We hope to add this at some point, but for now pub still works.
 As a consequence, running tests is a bit more complicated than we'd like:
 
 1) Launch a WebDriver binar(ies).
- 
+
    First, bring up chromedriver / geckodriver. Other conforming WebDriver
    binaries should work as well, but we test against these:
-   
+
    ```
    chromedriver --port=4444 --url-base=wd/hub --verbose
    geckodriver --port=4445
    ```
-   
+
    ChromeDriver is used to test our JSON wire spec implementation, and
    geckodriver is used to test our W3C spec implementation.
-   
+
    Synchronous tests are labeled as Chrome/Firefox. All async tests run
    exclusively against Chrome (as async, like ChromeDriver supports only the
    old JSON wire spec).
@@ -100,13 +62,11 @@ As a consequence, running tests is a bit more complicated than we'd like:
    ```
    pub run test/path/to/test.dart -r expanded -p vm
    ```
-   
+
    Or to run *all* tests:
-   
+
    ```
    pub run test -r expanded -p vm
    ```
-   
-   You should probably go get a coffee or something, this is gonna take awhile.
-  
 
+   You should probably go get a coffee or something, this is gonna take a while.
