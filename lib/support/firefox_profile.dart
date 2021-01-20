@@ -105,7 +105,7 @@ final List<PrefsOption> defaultUserPrefs = <PrefsOption>[
 class FirefoxProfile {
   final io.Directory profileDirectory;
 
-  Set<PrefsOption> _prefs = Set<PrefsOption>();
+  Set<PrefsOption> _prefs = <PrefsOption>{};
 
   /// The read-only settings of the `prefs.js` file of the profile directory.
   List<PrefsOption> get prefs => UnmodifiableListView<PrefsOption>(_prefs);
@@ -114,7 +114,7 @@ class FirefoxProfile {
   /// the settings in [lockedPrefs].
   /// [setOption] and [removeOption] allow to update, add, and remove settings
   /// except these included in [lockedPrefs].
-  Set<PrefsOption> _userPrefs = Set<PrefsOption>();
+  Set<PrefsOption> _userPrefs = <PrefsOption>{};
 
   List<PrefsOption> get userPrefs =>
       UnmodifiableListView<PrefsOption>(_userPrefs);
@@ -199,7 +199,7 @@ class FirefoxProfile {
   /// is otherwise ignored.
   /// Comments, lines starting with `//` are silently ignored.
   static Set<PrefsOption> loadPrefsFile(io.File file) {
-    final prefs = Set<PrefsOption>();
+    final prefs = <PrefsOption>{};
     final lines = LineSplitter.split(file.readAsStringSync())
         .where((line) => !_ignoreLine(line));
     bool canNotParseCaption = true;

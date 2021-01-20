@@ -61,7 +61,7 @@ void main() {
 
     test('click', () async {
       await button.click();
-      var alert = await driver.switchTo.alert;
+      var alert = driver.switchTo.alert;
       await alert.accept();
     });
 

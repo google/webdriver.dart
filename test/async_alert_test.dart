@@ -59,21 +59,21 @@ void main() {
 
     test('accept', () async {
       await button.click();
-      var alert = await driver.switchTo.alert;
+      var alert = driver.switchTo.alert;
       await alert.accept();
       expect(await output.text, startsWith('accepted'));
     });
 
     test('dismiss', () async {
       await button.click();
-      var alert = await driver.switchTo.alert;
+      var alert = driver.switchTo.alert;
       await alert.dismiss();
       expect(await output.text, startsWith('dismissed'));
     });
 
     test('sendKeys', () async {
       await button.click();
-      Alert alert = await driver.switchTo.alert;
+      Alert alert = driver.switchTo.alert;
       await alert.sendKeys('some keys');
       await alert.accept();
       expect(await output.text, endsWith('some keys'));

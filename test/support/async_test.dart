@@ -42,7 +42,7 @@ void main() {
       var lock = Lock();
       var secondLockAcquired = false;
       await lock.acquire();
-      lock.acquire().then((_) => secondLockAcquired = true);
+      await lock.acquire().then((_) => secondLockAcquired = true);
       // Make sure that lock is not unacquired just because of timing
       await Future.delayed(const Duration(seconds: 1));
       expect(secondLockAcquired, isFalse);
