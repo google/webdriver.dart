@@ -137,7 +137,7 @@ void main() {
       test('windows', () async {
         var windows = await driver.windows.toList();
         expect(windows, hasLength(isPositive));
-        expect(windows, everyElement(const isInstanceOf<Window>()));
+        expect(windows, everyElement(isA<Window>()));
       });
 
       test('execute', () async {
@@ -163,7 +163,7 @@ void main() {
       test('captureScreenshot', () async {
         var screenshot = await driver.captureScreenshot().toList();
         expect(screenshot, hasLength(isPositive));
-        expect(screenshot, everyElement(const isInstanceOf<int>()));
+        expect(screenshot, everyElement(isA<int>()));
       });
 
       test('captureScreenshotAsList', () async {

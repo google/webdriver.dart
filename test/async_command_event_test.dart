@@ -52,10 +52,10 @@ void main() {
       expect(events, hasLength(2));
       expect(events[1].method, 'GET');
       expect(events[1].endPoint, contains('alert'));
-      expect(events[1].exception, const isInstanceOf<WebDriverException>());
+      expect(events[1].exception, isA<WebDriverException>());
       expect(events[1].result, isNull);
       expect(events[1].startTime!.isBefore(events[1].endTime!), isTrue);
-      expect(events[1].stackTrace, const isInstanceOf<Chain>());
+      expect(events[1].stackTrace, isA<Chain>());
     });
 
     test('handles normal operation', () async {

@@ -40,7 +40,7 @@ abstract class SyncRequestClient extends RequestClient {
     trace = trace.foldFrames((f) => f.library.startsWith('package:webdriver/'),
         terse: true);
 
-    var exception;
+    Object? exception;
     T? response;
     try {
       return response = process(sendRaw(request));
@@ -90,7 +90,7 @@ abstract class AsyncRequestClient extends RequestClient {
     trace = trace.foldFrames((f) => f.library.startsWith('package:webdriver/'),
         terse: true);
 
-    var exception;
+    Object? exception;
     T? response;
     try {
       return response = process(await sendRaw(request));
