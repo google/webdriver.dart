@@ -30,7 +30,7 @@ typedef GetAttribute = String? Function(String name);
 /// Simple class to provide access to indexed properties such as WebElement
 /// attributes or css styles.
 class Attributes {
-  GetAttribute _getAttribute;
+  final GetAttribute _getAttribute;
 
   Attributes(this._getAttribute);
 

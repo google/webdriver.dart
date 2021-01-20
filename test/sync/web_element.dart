@@ -48,8 +48,8 @@ void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
           driver.findElement(const By.cssSelector('input[type=checkbox]'));
       disabled =
           driver.findElement(const By.cssSelector('input[type=password]'));
-      invisible = await driver.findElement(const By.id('invisible-div'));
-      inner = await driver.findElement(const By.id('inner-div'));
+      invisible = driver.findElement(const By.id('invisible-div'));
+      inner = driver.findElement(const By.id('inner-div'));
     });
 
     tearDown(() async {

@@ -139,7 +139,7 @@ void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
       test('windows', () {
         var windows = driver.windows.toList();
         expect(windows, hasLength(isPositive));
-        expect(windows, everyElement(const isInstanceOf<Window>()));
+        expect(windows, everyElement(isA<Window>()));
       });
 
       test('execute', () {
@@ -163,33 +163,33 @@ void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
       test('captureScreenshot', () {
         var screenshot = driver.captureScreenshotAsList().toList();
         expect(screenshot, hasLength(isPositive));
-        expect(screenshot, everyElement(const isInstanceOf<int>()));
+        expect(screenshot, everyElement(isA<int>()));
       });
 
       test('captureScreenshotAsList', () {
         var screenshot = driver.captureScreenshotAsList();
         expect(screenshot, hasLength(isPositive));
-        expect(screenshot, everyElement(const isInstanceOf<int>()));
+        expect(screenshot, everyElement(isA<int>()));
       });
 
       test('captureElementScreenshotAsList', () {
         var element = driver.findElement(const By.tagName('tr'));
         var screenshot = driver.captureElementScreenshotAsList(element);
         expect(screenshot, hasLength(isPositive));
-        expect(screenshot, everyElement(const isInstanceOf<int>()));
+        expect(screenshot, everyElement(isA<int>()));
       });
 
       test('captureScreenshotAsBase64', () {
         var screenshot = driver.captureScreenshotAsBase64();
         expect(screenshot, hasLength(isPositive));
-        expect(screenshot, const isInstanceOf<String>());
+        expect(screenshot, isA<String>());
       });
 
       test('captureElementScreenshotAsBase64', () {
         var element = driver.findElement(const By.tagName('tr'));
         var screenshot = driver.captureElementScreenshotAsBase64(element);
         expect(screenshot, hasLength(isPositive));
-        expect(screenshot, const isInstanceOf<String>());
+        expect(screenshot, isA<String>());
       });
 
       test('event listeners work with script timeouts', () {
