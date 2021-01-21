@@ -12,6 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+@Tags(['ff'])
+import 'package:test/test.dart';
+
 import 'package:webdriver/sync_core.dart';
 
 import 'sync/web_element.dart';
