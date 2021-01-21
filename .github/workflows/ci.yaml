@@ -68,5 +68,4 @@ jobs:
       if: always() && steps.install.outcome == 'success'
       env:
         # until sync_http is migrated to null safety
-        DART_VM_OPTIONS: "--no-sound-null-safety"
         CHROMEDRIVER_ARGS: '--no-sandbox --headless'

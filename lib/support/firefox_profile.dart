@@ -12,10 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// We should migrate this file to Null Safety once package:archive is migrated,
-// but for now annotate it with the older language version.
-// @dart = 2.9
-
 library webdriver.support.firefox_profile;
 
 import 'dart:collection';
@@ -103,7 +99,7 @@ final List<PrefsOption> defaultUserPrefs = <PrefsOption>[
 /// Creates a Firefox profile in a format so it can be passed using the
 /// `desired` capabilities map.
 class FirefoxProfile {
-  final io.Directory profileDirectory;
+  final io.Directory? profileDirectory;
 
   Set<PrefsOption> _prefs = <PrefsOption>{};
 
@@ -135,13 +131,13 @@ class FirefoxProfile {
     _userPrefs.addAll(defaultUserPrefs);
     if (profileDirectory != null) {
       final prefsFile =
-          io.File(path.join(profileDirectory.absolute.path, 'prefs.js'));
+          io.File(path.join(profileDirectory!.absolute.path, 'prefs.js'));
       if (prefsFile.existsSync()) {
         _prefs = loadPrefsFile(prefsFile);
       }
 
       final userPrefsFile =
-          io.File(path.join(profileDirectory.absolute.path, 'user.js'));
+          io.File(path.join(profileDirectory!.absolute.path, 'user.js'));
       if (userPrefsFile.existsSync()) {
         _userPrefs = loadPrefsFile(userPrefsFile)
             .where((option) => !lockedPrefs.contains(option))
@@ -181,7 +177,6 @@ class FirefoxProfile {
 
   /// Helper for [loadPrefsFile]
   static bool _ignoreLine(String line) {
-    line ??= '';
     line = line.trim();
     if (line.isEmpty ||
         line.startsWith('//') ||
@@ -229,9 +224,9 @@ class FirefoxProfile {
   Map<String, dynamic> toJson() {
     Archive archive = Archive();
     if (profileDirectory != null) {
-      profileDirectory.listSync(recursive: true).forEach((f) {
+      profileDirectory!.listSync(recursive: true).forEach((f) {
         ArchiveFile archiveFile;
-        final name = path.relative(f.path, from: profileDirectory.path);
+        final name = path.relative(f.path, from: profileDirectory!.path);
         if (f is io.Directory) {
           archiveFile = ArchiveFile('$name/', 0, <int>[]);
         } else if (f is io.File) {
@@ -257,7 +252,7 @@ class FirefoxProfile {
     archive
         .addFile(ArchiveFile('user.js', userJsContent.length, userJsContent));
 
-    final zipData = ZipEncoder().encode(archive);
+    final zipData = ZipEncoder().encode(archive)!;
     return {'firefox_profile': base64.encode(zipData)};
   }
 }
@@ -274,7 +269,7 @@ abstract class PrefsOption<T> {
       RegExp(r'user_pref\("([^"]+)", ("?.+?"?)\);');
 
   final String name;
-  final T value;
+  final T? value;
 
   factory PrefsOption(String name, T value) {
     if (value is bool) {
@@ -294,8 +289,8 @@ abstract class PrefsOption<T> {
       return InvalidOption('Not a valid prefs option: "$prefs".')
           as PrefsOption<T>;
     }
-    final name = match.group(1);
-    final valueString = match.group(2);
+    final name = match.group(1)!;
+    final valueString = match.group(2)!;
     if (valueString.startsWith('"') && valueString.endsWith('"')) {
       final value = valueString
           .substring(1, valueString.length - 1)
@@ -369,6 +364,6 @@ class StringOption extends PrefsOption<String> {
 
   @override
   String get _valueAsPrefString {
-    return '"${_escape(value)}"';
+    return '"${_escape(value!)}"';
   }
 }
