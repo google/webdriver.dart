@@ -14,9 +14,9 @@
 
 library webdriver.sync_io;
 
-import 'package:webdriver/src/request/sync_http_request_client.dart';
+import 'src/request/sync_http_request_client.dart';
 
-import 'package:webdriver/sync_core.dart' as core
+import 'sync_core.dart' as core
     show createDriver, fromExistingSession, WebDriver, WebDriverSpec;
 
 export 'package:webdriver/sync_core.dart'

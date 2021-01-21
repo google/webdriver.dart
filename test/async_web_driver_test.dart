@@ -133,8 +133,7 @@ void main() {
       });
 
       test('execute', () async {
-        var button =
-            await driver.findElement(const By.tagName('button'));
+        var button = await driver.findElement(const By.tagName('button'));
         var script = '''
             arguments[1].textContent = arguments[0];
             return arguments[1];''';
@@ -143,8 +142,7 @@ void main() {
       });
 
       test('executeAsync', () async {
-        var button =
-            await driver.findElement(const By.tagName('button'));
+        var button = await driver.findElement(const By.tagName('button'));
         var script = '''
             arguments[1].textContent = arguments[0];
             arguments[2](arguments[1]);''';
@@ -186,10 +184,8 @@ void main() {
       });
 
       test('future based event listeners work with script timeouts', () async {
-        driver.addEventListener((WebDriverCommandEvent e) async {
-          return await Future.delayed(
-              const Duration(milliseconds: 1000), (() {}));
-        });
+        driver.addEventListener((WebDriverCommandEvent e) async =>
+            await Future.delayed(const Duration(milliseconds: 1000), (() {})));
 
         try {
           await driver.timeouts.setScriptTimeout(const Duration(seconds: 1));
@@ -204,12 +200,11 @@ void main() {
         var eventList = <int>[];
         var millisDelay = 2000;
         var current = 0;
-        driver.addEventListener((WebDriverCommandEvent e) async {
-          return await Future.delayed(Duration(milliseconds: millisDelay), (() {
-            eventList.add(current++);
-            millisDelay = (millisDelay / 2).round();
-          }));
-        });
+        driver.addEventListener((WebDriverCommandEvent e) async =>
+            await Future.delayed(Duration(milliseconds: millisDelay), (() {
+              eventList.add(current++);
+              millisDelay = (millisDelay / 2).round();
+            })));
 
         for (var i = 0; i < 10; i++) {
           await driver.title; // GET request.

@@ -1,21 +1,21 @@
 import 'dart:convert';
 
-import 'package:webdriver/src/common/log.dart';
-import 'package:webdriver/src/common/request.dart';
-import 'package:webdriver/src/common/webdriver_handler.dart';
-import 'package:webdriver/src/handler/w3c/alert.dart';
-import 'package:webdriver/src/handler/w3c/cookies.dart';
-import 'package:webdriver/src/handler/w3c/core.dart';
-import 'package:webdriver/src/handler/w3c/element.dart';
-import 'package:webdriver/src/handler/w3c/element_finder.dart';
-import 'package:webdriver/src/handler/w3c/frame.dart';
-import 'package:webdriver/src/handler/w3c/keyboard.dart';
-import 'package:webdriver/src/handler/w3c/mouse.dart';
-import 'package:webdriver/src/handler/w3c/navigation.dart';
-import 'package:webdriver/src/handler/w3c/session.dart';
-import 'package:webdriver/src/handler/w3c/timeouts.dart';
-import 'package:webdriver/src/handler/w3c/utils.dart';
-import 'package:webdriver/src/handler/w3c/window.dart';
+import '../common/log.dart';
+import '../common/request.dart';
+import '../common/webdriver_handler.dart';
+import 'w3c/alert.dart';
+import 'w3c/cookies.dart';
+import 'w3c/core.dart';
+import 'w3c/element.dart';
+import 'w3c/element_finder.dart';
+import 'w3c/frame.dart';
+import 'w3c/keyboard.dart';
+import 'w3c/mouse.dart';
+import 'w3c/navigation.dart';
+import 'w3c/session.dart';
+import 'w3c/timeouts.dart';
+import 'w3c/utils.dart';
+import 'w3c/window.dart';
 
 class W3cWebDriverHandler extends WebDriverHandler {
   @override

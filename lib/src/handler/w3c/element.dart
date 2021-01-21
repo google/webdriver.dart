@@ -1,15 +1,14 @@
 import 'dart:math';
 
-import 'package:webdriver/src/common/request.dart';
-import 'package:webdriver/src/common/webdriver_handler.dart';
+import '../../common/request.dart';
+import '../../common/webdriver_handler.dart';
 
 import 'utils.dart';
 
 class W3cElementHandler extends ElementHandler {
   @override
-  WebDriverRequest buildClickRequest(String elementId) {
-    return WebDriverRequest.postRequest('${elementPrefix(elementId)}click');
-  }
+  WebDriverRequest buildClickRequest(String elementId) =>
+      WebDriverRequest.postRequest('${elementPrefix(elementId)}click');
 
   @override
   void parseClickResponse(WebDriverResponse response) {
@@ -17,12 +16,11 @@ class W3cElementHandler extends ElementHandler {
   }
 
   @override
-  WebDriverRequest buildSendKeysRequest(String elementId, String keysToSend) {
-    return WebDriverRequest.postRequest('${elementPrefix(elementId)}value', {
-      'text': keysToSend, // What geckodriver really wants.
-      'value': keysToSend // Actual W3C spec.
-    });
-  }
+  WebDriverRequest buildSendKeysRequest(String elementId, String keysToSend) =>
+      WebDriverRequest.postRequest('${elementPrefix(elementId)}value', {
+        'text': keysToSend, // What geckodriver really wants.
+        'value': keysToSend // Actual W3C spec.
+      });
 
   @override
   void parseSendKeysResponse(WebDriverResponse response) {
@@ -30,9 +28,8 @@ class W3cElementHandler extends ElementHandler {
   }
 
   @override
-  WebDriverRequest buildClearRequest(String elementId) {
-    return WebDriverRequest.postRequest('${elementPrefix(elementId)}clear');
-  }
+  WebDriverRequest buildClearRequest(String elementId) =>
+      WebDriverRequest.postRequest('${elementPrefix(elementId)}clear');
 
   @override
   void parseClearResponse(WebDriverResponse response) {
@@ -40,49 +37,40 @@ class W3cElementHandler extends ElementHandler {
   }
 
   @override
-  WebDriverRequest buildSelectedRequest(String elementId) {
-    return WebDriverRequest.getRequest('${elementPrefix(elementId)}selected');
-  }
+  WebDriverRequest buildSelectedRequest(String elementId) =>
+      WebDriverRequest.getRequest('${elementPrefix(elementId)}selected');
 
   @override
-  bool parseSelectedResponse(WebDriverResponse response) {
-    return parseW3cResponse(response) as bool;
-  }
+  bool parseSelectedResponse(WebDriverResponse response) =>
+      parseW3cResponse(response) as bool;
 
   @override
-  WebDriverRequest buildEnabledRequest(String elementId) {
-    return WebDriverRequest.getRequest('${elementPrefix(elementId)}enabled');
-  }
+  WebDriverRequest buildEnabledRequest(String elementId) =>
+      WebDriverRequest.getRequest('${elementPrefix(elementId)}enabled');
 
   @override
-  bool parseEnabledResponse(WebDriverResponse response) {
-    return parseW3cResponse(response) as bool;
-  }
+  bool parseEnabledResponse(WebDriverResponse response) =>
+      parseW3cResponse(response) as bool;
 
   @override
-  WebDriverRequest buildDisplayedRequest(String elementId) {
-    return WebDriverRequest.getRequest('${elementPrefix(elementId)}displayed');
-  }
+  WebDriverRequest buildDisplayedRequest(String elementId) =>
+      WebDriverRequest.getRequest('${elementPrefix(elementId)}displayed');
 
   @override
-  bool parseDisplayedResponse(WebDriverResponse response) {
-    return parseW3cResponse(response) as bool;
-  }
+  bool parseDisplayedResponse(WebDriverResponse response) =>
+      parseW3cResponse(response) as bool;
 
   @override
-  WebDriverRequest buildLocationRequest(String elementId) {
-    return _buildRectRequest(elementId);
-  }
+  WebDriverRequest buildLocationRequest(String elementId) =>
+      _buildRectRequest(elementId);
 
   @override
-  Point<int> parseLocationResponse(WebDriverResponse response) {
-    return _parseRectResponse(response).topLeft;
-  }
+  Point<int> parseLocationResponse(WebDriverResponse response) =>
+      _parseRectResponse(response).topLeft;
 
   @override
-  WebDriverRequest buildSizeRequest(String elementId) {
-    return _buildRectRequest(elementId);
-  }
+  WebDriverRequest buildSizeRequest(String elementId) =>
+      _buildRectRequest(elementId);
 
   @override
   Rectangle<int> parseSizeResponse(WebDriverResponse response) {
@@ -90,9 +78,8 @@ class W3cElementHandler extends ElementHandler {
     return Rectangle(0, 0, rect.width, rect.height);
   }
 
-  WebDriverRequest _buildRectRequest(String elementId) {
-    return WebDriverRequest.getRequest('${elementPrefix(elementId)}rect');
-  }
+  WebDriverRequest _buildRectRequest(String elementId) =>
+      WebDriverRequest.getRequest('${elementPrefix(elementId)}rect');
 
   Rectangle<int> _parseRectResponse(WebDriverResponse response) {
     final rect = parseW3cResponse(response);
@@ -105,68 +92,53 @@ class W3cElementHandler extends ElementHandler {
   }
 
   @override
-  WebDriverRequest buildNameRequest(String elementId) {
-    return WebDriverRequest.getRequest('${elementPrefix(elementId)}name');
-  }
+  WebDriverRequest buildNameRequest(String elementId) =>
+      WebDriverRequest.getRequest('${elementPrefix(elementId)}name');
 
   @override
-  String parseNameResponse(WebDriverResponse response) {
-    return parseW3cResponse(response) as String;
-  }
+  String parseNameResponse(WebDriverResponse response) =>
+      parseW3cResponse(response) as String;
 
   @override
-  WebDriverRequest buildTextRequest(String elementId) {
-    return WebDriverRequest.getRequest('${elementPrefix(elementId)}text');
-  }
+  WebDriverRequest buildTextRequest(String elementId) =>
+      WebDriverRequest.getRequest('${elementPrefix(elementId)}text');
 
   @override
-  String parseTextResponse(WebDriverResponse response) {
-    return parseW3cResponse(response) as String;
-  }
+  String parseTextResponse(WebDriverResponse response) =>
+      parseW3cResponse(response) as String;
 
   @override
-  WebDriverRequest buildAttributeRequest(String elementId, String name) {
-    return WebDriverRequest.getRequest(
-        '${elementPrefix(elementId)}attribute/$name');
-  }
+  WebDriverRequest buildAttributeRequest(String elementId, String name) =>
+      WebDriverRequest.getRequest('${elementPrefix(elementId)}attribute/$name');
 
   @override
-  String? parseAttributeResponse(WebDriverResponse response) {
-    return parseW3cResponse(response)?.toString();
-  }
+  String? parseAttributeResponse(WebDriverResponse response) =>
+      parseW3cResponse(response)?.toString();
 
   @override
   @deprecated
   WebDriverRequest buildSeleniumAttributeRequest(
-      String elementId, String name) {
-    return WebDriverRequest.getRequest(
-        '${elementPrefix(elementId)}attribute/$name');
-  }
+          String elementId, String name) =>
+      WebDriverRequest.getRequest('${elementPrefix(elementId)}attribute/$name');
 
   @override
   @deprecated
-  String? parseSeleniumAttributeResponse(WebDriverResponse response) {
-    return parseW3cResponse(response)?.toString();
-  }
+  String? parseSeleniumAttributeResponse(WebDriverResponse response) =>
+      parseW3cResponse(response)?.toString();
 
   @override
-  WebDriverRequest buildCssPropertyRequest(String elementId, String name) {
-    return WebDriverRequest.getRequest('${elementPrefix(elementId)}css/$name');
-  }
+  WebDriverRequest buildCssPropertyRequest(String elementId, String name) =>
+      WebDriverRequest.getRequest('${elementPrefix(elementId)}css/$name');
 
   @override
-  String? parseCssPropertyResponse(WebDriverResponse response) {
-    return parseW3cResponse(response)?.toString();
-  }
+  String? parseCssPropertyResponse(WebDriverResponse response) =>
+      parseW3cResponse(response)?.toString();
 
   @override
-  WebDriverRequest buildPropertyRequest(String elementId, String name) {
-    return WebDriverRequest.getRequest(
-        '${elementPrefix(elementId)}property/$name');
-  }
+  WebDriverRequest buildPropertyRequest(String elementId, String name) =>
+      WebDriverRequest.getRequest('${elementPrefix(elementId)}property/$name');
 
   @override
-  String? parsePropertyResponse(WebDriverResponse response) {
-    return parseW3cResponse(response)?.toString();
-  }
+  String? parsePropertyResponse(WebDriverResponse response) =>
+      parseW3cResponse(response)?.toString();
 }

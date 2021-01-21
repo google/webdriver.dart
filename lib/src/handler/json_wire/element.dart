@@ -1,15 +1,14 @@
 import 'dart:math';
 
-import 'package:webdriver/src/common/request.dart';
-import 'package:webdriver/src/common/webdriver_handler.dart';
+import '../../common/request.dart';
+import '../../common/webdriver_handler.dart';
 
 import 'utils.dart';
 
 class JsonWireElementHandler extends ElementHandler {
   @override
-  WebDriverRequest buildClickRequest(String elementId) {
-    return WebDriverRequest.postRequest('${elementPrefix(elementId)}click');
-  }
+  WebDriverRequest buildClickRequest(String elementId) =>
+      WebDriverRequest.postRequest('${elementPrefix(elementId)}click');
 
   @override
   void parseClickResponse(WebDriverResponse response) {
@@ -17,11 +16,10 @@ class JsonWireElementHandler extends ElementHandler {
   }
 
   @override
-  WebDriverRequest buildSendKeysRequest(String elementId, String keysToSend) {
-    return WebDriverRequest.postRequest('${elementPrefix(elementId)}value', {
-      'value': [keysToSend]
-    });
-  }
+  WebDriverRequest buildSendKeysRequest(String elementId, String keysToSend) =>
+      WebDriverRequest.postRequest('${elementPrefix(elementId)}value', {
+        'value': [keysToSend]
+      });
 
   @override
   void parseSendKeysResponse(WebDriverResponse response) {
@@ -29,9 +27,8 @@ class JsonWireElementHandler extends ElementHandler {
   }
 
   @override
-  WebDriverRequest buildClearRequest(String elementId) {
-    return WebDriverRequest.postRequest('${elementPrefix(elementId)}clear');
-  }
+  WebDriverRequest buildClearRequest(String elementId) =>
+      WebDriverRequest.postRequest('${elementPrefix(elementId)}clear');
 
   @override
   void parseClearResponse(WebDriverResponse response) {
@@ -39,39 +36,32 @@ class JsonWireElementHandler extends ElementHandler {
   }
 
   @override
-  WebDriverRequest buildSelectedRequest(String elementId) {
-    return WebDriverRequest.getRequest('${elementPrefix(elementId)}selected');
-  }
+  WebDriverRequest buildSelectedRequest(String elementId) =>
+      WebDriverRequest.getRequest('${elementPrefix(elementId)}selected');
 
   @override
-  bool parseSelectedResponse(WebDriverResponse response) {
-    return parseJsonWireResponse(response) as bool;
-  }
+  bool parseSelectedResponse(WebDriverResponse response) =>
+      parseJsonWireResponse(response) as bool;
 
   @override
-  WebDriverRequest buildEnabledRequest(String elementId) {
-    return WebDriverRequest.getRequest('${elementPrefix(elementId)}enabled');
-  }
+  WebDriverRequest buildEnabledRequest(String elementId) =>
+      WebDriverRequest.getRequest('${elementPrefix(elementId)}enabled');
 
   @override
-  bool parseEnabledResponse(WebDriverResponse response) {
-    return parseJsonWireResponse(response) as bool;
-  }
+  bool parseEnabledResponse(WebDriverResponse response) =>
+      parseJsonWireResponse(response) as bool;
 
   @override
-  WebDriverRequest buildDisplayedRequest(String elementId) {
-    return WebDriverRequest.getRequest('${elementPrefix(elementId)}displayed');
-  }
+  WebDriverRequest buildDisplayedRequest(String elementId) =>
+      WebDriverRequest.getRequest('${elementPrefix(elementId)}displayed');
 
   @override
-  bool parseDisplayedResponse(WebDriverResponse response) {
-    return parseJsonWireResponse(response) as bool;
-  }
+  bool parseDisplayedResponse(WebDriverResponse response) =>
+      parseJsonWireResponse(response) as bool;
 
   @override
-  WebDriverRequest buildLocationRequest(String elementId) {
-    return WebDriverRequest.getRequest('${elementPrefix(elementId)}location');
-  }
+  WebDriverRequest buildLocationRequest(String elementId) =>
+      WebDriverRequest.getRequest('${elementPrefix(elementId)}location');
 
   @override
   Point<int> parseLocationResponse(WebDriverResponse response) {
@@ -80,9 +70,8 @@ class JsonWireElementHandler extends ElementHandler {
   }
 
   @override
-  WebDriverRequest buildSizeRequest(String elementId) {
-    return WebDriverRequest.getRequest('${elementPrefix(elementId)}size');
-  }
+  WebDriverRequest buildSizeRequest(String elementId) =>
+      WebDriverRequest.getRequest('${elementPrefix(elementId)}size');
 
   @override
   Rectangle<int> parseSizeResponse(WebDriverResponse response) {
@@ -96,29 +85,25 @@ class JsonWireElementHandler extends ElementHandler {
   }
 
   @override
-  WebDriverRequest buildNameRequest(String elementId) {
-    return WebDriverRequest.getRequest('${elementPrefix(elementId)}name');
-  }
+  WebDriverRequest buildNameRequest(String elementId) =>
+      WebDriverRequest.getRequest('${elementPrefix(elementId)}name');
 
   @override
-  String parseNameResponse(WebDriverResponse response) {
-    return parseJsonWireResponse(response) as String;
-  }
+  String parseNameResponse(WebDriverResponse response) =>
+      parseJsonWireResponse(response) as String;
 
   @override
-  WebDriverRequest buildTextRequest(String elementId) {
-    return WebDriverRequest.getRequest('${elementPrefix(elementId)}text');
-  }
+  WebDriverRequest buildTextRequest(String elementId) =>
+      WebDriverRequest.getRequest('${elementPrefix(elementId)}text');
 
   @override
-  String parseTextResponse(WebDriverResponse response) {
-    return parseJsonWireResponse(response) as String;
-  }
+  String parseTextResponse(WebDriverResponse response) =>
+      parseJsonWireResponse(response) as String;
 
   @override
-  WebDriverRequest buildAttributeRequest(String elementId, String name) {
-    return WebDriverRequest.postRequest('execute', {
-      'script': '''
+  WebDriverRequest buildAttributeRequest(String elementId, String name) =>
+      WebDriverRequest.postRequest('execute', {
+        'script': '''
     var attr = arguments[0].attributes["$name"];
     if(attr) {
       return attr.value;
@@ -126,61 +111,52 @@ class JsonWireElementHandler extends ElementHandler {
 
     return null;
     ''',
-      'args': [
-        {jsonWireElementStr: elementId}
-      ]
-    });
-  }
+        'args': [
+          {jsonWireElementStr: elementId}
+        ]
+      });
 
   @override
-  String? parseAttributeResponse(WebDriverResponse response) {
-    return parseJsonWireResponse(response)?.toString();
-  }
+  String? parseAttributeResponse(WebDriverResponse response) =>
+      parseJsonWireResponse(response)?.toString();
 
   @override
   @deprecated
   WebDriverRequest buildSeleniumAttributeRequest(
-      String elementId, String name) {
-    return WebDriverRequest.getRequest(
-        '${elementPrefix(elementId)}attribute/$name');
-  }
+          String elementId, String name) =>
+      WebDriverRequest.getRequest('${elementPrefix(elementId)}attribute/$name');
 
   @override
   @deprecated
-  String? parseSeleniumAttributeResponse(WebDriverResponse response) {
-    return parseJsonWireResponse(response)?.toString();
-  }
+  String? parseSeleniumAttributeResponse(WebDriverResponse response) =>
+      parseJsonWireResponse(response)?.toString();
 
   @override
-  WebDriverRequest buildCssPropertyRequest(String elementId, String name) {
-    return WebDriverRequest.postRequest('execute', {
-      'script':
-          'return window.getComputedStyle(arguments[0]).${_cssPropName(name)};',
-      'args': [
-        {jsonWireElementStr: elementId}
-      ]
-    });
-  }
+  WebDriverRequest buildCssPropertyRequest(String elementId, String name) =>
+      WebDriverRequest.postRequest('execute', {
+        'script':
+            'return window.getComputedStyle(arguments[0]).${_cssPropName(name)};',
+        'args': [
+          {jsonWireElementStr: elementId}
+        ]
+      });
 
   @override
-  String? parseCssPropertyResponse(WebDriverResponse response) {
-    return parseJsonWireResponse(response)?.toString();
-  }
+  String? parseCssPropertyResponse(WebDriverResponse response) =>
+      parseJsonWireResponse(response)?.toString();
 
   @override
-  WebDriverRequest buildPropertyRequest(String elementId, String name) {
-    return WebDriverRequest.postRequest('execute', {
-      'script': 'return arguments[0]["$name"];',
-      'args': [
-        {jsonWireElementStr: elementId}
-      ]
-    });
-  }
+  WebDriverRequest buildPropertyRequest(String elementId, String name) =>
+      WebDriverRequest.postRequest('execute', {
+        'script': 'return arguments[0]["$name"];',
+        'args': [
+          {jsonWireElementStr: elementId}
+        ]
+      });
 
   @override
-  String? parsePropertyResponse(WebDriverResponse response) {
-    return parseJsonWireResponse(response)?.toString();
-  }
+  String? parsePropertyResponse(WebDriverResponse response) =>
+      parseJsonWireResponse(response)?.toString();
 
   /// Convert hyphenated-properties to camelCase.
   String _cssPropName(String name) => name.splitMapJoin(RegExp(r'-(\w)'),

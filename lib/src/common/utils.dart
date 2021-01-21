@@ -1,8 +1,8 @@
-import 'package:webdriver/src/common/spec.dart';
-import 'package:webdriver/src/common/webdriver_handler.dart';
-import 'package:webdriver/src/handler/infer_handler.dart';
-import 'package:webdriver/src/handler/json_wire_handler.dart';
-import 'package:webdriver/src/handler/w3c_handler.dart';
+import '../handler/infer_handler.dart';
+import '../handler/json_wire_handler.dart';
+import '../handler/w3c_handler.dart';
+import 'spec.dart';
+import 'webdriver_handler.dart';
 
 WebDriverHandler getHandler(WebDriverSpec spec) {
   switch (spec) {

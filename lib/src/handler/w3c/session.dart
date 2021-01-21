@@ -1,9 +1,9 @@
-import 'package:webdriver/src/common/capabilities.dart';
-import 'package:webdriver/src/common/request.dart';
-import 'package:webdriver/src/common/session.dart';
-import 'package:webdriver/src/common/spec.dart';
-import 'package:webdriver/src/common/webdriver_handler.dart';
-import 'package:webdriver/src/handler/w3c/utils.dart';
+import '../../common/capabilities.dart';
+import '../../common/request.dart';
+import '../../common/session.dart';
+import '../../common/spec.dart';
+import '../../common/webdriver_handler.dart';
+import 'utils.dart';
 
 class W3cSessionHandler extends SessionHandler {
   @override

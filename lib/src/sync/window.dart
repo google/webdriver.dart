@@ -14,8 +14,8 @@
 
 import 'dart:math' show Point, Rectangle;
 
-import 'package:webdriver/src/common/request_client.dart';
-import 'package:webdriver/src/common/webdriver_handler.dart';
+import '../common/request_client.dart';
+import '../common/webdriver_handler.dart';
 
 /// Handle to window.
 ///

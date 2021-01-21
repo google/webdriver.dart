@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import 'package:webdriver/src/common/cookie.dart';
-import 'package:webdriver/src/common/request_client.dart';
-import 'package:webdriver/src/common/webdriver_handler.dart';
+import '../common/cookie.dart';
+import '../common/request_client.dart';
+import '../common/webdriver_handler.dart';
 
 /// Interacts with browser's cookies.
 class Cookies {

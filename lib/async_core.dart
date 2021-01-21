@@ -17,11 +17,11 @@ library webdriver.core;
 import 'dart:async' show Future;
 import 'dart:collection' show UnmodifiableMapView;
 
-import 'package:webdriver/src/async/web_driver.dart';
-import 'package:webdriver/src/common/capabilities.dart';
-import 'package:webdriver/src/common/request_client.dart';
-import 'package:webdriver/src/common/spec.dart';
-import 'package:webdriver/src/common/utils.dart';
+import 'src/async/web_driver.dart';
+import 'src/common/capabilities.dart';
+import 'src/common/request_client.dart';
+import 'src/common/spec.dart';
+import 'src/common/utils.dart';
 
 export 'package:webdriver/src/async/alert.dart';
 export 'package:webdriver/src/async/common.dart';

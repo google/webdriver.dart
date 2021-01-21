@@ -14,27 +14,27 @@
 
 import 'dart:convert' show base64;
 
-import 'package:webdriver/async_core.dart' as async_core;
-import 'package:webdriver/src/common/by.dart';
-import 'package:webdriver/src/common/request.dart';
-import 'package:webdriver/src/common/request_client.dart';
-import 'package:webdriver/src/common/spec.dart';
-import 'package:webdriver/src/common/utils.dart';
-import 'package:webdriver/src/common/webdriver_handler.dart';
-import 'package:webdriver/src/sync/common.dart';
-import 'package:webdriver/src/sync/cookies.dart';
-import 'package:webdriver/src/sync/keyboard.dart';
-import 'package:webdriver/src/sync/logs.dart';
-import 'package:webdriver/src/sync/mouse.dart';
-import 'package:webdriver/src/sync/target_locator.dart';
-import 'package:webdriver/src/sync/timeouts.dart';
-import 'package:webdriver/src/sync/web_element.dart';
-import 'package:webdriver/src/sync/window.dart';
+import '../../async_core.dart' as async_core;
+import '../common/by.dart';
+import '../common/request.dart';
+import '../common/request_client.dart';
+import '../common/spec.dart';
+import '../common/utils.dart';
+import '../common/webdriver_handler.dart';
+import 'common.dart';
 
 // ignore: uri_does_not_exist
 import 'common_stub.dart'
 // ignore: uri_does_not_exist
     if (dart.library.io) 'common_io.dart';
+import 'cookies.dart';
+import 'keyboard.dart';
+import 'logs.dart';
+import 'mouse.dart';
+import 'target_locator.dart';
+import 'timeouts.dart';
+import 'web_element.dart';
+import 'window.dart';
 
 /// Interacts with WebDriver.
 class WebDriver implements SearchContext {

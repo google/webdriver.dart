@@ -15,29 +15,29 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:webdriver/src/async/common.dart';
-import 'package:webdriver/src/async/cookies.dart';
-import 'package:webdriver/src/async/keyboard.dart';
-import 'package:webdriver/src/async/logs.dart';
-import 'package:webdriver/src/async/mouse.dart';
-import 'package:webdriver/src/async/stepper.dart' show Stepper;
-import 'package:webdriver/src/async/target_locator.dart';
-import 'package:webdriver/src/async/timeouts.dart';
-import 'package:webdriver/src/async/web_element.dart';
-import 'package:webdriver/src/async/window.dart';
-import 'package:webdriver/src/common/by.dart';
-import 'package:webdriver/src/common/command_event.dart';
-import 'package:webdriver/src/common/request.dart';
-import 'package:webdriver/src/common/request_client.dart';
-import 'package:webdriver/src/common/spec.dart';
-import 'package:webdriver/src/common/utils.dart';
-import 'package:webdriver/src/common/webdriver_handler.dart';
-import 'package:webdriver/sync_core.dart' as sync_core;
+import '../../sync_core.dart' as sync_core;
+import '../common/by.dart';
+import '../common/command_event.dart';
+import '../common/request.dart';
+import '../common/request_client.dart';
+import '../common/spec.dart';
+import '../common/utils.dart';
+import '../common/webdriver_handler.dart';
+import 'common.dart';
 
 // ignore: uri_does_not_exist
 import 'common_stub.dart'
 // ignore: uri_does_not_exist
     if (dart.library.io) 'common_io.dart';
+import 'cookies.dart';
+import 'keyboard.dart';
+import 'logs.dart';
+import 'mouse.dart';
+import 'stepper.dart' show Stepper;
+import 'target_locator.dart';
+import 'timeouts.dart';
+import 'web_element.dart';
+import 'window.dart';
 
 class WebDriver implements SearchContext {
   final WebDriverSpec spec;

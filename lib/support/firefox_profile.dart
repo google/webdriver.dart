@@ -363,7 +363,5 @@ class StringOption extends PrefsOption<String> {
       value.replaceAll(r'\', r'\\').replaceAll('"', r'\"');
 
   @override
-  String get _valueAsPrefString {
-    return '"${_escape(value!)}"';
-  }
+  String get _valueAsPrefString => '"${_escape(value!)}"';
 }

@@ -14,12 +14,11 @@
 
 import 'dart:math' show Point, Rectangle;
 
-import 'package:webdriver/src/common/request_client.dart';
-import 'package:webdriver/src/common/web_element.dart' as common;
-import 'package:webdriver/src/common/webdriver_handler.dart';
-
 import '../../async_core.dart' as async_core;
 import '../common/by.dart';
+import '../common/request_client.dart';
+import '../common/web_element.dart' as common;
+import '../common/webdriver_handler.dart';
 import 'common.dart';
 
 // ignore: uri_does_not_exist

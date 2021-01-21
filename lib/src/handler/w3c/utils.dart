@@ -1,9 +1,8 @@
 import 'dart:convert';
 
-import 'package:webdriver/src/common/web_element.dart';
-
 import '../../common/exception.dart';
 import '../../common/request.dart';
+import '../../common/web_element.dart';
 
 // Source: https://www.w3.org/TR/webdriver/#elements
 const String w3cElementStr = 'element-6066-11e4-a52e-4f735466cecf';

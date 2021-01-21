@@ -1,9 +1,8 @@
 import 'dart:convert';
 
-import 'package:webdriver/src/common/web_element.dart';
-
 import '../../common/exception.dart';
 import '../../common/request.dart';
+import '../../common/web_element.dart';
 
 /// Magic constants -- identifiers indicating a value is an element.
 /// Source: https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol

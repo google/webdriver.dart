@@ -14,9 +14,9 @@
 
 import 'dart:async';
 
-import 'package:webdriver/src/common/by.dart';
-import 'package:webdriver/src/async/web_driver.dart';
-import 'package:webdriver/src/async/web_element.dart';
+import '../common/by.dart';
+import 'web_driver.dart';
+import 'web_element.dart';
 
 typedef GetAttribute = Future<String?> Function(String name);
 

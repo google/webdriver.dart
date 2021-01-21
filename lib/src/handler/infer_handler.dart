@@ -1,13 +1,13 @@
 import 'dart:convert';
 
-import 'package:webdriver/src/common/capabilities.dart';
-import 'package:webdriver/src/common/exception.dart';
-import 'package:webdriver/src/common/request.dart';
-import 'package:webdriver/src/common/session.dart';
-import 'package:webdriver/src/common/spec.dart';
-import 'package:webdriver/src/common/webdriver_handler.dart';
-import 'package:webdriver/src/handler/json_wire/session.dart';
-import 'package:webdriver/src/handler/w3c/session.dart';
+import '../common/capabilities.dart';
+import '../common/exception.dart';
+import '../common/request.dart';
+import '../common/session.dart';
+import '../common/spec.dart';
+import '../common/webdriver_handler.dart';
+import 'json_wire/session.dart';
+import 'w3c/session.dart';
 
 /// A [WebDriverHandler] that is only used when creating new session /
 /// getting existing session info without given the spec.

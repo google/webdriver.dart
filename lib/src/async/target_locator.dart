@@ -14,9 +14,9 @@
 
 import 'dart:async';
 
-import 'package:webdriver/async_core.dart';
-import 'package:webdriver/src/common/request_client.dart';
-import 'package:webdriver/src/common/webdriver_handler.dart';
+import '../../async_core.dart';
+import '../common/request_client.dart';
+import '../common/webdriver_handler.dart';
 
 class TargetLocator {
   final WebDriver _driver;
