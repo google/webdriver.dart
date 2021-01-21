@@ -57,8 +57,15 @@ class WebElement extends common.WebElement implements SearchContext {
   /// used to find this element always returns one element, then this is null.
   final int? index;
 
-  WebElement(this.driver, this._client, this._handler, this.id,
-      [this.context, this.locator, this.index]);
+  WebElement(
+    this.driver,
+    this._client,
+    this._handler,
+    this.id, [
+    this.context,
+    this.locator,
+    this.index,
+  ]);
 
   WebElement get parent => WebElement(
         driver,
@@ -76,7 +83,7 @@ class WebElement extends common.WebElement implements SearchContext {
   List<String> get parents {
     WebElement p = this;
     final result = <String>[];
-    while (p.id != null) {
+    while (true) {
       var id = p.id;
       if (_parentCache.containsKey(id)) {
         break;
@@ -85,13 +92,11 @@ class WebElement extends common.WebElement implements SearchContext {
       _parentCache[id] = (p = p.parent).id;
     }
 
-    if (p.id != null) {
-      // Hit cache in the previous loop.
-      String? id = p.id;
-      while (id != null) {
-        result.add(id);
-        id = _parentCache[id];
-      }
+    // Hit cache in the previous loop.
+    String? id = p.id;
+    while (id != null) {
+      result.add(id);
+      id = _parentCache[id];
     }
 
     return result;
