@@ -39,7 +39,7 @@ class TargetLocator {
   ///
   ///   Throws [NoSuchFrameException] if the specified frame can't be found.
   void frame([/* int | WebElement | String */ frame]) {
-    if (frame == null || frame is int) {
+    if (frame is int?) {
       _client.send(_handler.frame.buildSwitchByIdRequest(frame),
           _handler.frame.parseSwitchByIdResponse);
     } else if (frame is WebElement) {

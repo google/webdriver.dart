@@ -28,7 +28,7 @@ class JsonWireSessionHandler extends SessionHandler {
     return SessionInfo(
       session['sessionId'] as String,
       WebDriverSpec.JsonWire,
-      session['value'],
+      session['value'] as Map<String, dynamic>?,
     );
   }
 }

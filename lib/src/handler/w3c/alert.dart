@@ -23,7 +23,7 @@ class W3cAlertHandler implements AlertHandler {
 
   @override
   String parseGetTextResponse(WebDriverResponse response) =>
-      parseW3cResponse(response);
+      parseW3cResponse(response) as String;
 
   @override
   WebDriverRequest buildAcceptRequest() =>

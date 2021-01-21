@@ -69,5 +69,6 @@ class W3cCookiesHandler extends CookiesHandler {
   /// Deserializes the json object to get the cookie according to the spec.
   ///
   /// The spec is deserializing the same we do in [Cookie.fromJson].
-  Cookie _deserialize(dynamic content) => Cookie.fromJson(content);
+  Cookie _deserialize(dynamic content) =>
+      Cookie.fromJson(content as Map<String, dynamic>);
 }

@@ -25,7 +25,7 @@ class JsonWireWindowHandler extends WindowHandler {
 
   @override
   List<String> parseGetWindowsResponse(WebDriverResponse response) =>
-      parseJsonWireResponse(response).cast<String>();
+      (parseJsonWireResponse(response) as List).cast<String>();
 
   @override
   WebDriverRequest buildGetActiveWindowRequest() =>
@@ -33,7 +33,7 @@ class JsonWireWindowHandler extends WindowHandler {
 
   @override
   String parseGetActiveWindowResponse(WebDriverResponse response) =>
-      parseJsonWireResponse(response);
+      parseJsonWireResponse(response) as String;
 
   @override
   WebDriverRequest buildSetActiveRequest(String windowId) =>
@@ -148,6 +148,6 @@ class JsonWireWindowHandler extends WindowHandler {
   @override
   Rectangle<int> parseInnerSizeResponse(WebDriverResponse response) {
     final size = parseJsonWireResponse(response);
-    return Rectangle(0, 0, size['width'], size['height']);
+    return Rectangle(0, 0, size['width'] as int, size['height'] as int);
   }
 }

@@ -25,7 +25,7 @@ class W3cWindowHandler extends WindowHandler {
 
   @override
   List<String> parseGetWindowsResponse(WebDriverResponse response) =>
-      parseW3cResponse(response).cast<String>();
+      (parseW3cResponse(response) as List).cast<String>();
 
   @override
   WebDriverRequest buildGetActiveWindowRequest() =>
@@ -33,7 +33,7 @@ class W3cWindowHandler extends WindowHandler {
 
   @override
   String parseGetActiveWindowResponse(WebDriverResponse response) =>
-      parseW3cResponse(response);
+      parseW3cResponse(response) as String;
 
   @override
   WebDriverRequest buildSetActiveRequest(String windowId) =>
@@ -149,6 +149,6 @@ class W3cWindowHandler extends WindowHandler {
   @override
   Rectangle<int> parseInnerSizeResponse(WebDriverResponse response) {
     final size = parseW3cResponse(response);
-    return Rectangle(0, 0, size['width'], size['height']);
+    return Rectangle(0, 0, size['width'] as int, size['height'] as int);
   }
 }

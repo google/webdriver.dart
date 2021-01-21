@@ -42,7 +42,10 @@ class AsyncXhrRequestClient extends AsyncRequestClient {
     }
 
     return WebDriverResponse(
-        httpRequest.status, httpRequest.statusText, httpRequest.response);
+      httpRequest.status,
+      httpRequest.statusText,
+      httpRequest.response as String?,
+    );
   }
 
   @override

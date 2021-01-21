@@ -79,7 +79,7 @@ class W3cLogsHandler extends LogsHandler {
 
   @override
   List<LogEntry> parseGetLogsResponse(WebDriverResponse response) =>
-      parseW3cResponse(response)
-          .map<LogEntry>((e) => LogEntry.fromMap(e))
+      (parseW3cResponse(response) as List)
+          .map<LogEntry>((e) => LogEntry.fromMap(e as Map))
           .toList();
 }

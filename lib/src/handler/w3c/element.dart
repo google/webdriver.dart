@@ -46,7 +46,7 @@ class W3cElementHandler extends ElementHandler {
 
   @override
   bool parseSelectedResponse(WebDriverResponse response) {
-    return parseW3cResponse(response);
+    return parseW3cResponse(response) as bool;
   }
 
   @override
@@ -56,7 +56,7 @@ class W3cElementHandler extends ElementHandler {
 
   @override
   bool parseEnabledResponse(WebDriverResponse response) {
-    return parseW3cResponse(response);
+    return parseW3cResponse(response) as bool;
   }
 
   @override
@@ -66,7 +66,7 @@ class W3cElementHandler extends ElementHandler {
 
   @override
   bool parseDisplayedResponse(WebDriverResponse response) {
-    return parseW3cResponse(response);
+    return parseW3cResponse(response) as bool;
   }
 
   @override
@@ -97,10 +97,10 @@ class W3cElementHandler extends ElementHandler {
   Rectangle<int> _parseRectResponse(WebDriverResponse response) {
     final rect = parseW3cResponse(response);
     return Rectangle(
-      rect['x'].toInt(),
-      rect['y'].toInt(),
-      rect['width'].toInt(),
-      rect['height'].toInt(),
+      (rect['x'] as num).toInt(),
+      (rect['y'] as num).toInt(),
+      (rect['width'] as num).toInt(),
+      (rect['height'] as num).toInt(),
     );
   }
 
@@ -111,7 +111,7 @@ class W3cElementHandler extends ElementHandler {
 
   @override
   String parseNameResponse(WebDriverResponse response) {
-    return parseW3cResponse(response);
+    return parseW3cResponse(response) as String;
   }
 
   @override
@@ -121,7 +121,7 @@ class W3cElementHandler extends ElementHandler {
 
   @override
   String parseTextResponse(WebDriverResponse response) {
-    return parseW3cResponse(response);
+    return parseW3cResponse(response) as String;
   }
 
   @override

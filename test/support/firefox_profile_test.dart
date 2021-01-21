@@ -142,7 +142,8 @@ void main() {
 
       var prefs = FirefoxProfile.loadPrefsFile(MockFile(
         String.fromCharCodes(
-          archive.files.firstWhere((f) => f.name == 'user.js').content,
+          archive.files.firstWhere((f) => f.name == 'user.js').content
+              as List<int>,
         ),
       ));
       expect(
@@ -181,7 +182,8 @@ void main() {
       var prefs = FirefoxProfile.loadPrefsFile(
         MockFile(
           String.fromCharCodes(
-            archive.files.firstWhere((f) => f.name == 'user.js').content,
+            archive.files.firstWhere((f) => f.name == 'user.js').content
+                as List<int>,
           ),
         ),
       );

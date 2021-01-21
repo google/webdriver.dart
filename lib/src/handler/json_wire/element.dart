@@ -76,7 +76,7 @@ class JsonWireElementHandler extends ElementHandler {
   @override
   Point<int> parseLocationResponse(WebDriverResponse response) {
     final point = parseJsonWireResponse(response);
-    return Point(point['x'].toInt(), point['y'].toInt());
+    return Point((point['x'] as num).toInt(), (point['y'] as num).toInt());
   }
 
   @override
