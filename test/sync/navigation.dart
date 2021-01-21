@@ -15,8 +15,6 @@
 @TestOn('vm')
 library webdriver.navigation_test;
 
-import 'dart:io';
-
 import 'package:test/test.dart';
 import 'package:webdriver/sync_core.dart';
 
@@ -25,16 +23,9 @@ import '../configs/sync_io_config.dart' as config;
 void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
   group('Navigation', () {
     late WebDriver driver;
-    late HttpServer server;
 
     setUp(() async {
       driver = config.createTestDriver(spec: spec);
-      server = await config.createTestServerAndGoToTestPage(driver);
-    });
-
-    tearDown(() async {
-      driver.quit();
-      await server.close(force: true);
     });
 
     test('refresh', () async {

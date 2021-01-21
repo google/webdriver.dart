@@ -15,8 +15,6 @@
 @TestOn('vm')
 library webdriver.command_event_test;
 
-import 'dart:io';
-
 import 'package:stack_trace/stack_trace.dart';
 import 'package:test/test.dart';
 import 'package:webdriver/sync_core.dart';
@@ -26,7 +24,6 @@ import '../configs/sync_io_config.dart' as config;
 void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
   group('CommandEvent', () {
     late WebDriver driver;
-    late HttpServer server;
 
     var events = <WebDriverCommandEvent>[];
 
@@ -34,14 +31,11 @@ void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
       driver = config.createTestDriver(spec: spec);
       driver.addEventListener(events.add);
 
-      server = await config.createTestServerAndGoToTestPage(driver);
-    });
+      await config.createTestServerAndGoToTestPage(driver);
 
-    tearDown(() async {
-      driver.quit();
-      events.clear();
-
-      await server.close(force: true);
+      addTearDown(() async {
+        events.clear();
+      });
     });
 
     test('handles exceptions', () {

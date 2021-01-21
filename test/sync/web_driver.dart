@@ -27,26 +27,18 @@ void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
     group('create', () {
       test('default', () async {
         WebDriver driver = config.createTestDriver(spec: spec);
-        final server = await config.createTestServerAndGoToTestPage(driver);
+        await config.createTestServerAndGoToTestPage(driver);
         var element = driver.findElement(const By.tagName('button'));
         expect(element.name, 'button');
-        driver.quit();
-        await server.close(force: true);
       });
     });
 
     group('methods', () {
       late WebDriver driver;
-      late HttpServer server;
 
       setUp(() async {
         driver = config.createTestDriver(spec: spec);
-        server = await config.createTestServerAndGoToTestPage(driver);
-      });
-
-      tearDown(() async {
-        driver.quit();
-        await server.close(force: true);
+        await config.createTestServerAndGoToTestPage(driver);
       });
 
       test('get', () {

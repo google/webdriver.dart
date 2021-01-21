@@ -15,8 +15,6 @@
 @TestOn('vm')
 library webdriver.alert_test;
 
-import 'dart:io';
-
 import 'package:test/test.dart';
 import 'package:webdriver/sync_core.dart';
 
@@ -27,18 +25,13 @@ void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
     late WebDriver driver;
     late WebElement button;
     late WebElement output;
-    late HttpServer server;
 
     setUp(() async {
       driver = config.createTestDriver(spec: spec);
-      server = await config.createTestServerAndGoToTestPage(driver);
+      await config.createTestServerAndGoToTestPage(driver);
+
       button = driver.findElement(const By.tagName('button'));
       output = driver.findElement(const By.id('settable'));
-    });
-
-    tearDown(() async {
-      driver.quit();
-      await server.close(force: true);
     });
 
     test('no alert', () {

@@ -28,10 +28,6 @@ void main() {
       driver = await config.createTestDriver();
     });
 
-    tearDown(() async {
-      await driver.quit();
-    });
-
     // TODO(DrMarcII): Figure out how to tell if timeouts are correctly set
     test('set all timeouts', () async {
       await driver.timeouts.setScriptTimeout(const Duration(seconds: 5));

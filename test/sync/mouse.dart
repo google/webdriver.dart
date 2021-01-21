@@ -15,8 +15,6 @@
 @TestOn('vm')
 library webdriver.mouse_test;
 
-import 'dart:io';
-
 import 'package:test/test.dart';
 import 'package:webdriver/sync_core.dart';
 
@@ -26,7 +24,6 @@ void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
   group('Mouse', () {
     late WebDriver driver;
     late WebElement button;
-    late HttpServer server;
 
     bool hasAlert() {
       try {
@@ -44,13 +41,8 @@ void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
 
     setUp(() async {
       driver = config.createTestDriver(spec: spec);
-      server = await config.createTestServerAndGoToTestPage(driver);
+      await config.createTestServerAndGoToTestPage(driver);
       button = driver.findElement(const By.tagName('button'));
-    });
-
-    tearDown(() async {
-      driver.quit();
-      await server.close(force: true);
     });
 
     test('moveTo element/click', () {

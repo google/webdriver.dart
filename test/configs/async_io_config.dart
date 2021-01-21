@@ -16,6 +16,7 @@ import 'dart:async' show Future;
 import 'dart:io';
 
 import 'package:matcher/matcher.dart';
+import 'package:test/test.dart';
 import 'package:webdriver/async_core.dart'
     show WebDriver, WebDriverSpec, WebElement;
 import 'package:webdriver/async_io.dart' show createDriver;
@@ -26,19 +27,29 @@ export 'common_config.dart';
 
 final Matcher isWebElement = const TypeMatcher<WebElement>();
 
-Future<WebDriver> createTestDriver(
-    {Map<String, dynamic>? additionalCapabilities,
-    WebDriverSpec spec = defaultSpec}) {
+Future<WebDriver> createTestDriver({
+  Map<String, dynamic>? additionalCapabilities,
+  WebDriverSpec spec = defaultSpec,
+}) async {
   final capabilities = getCapabilities(spec);
   if (additionalCapabilities != null) {
     capabilities.addAll(additionalCapabilities);
   }
 
-  return createDriver(
-      desired: capabilities, uri: getWebDriverUri(spec), spec: spec);
+  final driver = await createDriver(
+    desired: capabilities,
+    uri: getWebDriverUri(spec),
+    spec: spec,
+  );
+
+  addTearDown(() async {
+    await driver.quit();
+  });
+
+  return driver;
 }
 
-Future<HttpServer> createTestServerAndGoToTestPage(WebDriver driver) async {
+Future<void> createTestServerAndGoToTestPage(WebDriver driver) async {
   final server = await createLocalServer();
   server.listen((request) {
     if (request.method == 'GET' && request.uri.path.endsWith('.html')) {
@@ -63,5 +74,7 @@ Future<HttpServer> createTestServerAndGoToTestPage(WebDriver driver) async {
 
   await driver.get('http://$testHostname:${server.port}/test_page.html');
 
-  return server;
+  addTearDown(() async {
+    await server.close(force: true);
+  });
 }

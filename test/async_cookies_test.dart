@@ -31,10 +31,6 @@ void main() {
       await driver.get('http://www.google.com/ncr');
     });
 
-    tearDown(() async {
-      await driver.quit();
-    });
-
     test('add simple cookie and get', () async {
       await driver.cookies.add(Cookie('mycookie', 'myvalue'));
 

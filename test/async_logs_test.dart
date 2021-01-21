@@ -15,8 +15,6 @@
 @TestOn('vm')
 library webdriver.logs_test;
 
-import 'dart:io';
-
 import 'package:test/test.dart';
 import 'package:webdriver/async_core.dart';
 
@@ -25,7 +23,6 @@ import 'configs/async_io_config.dart' as config;
 void main() {
   group('Logs', () {
     late WebDriver driver;
-    late HttpServer server;
 
     setUp(() async {
       Map<String, dynamic> capabilities = {
@@ -34,12 +31,7 @@ void main() {
 
       driver =
           await config.createTestDriver(additionalCapabilities: capabilities);
-      server = await config.createTestServerAndGoToTestPage(driver);
-    });
-
-    tearDown(() async {
-      await driver.quit();
-      await server.close(force: true);
+      await config.createTestServerAndGoToTestPage(driver);
     });
 
     test('get logs', () async {

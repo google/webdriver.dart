@@ -16,7 +16,6 @@
 library webdriver.web_driver_test;
 
 import 'dart:async';
-import 'dart:io';
 
 import 'package:test/test.dart';
 import 'package:webdriver/core.dart';
@@ -28,30 +27,21 @@ void main() {
     group('create', () {
       test('default', () async {
         WebDriver driver = await config.createTestDriver();
-        final server = await config.createTestServerAndGoToTestPage(driver);
+        await config.createTestServerAndGoToTestPage(driver);
         var element = await driver.findElement(const By.tagName('button'));
         expect(await element.name, 'button');
-        await driver.quit();
-        await server.close(force: true);
       });
     });
 
     group('methods', () {
       late WebDriver driver;
-      late HttpServer server;
 
       setUp(() async {
         driver = await config.createTestDriver();
-        server = await config.createTestServerAndGoToTestPage(driver);
-      });
-
-      tearDown(() async {
-        await driver.quit();
-        await server.close(force: true);
+        await config.createTestServerAndGoToTestPage(driver);
       });
 
       test('get', () async {
-        server = await config.createTestServerAndGoToTestPage(driver);
         await driver.findElement(const By.tagName('button'));
       });
 

@@ -15,8 +15,6 @@
 @TestOn('vm')
 library webdriver.command_event_test;
 
-import 'dart:io';
-
 import 'package:stack_trace/stack_trace.dart';
 import 'package:test/test.dart';
 import 'package:webdriver/async_core.dart';
@@ -26,7 +24,6 @@ import 'configs/async_io_config.dart' as config;
 void main() {
   group('CommandEvent', () {
     late WebDriver driver;
-    late HttpServer server;
 
     var events = <WebDriverCommandEvent>[];
 
@@ -36,12 +33,10 @@ void main() {
         events.add(e);
       });
 
-      server = await config.createTestServerAndGoToTestPage(driver);
+      await config.createTestServerAndGoToTestPage(driver);
     });
 
     tearDown(() async {
-      await driver.quit();
-      await server.close(force: true);
       events.clear();
     });
 

@@ -24,18 +24,9 @@ void main() {
   group('Spec inference', () {
     WebDriver? driver;
 
-    setUp(() {});
-
-    tearDown(() {
-      if (driver != null) {
-        driver!.quit();
-      }
-      driver = null;
-    });
-
     test('chrome works', () async {
       driver = config.createTestDriver(spec: WebDriverSpec.W3c);
-      final server = await config.createTestServerAndGoToTestPage(driver!);
+      await config.createTestServerAndGoToTestPage(driver!);
       final button = driver!.findElement(const By.tagName('button'));
       try {
         button.findElement(const By.tagName('tr'));
@@ -44,13 +35,11 @@ void main() {
         expect(e, const TypeMatcher<NoSuchElementException>());
         expect(e.toString(), contains('Unable to locate element'));
       }
-
-      await server.close(force: true);
     });
 
     test('firefox work', () async {
       driver = config.createTestDriver(spec: WebDriverSpec.JsonWire);
-      final server = await config.createTestServerAndGoToTestPage(driver!);
+      await config.createTestServerAndGoToTestPage(driver!);
       final button = driver!.findElement(const By.tagName('button'));
       try {
         button.findElement(const By.tagName('tr'));
@@ -59,8 +48,6 @@ void main() {
         expect(e, const TypeMatcher<NoSuchElementException>());
         expect(e.toString(), contains('Unable to locate element'));
       }
-
-      await server.close(force: true);
     });
   }, timeout: const Timeout(Duration(minutes: 2)));
 }

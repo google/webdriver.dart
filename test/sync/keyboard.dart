@@ -26,7 +26,6 @@ void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
   group('Keyboard', () {
     late WebDriver driver;
     late WebElement textInput;
-    late HttpServer server;
     String ctrlCmdKey = '';
 
     setUp(() async {
@@ -37,14 +36,10 @@ void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
       }
 
       driver = config.createTestDriver(spec: spec);
-      server = await config.createTestServerAndGoToTestPage(driver);
+      await config.createTestServerAndGoToTestPage(driver);
+
       textInput = driver.findElement(const By.cssSelector('input[type=text]'));
       textInput.click();
-    });
-
-    tearDown(() async {
-      driver.quit();
-      await server.close(force: true);
     });
 
     test('sendKeys -- once', () {

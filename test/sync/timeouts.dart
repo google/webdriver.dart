@@ -28,10 +28,6 @@ void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
       driver = config.createTestDriver(spec: spec);
     });
 
-    tearDown(() {
-      driver.quit();
-    });
-
     // TODO(DrMarcII): Figure out how to tell if timeouts are correctly set
     test('set all timeouts', () {
       driver.timeouts.setScriptTimeout(const Duration(seconds: 5));

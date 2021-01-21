@@ -15,8 +15,6 @@
 @TestOn('vm')
 library webdriver.target_locator_test;
 
-import 'dart:io';
-
 import 'package:test/test.dart';
 import 'package:webdriver/sync_core.dart';
 
@@ -28,17 +26,12 @@ void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
   group('TargetLocator', () {
     late WebDriver driver;
     late WebElement frame;
-    late HttpServer server;
 
     setUp(() async {
       driver = config.createTestDriver(spec: spec);
-      server = await config.createTestServerAndGoToTestPage(driver);
-      frame = driver.findElement(const By.id('frame'));
-    });
+      await config.createTestServerAndGoToTestPage(driver);
 
-    tearDown(() async {
-      driver.quit();
-      await server.close(force: true);
+      frame = driver.findElement(const By.id('frame'));
     });
 
     test('frame index', () {
