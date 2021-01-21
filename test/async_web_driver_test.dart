@@ -151,6 +151,7 @@ void main() {
       });
 
       test('captureScreenshot', () async {
+        // ignore: deprecated_member_use_from_same_package
         var screenshot = await driver.captureScreenshot().toList();
         expect(screenshot, hasLength(isPositive));
         expect(screenshot, everyElement(isA<int>()));

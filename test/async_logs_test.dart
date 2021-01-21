@@ -26,6 +26,7 @@ void main() {
 
     setUp(() async {
       Map<String, dynamic> capabilities = {
+        // ignore: deprecated_member_use_from_same_package
         Capabilities.loggingPrefs: {LogType.performance: LogLevel.info}
       };
 

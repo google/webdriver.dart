@@ -125,26 +125,39 @@ void main() {
 
     test('encode/decode "user.js" in-memory', () {
       var profile = FirefoxProfile();
+      // ignore: deprecated_member_use_from_same_package
       profile.setOption(PrefsOption(Capabilities.hasNativeEvents, true));
 
       var archive = unpackArchiveData(profile.toJson());
 
       var expectedFiles = ['prefs.js', 'user.js'];
       expect(archive.files.length, greaterThanOrEqualTo(expectedFiles.length));
-      expectedFiles.forEach((f) => expect(
-          archive.files, anyElement((ArchiveFile f) => f.name == 'prefs.js')));
+      expectedFiles.forEach(
+        (f) => expect(
+          archive.files,
+          anyElement((ArchiveFile f) => f.name == 'prefs.js'),
+        ),
+      );
 
-      var prefs = FirefoxProfile.loadPrefsFile(MockFile(String.fromCharCodes(
-          archive.files.firstWhere((f) => f.name == 'user.js').content)));
+      var prefs = FirefoxProfile.loadPrefsFile(MockFile(
+        String.fromCharCodes(
+          archive.files.firstWhere((f) => f.name == 'user.js').content,
+        ),
+      ));
       expect(
-          prefs,
-          anyElement((PrefsOption o) =>
-              o.name == Capabilities.hasNativeEvents && o.value == true));
+        prefs,
+        anyElement(
+          (PrefsOption o) =>
+              // ignore: deprecated_member_use_from_same_package
+              o.name == Capabilities.hasNativeEvents && o.value == true,
+        ),
+      );
     });
 
     test('encode/decode profile directory from disk', () {
       var profile = FirefoxProfile(
           profileDirectory: io.Directory('test/support/firefox_profile'));
+      // ignore: deprecated_member_use_from_same_package
       profile.setOption(PrefsOption(Capabilities.hasNativeEvents, true));
 
       var archive = unpackArchiveData(profile.toJson());
@@ -157,15 +170,28 @@ void main() {
         'webapps/webapps.json'
       ];
       expect(archive.files.length, greaterThanOrEqualTo(expectedFiles.length));
-      expectedFiles.forEach((f) => expect(
-          archive.files, anyElement((ArchiveFile f) => f.name == 'prefs.js')));
+      expectedFiles.forEach(
+        (f) => expect(
+          archive.files,
+          anyElement((ArchiveFile f) => f.name == 'prefs.js'),
+        ),
+      );
 
-      var prefs = FirefoxProfile.loadPrefsFile(MockFile(String.fromCharCodes(
-          archive.files.firstWhere((f) => f.name == 'user.js').content)));
+      var prefs = FirefoxProfile.loadPrefsFile(
+        MockFile(
+          String.fromCharCodes(
+            archive.files.firstWhere((f) => f.name == 'user.js').content,
+          ),
+        ),
+      );
       expect(
-          prefs,
-          anyElement((PrefsOption o) =>
-              o.name == Capabilities.hasNativeEvents && o.value == true));
+        prefs,
+        anyElement(
+          (PrefsOption o) =>
+              // ignore: deprecated_member_use_from_same_package
+              o.name == Capabilities.hasNativeEvents && o.value == true,
+        ),
+      );
     });
   }, timeout: const Timeout(Duration(minutes: 2)));
 }

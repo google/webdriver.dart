@@ -61,11 +61,14 @@ class WebElement extends common.WebElement implements SearchContext {
       [this.context, this.locator, this.index]);
 
   WebElement get parent => WebElement(
-      driver,
-      _client,
-      _handler,
-      _client.send(_handler.element.buildPropertyRequest(id, 'parentElement'),
-          _handler.elementFinder.parseFindElementResponse));
+        driver,
+        _client,
+        _handler,
+        _client.send(
+          _handler.element.buildPropertyRequest(id, 'parentElement'),
+          _handler.elementFinder.parseFindElementResponse,
+        ),
+      );
 
   static final _parentCache = <String, String>{};
 

@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import 'sync/command_event.dart';
-import 'configs/sync_io_config.dart' as config;
 import 'package:webdriver/sync_core.dart';
 
 void main() {
