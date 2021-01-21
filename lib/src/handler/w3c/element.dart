@@ -96,8 +96,12 @@ class W3cElementHandler extends ElementHandler {
 
   Rectangle<int> _parseRectResponse(WebDriverResponse response) {
     final rect = parseW3cResponse(response);
-    return Rectangle(rect['x'].toInt(), rect['y'].toInt(),
-        rect['width'].toInt(), rect['height'].toInt());
+    return Rectangle(
+      rect['x'].toInt(),
+      rect['y'].toInt(),
+      rect['width'].toInt(),
+      rect['height'].toInt(),
+    );
   }
 
   @override

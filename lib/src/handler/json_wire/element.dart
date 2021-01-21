@@ -45,7 +45,7 @@ class JsonWireElementHandler extends ElementHandler {
 
   @override
   bool parseSelectedResponse(WebDriverResponse response) {
-    return parseJsonWireResponse(response);
+    return parseJsonWireResponse(response) as bool;
   }
 
   @override
@@ -55,7 +55,7 @@ class JsonWireElementHandler extends ElementHandler {
 
   @override
   bool parseEnabledResponse(WebDriverResponse response) {
-    return parseJsonWireResponse(response);
+    return parseJsonWireResponse(response) as bool;
   }
 
   @override
@@ -65,7 +65,7 @@ class JsonWireElementHandler extends ElementHandler {
 
   @override
   bool parseDisplayedResponse(WebDriverResponse response) {
-    return parseJsonWireResponse(response);
+    return parseJsonWireResponse(response) as bool;
   }
 
   @override
@@ -87,7 +87,12 @@ class JsonWireElementHandler extends ElementHandler {
   @override
   Rectangle<int> parseSizeResponse(WebDriverResponse response) {
     final size = parseJsonWireResponse(response);
-    return Rectangle<int>(0, 0, size['width'].toInt(), size['height'].toInt());
+    return Rectangle<int>(
+      0,
+      0,
+      (size['width'] as num).toInt(),
+      (size['height'] as num).toInt(),
+    );
   }
 
   @override
@@ -97,7 +102,7 @@ class JsonWireElementHandler extends ElementHandler {
 
   @override
   String parseNameResponse(WebDriverResponse response) {
-    return parseJsonWireResponse(response);
+    return parseJsonWireResponse(response) as String;
   }
 
   @override
@@ -107,7 +112,7 @@ class JsonWireElementHandler extends ElementHandler {
 
   @override
   String parseTextResponse(WebDriverResponse response) {
-    return parseJsonWireResponse(response);
+    return parseJsonWireResponse(response) as String;
   }
 
   @override

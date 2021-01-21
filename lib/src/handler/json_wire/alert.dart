@@ -23,7 +23,7 @@ class JsonWireAlertHandler implements AlertHandler {
 
   @override
   String parseGetTextResponse(WebDriverResponse response) =>
-      parseJsonWireResponse(response);
+      parseJsonWireResponse(response) as String;
 
   @override
   WebDriverRequest buildAcceptRequest() =>

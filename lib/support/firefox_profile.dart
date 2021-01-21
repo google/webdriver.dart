@@ -197,7 +197,7 @@ class FirefoxProfile {
     final prefs = <PrefsOption>{};
     final lines = LineSplitter.split(file.readAsStringSync())
         .where((line) => !_ignoreLine(line));
-    bool canNotParseCaption = true;
+    var canNotParseCaption = true;
 
     for (final line in lines) {
       final option = PrefsOption.parse(line);
@@ -222,7 +222,7 @@ class FirefoxProfile {
   /// It can be uses like
   /// `var desired = Capabilities.firefox..addAll(firefoxProfile.toJson()}`
   Map<String, dynamic> toJson() {
-    Archive archive = Archive();
+    var archive = Archive();
     if (profileDirectory != null) {
       profileDirectory!.listSync(recursive: true).forEach((f) {
         ArchiveFile archiveFile;
@@ -304,7 +304,7 @@ abstract class PrefsOption<T> {
       return BooleanOption(name, false) as PrefsOption<T>;
     }
     try {
-      int value = int.parse(valueString);
+      var value = int.parse(valueString);
       return IntegerOption(name, value) as PrefsOption<T>;
     } catch (_) {}
     return InvalidOption('Not a valid prefs option: "$prefs".')
@@ -318,7 +318,7 @@ abstract class PrefsOption<T> {
     if (identical(this, other)) {
       return true;
     }
-    return other is PrefsOption && this.name == other.name;
+    return other is PrefsOption && name == other.name;
   }
 
   @override

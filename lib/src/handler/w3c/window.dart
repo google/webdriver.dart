@@ -67,14 +67,20 @@ class W3cWindowHandler extends WindowHandler {
   @override
   Rectangle<int> parseRectResponse(WebDriverResponse response) {
     final rect = parseW3cResponse(response);
-    return Rectangle(rect['x'].toInt(), rect['y'].toInt(),
-        rect['width'].toInt(), rect['height'].toInt());
+    return Rectangle(
+      (rect['x'] as num).toInt(),
+      (rect['y'] as num).toInt(),
+      (rect['width'] as num).toInt(),
+      (rect['height'] as num).toInt(),
+    );
   }
 
   @override
   WebDriverRequest buildSetLocationRequest(Point<int> location) =>
-      WebDriverRequest.postRequest(
-          'window/rect', {'x': location.x, 'y': location.y});
+      WebDriverRequest.postRequest('window/rect', {
+        'x': location.x,
+        'y': location.y,
+      });
 
   @override
   void parseSetLocationResponse(WebDriverResponse response) {

@@ -23,8 +23,8 @@ class JsonWireKeyboardHandler extends KeyboardHandler {
   }
 
   String _createChord(Iterable<String> chord) {
-    StringBuffer chordString = StringBuffer();
-    for (String s in chord) {
+    var chordString = StringBuffer();
+    for (var s in chord) {
       chordString.write(s);
     }
     chordString.write(nullChar);

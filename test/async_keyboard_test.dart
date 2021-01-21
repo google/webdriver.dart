@@ -26,7 +26,7 @@ void main() {
   group('Keyboard', () {
     late WebDriver driver;
     late WebElement textInput;
-    String ctrlCmdKey = '';
+    var ctrlCmdKey = '';
 
     setUp(() async {
       if (Platform.isMacOS) {

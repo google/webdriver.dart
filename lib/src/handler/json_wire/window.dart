@@ -51,7 +51,10 @@ class JsonWireWindowHandler extends WindowHandler {
   @override
   Point<int> parseLocationResponse(WebDriverResponse response) {
     final point = parseJsonWireResponse(response);
-    return Point(point['x'].toInt(), point['y'].toInt());
+    return Point(
+      (point['x'] as num).toInt(),
+      (point['y'] as num).toInt(),
+    );
   }
 
   @override
@@ -61,7 +64,12 @@ class JsonWireWindowHandler extends WindowHandler {
   @override
   Rectangle<int> parseSizeResponse(WebDriverResponse response) {
     final size = parseJsonWireResponse(response);
-    return Rectangle<int>(0, 0, size['width'].toInt(), size['height'].toInt());
+    return Rectangle<int>(
+      0,
+      0,
+      (size['width'] as num).toInt(),
+      (size['height'] as num).toInt(),
+    );
   }
 
   @override

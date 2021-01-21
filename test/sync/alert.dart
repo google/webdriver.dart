@@ -66,7 +66,7 @@ void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
 
     test('sendKeys', () {
       button.click();
-      Alert alert = driver.switchTo.alert;
+      var alert = driver.switchTo.alert;
       alert.sendKeys('some keys');
       alert.accept();
       expect(output.text, endsWith('some keys'));

@@ -16,11 +16,10 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:webdriver/src/async/common.dart';
-
 import 'package:webdriver/src/async/cookies.dart';
 import 'package:webdriver/src/async/keyboard.dart';
-import 'package:webdriver/src/async/mouse.dart';
 import 'package:webdriver/src/async/logs.dart';
+import 'package:webdriver/src/async/mouse.dart';
 import 'package:webdriver/src/async/stepper.dart' show Stepper;
 import 'package:webdriver/src/async/target_locator.dart';
 import 'package:webdriver/src/async/timeouts.dart';
@@ -37,7 +36,7 @@ import 'package:webdriver/sync_core.dart' as sync_core;
 
 // ignore: uri_does_not_exist
 import 'common_stub.dart'
-    // ignore: uri_does_not_exist
+// ignore: uri_does_not_exist
     if (dart.library.io) 'common_io.dart';
 
 class WebDriver implements SearchContext {
@@ -57,7 +56,7 @@ class WebDriver implements SearchContext {
   final AsyncRequestClient _client;
 
   WebDriver(this.uri, this.id, this.capabilities, this._client, this.spec)
-      : this._handler = getHandler(spec);
+      : _handler = getHandler(spec);
 
   /// Produces a [sync_core.WebDriver] with the same session ID. Allows
   /// forwards compatibility with other frameworks.
@@ -77,8 +76,9 @@ class WebDriver implements SearchContext {
 
   /// Navigates to the specified url
   Future<void> get(/* Uri | String */ url) => _client.send(
-      _handler.navigation
-          .buildNavigateToRequest((url is Uri) ? url.toString() : url),
+      _handler.navigation.buildNavigateToRequest(
+        (url is Uri) ? url.toString() : url as String,
+      ),
       _handler.navigation.parseNavigateToResponse);
 
   ///  Navigates forwards in the browser history, if possible.
@@ -105,7 +105,7 @@ class WebDriver implements SearchContext {
     final ids = await _client.send(
         _handler.elementFinder.buildFindElementsRequest(by),
         _handler.elementFinder.parseFindElementsResponse);
-    int i = 0;
+    var i = 0;
 
     for (var id in ids) {
       yield getElement(id, this, by, i);
@@ -169,8 +169,7 @@ class WebDriver implements SearchContext {
     return null;
   }
 
-  TargetLocator get switchTo =>
-      TargetLocator(this, this._client, this._handler);
+  TargetLocator get switchTo => TargetLocator(this, _client, _handler);
 
   Cookies get cookies => Cookies(_client, _handler);
 
@@ -184,9 +183,9 @@ class WebDriver implements SearchContext {
 
   Timeouts get timeouts => Timeouts(_client, _handler);
 
-  Keyboard get keyboard => Keyboard(this._client, this._handler);
+  Keyboard get keyboard => Keyboard(_client, _handler);
 
-  Mouse get mouse => Mouse(this._client, this._handler);
+  Mouse get mouse => Mouse(_client, _handler);
 
   /// Take a screenshot of the current page as PNG and return it as
   /// base64-encoded string.
@@ -258,26 +257,43 @@ class WebDriver implements SearchContext {
   /// the corresponding DOM element. Likewise, any DOM Elements in the script
   /// result will be converted to WebElements.
   Future<dynamic> execute(String script, List args) => _client.send(
-      _handler.core.buildExecuteRequest(script, args),
-      (response) => _handler.core.parseExecuteResponse(
-          response, (elementId) => getElement(elementId, this, 'javascript')));
+        _handler.core.buildExecuteRequest(script, args),
+        (response) => _handler.core.parseExecuteResponse(
+          response,
+          (elementId) => getElement(elementId, this, 'javascript'),
+        ),
+      );
 
   Future<dynamic> postRequest(String command, [params]) => _client.send(
-      _handler.buildGeneralRequest(HttpMethod.httpPost, command, params),
-      (response) => _handler.parseGeneralResponse(
-          response, (elementId) => getElement(elementId, this)));
+        _handler.buildGeneralRequest(HttpMethod.httpPost, command, params),
+        (response) => _handler.parseGeneralResponse(
+          response,
+          (elementId) => getElement(elementId, this),
+        ),
+      );
 
   Future<dynamic> getRequest(String command) => _client.send(
-      _handler.buildGeneralRequest(HttpMethod.httpGet, command),
-      (response) => _handler.parseGeneralResponse(
-          response, (elementId) => getElement(elementId, this)));
+        _handler.buildGeneralRequest(HttpMethod.httpGet, command),
+        (response) => _handler.parseGeneralResponse(
+          response,
+          (elementId) => getElement(elementId, this),
+        ),
+      );
 
   Future<dynamic> deleteRequest(String command) => _client.send(
-      _handler.buildGeneralRequest(HttpMethod.httpDelete, command),
-      (response) => _handler.parseGeneralResponse(
-          response, (elementId) => getElement(elementId, this)));
+        _handler.buildGeneralRequest(HttpMethod.httpDelete, command),
+        (response) => _handler.parseGeneralResponse(
+          response,
+          (elementId) => getElement(elementId, this),
+        ),
+      );
 
-  WebElement getElement(String elementId, [context, locator, index]) =>
+  WebElement getElement(
+    String elementId, [
+    SearchContext? context,
+    locator,
+    int? index,
+  ]) =>
       WebElement(this, _client, _handler, elementId, context, locator, index);
 
   @override

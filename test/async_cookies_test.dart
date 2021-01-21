@@ -58,7 +58,7 @@ void main() {
           secure: false,
           expiry: _expiryDate));
 
-      bool found = false;
+      var found = false;
       await for (var cookie in driver.cookies.all) {
         if (cookie.name == 'mycookie') {
           found = true;
@@ -85,7 +85,7 @@ void main() {
     test('delete cookie', () async {
       await driver.cookies.add(Cookie('mycookie', 'myvalue'));
       await driver.cookies.delete('mycookie');
-      bool found = false;
+      var found = false;
       await for (var cookie in driver.cookies.all) {
         if (cookie.name == 'mycookie') {
           found = true;

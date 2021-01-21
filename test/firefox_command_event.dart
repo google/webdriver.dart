@@ -12,8 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import 'sync/command_event.dart';
+@Tags(['ff'])
+import 'package:test/test.dart';
 import 'package:webdriver/sync_core.dart';
+
+import 'sync/command_event.dart';
 
 void main() {
   runTests(spec: WebDriverSpec.W3c);

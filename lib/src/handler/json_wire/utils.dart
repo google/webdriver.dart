@@ -11,9 +11,9 @@ const String jsonWireElementStr = 'ELEMENT';
 
 dynamic parseJsonWireResponse(WebDriverResponse response,
     {bool valueOnly = true}) {
-  Map? responseBody;
+  Map<String, dynamic> responseBody;
   try {
-    responseBody = json.decode(response.body!);
+    responseBody = json.decode(response.body!) as Map<String, dynamic>;
   } catch (e) {
     final rawBody = response.body == null || response.body!.isEmpty
         ? '<empty response>'
@@ -27,7 +27,7 @@ dynamic parseJsonWireResponse(WebDriverResponse response,
       (responseBody is Map &&
           responseBody['status'] != null &&
           responseBody['status'] != 0)) {
-    final status = responseBody!['status'] as int?;
+    final status = responseBody['status'] as int?;
     final message = responseBody['value']['message'] as String?;
 
     switch (status) {
@@ -105,7 +105,7 @@ String elementPrefix(String? elementId) =>
 dynamic deserialize(result, dynamic Function(String) createElement) {
   if (result is Map) {
     if (result.containsKey(jsonWireElementStr)) {
-      return createElement(result[jsonWireElementStr]);
+      return createElement(result[jsonWireElementStr] as String);
     } else {
       final newResult = {};
       result.forEach((key, value) {
@@ -128,7 +128,7 @@ dynamic serialize(dynamic obj) {
   if (obj is Map) {
     final newResult = <String, dynamic>{};
     for (final item in obj.entries) {
-      newResult[item.key] = serialize(item.value);
+      newResult[item.key as String] = serialize(item.value);
     }
 
     return newResult;

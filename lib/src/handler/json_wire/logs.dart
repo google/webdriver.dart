@@ -24,7 +24,7 @@ class JsonWireLogsHandler extends LogsHandler {
 
   @override
   List<LogEntry> parseGetLogsResponse(WebDriverResponse response) =>
-      parseJsonWireResponse(response)
-          .map<LogEntry>((e) => LogEntry.fromMap(e))
+      (parseJsonWireResponse(response) as List)
+          .map<LogEntry>((e) => LogEntry.fromMap(e as Map))
           .toList();
 }

@@ -104,9 +104,9 @@ class Window {
   @override
   bool operator ==(other) =>
       other is Window &&
-      other._client == this._client &&
-      other._handler == this._handler &&
-      other.id == this.id;
+      other._client == _client &&
+      other._handler == _handler &&
+      other.id == id;
 
   @override
   String toString() => '$_handler.windows($_client)[$id]';

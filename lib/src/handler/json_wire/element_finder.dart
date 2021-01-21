@@ -10,7 +10,7 @@ class JsonWireElementFinder extends ElementFinder {
 
   @override
   WebDriverRequest buildFindElementsRequest(By by, [String? contextElementId]) {
-    String uri = contextElementId == null
+    var uri = contextElementId == null
         ? 'elements'
         : 'element/$contextElementId/elements';
     return WebDriverRequest.postRequest(uri, _byToJson(by));
@@ -18,7 +18,7 @@ class JsonWireElementFinder extends ElementFinder {
 
   @override
   List<String> parseFindElementsResponse(WebDriverResponse response) {
-    return parseJsonWireResponse(response)
+    return (parseJsonWireResponse(response) as List)
         .map((e) => e[jsonWireElementStr])
         .toList()
         .cast<String>();
@@ -26,7 +26,7 @@ class JsonWireElementFinder extends ElementFinder {
 
   @override
   WebDriverRequest buildFindElementRequest(By by, [String? contextElementId]) {
-    String uri = contextElementId == null
+    var uri = contextElementId == null
         ? 'element'
         : 'element/$contextElementId/element';
     return WebDriverRequest.postRequest(uri, _byToJson(by));
@@ -34,7 +34,8 @@ class JsonWireElementFinder extends ElementFinder {
 
   @override
   String? parseFindActiveElementResponse(WebDriverResponse response) {
-    return parseJsonWireResponse(response)[jsonWireElementStr];
+    return (parseJsonWireResponse(response) as Map)[jsonWireElementStr]
+        as String?;
   }
 
   @override
@@ -44,6 +45,7 @@ class JsonWireElementFinder extends ElementFinder {
 
   @override
   String parseFindElementResponse(WebDriverResponse response) {
-    return (parseJsonWireResponse(response) ?? {})[jsonWireElementStr];
+    return (parseJsonWireResponse(response) ?? {})[jsonWireElementStr]
+        as String;
   }
 }

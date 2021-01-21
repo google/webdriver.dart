@@ -1,8 +1,8 @@
+import 'package:webdriver/src/common/capabilities.dart';
 import 'package:webdriver/src/common/request.dart';
 import 'package:webdriver/src/common/session.dart';
 import 'package:webdriver/src/common/spec.dart';
 import 'package:webdriver/src/common/webdriver_handler.dart';
-import 'package:webdriver/src/common/capabilities.dart';
 import 'package:webdriver/src/handler/json_wire/utils.dart';
 
 class JsonWireSessionHandler extends SessionHandler {
@@ -26,6 +26,9 @@ class JsonWireSessionHandler extends SessionHandler {
       [String? sessionId]) {
     final session = parseJsonWireResponse(response, valueOnly: false);
     return SessionInfo(
-        session['sessionId'], WebDriverSpec.JsonWire, session['value']);
+      session['sessionId'] as String,
+      WebDriverSpec.JsonWire,
+      session['value'],
+    );
   }
 }

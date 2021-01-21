@@ -115,7 +115,7 @@ class WebElement extends common.WebElement implements SearchContext {
         _handler.elementFinder.buildFindElementsRequest(by, id),
         _handler.elementFinder.parseFindElementsResponse);
 
-    int i = 0;
+    var i = 0;
     for (var id in ids) {
       yield driver.getElement(id, this, by, i);
       i++;
@@ -151,14 +151,14 @@ class WebElement extends common.WebElement implements SearchContext {
       _handler.element.parseCssPropertyResponse));
 
   Future<bool> equals(WebElement other) async =>
-      other is WebElement && other.driver == this.driver && other.id == this.id;
+      other is WebElement && other.driver == driver && other.id == id;
 
   @override
   int get hashCode => driver.hashCode * 3 + id.hashCode;
 
   @override
   bool operator ==(other) =>
-      other is WebElement && other.driver == this.driver && other.id == this.id;
+      other is WebElement && other.driver == driver && other.id == id;
 
   @override
   String toString() {

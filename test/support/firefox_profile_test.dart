@@ -198,7 +198,7 @@ void main() {
 }
 
 Archive unpackArchiveData(Map profileData) {
-  var zipArchive = base64.decode(profileData['firefox_profile']);
+  var zipArchive = base64.decode(profileData['firefox_profile'] as String);
   return ZipDecoder().decodeBytes(zipArchive, verify: true);
 }
 

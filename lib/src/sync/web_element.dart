@@ -15,18 +15,18 @@
 import 'dart:math' show Point, Rectangle;
 
 import 'package:webdriver/src/common/request_client.dart';
-import 'package:webdriver/src/common/webdriver_handler.dart';
 import 'package:webdriver/src/common/web_element.dart' as common;
+import 'package:webdriver/src/common/webdriver_handler.dart';
 
 import '../../async_core.dart' as async_core;
 import '../common/by.dart';
 import 'common.dart';
-import 'web_driver.dart';
 
 // ignore: uri_does_not_exist
 import 'common_stub.dart'
 // ignore: uri_does_not_exist
     if (dart.library.io) 'common_io.dart';
+import 'web_driver.dart';
 
 /// WebDriver representation and interactions with an HTML element.
 class WebElement extends common.WebElement implements SearchContext {
@@ -81,7 +81,7 @@ class WebElement extends common.WebElement implements SearchContext {
 
   /// Gets a chain of parent elements, including the element itself.
   List<String> get parents {
-    WebElement p = this;
+    var p = this;
     final result = <String>[];
     while (true) {
       var id = p.id;
@@ -180,7 +180,7 @@ class WebElement extends common.WebElement implements SearchContext {
         _handler.elementFinder.parseFindElementsResponse);
 
     final elements = <WebElement>[];
-    int i = 0;
+    var i = 0;
     for (final id in ids) {
       elements.add(WebElement(driver, _client, _handler, id, this, by, i++));
     }
@@ -205,14 +205,14 @@ class WebElement extends common.WebElement implements SearchContext {
 
   /// Are these two elements the same underlying element in the DOM.
   bool equals(WebElement other) =>
-      other is WebElement && other.driver == this.driver && other.id == this.id;
+      other is WebElement && other.driver == driver && other.id == id;
 
   @override
   int get hashCode => driver.hashCode * 3 + id.hashCode;
 
   @override
   bool operator ==(other) =>
-      other is WebElement && other.driver == this.driver && other.id == this.id;
+      other is WebElement && other.driver == driver && other.id == id;
 
   @override
   String toString() {

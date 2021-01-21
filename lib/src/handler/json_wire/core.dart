@@ -9,14 +9,14 @@ class JsonWireCoreHandler extends CoreHandler {
 
   @override
   String parseCurrentUrlResponse(WebDriverResponse response) =>
-      parseJsonWireResponse(response);
+      parseJsonWireResponse(response) as String;
 
   @override
   WebDriverRequest buildTitleRequest() => WebDriverRequest.getRequest('title');
 
   @override
   String parseTitleResponse(WebDriverResponse response) =>
-      parseJsonWireResponse(response);
+      parseJsonWireResponse(response) as String;
 
   @override
   WebDriverRequest buildPageSourceRequest() =>
@@ -24,7 +24,7 @@ class JsonWireCoreHandler extends CoreHandler {
 
   @override
   String parsePageSourceResponse(WebDriverResponse response) =>
-      parseJsonWireResponse(response);
+      parseJsonWireResponse(response) as String;
 
   @override
   WebDriverRequest buildScreenshotRequest() =>
@@ -32,11 +32,11 @@ class JsonWireCoreHandler extends CoreHandler {
 
   @override
   WebDriverRequest buildElementScreenshotRequest(String elementId) =>
-      new WebDriverRequest.getRequest('${elementPrefix(elementId)}screenshot');
+      WebDriverRequest.getRequest('${elementPrefix(elementId)}screenshot');
 
   @override
   String parseScreenshotResponse(WebDriverResponse response) =>
-      parseJsonWireResponse(response);
+      parseJsonWireResponse(response) as String;
 
   @override
   WebDriverRequest buildExecuteAsyncRequest(String script, List args) =>

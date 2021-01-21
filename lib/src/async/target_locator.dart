@@ -36,7 +36,7 @@ class TargetLocator {
   ///
   ///   Throws [NoSuchFrameException] if the specified frame can't be found.
   Future<void> frame([/* int | WebElement | String */ frame]) async {
-    if (frame == null || frame is int) {
+    if (frame is int?) {
       await _client.send(_handler.frame.buildSwitchByIdRequest(frame),
           _handler.frame.parseSwitchByIdResponse);
     } else if (frame is WebElement) {
