@@ -60,7 +60,7 @@ jobs:
     - name: test
       run: |
         export DISPLAY=:99
-        chromedriver --url-base=/wd/hub &
+        chromedriver --port=4444 --url-base=/wd/hub &
         sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 &
         pub run test -j 1
       if: always() && steps.install.outcome == 'success'
