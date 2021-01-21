@@ -1,4 +1,4 @@
-import 'package:webdriver/src/common/spec.dart';
+import 'spec.dart';
 
 class SessionInfo {
   /// Id of the session.

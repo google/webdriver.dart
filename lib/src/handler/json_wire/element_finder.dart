@@ -1,7 +1,7 @@
-import 'package:webdriver/src/common/by.dart';
-import 'package:webdriver/src/common/request.dart';
-import 'package:webdriver/src/common/webdriver_handler.dart';
-import 'package:webdriver/src/handler/json_wire/utils.dart';
+import '../../common/by.dart';
+import '../../common/request.dart';
+import '../../common/webdriver_handler.dart';
+import 'utils.dart';
 
 class JsonWireElementFinder extends ElementFinder {
   /// Converts [By] instances into JSON params.
@@ -10,40 +10,36 @@ class JsonWireElementFinder extends ElementFinder {
 
   @override
   WebDriverRequest buildFindElementsRequest(By by, [String? contextElementId]) {
-    String uri = contextElementId == null
+    var uri = contextElementId == null
         ? 'elements'
         : 'element/$contextElementId/elements';
     return WebDriverRequest.postRequest(uri, _byToJson(by));
   }
 
   @override
-  List<String> parseFindElementsResponse(WebDriverResponse response) {
-    return parseJsonWireResponse(response)
-        .map((e) => e[jsonWireElementStr])
-        .toList()
-        .cast<String>();
-  }
+  List<String> parseFindElementsResponse(WebDriverResponse response) =>
+      (parseJsonWireResponse(response) as List)
+          .map((e) => e[jsonWireElementStr])
+          .toList()
+          .cast<String>();
 
   @override
   WebDriverRequest buildFindElementRequest(By by, [String? contextElementId]) {
-    String uri = contextElementId == null
+    var uri = contextElementId == null
         ? 'element'
         : 'element/$contextElementId/element';
     return WebDriverRequest.postRequest(uri, _byToJson(by));
   }
 
   @override
-  String? parseFindActiveElementResponse(WebDriverResponse response) {
-    return parseJsonWireResponse(response)[jsonWireElementStr];
-  }
+  String? parseFindActiveElementResponse(WebDriverResponse response) =>
+      (parseJsonWireResponse(response) as Map)[jsonWireElementStr] as String?;
 
   @override
-  WebDriverRequest buildFindActiveElementRequest() {
-    return WebDriverRequest.getRequest('element/active');
-  }
+  WebDriverRequest buildFindActiveElementRequest() =>
+      WebDriverRequest.getRequest('element/active');
 
   @override
-  String parseFindElementResponse(WebDriverResponse response) {
-    return (parseJsonWireResponse(response) ?? {})[jsonWireElementStr];
-  }
+  String parseFindElementResponse(WebDriverResponse response) =>
+      (parseJsonWireResponse(response) ?? {})[jsonWireElementStr] as String;
 }

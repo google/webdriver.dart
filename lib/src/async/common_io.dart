@@ -1,6 +1,6 @@
-import 'package:webdriver/src/async/web_driver.dart';
-import 'package:webdriver/src/request/sync_http_request_client.dart';
-import 'package:webdriver/sync_core.dart' as sync_core;
+import '../../sync_core.dart' as sync_core;
+import '../request/sync_http_request_client.dart';
+import 'web_driver.dart';
 
 /// Returns a [sync_core.WebDriver] with the same URI + session ID.
 sync_core.WebDriver createSyncWebDriver(WebDriver driver) =>

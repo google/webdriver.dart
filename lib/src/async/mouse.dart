@@ -14,12 +14,12 @@
 
 import 'dart:async';
 
-import 'package:webdriver/src/async/web_element.dart';
-import 'package:webdriver/src/common/mouse.dart';
-import 'package:webdriver/src/common/request_client.dart';
-import 'package:webdriver/src/common/webdriver_handler.dart';
-import 'package:webdriver/src/handler/json_wire_handler.dart';
-import 'package:webdriver/src/handler/w3c_handler.dart';
+import '../common/mouse.dart';
+import '../common/request_client.dart';
+import '../common/webdriver_handler.dart';
+import '../handler/json_wire_handler.dart';
+import '../handler/w3c_handler.dart';
+import 'web_element.dart';
 
 class Mouse {
   final AsyncRequestClient _client;

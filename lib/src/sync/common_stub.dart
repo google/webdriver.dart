@@ -1,4 +1,4 @@
-import 'package:webdriver/async_core.dart' as async_core;
+import '../../async_core.dart' as async_core;
 
 import 'web_driver.dart';
 import 'web_element.dart';

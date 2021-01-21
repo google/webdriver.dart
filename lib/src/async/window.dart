@@ -15,8 +15,8 @@
 import 'dart:async';
 import 'dart:math';
 
-import 'package:webdriver/src/common/request_client.dart';
-import 'package:webdriver/src/common/webdriver_handler.dart';
+import '../common/request_client.dart';
+import '../common/webdriver_handler.dart';
 
 class Window {
   final AsyncRequestClient _client;
@@ -104,9 +104,9 @@ class Window {
   @override
   bool operator ==(other) =>
       other is Window &&
-      other._client == this._client &&
-      other._handler == this._handler &&
-      other.id == this.id;
+      other._client == _client &&
+      other._handler == _handler &&
+      other.id == id;
 
   @override
   String toString() => '$_handler.windows($_client)[$id]';

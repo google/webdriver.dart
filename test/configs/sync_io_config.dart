@@ -51,8 +51,8 @@ Future<void> createTestServerAndGoToTestPage(WebDriver driver) async {
   final server = await createLocalServer();
   server.listen((request) {
     if (request.method == 'GET' && request.uri.path.endsWith('.html')) {
-      String testPagePath = '$testHomePath${request.uri.path}';
-      File file = File(testPagePath);
+      var testPagePath = '$testHomePath${request.uri.path}';
+      var file = File(testPagePath);
       if (file.existsSync()) {
         request.response
           ..statusCode = HttpStatus.ok

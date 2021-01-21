@@ -14,9 +14,9 @@
 
 import 'dart:math';
 
-import 'package:webdriver/src/common/request.dart';
-import 'package:webdriver/src/common/webdriver_handler.dart';
-import 'package:webdriver/src/handler/w3c/utils.dart';
+import '../../common/request.dart';
+import '../../common/webdriver_handler.dart';
+import 'utils.dart';
 
 class W3cWindowHandler extends WindowHandler {
   @override
@@ -25,7 +25,7 @@ class W3cWindowHandler extends WindowHandler {
 
   @override
   List<String> parseGetWindowsResponse(WebDriverResponse response) =>
-      parseW3cResponse(response).cast<String>();
+      (parseW3cResponse(response) as List).cast<String>();
 
   @override
   WebDriverRequest buildGetActiveWindowRequest() =>
@@ -33,7 +33,7 @@ class W3cWindowHandler extends WindowHandler {
 
   @override
   String parseGetActiveWindowResponse(WebDriverResponse response) =>
-      parseW3cResponse(response);
+      parseW3cResponse(response) as String;
 
   @override
   WebDriverRequest buildSetActiveRequest(String windowId) =>
@@ -67,14 +67,20 @@ class W3cWindowHandler extends WindowHandler {
   @override
   Rectangle<int> parseRectResponse(WebDriverResponse response) {
     final rect = parseW3cResponse(response);
-    return Rectangle(rect['x'].toInt(), rect['y'].toInt(),
-        rect['width'].toInt(), rect['height'].toInt());
+    return Rectangle(
+      (rect['x'] as num).toInt(),
+      (rect['y'] as num).toInt(),
+      (rect['width'] as num).toInt(),
+      (rect['height'] as num).toInt(),
+    );
   }
 
   @override
   WebDriverRequest buildSetLocationRequest(Point<int> location) =>
-      WebDriverRequest.postRequest(
-          'window/rect', {'x': location.x, 'y': location.y});
+      WebDriverRequest.postRequest('window/rect', {
+        'x': location.x,
+        'y': location.y,
+      });
 
   @override
   void parseSetLocationResponse(WebDriverResponse response) {
@@ -143,6 +149,6 @@ class W3cWindowHandler extends WindowHandler {
   @override
   Rectangle<int> parseInnerSizeResponse(WebDriverResponse response) {
     final size = parseW3cResponse(response);
-    return Rectangle(0, 0, size['width'], size['height']);
+    return Rectangle(0, 0, size['width'] as int, size['height'] as int);
   }
 }

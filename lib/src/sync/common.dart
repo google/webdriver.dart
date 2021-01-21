@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import 'package:webdriver/async_core.dart' as async_core;
-import 'package:webdriver/src/common/by.dart';
+import '../../async_core.dart' as async_core;
+import '../common/by.dart';
 
 import 'web_driver.dart';
 import 'web_element.dart';

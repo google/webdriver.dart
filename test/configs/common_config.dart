@@ -54,7 +54,7 @@ Map<String, dynamic> getCapabilities(WebDriverSpec spec) {
       var capabilities = Capabilities.chrome;
       Map env = Platform.environment;
 
-      Map chromeOptions = {};
+      var chromeOptions = {};
 
       if (env['CHROMEDRIVER_BINARY'] != null) {
         chromeOptions['binary'] = env['CHROMEDRIVER_BINARY'];

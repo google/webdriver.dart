@@ -14,10 +14,10 @@
 
 import 'dart:async';
 
-import 'package:webdriver/src/common/exception.dart';
-import 'package:webdriver/src/common/log.dart';
-import 'package:webdriver/src/common/request_client.dart';
-import 'package:webdriver/src/common/webdriver_handler.dart';
+import '../common/exception.dart';
+import '../common/log.dart';
+import '../common/request_client.dart';
+import '../common/webdriver_handler.dart';
 
 class Logs {
   final AsyncRequestClient _client;

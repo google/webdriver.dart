@@ -22,12 +22,12 @@ import '../configs/sync_io_config.dart' as config;
 
 void main() {
   group('Spec inference', () {
-    WebDriver? driver;
+    late WebDriver driver;
 
     test('chrome works', () async {
       driver = config.createTestDriver(spec: WebDriverSpec.W3c);
-      await config.createTestServerAndGoToTestPage(driver!);
-      final button = driver!.findElement(const By.tagName('button'));
+      await config.createTestServerAndGoToTestPage(driver);
+      final button = driver.findElement(const By.tagName('button'));
       try {
         button.findElement(const By.tagName('tr'));
         throw 'Expected NoSuchElementException';
@@ -35,12 +35,12 @@ void main() {
         expect(e, const TypeMatcher<NoSuchElementException>());
         expect(e.toString(), contains('Unable to locate element'));
       }
-    });
+    }, tags: ['ff']);
 
     test('firefox work', () async {
       driver = config.createTestDriver(spec: WebDriverSpec.JsonWire);
-      await config.createTestServerAndGoToTestPage(driver!);
-      final button = driver!.findElement(const By.tagName('button'));
+      await config.createTestServerAndGoToTestPage(driver);
+      final button = driver.findElement(const By.tagName('button'));
       try {
         button.findElement(const By.tagName('tr'));
         throw 'Expected W3cWebDriverException';

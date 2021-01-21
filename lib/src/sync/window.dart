@@ -14,8 +14,8 @@
 
 import 'dart:math' show Point, Rectangle;
 
-import 'package:webdriver/src/common/request_client.dart';
-import 'package:webdriver/src/common/webdriver_handler.dart';
+import '../common/request_client.dart';
+import '../common/webdriver_handler.dart';
 
 /// Handle to window.
 ///
@@ -65,7 +65,7 @@ class Window {
   ///
   /// TODO(jingbian): Remove this, prefer setter.
   void setLocation(Point<int> point) {
-    this.location = point;
+    location = point;
   }
 
   /// Sets the window location.
@@ -127,9 +127,9 @@ class Window {
   @override
   bool operator ==(other) =>
       other is Window &&
-      other._client == this._client &&
-      other._handler == this._handler &&
-      other.id == this.id;
+      other._client == _client &&
+      other._handler == _handler &&
+      other.id == id;
 
   @override
   String toString() => '$_handler.windows($_client)[$id]';

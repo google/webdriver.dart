@@ -29,24 +29,24 @@ class WebDriverRequest {
   WebDriverRequest(this.method, this.uri, this.body);
 
   WebDriverRequest.postRequest(this.uri, [params])
-      : this.method = HttpMethod.httpPost,
-        this.body = params == null ? '{}' : json.encode(params);
+      : method = HttpMethod.httpPost,
+        body = params == null ? '{}' : json.encode(params);
 
   WebDriverRequest.getRequest(this.uri)
-      : this.method = HttpMethod.httpGet,
-        this.body = null;
+      : method = HttpMethod.httpGet,
+        body = null;
 
   WebDriverRequest.deleteRequest(this.uri)
-      : this.method = HttpMethod.httpDelete,
-        this.body = null;
+      : method = HttpMethod.httpDelete,
+        body = null;
 
   /// Represents request that has no http request to make.
   ///
   /// Useful when the endpoint is not supported but can be inferred in some
   /// degree locally.
   WebDriverRequest.nullRequest(this.body)
-      : this.method = null,
-        this.uri = null;
+      : method = null,
+        uri = null;
 
   @override
   String toString() => '${method!.name} $uri: $body';

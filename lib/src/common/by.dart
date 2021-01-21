@@ -61,5 +61,5 @@ class By {
 
   @override
   bool operator ==(other) =>
-      other is By && other.using == this.using && other.value == this.value;
+      other is By && other.using == using && other.value == value;
 }

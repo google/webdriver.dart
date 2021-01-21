@@ -1,6 +1,6 @@
-import 'package:webdriver/src/common/request.dart';
-import 'package:webdriver/src/common/webdriver_handler.dart';
-import 'package:webdriver/src/handler/w3c/utils.dart';
+import '../../common/request.dart';
+import '../../common/webdriver_handler.dart';
+import 'utils.dart';
 
 class W3cCoreHandler extends CoreHandler {
   @override
@@ -9,14 +9,14 @@ class W3cCoreHandler extends CoreHandler {
 
   @override
   String parseCurrentUrlResponse(WebDriverResponse response) =>
-      parseW3cResponse(response);
+      parseW3cResponse(response) as String;
 
   @override
   WebDriverRequest buildTitleRequest() => WebDriverRequest.getRequest('title');
 
   @override
   String parseTitleResponse(WebDriverResponse response) =>
-      parseW3cResponse(response);
+      parseW3cResponse(response) as String;
 
   @override
   WebDriverRequest buildPageSourceRequest() =>
@@ -24,7 +24,7 @@ class W3cCoreHandler extends CoreHandler {
 
   @override
   String parsePageSourceResponse(WebDriverResponse response) =>
-      parseW3cResponse(response);
+      parseW3cResponse(response) as String;
 
   @override
   WebDriverRequest buildScreenshotRequest() =>
@@ -32,11 +32,11 @@ class W3cCoreHandler extends CoreHandler {
 
   @override
   WebDriverRequest buildElementScreenshotRequest(String elementId) =>
-      new WebDriverRequest.getRequest('${elementPrefix(elementId)}screenshot');
+      WebDriverRequest.getRequest('${elementPrefix(elementId)}screenshot');
 
   @override
   String parseScreenshotResponse(WebDriverResponse response) =>
-      parseW3cResponse(response);
+      parseW3cResponse(response) as String;
 
   @override
   WebDriverRequest buildExecuteAsyncRequest(String script, List args) =>

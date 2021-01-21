@@ -16,10 +16,10 @@ library webdriver.html;
 
 import 'dart:async' show Future;
 
-import 'package:webdriver/async_core.dart' as core
+import 'async_core.dart' as core
     show createDriver, fromExistingSession, fromExistingSessionSync, WebDriver;
-import 'package:webdriver/src/common/spec.dart';
-import 'package:webdriver/src/request/async_xhr_request_client.dart';
+import 'src/common/spec.dart';
+import 'src/request/async_xhr_request_client.dart';
 
 export 'package:webdriver/async_core.dart'
     hide createDriver, fromExistingSession, fromExistingSessionSync;

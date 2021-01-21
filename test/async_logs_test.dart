@@ -25,7 +25,7 @@ void main() {
     late WebDriver driver;
 
     setUp(() async {
-      Map<String, dynamic> capabilities = {
+      var capabilities = <String, dynamic>{
         // ignore: deprecated_member_use_from_same_package
         Capabilities.loggingPrefs: {LogType.performance: LogLevel.info}
       };
@@ -36,7 +36,7 @@ void main() {
     });
 
     test('get logs', () async {
-      List<LogEntry> logs = await driver.logs.get(LogType.performance).toList();
+      var logs = await driver.logs.get(LogType.performance).toList();
       if (driver.capabilities['browserName'] == 'firefox') {
         expect(logs, isEmpty);
         return;

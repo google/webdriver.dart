@@ -15,12 +15,12 @@
 import 'dart:async';
 import 'dart:math';
 
-import 'package:webdriver/src/async/common.dart';
-import 'package:webdriver/src/async/web_driver.dart';
-import 'package:webdriver/src/common/by.dart';
-import 'package:webdriver/src/common/request_client.dart';
-import 'package:webdriver/src/common/web_element.dart' as common;
-import 'package:webdriver/src/common/webdriver_handler.dart';
+import '../common/by.dart';
+import '../common/request_client.dart';
+import '../common/web_element.dart' as common;
+import '../common/webdriver_handler.dart';
+import 'common.dart';
+import 'web_driver.dart';
 
 class WebElement extends common.WebElement implements SearchContext {
   @override
@@ -115,7 +115,7 @@ class WebElement extends common.WebElement implements SearchContext {
         _handler.elementFinder.buildFindElementsRequest(by, id),
         _handler.elementFinder.parseFindElementsResponse);
 
-    int i = 0;
+    var i = 0;
     for (var id in ids) {
       yield driver.getElement(id, this, by, i);
       i++;
@@ -151,14 +151,14 @@ class WebElement extends common.WebElement implements SearchContext {
       _handler.element.parseCssPropertyResponse));
 
   Future<bool> equals(WebElement other) async =>
-      other is WebElement && other.driver == this.driver && other.id == this.id;
+      other is WebElement && other.driver == driver && other.id == id;
 
   @override
   int get hashCode => driver.hashCode * 3 + id.hashCode;
 
   @override
   bool operator ==(other) =>
-      other is WebElement && other.driver == this.driver && other.id == this.id;
+      other is WebElement && other.driver == driver && other.id == id;
 
   @override
   String toString() {

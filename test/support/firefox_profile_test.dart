@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+@Tags(['ff'])
 @TestOn('vm')
 library webdriver.support.firefox_profile_test;
 
@@ -141,7 +142,8 @@ void main() {
 
       var prefs = FirefoxProfile.loadPrefsFile(MockFile(
         String.fromCharCodes(
-          archive.files.firstWhere((f) => f.name == 'user.js').content,
+          archive.files.firstWhere((f) => f.name == 'user.js').content
+              as List<int>,
         ),
       ));
       expect(
@@ -180,7 +182,8 @@ void main() {
       var prefs = FirefoxProfile.loadPrefsFile(
         MockFile(
           String.fromCharCodes(
-            archive.files.firstWhere((f) => f.name == 'user.js').content,
+            archive.files.firstWhere((f) => f.name == 'user.js').content
+                as List<int>,
           ),
         ),
       );
@@ -197,7 +200,7 @@ void main() {
 }
 
 Archive unpackArchiveData(Map profileData) {
-  var zipArchive = base64.decode(profileData['firefox_profile']);
+  var zipArchive = base64.decode(profileData['firefox_profile'] as String);
   return ZipDecoder().decodeBytes(zipArchive, verify: true);
 }
 

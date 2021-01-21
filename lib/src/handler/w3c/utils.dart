@@ -1,18 +1,17 @@
 import 'dart:convert';
 
-import 'package:webdriver/src/common/web_element.dart';
-
 import '../../common/exception.dart';
 import '../../common/request.dart';
+import '../../common/web_element.dart';
 
 // Source: https://www.w3.org/TR/webdriver/#elements
 const String w3cElementStr = 'element-6066-11e4-a52e-4f735466cecf';
 
 dynamic parseW3cResponse(WebDriverResponse response) {
-  final int statusCode = response.statusCode!;
-  Map? responseBody;
+  final statusCode = response.statusCode!;
+  Map responseBody;
   try {
-    responseBody = json.decode(response.body!);
+    responseBody = json.decode(response.body!) as Map;
   } catch (e) {
     final rawBody = response.body == null || response.body!.isEmpty
         ? '<empty response>'
@@ -22,8 +21,8 @@ dynamic parseW3cResponse(WebDriverResponse response) {
   }
 
   if (statusCode < 200 || statusCode > 299) {
-    final Map value = responseBody!['value'];
-    final String? message = value['message'];
+    final value = responseBody['value'] as Map;
+    final message = value['message'] as String?;
 
     // See https://www.w3.org/TR/webdriver/#handling-errors
     switch (value['error']) {
@@ -110,7 +109,7 @@ dynamic parseW3cResponse(WebDriverResponse response) {
     }
   }
 
-  return responseBody == null ? null : responseBody['value'];
+  return responseBody['value'];
 }
 
 /// Prefix to represent element in webdriver uri.
@@ -122,7 +121,7 @@ String elementPrefix(String? elementId) =>
 dynamic deserialize(result, dynamic Function(String) createElement) {
   if (result is Map) {
     if (result.containsKey(w3cElementStr)) {
-      return createElement(result[w3cElementStr]);
+      return createElement(result[w3cElementStr] as String);
     } else {
       final newResult = {};
       result.forEach((key, value) {
@@ -145,7 +144,7 @@ dynamic serialize(dynamic obj) {
   if (obj is Map) {
     final newResult = <String, dynamic>{};
     for (final item in obj.entries) {
-      newResult[item.key] = serialize(item.value);
+      newResult[item.key as String] = serialize(item.value);
     }
 
     return newResult;

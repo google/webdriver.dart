@@ -1,8 +1,8 @@
-import 'package:webdriver/src/common/exception.dart';
-import 'package:webdriver/src/common/mouse.dart';
-import 'package:webdriver/src/common/request.dart';
-import 'package:webdriver/src/common/webdriver_handler.dart';
-import 'package:webdriver/src/handler/json_wire/utils.dart';
+import '../../common/exception.dart';
+import '../../common/mouse.dart';
+import '../../common/request.dart';
+import '../../common/webdriver_handler.dart';
+import 'utils.dart';
 
 class JsonWireMouseHandler extends MouseHandler {
   @override

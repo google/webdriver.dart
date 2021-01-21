@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:html';
 
-import 'package:webdriver/support/async.dart';
+import '../../support/async.dart';
 
 import '../common/request.dart';
 import '../common/request_client.dart';
@@ -42,7 +42,10 @@ class AsyncXhrRequestClient extends AsyncRequestClient {
     }
 
     return WebDriverResponse(
-        httpRequest.status, httpRequest.statusText, httpRequest.response);
+      httpRequest.status,
+      httpRequest.statusText,
+      httpRequest.response as String?,
+    );
   }
 
   @override

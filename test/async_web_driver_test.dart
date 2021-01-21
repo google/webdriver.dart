@@ -26,7 +26,7 @@ void main() {
   group('WebDriver', () {
     group('create', () {
       test('default', () async {
-        WebDriver driver = await config.createTestDriver();
+        var driver = await config.createTestDriver();
         await config.createTestServerAndGoToTestPage(driver);
         var element = await driver.findElement(const By.tagName('button'));
         expect(await element.name, 'button');
@@ -60,7 +60,9 @@ void main() {
         try {
           await driver.findElement(const By.id('non-existent-id'));
           throw 'expected NoSuchElementException';
-        } on NoSuchElementException {}
+        } on NoSuchElementException {
+          // noop
+        }
       });
 
       test('findElements -- 1 found', () async {
@@ -89,7 +91,7 @@ void main() {
       });
 
       test('close/windows', () async {
-        int numHandles = (await driver.windows.toList()).length;
+        var numHandles = (await driver.windows.toList()).length;
         await (await driver.findElement(const By.partialLinkText('Open copy')))
             .click();
         expect(await driver.windows.toList(), hasLength(numHandles + 1));
@@ -98,7 +100,7 @@ void main() {
       });
 
       test('window', () async {
-        Window orig = await driver.window;
+        var orig = await driver.window;
         Window? next;
 
         await (await driver.findElement(const By.partialLinkText('Open copy')))
@@ -131,9 +133,8 @@ void main() {
       });
 
       test('execute', () async {
-        WebElement button =
-            await driver.findElement(const By.tagName('button'));
-        String script = '''
+        var button = await driver.findElement(const By.tagName('button'));
+        var script = '''
             arguments[1].textContent = arguments[0];
             return arguments[1];''';
         var e = await driver.execute(script, ['new text', button]);
@@ -141,9 +142,8 @@ void main() {
       });
 
       test('executeAsync', () async {
-        WebElement button =
-            await driver.findElement(const By.tagName('button'));
-        String script = '''
+        var button = await driver.findElement(const By.tagName('button'));
+        var script = '''
             arguments[1].textContent = arguments[0];
             arguments[2](arguments[1]);''';
         var e = await driver.executeAsync(script, ['new text', button]);
@@ -184,13 +184,11 @@ void main() {
       });
 
       test('future based event listeners work with script timeouts', () async {
-        driver.addEventListener((WebDriverCommandEvent e) async {
-          return await Future.delayed(
-              const Duration(milliseconds: 1000), (() {}));
-        });
+        driver.addEventListener((WebDriverCommandEvent e) async =>
+            await Future.delayed(const Duration(milliseconds: 1000), (() {})));
 
         try {
-          driver.timeouts.setScriptTimeout(const Duration(seconds: 1));
+          await driver.timeouts.setScriptTimeout(const Duration(seconds: 1));
           await driver.executeAsync('', []);
           fail('Did not throw timeout as expected');
         } catch (e) {
@@ -200,20 +198,19 @@ void main() {
 
       test('future based event listeners ordered appropriately', () async {
         var eventList = <int>[];
-        int millisDelay = 2000;
-        int current = 0;
-        driver.addEventListener((WebDriverCommandEvent e) async {
-          return await Future.delayed(Duration(milliseconds: millisDelay), (() {
-            eventList.add(current++);
-            millisDelay = (millisDelay / 2).round();
-          }));
-        });
+        var millisDelay = 2000;
+        var current = 0;
+        driver.addEventListener((WebDriverCommandEvent e) async =>
+            await Future.delayed(Duration(milliseconds: millisDelay), (() {
+              eventList.add(current++);
+              millisDelay = (millisDelay / 2).round();
+            })));
 
-        for (int i = 0; i < 10; i++) {
+        for (var i = 0; i < 10; i++) {
           await driver.title; // GET request.
         }
         expect(eventList, hasLength(10));
-        for (int i = 0; i < 10; i++) {
+        for (var i = 0; i < 10; i++) {
           expect(eventList[i], i);
         }
       });
