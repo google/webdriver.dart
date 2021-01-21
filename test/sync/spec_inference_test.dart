@@ -48,6 +48,6 @@ void main() {
         expect(e, const TypeMatcher<NoSuchElementException>());
         expect(e.toString(), contains('Unable to locate element'));
       }
-    });
+    }, tags: ['ff']);
   }, timeout: const Timeout(Duration(minutes: 2)));
 }
