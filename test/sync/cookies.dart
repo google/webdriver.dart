@@ -31,10 +31,6 @@ void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
       driver.get('http://www.google.com/ncr');
     });
 
-    tearDown(() {
-      driver.quit();
-    });
-
     test('add simple cookie and get', () {
       driver.cookies.add(Cookie('mycookie', 'myvalue'));
 

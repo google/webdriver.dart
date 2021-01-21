@@ -15,8 +15,8 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:matcher/matcher.dart';
 import 'package:path/path.dart' as path;
+import 'package:test/test.dart';
 import 'package:webdriver/sync_core.dart'
     show WebDriver, WebDriverSpec, WebElement;
 import 'package:webdriver/sync_io.dart' show createDriver;
@@ -27,19 +27,27 @@ export 'common_config.dart';
 
 final Matcher isWebElement = const TypeMatcher<WebElement>();
 
-WebDriver createTestDriver(
-    {Map<String, dynamic>? additionalCapabilities,
-    WebDriverSpec spec = defaultSpec}) {
+WebDriver createTestDriver({
+  Map<String, dynamic>? additionalCapabilities,
+  WebDriverSpec spec = defaultSpec,
+}) {
   final capabilities = getCapabilities(spec);
   if (additionalCapabilities != null) {
     capabilities.addAll(additionalCapabilities);
   }
 
-  return createDriver(
-      desired: capabilities, uri: getWebDriverUri(spec), spec: spec);
+  final driver = createDriver(
+    desired: capabilities,
+    uri: getWebDriverUri(spec),
+    spec: spec,
+  );
+
+  addTearDown(driver.quit);
+
+  return driver;
 }
 
-Future<HttpServer> createTestServerAndGoToTestPage(WebDriver driver) async {
+Future<void> createTestServerAndGoToTestPage(WebDriver driver) async {
   final server = await createLocalServer();
   server.listen((request) {
     if (request.method == 'GET' && request.uri.path.endsWith('.html')) {
@@ -63,10 +71,13 @@ Future<HttpServer> createTestServerAndGoToTestPage(WebDriver driver) async {
   });
 
   // TODO(b/140553567): Use sync driver when we have a separate server.
-  await driver.asyncDriver
-      .get('http://$testHostname:${server.port}/test_page.html');
+  await driver.asyncDriver.get(
+    'http://$testHostname:${server.port}/test_page.html',
+  );
 
-  return server;
+  addTearDown(() async {
+    await server.close(force: true);
+  });
 }
 
 Uri get testPagePath => path.toUri(path.join(testHomePath, 'test_page.html'));

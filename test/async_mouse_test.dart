@@ -16,7 +16,6 @@
 library webdriver.mouse_test;
 
 import 'dart:async';
-import 'dart:io';
 
 import 'package:test/test.dart';
 import 'package:webdriver/async_core.dart';
@@ -27,7 +26,6 @@ void main() {
   group('Mouse', () {
     late WebDriver driver;
     late WebElement button;
-    late HttpServer server;
 
     Future<bool> hasAlert() async {
       try {
@@ -45,13 +43,9 @@ void main() {
 
     setUp(() async {
       driver = await config.createTestDriver();
-      server = await config.createTestServerAndGoToTestPage(driver);
-      button = await driver.findElement(const By.tagName('button'));
-    });
+      await config.createTestServerAndGoToTestPage(driver);
 
-    tearDown(() async {
-      await driver.quit();
-      await server.close(force: true);
+      button = await driver.findElement(const By.tagName('button'));
     });
 
     test('moveTo element/click', () async {

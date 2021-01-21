@@ -32,10 +32,6 @@ void main() {
       driver = await config.createTestDriver();
     });
 
-    tearDown(() async {
-      await driver.quit();
-    });
-
     test('size', () async {
       var window = await driver.window;
       var size = const Rectangle<int>(0, 0, 600, 400);

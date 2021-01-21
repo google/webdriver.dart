@@ -15,8 +15,6 @@
 @TestOn('vm')
 library webdriver.web_element_test;
 
-import 'dart:io';
-
 import 'package:test/test.dart';
 import 'package:webdriver/async_core.dart';
 
@@ -34,11 +32,10 @@ void main() {
     late WebElement disabled;
     late WebElement invisible;
     late WebElement inner;
-    late HttpServer server;
 
     setUp(() async {
       driver = await config.createTestDriver();
-      server = await config.createTestServerAndGoToTestPage(driver);
+      await config.createTestServerAndGoToTestPage(driver);
       table = await driver.findElement(const By.tagName('table'));
       button = await driver.findElement(const By.tagName('button'));
       form = await driver.findElement(const By.tagName('form'));
@@ -52,11 +49,6 @@ void main() {
           .findElement(const By.cssSelector('input[type=password]'));
       invisible = await driver.findElement(const By.id('invisible-div'));
       inner = await driver.findElement(const By.id('inner-div'));
-    });
-
-    tearDown(() async {
-      await driver.quit();
-      await server.close(force: true);
     });
 
     test('click', () async {

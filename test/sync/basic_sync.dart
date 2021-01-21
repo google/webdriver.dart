@@ -27,10 +27,6 @@ void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
       driver = config.createTestDriver(spec: spec);
     });
 
-    tearDown(() {
-      driver.quit();
-    });
-
     test('can do basic post', () {
       driver.get(config.testPagePath); // This is POST to WebDriver.
     });

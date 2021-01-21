@@ -14,8 +14,6 @@
 
 library webdriver.support.async_test;
 
-import 'dart:io';
-
 import 'package:test/test.dart';
 import 'package:webdriver/async_core.dart' as async_core;
 import 'package:webdriver/sync_io.dart';
@@ -27,19 +25,13 @@ void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
   group('Sync-async interop', () {
     late WebDriver driver;
     async_core.WebDriver asyncDriver;
-    late HttpServer server;
 
     setUp(() async {
       driver = config.createTestDriver(spec: spec);
 
       asyncDriver = driver.asyncDriver;
       expect(asyncDriver, const TypeMatcher<async_core.WebDriver>());
-      server = await async_config.createTestServerAndGoToTestPage(asyncDriver);
-    });
-
-    tearDown(() async {
-      driver.quit();
-      await server.close(force: true);
+      await async_config.createTestServerAndGoToTestPage(asyncDriver);
     });
 
     test('sync to async driver works', () async {

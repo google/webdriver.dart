@@ -27,7 +27,6 @@ void main() {
     late WebDriver driver;
     late WebElement textInput;
     String ctrlCmdKey = '';
-    late HttpServer server;
 
     setUp(() async {
       if (Platform.isMacOS) {
@@ -37,15 +36,11 @@ void main() {
       }
 
       driver = await config.createTestDriver();
-      server = await config.createTestServerAndGoToTestPage(driver);
+      await config.createTestServerAndGoToTestPage(driver);
+
       textInput =
           await driver.findElement(const By.cssSelector('input[type=text]'));
       await textInput.click();
-    });
-
-    tearDown(() async {
-      await driver.quit();
-      await server.close(force: true);
     });
 
     test('sendKeys -- once', () async {

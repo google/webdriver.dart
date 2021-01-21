@@ -31,10 +31,6 @@ void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
       driver = config.createTestDriver(spec: spec);
     });
 
-    tearDown(() {
-      driver.quit();
-    });
-
     test('size', () {
       var window = driver.window;
       var windowRect = const Rectangle<int>(0, 0, 600, 400);
