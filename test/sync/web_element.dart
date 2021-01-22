@@ -228,5 +228,9 @@ void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
           'HTML:\n'
           '<input type="text">');
     });
+
+    test('parents', () {
+      expect(inner.parents, hasLength(4));
+    });
   }, timeout: const Timeout(Duration(minutes: 2)));
 }

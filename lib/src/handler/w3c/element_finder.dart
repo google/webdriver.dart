@@ -65,6 +65,6 @@ class W3cElementFinder extends ElementFinder {
       WebDriverRequest.getRequest('element/active');
 
   @override
-  String parseFindElementResponse(WebDriverResponse response) =>
-      (parseW3cResponse(response) ?? {})[w3cElementStr] as String;
+  String? parseFindElementResponseCore(WebDriverResponse response) =>
+      (parseW3cResponse(response) ?? {})[w3cElementStr] as String?;
 }
