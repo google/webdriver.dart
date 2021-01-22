@@ -219,8 +219,13 @@ abstract class ElementFinder {
   /// Builds request for finding a single element.
   WebDriverRequest buildFindElementRequest(By by, [String? contextId]);
 
+  /// Parses response got for finding element to get the element id or `null`
+  /// if the element does not exist.
+  String? parseFindElementResponseCore(WebDriverResponse response);
+
   /// Parses response got for finding element to get the element id.
-  String parseFindElementResponse(WebDriverResponse response);
+  String parseFindElementResponse(WebDriverResponse response) =>
+      parseFindElementResponseCore(response)!;
 
   /// Builds request for finding the current active element.
   WebDriverRequest buildFindActiveElementRequest();
