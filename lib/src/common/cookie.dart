@@ -32,21 +32,31 @@ class Cookie {
   /// (Optional) When the cookie expires.
   final DateTime? expiry;
 
-  Cookie(this.name, this.value,
-      {this.path, this.domain, this.secure, this.expiry});
+  Cookie(
+    this.name,
+    this.value, {
+    this.path,
+    this.domain,
+    this.secure,
+    this.expiry,
+  });
 
   factory Cookie.fromJson(Map<String, dynamic> json) {
     DateTime? expiry;
     if (json['expiry'] is num) {
       expiry = DateTime.fromMillisecondsSinceEpoch(
-          json['expiry'].toInt() * 1000,
-          isUtc: true);
+        (json['expiry'] as num).toInt() * 1000,
+        isUtc: true,
+      );
     }
-    return Cookie(json['name'], json['value'],
-        path: json['path'],
-        domain: json['domain'],
-        secure: json['secure'],
-        expiry: expiry);
+    return Cookie(
+      json['name'] as String?,
+      json['value'] as String?,
+      path: json['path'] as String?,
+      domain: json['domain'] as String?,
+      secure: json['secure'] as bool?,
+      expiry: expiry,
+    );
   }
 
   Map<String, dynamic> toJson() {

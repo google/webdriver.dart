@@ -1,21 +1,21 @@
 import 'dart:convert';
 
-import 'package:webdriver/src/common/request.dart';
-import 'package:webdriver/src/common/webdriver_handler.dart';
-import 'package:webdriver/src/handler/json_wire/alert.dart';
-import 'package:webdriver/src/handler/json_wire/cookies.dart';
-import 'package:webdriver/src/handler/json_wire/core.dart';
-import 'package:webdriver/src/handler/json_wire/element.dart';
-import 'package:webdriver/src/handler/json_wire/element_finder.dart';
-import 'package:webdriver/src/handler/json_wire/frame.dart';
-import 'package:webdriver/src/handler/json_wire/keyboard.dart';
-import 'package:webdriver/src/handler/json_wire/logs.dart';
-import 'package:webdriver/src/handler/json_wire/mouse.dart';
-import 'package:webdriver/src/handler/json_wire/navigation.dart';
-import 'package:webdriver/src/handler/json_wire/session.dart';
-import 'package:webdriver/src/handler/json_wire/timeouts.dart';
-import 'package:webdriver/src/handler/json_wire/utils.dart';
-import 'package:webdriver/src/handler/json_wire/window.dart';
+import '../common/request.dart';
+import '../common/webdriver_handler.dart';
+import 'json_wire/alert.dart';
+import 'json_wire/cookies.dart';
+import 'json_wire/core.dart';
+import 'json_wire/element.dart';
+import 'json_wire/element_finder.dart';
+import 'json_wire/frame.dart';
+import 'json_wire/keyboard.dart';
+import 'json_wire/logs.dart';
+import 'json_wire/mouse.dart';
+import 'json_wire/navigation.dart';
+import 'json_wire/session.dart';
+import 'json_wire/timeouts.dart';
+import 'json_wire/utils.dart';
+import 'json_wire/window.dart';
 
 class JsonWireWebDriverHandler extends WebDriverHandler {
   @override

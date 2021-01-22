@@ -283,18 +283,27 @@ WebDriverException getExceptionFromJsonWireResponse(
 }
 
 /// Temporary method to emulate the original w3c exception parsing logic.
-WebDriverException getExceptionFromW3cResponse(
-    {int? httpStatusCode, String? httpReasonPhrase, dynamic jsonResp}) {
+WebDriverException getExceptionFromW3cResponse({
+  int? httpStatusCode,
+  String? httpReasonPhrase,
+  dynamic jsonResp,
+}) {
   if (jsonResp is Map && jsonResp.keys.contains('value')) {
     final value = jsonResp['value'];
 
     switch (value['error']) {
       case 'invalid argument':
-        return InvalidArgumentException(httpStatusCode, value['message']);
+        return InvalidArgumentException(
+          httpStatusCode,
+          value['message'] as String?,
+        );
       case 'no such element':
-        return NoSuchElementException(httpStatusCode, value['message']);
+        return NoSuchElementException(
+          httpStatusCode,
+          value['message'] as String?,
+        );
       default:
-        return WebDriverException(httpStatusCode, value['message']);
+        return WebDriverException(httpStatusCode, value['message'] as String?);
     }
   }
 

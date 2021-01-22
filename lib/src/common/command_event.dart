@@ -34,5 +34,5 @@ class WebDriverCommandEvent {
 
   @override
   String toString() => '[$startTime - $endTime] $method $endPoint($params) => '
-      '${exception != null ? exception : result}';
+      '${exception ?? result}';
 }

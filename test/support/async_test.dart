@@ -16,6 +16,7 @@ library webdriver.support.async_test;
 
 import 'dart:async' show Future;
 
+import 'package:pedantic/pedantic.dart';
 import 'package:test/test.dart';
 import 'package:webdriver/support/async.dart';
 
@@ -42,7 +43,7 @@ void main() {
       var lock = Lock();
       var secondLockAcquired = false;
       await lock.acquire();
-      lock.acquire().then((_) => secondLockAcquired = true);
+      unawaited(lock.acquire().then((_) => secondLockAcquired = true));
       // Make sure that lock is not unacquired just because of timing
       await Future.delayed(const Duration(seconds: 1));
       expect(secondLockAcquired, isFalse);

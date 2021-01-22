@@ -14,9 +14,9 @@
 
 import 'dart:async';
 
-import 'package:webdriver/async_core.dart';
-import 'package:webdriver/src/common/request_client.dart';
-import 'package:webdriver/src/common/webdriver_handler.dart';
+import '../../async_core.dart';
+import '../common/request_client.dart';
+import '../common/webdriver_handler.dart';
 
 class TargetLocator {
   final WebDriver _driver;
@@ -36,7 +36,7 @@ class TargetLocator {
   ///
   ///   Throws [NoSuchFrameException] if the specified frame can't be found.
   Future<void> frame([/* int | WebElement | String */ frame]) async {
-    if (frame == null || frame is int) {
+    if (frame is int?) {
       await _client.send(_handler.frame.buildSwitchByIdRequest(frame),
           _handler.frame.parseSwitchByIdResponse);
     } else if (frame is WebElement) {

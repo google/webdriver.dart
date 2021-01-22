@@ -1,9 +1,8 @@
 import 'dart:math';
 
-import 'package:webdriver/async_core.dart';
-import 'package:webdriver/src/common/session.dart';
-
+import '../../async_core.dart';
 import 'request.dart';
+import 'session.dart';
 
 /// Handler for spec related request building and response parsing.
 ///

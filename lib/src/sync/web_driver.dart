@@ -14,27 +14,27 @@
 
 import 'dart:convert' show base64;
 
-import 'package:webdriver/async_core.dart' as async_core;
-import 'package:webdriver/src/common/by.dart';
-import 'package:webdriver/src/common/request.dart';
-import 'package:webdriver/src/common/request_client.dart';
-import 'package:webdriver/src/common/spec.dart';
-import 'package:webdriver/src/common/utils.dart';
-import 'package:webdriver/src/common/webdriver_handler.dart';
-import 'package:webdriver/src/sync/common.dart';
-import 'package:webdriver/src/sync/cookies.dart';
-import 'package:webdriver/src/sync/keyboard.dart';
-import 'package:webdriver/src/sync/logs.dart';
-import 'package:webdriver/src/sync/mouse.dart';
-import 'package:webdriver/src/sync/target_locator.dart';
-import 'package:webdriver/src/sync/timeouts.dart';
-import 'package:webdriver/src/sync/web_element.dart';
-import 'package:webdriver/src/sync/window.dart';
+import '../../async_core.dart' as async_core;
+import '../common/by.dart';
+import '../common/request.dart';
+import '../common/request_client.dart';
+import '../common/spec.dart';
+import '../common/utils.dart';
+import '../common/webdriver_handler.dart';
+import 'common.dart';
 
 // ignore: uri_does_not_exist
 import 'common_stub.dart'
-    // ignore: uri_does_not_exist
+// ignore: uri_does_not_exist
     if (dart.library.io) 'common_io.dart';
+import 'cookies.dart';
+import 'keyboard.dart';
+import 'logs.dart';
+import 'mouse.dart';
+import 'target_locator.dart';
+import 'timeouts.dart';
+import 'web_element.dart';
+import 'window.dart';
 
 /// Interacts with WebDriver.
 class WebDriver implements SearchContext {
@@ -51,7 +51,7 @@ class WebDriver implements SearchContext {
   final Uri uri;
 
   WebDriver(this.uri, this.id, this.capabilities, this._client, this.spec)
-      : this._handler = getHandler(spec);
+      : _handler = getHandler(spec);
 
   /// Produces a [async_core.WebDriver] with the same session ID. Allows
   /// backwards compatibility with other frameworks.
@@ -73,8 +73,9 @@ class WebDriver implements SearchContext {
   /// Navigates to the specified url
   void get(/* Uri | String */ url) {
     _client.send(
-        _handler.navigation
-            .buildNavigateToRequest((url is Uri) ? url.toString() : url),
+        _handler.navigation.buildNavigateToRequest(
+          (url is Uri) ? url.toString() : url as String,
+        ),
         _handler.navigation.parseNavigateToResponse);
   }
 
@@ -108,7 +109,7 @@ class WebDriver implements SearchContext {
         _handler.elementFinder.parseFindElementsResponse);
 
     final elements = <WebElement>[];
-    int i = 0;
+    var i = 0;
     for (final id in ids) {
       elements.add(WebElement(this, _client, _handler, id, this, by, i++));
     }
@@ -288,12 +289,28 @@ class WebDriver implements SearchContext {
   ///
   /// For use by supporting WebDriver packages.
   dynamic deleteRequest(String command) => _client.send(
-      _handler.buildGeneralRequest(HttpMethod.httpDelete, command),
-      (response) => _handler.parseGeneralResponse(
-          response, (elementId) => getElement(elementId, this)));
+        _handler.buildGeneralRequest(HttpMethod.httpDelete, command),
+        (response) => _handler.parseGeneralResponse(
+          response,
+          (elementId) => getElement(elementId, this),
+        ),
+      );
 
-  WebElement getElement(String elementId, [context, locator, index]) =>
-      WebElement(this, _client, _handler, elementId, context, locator, index);
+  WebElement getElement(
+    String elementId, [
+    SearchContext? context,
+    locator,
+    int? index,
+  ]) =>
+      WebElement(
+        this,
+        _client,
+        _handler,
+        elementId,
+        context,
+        locator,
+        index,
+      );
 
   @override
   WebDriver get driver => this;

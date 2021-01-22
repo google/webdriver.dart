@@ -7,10 +7,12 @@ class LogEntry {
 
   LogEntry.fromMap(Map map)
       : this(
-            map['message'],
-            DateTime.fromMillisecondsSinceEpoch(map['timestamp'].toInt(),
-                isUtc: true),
-            map['level']);
+            map['message'] as String?,
+            DateTime.fromMillisecondsSinceEpoch(
+              (map['timestamp'] as num).toInt(),
+              isUtc: true,
+            ),
+            map['level'] as String?);
 
   @override
   String toString() => '$level[$timestamp]: $message';

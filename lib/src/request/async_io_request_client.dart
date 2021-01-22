@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io' show ContentType, HttpClient, HttpHeaders, HttpClientRequest;
 
-import 'package:webdriver/support/async.dart';
+import '../../support/async.dart';
 
 import '../common/request.dart';
 import '../common/request_client.dart';

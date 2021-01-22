@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import 'package:webdriver/src/common/by.dart';
-import 'package:webdriver/src/common/request_client.dart';
-import 'package:webdriver/src/common/webdriver_handler.dart';
+import '../common/by.dart';
+import '../common/request_client.dart';
+import '../common/webdriver_handler.dart';
 
 import 'alert.dart';
 import 'web_driver.dart';
@@ -39,7 +39,7 @@ class TargetLocator {
   ///
   ///   Throws [NoSuchFrameException] if the specified frame can't be found.
   void frame([/* int | WebElement | String */ frame]) {
-    if (frame == null || frame is int) {
+    if (frame is int?) {
       _client.send(_handler.frame.buildSwitchByIdRequest(frame),
           _handler.frame.parseSwitchByIdResponse);
     } else if (frame is WebElement) {

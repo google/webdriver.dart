@@ -43,7 +43,9 @@ void main() {
     test('handles exceptions', () async {
       try {
         await driver.switchTo.alert.text;
-      } catch (e) {}
+      } catch (e) {
+        // noop
+      }
       expect(events, hasLength(2));
       expect(events[1].method, 'GET');
       expect(events[1].endPoint, contains('alert'));

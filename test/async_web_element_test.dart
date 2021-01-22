@@ -145,7 +145,9 @@ void main() {
       try {
         await button.findElement(const By.tagName('tr'));
         throw 'Expected NoSuchElementException';
-      } on NoSuchElementException {}
+      } on NoSuchElementException {
+        // noop
+      }
     });
 
     test('findElements -- 1 found', () async {

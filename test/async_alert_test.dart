@@ -66,7 +66,7 @@ void main() {
 
     test('sendKeys', () async {
       await button.click();
-      Alert alert = driver.switchTo.alert;
+      var alert = driver.switchTo.alert;
       await alert.sendKeys('some keys');
       await alert.accept();
       expect(await output.text, endsWith('some keys'));

@@ -12,10 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// We should migrate this file to Null Safety once package:archive is migrated,
-// but for now annotate it with the older language version.
-// @dart = 2.9
-
 library webdriver.support.firefox_profile;
 
 import 'dart:collection';
@@ -103,7 +99,7 @@ final List<PrefsOption> defaultUserPrefs = <PrefsOption>[
 /// Creates a Firefox profile in a format so it can be passed using the
 /// `desired` capabilities map.
 class FirefoxProfile {
-  final io.Directory profileDirectory;
+  final io.Directory? profileDirectory;
 
   Set<PrefsOption> _prefs = <PrefsOption>{};
 
@@ -135,13 +131,13 @@ class FirefoxProfile {
     _userPrefs.addAll(defaultUserPrefs);
     if (profileDirectory != null) {
       final prefsFile =
-          io.File(path.join(profileDirectory.absolute.path, 'prefs.js'));
+          io.File(path.join(profileDirectory!.absolute.path, 'prefs.js'));
       if (prefsFile.existsSync()) {
         _prefs = loadPrefsFile(prefsFile);
       }
 
       final userPrefsFile =
-          io.File(path.join(profileDirectory.absolute.path, 'user.js'));
+          io.File(path.join(profileDirectory!.absolute.path, 'user.js'));
       if (userPrefsFile.existsSync()) {
         _userPrefs = loadPrefsFile(userPrefsFile)
             .where((option) => !lockedPrefs.contains(option))
@@ -181,7 +177,6 @@ class FirefoxProfile {
 
   /// Helper for [loadPrefsFile]
   static bool _ignoreLine(String line) {
-    line ??= '';
     line = line.trim();
     if (line.isEmpty ||
         line.startsWith('//') ||
@@ -202,7 +197,7 @@ class FirefoxProfile {
     final prefs = <PrefsOption>{};
     final lines = LineSplitter.split(file.readAsStringSync())
         .where((line) => !_ignoreLine(line));
-    bool canNotParseCaption = true;
+    var canNotParseCaption = true;
 
     for (final line in lines) {
       final option = PrefsOption.parse(line);
@@ -227,11 +222,11 @@ class FirefoxProfile {
   /// It can be uses like
   /// `var desired = Capabilities.firefox..addAll(firefoxProfile.toJson()}`
   Map<String, dynamic> toJson() {
-    Archive archive = Archive();
+    var archive = Archive();
     if (profileDirectory != null) {
-      profileDirectory.listSync(recursive: true).forEach((f) {
+      profileDirectory!.listSync(recursive: true).forEach((f) {
         ArchiveFile archiveFile;
-        final name = path.relative(f.path, from: profileDirectory.path);
+        final name = path.relative(f.path, from: profileDirectory!.path);
         if (f is io.Directory) {
           archiveFile = ArchiveFile('$name/', 0, <int>[]);
         } else if (f is io.File) {
@@ -257,7 +252,7 @@ class FirefoxProfile {
     archive
         .addFile(ArchiveFile('user.js', userJsContent.length, userJsContent));
 
-    final zipData = ZipEncoder().encode(archive);
+    final zipData = ZipEncoder().encode(archive)!;
     return {'firefox_profile': base64.encode(zipData)};
   }
 }
@@ -274,7 +269,7 @@ abstract class PrefsOption<T> {
       RegExp(r'user_pref\("([^"]+)", ("?.+?"?)\);');
 
   final String name;
-  final T value;
+  final T? value;
 
   factory PrefsOption(String name, T value) {
     if (value is bool) {
@@ -294,8 +289,8 @@ abstract class PrefsOption<T> {
       return InvalidOption('Not a valid prefs option: "$prefs".')
           as PrefsOption<T>;
     }
-    final name = match.group(1);
-    final valueString = match.group(2);
+    final name = match.group(1)!;
+    final valueString = match.group(2)!;
     if (valueString.startsWith('"') && valueString.endsWith('"')) {
       final value = valueString
           .substring(1, valueString.length - 1)
@@ -309,7 +304,7 @@ abstract class PrefsOption<T> {
       return BooleanOption(name, false) as PrefsOption<T>;
     }
     try {
-      int value = int.parse(valueString);
+      var value = int.parse(valueString);
       return IntegerOption(name, value) as PrefsOption<T>;
     } catch (_) {}
     return InvalidOption('Not a valid prefs option: "$prefs".')
@@ -323,7 +318,7 @@ abstract class PrefsOption<T> {
     if (identical(this, other)) {
       return true;
     }
-    return other is PrefsOption && this.name == other.name;
+    return other is PrefsOption && name == other.name;
   }
 
   @override
@@ -368,7 +363,5 @@ class StringOption extends PrefsOption<String> {
       value.replaceAll(r'\', r'\\').replaceAll('"', r'\"');
 
   @override
-  String get _valueAsPrefString {
-    return '"${_escape(value)}"';
-  }
+  String get _valueAsPrefString => '"${_escape(value!)}"';
 }

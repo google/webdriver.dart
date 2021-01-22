@@ -1,6 +1,5 @@
-import 'package:webdriver/src/request/async_io_request_client.dart';
-import 'package:webdriver/async_core.dart' as async_core;
-
+import '../../async_core.dart' as async_core;
+import '../request/async_io_request_client.dart';
 import 'web_driver.dart';
 import 'web_element.dart';
 

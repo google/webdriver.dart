@@ -14,8 +14,8 @@
 
 import 'dart:async';
 
-import 'package:webdriver/src/common/request_client.dart';
-import 'package:webdriver/src/common/webdriver_handler.dart';
+import '../common/request_client.dart';
+import '../common/webdriver_handler.dart';
 
 class Timeouts {
   final AsyncRequestClient _client;

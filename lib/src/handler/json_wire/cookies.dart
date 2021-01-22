@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import 'package:webdriver/src/common/cookie.dart';
-import 'package:webdriver/src/common/exception.dart';
-import 'package:webdriver/src/common/request.dart';
-import 'package:webdriver/src/common/webdriver_handler.dart';
-import 'package:webdriver/src/handler/json_wire/utils.dart';
+import '../../common/cookie.dart';
+import '../../common/exception.dart';
+import '../../common/request.dart';
+import '../../common/webdriver_handler.dart';
+import 'utils.dart';
 
 class JsonWireCookiesHandler extends CookiesHandler {
   @override
@@ -64,7 +64,9 @@ class JsonWireCookiesHandler extends CookiesHandler {
 
   @override
   List<Cookie> parseGetAllCookiesResponse(WebDriverResponse response) =>
-      parseJsonWireResponse(response).map<Cookie>(_deserialize).toList();
+      (parseJsonWireResponse(response) as List)
+          .map<Cookie>(_deserialize)
+          .toList();
 
   /// Serializes the cookie to json object according to the spec.
   ///
@@ -74,5 +76,6 @@ class JsonWireCookiesHandler extends CookiesHandler {
   /// Deserializes the json object to get the cookie according to the spec.
   ///
   /// The spec is deserializing the same we do in [Cookie.fromJson].
-  Cookie _deserialize(dynamic content) => Cookie.fromJson(content);
+  Cookie _deserialize(dynamic content) =>
+      Cookie.fromJson(content as Map<String, dynamic>);
 }

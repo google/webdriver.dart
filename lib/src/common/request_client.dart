@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:stack_trace/stack_trace.dart';
-import 'package:webdriver/src/common/command_event.dart';
+import 'command_event.dart';
 
 import 'request.dart';
 

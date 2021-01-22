@@ -1,13 +1,13 @@
 import 'dart:convert';
 
-import 'package:webdriver/src/common/capabilities.dart';
-import 'package:webdriver/src/common/exception.dart';
-import 'package:webdriver/src/common/request.dart';
-import 'package:webdriver/src/common/session.dart';
-import 'package:webdriver/src/common/spec.dart';
-import 'package:webdriver/src/common/webdriver_handler.dart';
-import 'package:webdriver/src/handler/json_wire/session.dart';
-import 'package:webdriver/src/handler/w3c/session.dart';
+import '../common/capabilities.dart';
+import '../common/exception.dart';
+import '../common/request.dart';
+import '../common/session.dart';
+import '../common/spec.dart';
+import '../common/webdriver_handler.dart';
+import 'json_wire/session.dart';
+import 'w3c/session.dart';
 
 /// A [WebDriverHandler] that is only used when creating new session /
 /// getting existing session info without given the spec.
@@ -84,9 +84,9 @@ class InferSessionHandler extends SessionHandler {
 
   @override
   SessionInfo parseCreateResponse(WebDriverResponse response) {
-    Map responseBody;
+    Map<String, dynamic> responseBody;
     try {
-      responseBody = json.decode(response.body!);
+      responseBody = json.decode(response.body!) as Map<String, dynamic>;
     } catch (e) {
       final rawBody = response.body == null || response.body!.isEmpty
           ? '<empty response>'
@@ -104,7 +104,9 @@ class InferSessionHandler extends SessionHandler {
     }
 
     throw WebDriverException(
-        response.statusCode, 'Unexpected response structure: ${response.body}');
+      response.statusCode,
+      'Unexpected response structure: ${response.body}',
+    );
   }
 
   @override
@@ -116,24 +118,27 @@ class InferSessionHandler extends SessionHandler {
       [String? sessionId]) {
     if (response.statusCode == 404) {
       // May be W3C, as it will throw an unknown command exception.
-      Map? body;
+      Map<String, dynamic>? body;
       try {
-        body = json.decode(response.body!)['value'];
+        body = json.decode(response.body!)['value'] as Map<String, dynamic>?;
       } catch (e) {
         final rawBody = response.body?.isEmpty != false
             ? '<empty response>'
             : response.body;
         throw WebDriverException(
-            response.statusCode, 'Error parsing response body: $rawBody');
+          response.statusCode,
+          'Error parsing response body: $rawBody',
+        );
       }
 
       if (body == null ||
           body['error'] != 'unknown command' ||
           body['message'] is! String) {
         throw WebDriverException(
-            response.statusCode,
-            'Unexpected response body (expecting `unexpected command error` '
-            'produced by W3C WebDriver): ${response.body}');
+          response.statusCode,
+          'Unexpected response body (expecting `unexpected command error` '
+          'produced by W3C WebDriver): ${response.body}',
+        );
       }
 
       return SessionInfo(sessionId!, WebDriverSpec.W3c, Capabilities.empty);

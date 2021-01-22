@@ -26,7 +26,7 @@ void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
   group('WebDriver', () {
     group('create', () {
       test('default', () async {
-        WebDriver driver = config.createTestDriver(spec: spec);
+        var driver = config.createTestDriver(spec: spec);
         await config.createTestServerAndGoToTestPage(driver);
         var element = driver.findElement(const By.tagName('button'));
         expect(element.name, 'button');
@@ -95,7 +95,7 @@ void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
       });
 
       test('close/windows', () {
-        int numHandles = (driver.windows.toList()).length;
+        var numHandles = (driver.windows.toList()).length;
         (driver.findElement(const By.partialLinkText('Open copy'))).click();
         sleep(const Duration(milliseconds: 500)); // Bit slow on Firefox.
         expect(driver.windows.toList(), hasLength(numHandles + 1));
@@ -104,7 +104,7 @@ void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
       });
 
       test('window', () {
-        Window orig = driver.window;
+        var orig = driver.window;
         Window? next;
 
         (driver.findElement(const By.partialLinkText('Open copy'))).click();
@@ -135,8 +135,8 @@ void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
       });
 
       test('execute', () {
-        WebElement button = driver.findElement(const By.tagName('button'));
-        String script = '''
+        var button = driver.findElement(const By.tagName('button'));
+        var script = '''
             arguments[1].textContent = arguments[0];
             return arguments[1];''';
         var e = driver.execute(script, ['new text', button]);
@@ -144,8 +144,8 @@ void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
       });
 
       test('executeAsync', () {
-        WebElement button = driver.findElement(const By.tagName('button'));
-        String script = '''
+        var button = driver.findElement(const By.tagName('button'));
+        var script = '''
             arguments[1].textContent = arguments[0];
             arguments[2](arguments[1]);''';
         var e = driver.executeAsync(script, ['new text', button]);
@@ -196,16 +196,16 @@ void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
 
       test('event listeners ordered appropriately', () {
         var eventList = <int>[];
-        int current = 0;
+        var current = 0;
         driver.addEventListener((e) {
           eventList.add(current++);
         });
 
-        for (int i = 0; i < 10; i++) {
+        for (var i = 0; i < 10; i++) {
           driver.title; // GET request.
         }
         expect(eventList, hasLength(10));
-        for (int i = 0; i < 10; i++) {
+        for (var i = 0; i < 10; i++) {
           expect(eventList[i], i);
         }
       });

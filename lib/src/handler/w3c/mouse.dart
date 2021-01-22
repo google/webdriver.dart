@@ -1,7 +1,7 @@
-import 'package:webdriver/src/common/mouse.dart';
-import 'package:webdriver/src/common/request.dart';
-import 'package:webdriver/src/common/webdriver_handler.dart';
-import 'package:webdriver/src/handler/w3c/utils.dart';
+import '../../common/mouse.dart';
+import '../../common/request.dart';
+import '../../common/webdriver_handler.dart';
+import 'utils.dart';
 
 class W3cMouseHandler extends MouseHandler {
   @override

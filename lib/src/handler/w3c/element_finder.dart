@@ -1,7 +1,7 @@
-import 'package:webdriver/src/common/by.dart';
-import 'package:webdriver/src/common/request.dart';
-import 'package:webdriver/src/common/webdriver_handler.dart';
-import 'package:webdriver/src/handler/w3c/utils.dart';
+import '../../common/by.dart';
+import '../../common/request.dart';
+import '../../common/webdriver_handler.dart';
+import 'utils.dart';
 
 class W3cElementFinder extends ElementFinder {
   /// Here we massage [By] instances into viable W3C /element requests.
@@ -40,35 +40,31 @@ class W3cElementFinder extends ElementFinder {
 
   @override
   WebDriverRequest buildFindElementsRequest(By by, [String? contextElementId]) {
-    String uri = '${elementPrefix(contextElementId)}elements';
+    var uri = '${elementPrefix(contextElementId)}elements';
     return WebDriverRequest.postRequest(uri, _byToJson(by));
   }
 
   @override
-  List<String> parseFindElementsResponse(WebDriverResponse response) {
-    return (parseW3cResponse(response) as List)
-        .map<String>((e) => e[w3cElementStr]!)
-        .toList();
-  }
+  List<String> parseFindElementsResponse(WebDriverResponse response) =>
+      (parseW3cResponse(response) as List)
+          .map<String>((e) => e[w3cElementStr] as String)
+          .toList();
 
   @override
   WebDriverRequest buildFindElementRequest(By by, [String? contextElementId]) {
-    String uri = '${elementPrefix(contextElementId)}element';
+    var uri = '${elementPrefix(contextElementId)}element';
     return WebDriverRequest.postRequest(uri, _byToJson(by));
   }
 
   @override
-  String? parseFindActiveElementResponse(WebDriverResponse response) {
-    return parseW3cResponse(response)[w3cElementStr];
-  }
+  String? parseFindActiveElementResponse(WebDriverResponse response) =>
+      parseW3cResponse(response)[w3cElementStr] as String;
 
   @override
-  WebDriverRequest buildFindActiveElementRequest() {
-    return WebDriverRequest.getRequest('element/active');
-  }
+  WebDriverRequest buildFindActiveElementRequest() =>
+      WebDriverRequest.getRequest('element/active');
 
   @override
-  String parseFindElementResponse(WebDriverResponse response) {
-    return (parseW3cResponse(response) ?? {})[w3cElementStr];
-  }
+  String parseFindElementResponse(WebDriverResponse response) =>
+      (parseW3cResponse(response) ?? {})[w3cElementStr] as String;
 }

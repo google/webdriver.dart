@@ -7,7 +7,7 @@ class W3cKeyboardHandler extends KeyboardHandler {
   WebDriverRequest buildSendChordRequest(Iterable<String> chordToSend) {
     final keyDownActions = <Map<String, String>>[];
     final keyUpActions = <Map<String, String>>[];
-    for (String s in chordToSend) {
+    for (var s in chordToSend) {
       keyDownActions.add({'type': 'keyDown', 'value': s});
       keyUpActions.add({'type': 'keyUp', 'value': s});
     }
@@ -32,7 +32,7 @@ class W3cKeyboardHandler extends KeyboardHandler {
   @override
   WebDriverRequest buildSendKeysRequest(String keysToSend) {
     final keyActions = <Map<String, String>>[];
-    for (int i = 0; i < keysToSend.length; ++i) {
+    for (var i = 0; i < keysToSend.length; ++i) {
       keyActions.add({'type': 'keyDown', 'value': keysToSend[i]});
       keyActions.add({'type': 'keyUp', 'value': keysToSend[i]});
     }

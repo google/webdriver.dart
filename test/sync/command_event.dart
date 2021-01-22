@@ -42,7 +42,9 @@ void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
       try {
         driver.switchTo.alert.text;
         fail('Expected exception on no alert');
-      } catch (NoSuchAlertException) {}
+      } on NoSuchAlertException {
+        // noop
+      }
       // TODO(b/140553567): There should be two events.
       expect(events, hasLength(1));
       expect(events[0].method, 'GET');

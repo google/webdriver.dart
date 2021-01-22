@@ -16,11 +16,11 @@ library webdriver.sync_core;
 
 import 'dart:collection' show UnmodifiableMapView;
 
-import 'package:webdriver/src/common/request_client.dart';
-import 'package:webdriver/src/common/session.dart';
-import 'package:webdriver/src/common/spec.dart';
-import 'package:webdriver/src/common/utils.dart';
-import 'package:webdriver/src/sync/web_driver.dart' show WebDriver;
+import 'src/common/request_client.dart';
+import 'src/common/session.dart';
+import 'src/common/spec.dart';
+import 'src/common/utils.dart';
+import 'src/sync/web_driver.dart' show WebDriver;
 
 export 'package:webdriver/src/common/by.dart';
 export 'package:webdriver/src/common/capabilities.dart';
