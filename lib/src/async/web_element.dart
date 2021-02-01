@@ -165,9 +165,9 @@ class WebElement extends common.WebElement implements SearchContext {
     var out = StringBuffer()..write(context);
     if (locator is By) {
       if (index == null) {
-        out..write('.findElement(');
+        out.write('.findElement(');
       } else {
-        out..write('.findElements(');
+        out.write('.findElements(');
       }
       out..write(locator)..write(')');
     } else {
