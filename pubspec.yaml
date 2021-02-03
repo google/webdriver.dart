@@ -1,5 +1,5 @@
 name: webdriver
-version: 3.0.0-nullsafety.1
+version: 3.0.0
 
 description: >-
   Provides WebDriver bindings for Dart.
@@ -12,11 +12,11 @@ environment:
   sdk: '>=2.12.0-0 <3.0.0'
 
 dependencies:
-  archive: ^3.0.0-nullsafety.0
-  matcher: ^0.12.10-nullsafety.0
-  path: ^1.8.0-nullsafety.0
-  stack_trace: ^1.10.0-nullsafety.0
-  sync_http: ^0.3.0-nullsafety.0
+  archive: ^3.0.0
+  matcher: ^0.12.10
+  path: ^1.8.0
+  stack_trace: ^1.10.0
+  sync_http: ^0.3.0
 
 dev_dependencies:
   pedantic: ^1.10.0-nullsafety.0
