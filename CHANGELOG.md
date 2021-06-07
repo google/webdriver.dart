@@ -1,14 +1,8 @@
+## 3.0.1-dev
+
 ## 3.0.0
 
 * Stable release for null safety.
-
-## 3.0.0-nullsafety.1
-
-* Make pedantic a dev_dependency.
-
-## 3.0.0-nullsafety.0
-
-- Enable null safety.
 
 ## v2.1.2
 
