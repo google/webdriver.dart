@@ -43,10 +43,10 @@ jobs:
         sdk: [dev]
     steps:
     - uses: actions/checkout@v2
-    - uses: dart-lang/setup-dart@v0.3
+    - uses: dart-lang/setup-dart@v1
       with:
         sdk: ${{ matrix.sdk }}
-    - uses: nanasess/setup-chromedriver@v1.0.1
+    - uses: nanasess/setup-chromedriver@v1.0.5
     - id: install
       name: Install dependencies
       run: dart pub get
