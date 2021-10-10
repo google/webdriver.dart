@@ -20,7 +20,6 @@ import '../common/request_client.dart';
 import '../common/web_element.dart' as common;
 import '../common/webdriver_handler.dart';
 import 'common.dart';
-
 // ignore: uri_does_not_exist
 import 'common_stub.dart'
 // ignore: uri_does_not_exist
@@ -213,8 +212,7 @@ class WebElement extends common.WebElement implements SearchContext {
       _handler.element.parseCssPropertyResponse));
 
   /// Are these two elements the same underlying element in the DOM.
-  bool equals(WebElement other) =>
-      other is WebElement && other.driver == driver && other.id == id;
+  bool equals(WebElement other) => other.driver == driver && other.id == id;
 
   @override
   int get hashCode => driver.hashCode * 3 + id.hashCode;
@@ -232,12 +230,19 @@ class WebElement extends common.WebElement implements SearchContext {
       } else {
         out.write('.findElements(');
       }
-      out..write(locator)..write(')');
+      out
+        ..write(locator)
+        ..write(')');
     } else {
-      out..write('.')..write(locator);
+      out
+        ..write('.')
+        ..write(locator);
     }
     if (index != null) {
-      out..write('[')..write(index)..write(']');
+      out
+        ..write('[')
+        ..write(index)
+        ..write(']');
     }
     return out.toString();
   }

@@ -151,7 +151,7 @@ class WebElement extends common.WebElement implements SearchContext {
       _handler.element.parseCssPropertyResponse));
 
   Future<bool> equals(WebElement other) async =>
-      other is WebElement && other.driver == driver && other.id == id;
+      other.driver == driver && other.id == id;
 
   @override
   int get hashCode => driver.hashCode * 3 + id.hashCode;
@@ -169,12 +169,19 @@ class WebElement extends common.WebElement implements SearchContext {
       } else {
         out.write('.findElements(');
       }
-      out..write(locator)..write(')');
+      out
+        ..write(locator)
+        ..write(')');
     } else {
-      out..write('.')..write(locator);
+      out
+        ..write('.')
+        ..write(locator);
     }
     if (index != null) {
-      out..write('[')..write(index)..write(']');
+      out
+        ..write('[')
+        ..write(index)
+        ..write(']');
     }
     return out.toString();
   }

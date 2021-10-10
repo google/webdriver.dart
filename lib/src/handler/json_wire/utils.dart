@@ -23,9 +23,7 @@ dynamic parseJsonWireResponse(WebDriverResponse response,
 
   if (response.statusCode! < 200 ||
       response.statusCode! > 299 ||
-      (responseBody is Map &&
-          responseBody['status'] != null &&
-          responseBody['status'] != 0)) {
+      (responseBody['status'] != null && responseBody['status'] != 0)) {
     final status = responseBody['status'] as int?;
     final message = responseBody['value']['message'] as String?;
 
@@ -85,7 +83,7 @@ dynamic parseJsonWireResponse(WebDriverResponse response,
     }
   }
 
-  if (valueOnly && responseBody is Map) {
+  if (valueOnly) {
     return responseBody['value'];
   }
 
