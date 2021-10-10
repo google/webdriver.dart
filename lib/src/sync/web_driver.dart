@@ -22,7 +22,6 @@ import '../common/spec.dart';
 import '../common/utils.dart';
 import '../common/webdriver_handler.dart';
 import 'common.dart';
-
 // ignore: uri_does_not_exist
 import 'common_stub.dart'
 // ignore: uri_does_not_exist
@@ -149,7 +148,7 @@ class WebDriver implements SearchContext {
   ///
   /// This is rather confusing and will be removed.
   /// Should replace all usages with [window.close()] or [quit()].
-  @deprecated
+  @Deprecated('Use `window.close()` or `quit()` instead.')
   void close() {
     window.close();
   }

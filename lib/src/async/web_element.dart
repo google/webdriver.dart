@@ -132,7 +132,7 @@ class WebElement extends common.WebElement implements SearchContext {
   /// Access to the selenium attributes of this tag.
   ///
   /// This is deprecated, only used to support old pageloader.
-  @deprecated
+  @Deprecated('Only used to support the old page loader.')
   Attributes get seleniumAttributes => Attributes((name) => _client.send(
       _handler.element.buildSeleniumAttributeRequest(id, name),
       _handler.element.parseSeleniumAttributeResponse));

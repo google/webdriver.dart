@@ -43,9 +43,9 @@ void main() {
       }
 
       expect(logs, isNotEmpty);
-      logs.forEach((entry) {
+      for (var entry in logs) {
         expect(entry.level, equals(LogLevel.info));
-      });
+      }
     });
   }, timeout: const Timeout(Duration(minutes: 2)));
 }

@@ -9,10 +9,8 @@ class JsonWireElementFinder extends ElementFinder {
       {'using': by.using, 'value': by.value};
 
   @override
-  WebDriverRequest buildFindElementsRequest(By by, [String? contextElementId]) {
-    var uri = contextElementId == null
-        ? 'elements'
-        : 'element/$contextElementId/elements';
+  WebDriverRequest buildFindElementsRequest(By by, [String? contextId]) {
+    var uri = contextId == null ? 'elements' : 'element/$contextId/elements';
     return WebDriverRequest.postRequest(uri, _byToJson(by));
   }
 
@@ -24,10 +22,8 @@ class JsonWireElementFinder extends ElementFinder {
           .cast<String>();
 
   @override
-  WebDriverRequest buildFindElementRequest(By by, [String? contextElementId]) {
-    var uri = contextElementId == null
-        ? 'element'
-        : 'element/$contextElementId/element';
+  WebDriverRequest buildFindElementRequest(By by, [String? contextId]) {
+    var uri = contextId == null ? 'element' : 'element/$contextId/element';
     return WebDriverRequest.postRequest(uri, _byToJson(by));
   }
 

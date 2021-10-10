@@ -14,9 +14,8 @@
 
 library webdriver.support.async_test;
 
-import 'dart:async' show Future;
+import 'dart:async' show Future, unawaited;
 
-import 'package:pedantic/pedantic.dart';
 import 'package:test/test.dart';
 import 'package:webdriver/support/async.dart';
 

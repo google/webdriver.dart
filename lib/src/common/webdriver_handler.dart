@@ -187,13 +187,13 @@ abstract class ElementHandler {
   /// Builds request for 'Selenium Element Attribute'.
   ///
   /// This is deprecated, only used to support old pageloader.
-  @deprecated
+  @Deprecated('Only used to support the old page loader.')
   WebDriverRequest buildSeleniumAttributeRequest(String elementId, String name);
 
   /// Parses response for 'Element Attribute'.
   ///
   /// This is deprecated, only used to support old pageloader.
-  @deprecated
+  @Deprecated('Only used to support the old page loader.')
   String? parseSeleniumAttributeResponse(WebDriverResponse response);
 
   /// Builds request for 'Element Property'.

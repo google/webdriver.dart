@@ -133,11 +133,9 @@ void main() {
 
       var expectedFiles = ['prefs.js', 'user.js'];
       expect(archive.files.length, greaterThanOrEqualTo(expectedFiles.length));
-      expectedFiles.forEach(
-        (f) => expect(
-          archive.files,
-          anyElement((ArchiveFile f) => f.name == 'prefs.js'),
-        ),
+      expect(
+        archive.files,
+        anyElement((ArchiveFile f) => f.name == 'prefs.js'),
       );
 
       var prefs = FirefoxProfile.loadPrefsFile(MockFile(
@@ -172,11 +170,9 @@ void main() {
         'webapps/webapps.json'
       ];
       expect(archive.files.length, greaterThanOrEqualTo(expectedFiles.length));
-      expectedFiles.forEach(
-        (f) => expect(
-          archive.files,
-          anyElement((ArchiveFile f) => f.name == 'prefs.js'),
-        ),
+      expect(
+        archive.files,
+        anyElement((ArchiveFile f) => f.name == 'prefs.js'),
       );
 
       var prefs = FirefoxProfile.loadPrefsFile(

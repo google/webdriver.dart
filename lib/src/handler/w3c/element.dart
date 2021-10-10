@@ -2,7 +2,6 @@ import 'dart:math';
 
 import '../../common/request.dart';
 import '../../common/webdriver_handler.dart';
-
 import 'utils.dart';
 
 class W3cElementHandler extends ElementHandler {
@@ -116,13 +115,13 @@ class W3cElementHandler extends ElementHandler {
       parseW3cResponse(response)?.toString();
 
   @override
-  @deprecated
+  @Deprecated('Only used to support the old page loader.')
   WebDriverRequest buildSeleniumAttributeRequest(
           String elementId, String name) =>
       WebDriverRequest.getRequest('${elementPrefix(elementId)}attribute/$name');
 
   @override
-  @deprecated
+  @Deprecated('Only used to support the old page loader.')
   String? parseSeleniumAttributeResponse(WebDriverResponse response) =>
       parseW3cResponse(response)?.toString();
 

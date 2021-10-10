@@ -39,8 +39,8 @@ class W3cElementFinder extends ElementFinder {
   }
 
   @override
-  WebDriverRequest buildFindElementsRequest(By by, [String? contextElementId]) {
-    var uri = '${elementPrefix(contextElementId)}elements';
+  WebDriverRequest buildFindElementsRequest(By by, [String? contextId]) {
+    var uri = '${elementPrefix(contextId)}elements';
     return WebDriverRequest.postRequest(uri, _byToJson(by));
   }
 
@@ -51,8 +51,8 @@ class W3cElementFinder extends ElementFinder {
           .toList();
 
   @override
-  WebDriverRequest buildFindElementRequest(By by, [String? contextElementId]) {
-    var uri = '${elementPrefix(contextElementId)}element';
+  WebDriverRequest buildFindElementRequest(By by, [String? contextId]) {
+    var uri = '${elementPrefix(contextId)}element';
     return WebDriverRequest.postRequest(uri, _byToJson(by));
   }
 
