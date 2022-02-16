@@ -55,7 +55,7 @@ jobs:
         export DISPLAY=:99
         chromedriver --port=4444 --url-base=/wd/hub &
         sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 &
-        pub run test --exclude-tags ff
+        dart test --exclude-tags ff
       if: always() && steps.install.outcome == 'success'
       env:
         CHROMEDRIVER_ARGS: '--no-sandbox --headless'
@@ -81,5 +81,5 @@ jobs:
         export DISPLAY=:99
         geckodriver --port=4445 &
         sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 &
-        pub run test --tags ff
+        dart test --tags ff
       if: always() && steps.install.outcome == 'success'
