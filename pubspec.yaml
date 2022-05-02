@@ -6,7 +6,7 @@ description: >-
   Supports WebDriver JSON interface and W3C spec.
   Requires the use of WebDriver remote server.
 
-homepage: https://github.com/google/webdriver.dart
+repository: https://github.com/google/webdriver.dart
 
 environment:
   sdk: '>=2.14.0 <3.0.0'
