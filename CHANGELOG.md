@@ -1,5 +1,7 @@
 ## 3.0.1-dev
 
+* Updates to apply new Dart 2.17 features for enums and super() constructor.
+
 ## 3.0.0
 
 * Stable release for null safety.

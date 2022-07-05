@@ -64,8 +64,7 @@ WebDriver createDriver(
       handler.session.buildCreateRequest(desired: desired),
       handler.session.parseCreateResponse);
 
-  if (session.spec != WebDriverSpec.JsonWire &&
-      session.spec != WebDriverSpec.W3c) {
+  if (!session.spec.isRecognized()) {
     throw 'Unexpected spec: ${session.spec}';
   }
 
@@ -97,8 +96,7 @@ WebDriver fromExistingSession(String sessionId,
         (response) => handler.session.parseInfoResponse(response, sessionId));
   }
 
-  if (session.spec != WebDriverSpec.JsonWire &&
-      session.spec != WebDriverSpec.W3c) {
+  if (!session.spec.isRecognized()) {
     throw 'Unexpected spec: ${session.spec}';
   }
 
