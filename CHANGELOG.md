@@ -1,5 +1,8 @@
 ## 3.0.1-dev
 
+* Return Future with non-nullable generic from `waitFor`. The generic `T` may
+  still be a nullable type where required.
+
 ## 3.0.0
 
 * Stable release for null safety.
