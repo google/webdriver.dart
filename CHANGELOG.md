@@ -2,6 +2,8 @@
 
 * Return Future with non-nullable generic from `waitFor`. The generic `T` may
   still be a nullable type where required.
+* Treat 405 response code as an unknown command for compatibility with
+  GeckoDriver.
 
 ## 3.0.0
 
