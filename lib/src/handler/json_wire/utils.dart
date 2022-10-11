@@ -10,6 +10,7 @@ const String jsonWireElementStr = 'ELEMENT';
 
 dynamic parseJsonWireResponse(WebDriverResponse response,
     {bool valueOnly = true}) {
+  final statusCode = response.statusCode!;
   Map<String, dynamic> responseBody;
   try {
     responseBody = json.decode(response.body!) as Map<String, dynamic>;
@@ -17,12 +18,15 @@ dynamic parseJsonWireResponse(WebDriverResponse response,
     final rawBody = response.body == null || response.body!.isEmpty
         ? '<empty response>'
         : response.body;
+    if (statusCode == 405) {
+      throw UnknownCommandException(statusCode, rawBody);
+    }
     throw WebDriverException(
-        response.statusCode, 'Error parsing response body: $rawBody');
+        statusCode, 'Error parsing response body: $rawBody');
   }
 
-  if (response.statusCode! < 200 ||
-      response.statusCode! > 299 ||
+  if (statusCode < 200 ||
+      statusCode > 299 ||
       (responseBody['status'] != null && responseBody['status'] != 0)) {
     final status = responseBody['status'] as int?;
     final message = responseBody['value']['message'] as String?;

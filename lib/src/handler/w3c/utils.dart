@@ -16,6 +16,9 @@ dynamic parseW3cResponse(WebDriverResponse response) {
     final rawBody = response.body == null || response.body!.isEmpty
         ? '<empty response>'
         : response.body;
+    if (statusCode == 405) {
+      throw UnknownCommandException(statusCode, rawBody);
+    }
     throw WebDriverException(
         statusCode, 'Error parsing response body: $rawBody');
   }
