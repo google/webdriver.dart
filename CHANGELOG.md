@@ -1,5 +1,7 @@
 ## 3.0.1-dev
 
+* Return non-nullable `T` from `waitFor`.
+
 ## 3.0.0
 
 * Stable release for null safety.
