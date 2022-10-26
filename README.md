@@ -1,3 +1,4 @@
+[![CI](https://github.com/google/webdriver.dart/actions/workflows/ci.yaml/badge.svg)](https://github.com/google/webdriver.dart/actions/workflows/ci.yaml)
 [![pub package](https://img.shields.io/pub/v/webdriver.svg)](https://pub.dartlang.org/packages/webdriver)
 
 Provides WebDriver bindings for Dart. These use the WebDriver JSON interface,
