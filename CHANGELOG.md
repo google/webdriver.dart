@@ -1,4 +1,4 @@
-## 3.0.1-dev
+## 3.0.1
 
 * Return Future with non-nullable generic from `waitFor`. The generic `T` may
   still be a nullable type where required.
