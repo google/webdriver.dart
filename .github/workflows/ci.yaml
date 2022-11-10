@@ -20,8 +20,8 @@ jobs:
       matrix:
         sdk: [dev]
     steps:
-    - uses: actions/checkout@v2
-    - uses: dart-lang/setup-dart@v1
+    - uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8
+    - uses: dart-lang/setup-dart@6a218f2413a3e78e9087f638a238f6b40893203d
       with:
         sdk: ${{ matrix.sdk }}
     - id: install
@@ -42,11 +42,11 @@ jobs:
         os: [ubuntu-latest]
         sdk: [dev]
     steps:
-    - uses: actions/checkout@v2
-    - uses: dart-lang/setup-dart@v1
+    - uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8
+    - uses: dart-lang/setup-dart@6a218f2413a3e78e9087f638a238f6b40893203d
       with:
         sdk: ${{ matrix.sdk }}
-    - uses: nanasess/setup-chromedriver@v1.0.5
+    - uses: nanasess/setup-chromedriver@7cbd35794f8ab317f778c3172fb86c1e9b2853f7
     - id: install
       name: Install dependencies
       run: dart pub get
@@ -68,11 +68,11 @@ jobs:
         os: [ubuntu-latest]
         sdk: [2.14.0, dev]
     steps:
-    - uses: actions/checkout@v2
-    - uses: dart-lang/setup-dart@v1
+    - uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8
+    - uses: dart-lang/setup-dart@6a218f2413a3e78e9087f638a238f6b40893203d
       with:
         sdk: ${{ matrix.sdk }}
-    - uses: browser-actions/setup-geckodriver@v0.0.0
+    - uses: browser-actions/setup-geckodriver@eb8b0670366f719ca31703766a8cb7e3ea2c56ed
     - id: install
       name: Install dependencies
       run: dart pub get
