@@ -12,7 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-library webdriver.core;
+@Deprecated("Use 'package:webdriver/async_core.dart' instead.")
+library core;
 
 /// Consider this file as deprecated. This exists as an alias to async_core.dart
 /// for backward compatibility.

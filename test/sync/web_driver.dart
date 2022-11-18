@@ -26,9 +26,9 @@ void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
   group('WebDriver', () {
     group('create', () {
       test('default', () async {
-        var driver = config.createTestDriver(spec: spec);
+        final driver = config.createTestDriver(spec: spec);
         await config.createTestServerAndGoToTestPage(driver);
-        var element = driver.findElement(const By.tagName('button'));
+        final element = driver.findElement(const By.tagName('button'));
         expect(element.name, 'button');
       });
     });
@@ -46,14 +46,14 @@ void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
       });
 
       test('currentUrl', () {
-        var url = driver.currentUrl;
+        final url = driver.currentUrl;
         expect(url, startsWith('http:'));
 
         expect(url, endsWith('test_page.html'));
       });
 
       test('findElement -- success', () {
-        var element = driver.findElement(const By.tagName('tr'));
+        final element = driver.findElement(const By.tagName('tr'));
         expect(element, config.isWebElement);
       });
 
@@ -67,7 +67,7 @@ void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
       });
 
       test('findElements -- 1 found', () {
-        var elements = driver
+        final elements = driver
             .findElements(const By.cssSelector('input[type=text]'))
             .toList();
         expect(elements, hasLength(1));
@@ -75,13 +75,13 @@ void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
       });
 
       test('findElements -- 4 found', () {
-        var elements = driver.findElements(const By.tagName('td')).toList();
+        final elements = driver.findElements(const By.tagName('td')).toList();
         expect(elements, hasLength(4));
         expect(elements, everyElement(config.isWebElement));
       });
 
       test('findElements -- 0 found', () {
-        var elements =
+        final elements =
             driver.findElements(const By.id('non-existent-id')).toList();
         expect(elements, isEmpty);
       });
@@ -95,7 +95,7 @@ void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
       });
 
       test('close/windows', () {
-        var numHandles = (driver.windows.toList()).length;
+        final numHandles = (driver.windows.toList()).length;
         (driver.findElement(const By.partialLinkText('Open copy'))).click();
         sleep(const Duration(milliseconds: 500)); // Bit slow on Firefox.
         expect(driver.windows.toList(), hasLength(numHandles + 1));
@@ -104,7 +104,7 @@ void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
       });
 
       test('window', () {
-        var orig = driver.window;
+        final orig = driver.window;
         Window? next;
 
         (driver.findElement(const By.partialLinkText('Open copy'))).click();
@@ -129,57 +129,57 @@ void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
       });
 
       test('windows', () {
-        var windows = driver.windows.toList();
+        final windows = driver.windows.toList();
         expect(windows, hasLength(isPositive));
         expect(windows, everyElement(isA<Window>()));
       });
 
       test('execute', () {
-        var button = driver.findElement(const By.tagName('button'));
-        var script = '''
+        final button = driver.findElement(const By.tagName('button'));
+        const script = '''
             arguments[1].textContent = arguments[0];
             return arguments[1];''';
-        var e = driver.execute(script, ['new text', button]);
+        final e = driver.execute(script, ['new text', button]);
         expect(e.text, 'new text');
       });
 
       test('executeAsync', () {
-        var button = driver.findElement(const By.tagName('button'));
-        var script = '''
+        final button = driver.findElement(const By.tagName('button'));
+        const script = '''
             arguments[1].textContent = arguments[0];
             arguments[2](arguments[1]);''';
-        var e = driver.executeAsync(script, ['new text', button]);
+        final e = driver.executeAsync(script, ['new text', button]);
         expect(e.text, 'new text');
       });
 
       test('captureScreenshot', () {
-        var screenshot = driver.captureScreenshotAsList().toList();
+        final screenshot = driver.captureScreenshotAsList().toList();
         expect(screenshot, hasLength(isPositive));
         expect(screenshot, everyElement(isA<int>()));
       });
 
       test('captureScreenshotAsList', () {
-        var screenshot = driver.captureScreenshotAsList();
+        final screenshot = driver.captureScreenshotAsList();
         expect(screenshot, hasLength(isPositive));
         expect(screenshot, everyElement(isA<int>()));
       });
 
       test('captureElementScreenshotAsList', () {
-        var element = driver.findElement(const By.tagName('tr'));
-        var screenshot = driver.captureElementScreenshotAsList(element);
+        final element = driver.findElement(const By.tagName('tr'));
+        final screenshot = driver.captureElementScreenshotAsList(element);
         expect(screenshot, hasLength(isPositive));
         expect(screenshot, everyElement(isA<int>()));
       });
 
       test('captureScreenshotAsBase64', () {
-        var screenshot = driver.captureScreenshotAsBase64();
+        final screenshot = driver.captureScreenshotAsBase64();
         expect(screenshot, hasLength(isPositive));
         expect(screenshot, isA<String>());
       });
 
       test('captureElementScreenshotAsBase64', () {
-        var element = driver.findElement(const By.tagName('tr'));
-        var screenshot = driver.captureElementScreenshotAsBase64(element);
+        final element = driver.findElement(const By.tagName('tr'));
+        final screenshot = driver.captureElementScreenshotAsBase64(element);
         expect(screenshot, hasLength(isPositive));
         expect(screenshot, isA<String>());
       });
@@ -195,7 +195,7 @@ void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
       });
 
       test('event listeners ordered appropriately', () {
-        var eventList = <int>[];
+        final eventList = <int>[];
         var current = 0;
         driver.addEventListener((e) {
           eventList.add(current++);

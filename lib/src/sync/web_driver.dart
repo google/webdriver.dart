@@ -70,7 +70,7 @@ class WebDriver implements SearchContext {
       _handler.core.parseCurrentUrlResponse);
 
   /// Navigates to the specified url
-  void get(/* Uri | String */ url) {
+  void get(Object /* Uri | String */ url) {
     _client.send(
         _handler.navigation.buildNavigateToRequest(
           (url is Uri) ? url.toString() : url as String,
@@ -271,7 +271,7 @@ class WebDriver implements SearchContext {
   /// Performs post request on command to the WebDriver server.
   ///
   /// For use by supporting WebDriver packages.
-  dynamic postRequest(String command, [params]) => _client.send(
+  dynamic postRequest(String command, [Object? params]) => _client.send(
       _handler.buildGeneralRequest(HttpMethod.httpPost, command, params),
       (response) => _handler.parseGeneralResponse(
           response, (elementId) => getElement(elementId, this)));
@@ -298,7 +298,7 @@ class WebDriver implements SearchContext {
   WebElement getElement(
     String elementId, [
     SearchContext? context,
-    locator,
+    Object? locator,
     int? index,
   ]) =>
       WebElement(

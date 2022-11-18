@@ -12,8 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-library webdriver.io;
-
 import 'dart:async' show Future;
 
 import 'async_core.dart' as core
@@ -55,8 +53,7 @@ Future<core.WebDriver> createDriver(
 /// last path component will be dropped.
 Future<core.WebDriver> fromExistingSession(String sessionId,
         {Uri? uri, core.WebDriverSpec spec = core.WebDriverSpec.Auto}) =>
-    core.fromExistingSession(
-        (prefix) => AsyncIoRequestClient(prefix), sessionId,
+    core.fromExistingSession(AsyncIoRequestClient.new, sessionId,
         uri: uri, spec: spec);
 
 /// Creates an async WebDriver from existing session with a sync function using
@@ -73,6 +70,5 @@ Future<core.WebDriver> fromExistingSession(String sessionId,
 core.WebDriver fromExistingSessionSync(
         String sessionId, core.WebDriverSpec spec,
         {Uri? uri, Map<String, dynamic>? capabilities}) =>
-    core.fromExistingSessionSync(
-        (prefix) => AsyncIoRequestClient(prefix), sessionId, spec,
+    core.fromExistingSessionSync(AsyncIoRequestClient.new, sessionId, spec,
         uri: uri, capabilities: capabilities);

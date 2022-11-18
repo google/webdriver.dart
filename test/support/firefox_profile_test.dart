@@ -27,65 +27,65 @@ import 'package:webdriver/support/firefox_profile.dart';
 void main() {
   group('Firefox profile', () {
     test('parse and serialize string value with quotes', () {
-      const value =
-          r'user_pref("extensions.xpiState", "{\"app-global\":{\"{972ce4c6-'
+      const value = r'user_pref("extensions.xpiState", '
+          r'"{\"app-global\":{\"{972ce4c6-'
           r'7e08-4474-a285-3208198ce6fd}\":{\"d\":\"/opt/firefox/browser/'
           r'extensions/{972ce4c6-7e08-4474-a285-3208198ce6fd}\",\"e\":true,\'
           r'"v\":\"40.0\",\"st\":1439535413000,\"mt\":1438968709000}}}");';
-      var option = PrefsOption.parse(value);
+      final option = PrefsOption.parse(value);
       expect(option, isA<StringOption>());
       expect(option.asPrefString, value);
     });
 
     test('parse and serialize string value with backslash', () {
-      const value = r'user_pref("browser.cache.disk.parent_directory", '
+      const value = 'user_pref("browser.cache.disk.parent_directory", '
           r'"\\\\volume\\web\\cache\\mz");';
-      var option = PrefsOption.parse(value);
+      final option = PrefsOption.parse(value);
       expect(option, isA<StringOption>());
       expect(option.asPrefString, value);
     });
 
     test('parse and serialize integer value', () {
-      const value = r'user_pref("browser.cache.frecency_experiment", 3);';
-      var option = PrefsOption.parse(value);
+      const value = 'user_pref("browser.cache.frecency_experiment", 3);';
+      final option = PrefsOption.parse(value);
       expect(option, isA<IntegerOption>());
       expect(option.asPrefString, value);
     });
 
     test('parse and serialize negative integer value', () {
-      const value = r'user_pref("browser.cache.frecency_experiment", -3);';
-      var option = PrefsOption.parse(value);
+      const value = 'user_pref("browser.cache.frecency_experiment", -3);';
+      final option = PrefsOption.parse(value);
       expect(option, isA<IntegerOption>());
       expect(option.asPrefString, value);
     });
 
     test('parse and serialize boolean true', () {
       const value =
-          r'user_pref("browser.cache.disk.smart_size.first_run", true);';
-      var option = PrefsOption.parse(value);
+          'user_pref("browser.cache.disk.smart_size.first_run", true);';
+      final option = PrefsOption.parse(value);
       expect(option, isA<BooleanOption>());
       expect(option.asPrefString, value);
     });
 
     test('parse and serialize boolean false', () {
       const value =
-          r'user_pref("browser.cache.disk.smart_size.first_run", false);';
-      var option = PrefsOption.parse(value);
+          'user_pref("browser.cache.disk.smart_size.first_run", false);';
+      final option = PrefsOption.parse(value);
       expect(option, isA<BooleanOption>());
       expect(option.asPrefString, value);
     });
 
     test('parse boolean uppercase True', () {
       const value =
-          r'user_pref("browser.cache.disk.smart_size.first_run", True);';
-      var option = PrefsOption.parse(value);
+          'user_pref("browser.cache.disk.smart_size.first_run", True);';
+      final option = PrefsOption.parse(value);
       expect(option, isA<BooleanOption>());
       expect(option.value, true);
     });
 
     test('added value should be in prefs', () {
-      var profile = FirefoxProfile();
-      var option =
+      final profile = FirefoxProfile();
+      final option =
           PrefsOption('browser.bookmarks.restore_default_bookmarks', false);
 
       expect(profile.setOption(option), true);
@@ -97,9 +97,9 @@ void main() {
     });
 
     test('overriding locked value should be ignored', () {
-      var profile = FirefoxProfile();
-      var lockedOption = PrefsOption('javascript.enabled', false);
-      var lockedOptionOrig =
+      final profile = FirefoxProfile();
+      final lockedOption = PrefsOption('javascript.enabled', false);
+      final lockedOptionOrig =
           profile.prefs.firstWhere((e) => e.name == lockedOption.name);
       expect(lockedOption.value, isNot(lockedOptionOrig.value));
 
@@ -111,9 +111,9 @@ void main() {
     });
 
     test('removing locked value should be ignored', () {
-      var profile = FirefoxProfile();
-      var lockedOption = PrefsOption('javascript.enabled', false);
-      var lockedOptionOrig =
+      final profile = FirefoxProfile();
+      final lockedOption = PrefsOption('javascript.enabled', false);
+      final lockedOptionOrig =
           profile.prefs.firstWhere((e) => e.name == lockedOption.name);
       expect(lockedOption.value, isNot(lockedOptionOrig.value));
 
@@ -125,20 +125,20 @@ void main() {
     });
 
     test('encode/decode "user.js" in-memory', () {
-      var profile = FirefoxProfile();
+      final profile = FirefoxProfile();
       // ignore: deprecated_member_use_from_same_package
       profile.setOption(PrefsOption(Capabilities.hasNativeEvents, true));
 
-      var archive = unpackArchiveData(profile.toJson());
+      final archive = unpackArchiveData(profile.toJson());
 
-      var expectedFiles = ['prefs.js', 'user.js'];
+      final expectedFiles = ['prefs.js', 'user.js'];
       expect(archive.files.length, greaterThanOrEqualTo(expectedFiles.length));
       expect(
         archive.files,
         anyElement((ArchiveFile f) => f.name == 'prefs.js'),
       );
 
-      var prefs = FirefoxProfile.loadPrefsFile(MockFile(
+      final prefs = FirefoxProfile.loadPrefsFile(MockFile(
         String.fromCharCodes(
           archive.files.firstWhere((f) => f.name == 'user.js').content
               as List<int>,
@@ -155,14 +155,14 @@ void main() {
     });
 
     test('encode/decode profile directory from disk', () {
-      var profile = FirefoxProfile(
+      final profile = FirefoxProfile(
           profileDirectory: io.Directory('test/support/firefox_profile'));
       // ignore: deprecated_member_use_from_same_package
       profile.setOption(PrefsOption(Capabilities.hasNativeEvents, true));
 
-      var archive = unpackArchiveData(profile.toJson());
+      final archive = unpackArchiveData(profile.toJson());
 
-      var expectedFiles = [
+      final expectedFiles = [
         'prefs.js',
         'user.js',
         'addons.js',
@@ -175,7 +175,7 @@ void main() {
         anyElement((ArchiveFile f) => f.name == 'prefs.js'),
       );
 
-      var prefs = FirefoxProfile.loadPrefsFile(
+      final prefs = FirefoxProfile.loadPrefsFile(
         MockFile(
           String.fromCharCodes(
             archive.files.firstWhere((f) => f.name == 'user.js').content
@@ -196,7 +196,7 @@ void main() {
 }
 
 Archive unpackArchiveData(Map profileData) {
-  var zipArchive = base64.decode(profileData['firefox_profile'] as String);
+  final zipArchive = base64.decode(profileData['firefox_profile'] as String);
   return ZipDecoder().decodeBytes(zipArchive, verify: true);
 }
 

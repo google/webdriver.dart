@@ -33,7 +33,7 @@ class WebElement extends common.WebElement implements SearchContext {
   final SearchContext? context;
 
   /// How the element was located from the context.
-  final dynamic /* String | Finder */ locator;
+  final Object? /* String | Finder */ locator;
 
   /// The index of this element in the set of element founds. If the method
   /// used to find this element always returns one element, then this is null.
@@ -157,12 +157,12 @@ class WebElement extends common.WebElement implements SearchContext {
   int get hashCode => driver.hashCode * 3 + id.hashCode;
 
   @override
-  bool operator ==(other) =>
+  bool operator ==(Object other) =>
       other is WebElement && other.driver == driver && other.id == id;
 
   @override
   String toString() {
-    var out = StringBuffer()..write(context);
+    final out = StringBuffer()..write(context);
     if (locator is By) {
       if (index == null) {
         out.write('.findElement(');

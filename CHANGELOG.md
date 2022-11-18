@@ -1,3 +1,8 @@
+## 3.0.2-dev
+
+* Require Dart 2.18
+* "Officially" deprecate `core.dart` and `io.dart` libraries.
+
 ## 3.0.1
 
 * Return Future with non-nullable generic from `waitFor`. The generic `T` may

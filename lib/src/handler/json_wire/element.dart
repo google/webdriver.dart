@@ -64,7 +64,7 @@ class JsonWireElementHandler extends ElementHandler {
 
   @override
   Point<int> parseLocationResponse(WebDriverResponse response) {
-    final point = parseJsonWireResponse(response);
+    final point = parseJsonWireResponse(response) as Map;
     return Point((point['x'] as num).toInt(), (point['y'] as num).toInt());
   }
 
@@ -74,7 +74,7 @@ class JsonWireElementHandler extends ElementHandler {
 
   @override
   Rectangle<int> parseSizeResponse(WebDriverResponse response) {
-    final size = parseJsonWireResponse(response);
+    final size = parseJsonWireResponse(response) as Map;
     return Rectangle<int>(
       0,
       0,

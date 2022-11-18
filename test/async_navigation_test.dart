@@ -31,7 +31,7 @@ void main() {
     });
 
     test('refresh', () async {
-      var element = await driver.findElement(const By.tagName('button'));
+      final element = await driver.findElement(const By.tagName('button'));
       await driver.refresh();
       await waitFor(() async {
         try {

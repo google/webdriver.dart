@@ -20,6 +20,6 @@ class Stepper {
   const Stepper();
 
   /// returns true if command should be executed, false if should not be executed.
-  Future<bool> step(String method, String command, params) =>
+  Future<bool> step(String method, String command, Object? params) =>
       Future.value(true);
 }

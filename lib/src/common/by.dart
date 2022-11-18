@@ -60,6 +60,6 @@ class By {
   int get hashCode => using.hashCode * 3 + value.hashCode;
 
   @override
-  bool operator ==(other) =>
+  bool operator ==(Object other) =>
       other is By && other.using == using && other.value == value;
 }

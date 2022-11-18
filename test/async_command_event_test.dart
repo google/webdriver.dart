@@ -25,7 +25,7 @@ void main() {
   group('CommandEvent', () {
     late WebDriver driver;
 
-    var events = <WebDriverCommandEvent>[];
+    final events = <WebDriverCommandEvent>[];
 
     setUp(() async {
       driver = await config.createTestDriver();

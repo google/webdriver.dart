@@ -32,8 +32,8 @@ void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
     });
 
     test('size', () {
-      var window = driver.window;
-      var windowRect = const Rectangle<int>(0, 0, 600, 400);
+      final window = driver.window;
+      const windowRect = Rectangle<int>(0, 0, 600, 400);
       window.rect = windowRect;
 
       // Firefox may take a bit longer to do the resize.
@@ -50,12 +50,12 @@ void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
 
     // May not work on some OS/browser combinations (notably Mac OS X).
     test('maximize', () {
-      var window = driver.window;
-      final windowRect = const Rectangle<int>(100, 200, 300, 300);
+      final window = driver.window;
+      const windowRect = Rectangle<int>(100, 200, 300, 300);
       window.rect = windowRect;
       window.maximize();
 
-      var finalRect = window.rect;
+      final finalRect = window.rect;
       expect(finalRect.width, greaterThan(300));
       expect(finalRect.height, greaterThan(300));
     }, skip: 'Unreliable on Travis');

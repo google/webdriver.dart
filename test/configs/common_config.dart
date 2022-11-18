@@ -25,8 +25,8 @@ final Uri _defaultFirefoxUri = Uri.parse('http://127.0.0.1:4445/');
 
 const WebDriverSpec defaultSpec = WebDriverSpec.JsonWire;
 
-final Matcher isRectangle = const TypeMatcher<Rectangle<int>>();
-final Matcher isPoint = const TypeMatcher<Point<int>>();
+const Matcher isRectangle = TypeMatcher<Rectangle<int>>();
+const Matcher isPoint = TypeMatcher<Point<int>>();
 
 Future<HttpServer> createLocalServer() =>
     HttpServer.bind(InternetAddress.anyIPv4, 0);
@@ -51,17 +51,17 @@ Map<String, dynamic> getCapabilities(WebDriverSpec spec) {
     case WebDriverSpec.W3c:
       return Capabilities.firefox;
     case WebDriverSpec.JsonWire:
-      var capabilities = Capabilities.chrome;
-      Map env = Platform.environment;
+      final capabilities = Capabilities.chrome;
+      final env = Platform.environment;
 
-      var chromeOptions = {};
+      final chromeOptions = {};
 
       if (env['CHROMEDRIVER_BINARY'] != null) {
         chromeOptions['binary'] = env['CHROMEDRIVER_BINARY'];
       }
 
       if (env['CHROMEDRIVER_ARGS'] != null) {
-        chromeOptions['args'] = env['CHROMEDRIVER_ARGS'].split(' ');
+        chromeOptions['args'] = env['CHROMEDRIVER_ARGS']!.split(' ');
       }
 
       if (chromeOptions.isNotEmpty) {

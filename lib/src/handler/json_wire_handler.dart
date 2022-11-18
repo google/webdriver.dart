@@ -58,8 +58,11 @@ class JsonWireWebDriverHandler extends WebDriverHandler {
   final LogsHandler logs = JsonWireLogsHandler();
 
   @override
-  WebDriverRequest buildGeneralRequest(HttpMethod method, String uri,
-          [params]) =>
+  WebDriverRequest buildGeneralRequest(
+    HttpMethod method,
+    String uri, [
+    Object? params,
+  ]) =>
       WebDriverRequest(
           method, uri, params == null ? null : json.encode(serialize(params)));
 

@@ -51,14 +51,14 @@ void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
     });
 
     test('moveTo coordinates/click', () {
-      var pos = button.location;
+      final pos = button.location;
       driver.mouse.moveTo(xOffset: pos.x + 5, yOffset: pos.y + 5);
       expect(mouseOnButton(), true);
     });
 
     test('moveTo absolute coordinates/click', () {
       if (driver.spec == WebDriverSpec.W3c) {
-        var pos = button.location;
+        final pos = button.location;
         driver.mouse.moveTo(xOffset: pos.x + 200, yOffset: pos.y + 200);
         expect(mouseOnButton(), false);
         driver.mouse
@@ -113,7 +113,7 @@ void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
 
     test('hide moves to given location in w3c.', () {
       if (driver.spec == WebDriverSpec.W3c) {
-        var pos = button.location;
+        final pos = button.location;
         driver.mouse.moveTo(element: button);
         expect(mouseOnButton(), true);
         driver.mouse.moveTo(xOffset: 0, yOffset: 0, absolute: true);
@@ -128,7 +128,7 @@ void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
       driver.mouse.moveTo(element: button);
       driver.mouse.down();
       driver.mouse.up();
-      var alert = driver.switchTo.alert;
+      final alert = driver.switchTo.alert;
       alert.dismiss();
     });
 
@@ -136,7 +136,7 @@ void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
     test('doubleClick', () {
       driver.mouse.moveTo(element: button);
       driver.mouse.doubleClick();
-      var alert = driver.switchTo.alert;
+      final alert = driver.switchTo.alert;
       alert.dismiss();
     });
   }, timeout: const Timeout(Duration(minutes: 2)));

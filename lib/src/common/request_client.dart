@@ -12,7 +12,7 @@ abstract class RequestClient {
   RequestClient(this._prefix);
 
   Uri resolve(String command) => _prefix.resolve(
-      command.isEmpty ? _prefix.path.replaceFirst(RegExp('/\$'), '') : command);
+      command.isEmpty ? _prefix.path.replaceFirst(RegExp(r'/$'), '') : command);
 
   @override
   String toString() => _prefix.toString();
@@ -24,7 +24,7 @@ typedef SyncWebDriverListener = void Function(WebDriverCommandEvent event);
 abstract class SyncRequestClient extends RequestClient {
   final _commandListeners = <SyncWebDriverListener>[];
 
-  SyncRequestClient(Uri prefix) : super(prefix);
+  SyncRequestClient(super.prefix);
 
   void addEventListener(SyncWebDriverListener listener) {
     _commandListeners.add(listener);
@@ -73,7 +73,7 @@ typedef AsyncWebDriverListener = Future<dynamic> Function(
 abstract class AsyncRequestClient extends RequestClient {
   final _commandListeners = <AsyncWebDriverListener>[];
 
-  AsyncRequestClient(Uri prefix) : super(prefix);
+  AsyncRequestClient(super.prefix);
 
   void addEventListener(AsyncWebDriverListener listener) {
     _commandListeners.add(listener);

@@ -58,7 +58,7 @@ class Cookies {
   int get hashCode => _client.hashCode;
 
   @override
-  bool operator ==(other) =>
+  bool operator ==(Object other) =>
       other is Cookies &&
       _handler == other._handler &&
       _client == other._client;
