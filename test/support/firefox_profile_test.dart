@@ -16,7 +16,6 @@
 @TestOn('vm')
 library webdriver.support.firefox_profile_test;
 
-
 import 'package:test/test.dart';
 import 'package:webdriver/support/firefox_profile.dart';
 
@@ -121,4 +120,3 @@ void main() {
     });
   });
 }
-
