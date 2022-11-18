@@ -16,7 +16,7 @@ import 'dart:collection';
 import 'dart:convert' show LineSplitter, base64;
 import 'dart:io' as io;
 
-import 'package:archive/archive.dart' show Archive, ArchiveFile, ZipEncoder;
+// import 'package:archive/archive.dart' show Archive, ArchiveFile, ZipEncoder;
 import 'package:path/path.dart' as path;
 
 /// Unmodifiable defaults for 'prefs.js' and 'user.js'.
@@ -210,48 +210,6 @@ class FirefoxProfile {
       prefs.add(option);
     }
     return prefs;
-  }
-
-  /// Creates a map like `{'browserName: 'firefox', 'firefox_profile': 'xxxxx'}`
-  /// where `xxxxx` is the zipped and base64 encoded content of the files in
-  /// [profileDirectory] if one was pased.
-  /// The files `prefs.js` and `user.js` are generated from the content of
-  /// `prefs` and `userPrefs`.
-  /// It can be uses like
-  /// `var desired = Capabilities.firefox..addAll(firefoxProfile.toJson()}`
-  Map<String, dynamic> toJson() {
-    final archive = Archive();
-    if (profileDirectory != null) {
-      profileDirectory!.listSync(recursive: true).forEach((f) {
-        ArchiveFile archiveFile;
-        final name = path.relative(f.path, from: profileDirectory!.path);
-        if (f is io.Directory) {
-          archiveFile = ArchiveFile('$name/', 0, <int>[]);
-        } else if (f is io.File) {
-          if (name == 'prefs.js' || name == 'user.js') {
-            return;
-          }
-          archiveFile =
-              ArchiveFile(name, f.statSync().size, f.readAsBytesSync());
-        } else {
-          throw 'Invalid file type for file "${f.path}" '
-              '(${io.FileSystemEntity.typeSync(f.path)}).';
-        }
-        archive.addFile(archiveFile);
-      });
-    }
-    final prefsJsContent =
-        prefs.map((option) => option.asPrefString).join('\n').codeUnits;
-    archive.addFile(
-        ArchiveFile('prefs.js', prefsJsContent.length, prefsJsContent));
-
-    final userJsContent =
-        userPrefs.map((option) => option.asPrefString).join('\n').codeUnits;
-    archive
-        .addFile(ArchiveFile('user.js', userJsContent.length, userJsContent));
-
-    final zipData = ZipEncoder().encode(archive)!;
-    return {'firefox_profile': base64.encode(zipData)};
   }
 }
 

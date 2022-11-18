@@ -16,12 +16,8 @@
 @TestOn('vm')
 library webdriver.support.firefox_profile_test;
 
-import 'dart:convert' show base64, Encoding, utf8;
-import 'dart:io' as io;
 
-import 'package:archive/archive.dart' show Archive, ArchiveFile, ZipDecoder;
 import 'package:test/test.dart';
-import 'package:webdriver/async_core.dart';
 import 'package:webdriver/support/firefox_profile.dart';
 
 void main() {
@@ -123,92 +119,6 @@ void main() {
       expect(profile.prefs.firstWhere((e) => e.name == lockedOption.name).value,
           lockedOptionOrig.value);
     });
-
-    test('encode/decode "user.js" in-memory', () {
-      final profile = FirefoxProfile();
-      // ignore: deprecated_member_use_from_same_package
-      profile.setOption(PrefsOption(Capabilities.hasNativeEvents, true));
-
-      final archive = unpackArchiveData(profile.toJson());
-
-      final expectedFiles = ['prefs.js', 'user.js'];
-      expect(archive.files.length, greaterThanOrEqualTo(expectedFiles.length));
-      expect(
-        archive.files,
-        anyElement((ArchiveFile f) => f.name == 'prefs.js'),
-      );
-
-      final prefs = FirefoxProfile.loadPrefsFile(MockFile(
-        String.fromCharCodes(
-          archive.files.firstWhere((f) => f.name == 'user.js').content
-              as List<int>,
-        ),
-      ));
-      expect(
-        prefs,
-        anyElement(
-          (PrefsOption o) =>
-              // ignore: deprecated_member_use_from_same_package
-              o.name == Capabilities.hasNativeEvents && o.value == true,
-        ),
-      );
-    });
-
-    test('encode/decode profile directory from disk', () {
-      final profile = FirefoxProfile(
-          profileDirectory: io.Directory('test/support/firefox_profile'));
-      // ignore: deprecated_member_use_from_same_package
-      profile.setOption(PrefsOption(Capabilities.hasNativeEvents, true));
-
-      final archive = unpackArchiveData(profile.toJson());
-
-      final expectedFiles = [
-        'prefs.js',
-        'user.js',
-        'addons.js',
-        'webapps/',
-        'webapps/webapps.json'
-      ];
-      expect(archive.files.length, greaterThanOrEqualTo(expectedFiles.length));
-      expect(
-        archive.files,
-        anyElement((ArchiveFile f) => f.name == 'prefs.js'),
-      );
-
-      final prefs = FirefoxProfile.loadPrefsFile(
-        MockFile(
-          String.fromCharCodes(
-            archive.files.firstWhere((f) => f.name == 'user.js').content
-                as List<int>,
-          ),
-        ),
-      );
-      expect(
-        prefs,
-        anyElement(
-          (PrefsOption o) =>
-              // ignore: deprecated_member_use_from_same_package
-              o.name == Capabilities.hasNativeEvents && o.value == true,
-        ),
-      );
-    });
-  }, timeout: const Timeout(Duration(minutes: 2)));
+  });
 }
 
-Archive unpackArchiveData(Map profileData) {
-  final zipArchive = base64.decode(profileData['firefox_profile'] as String);
-  return ZipDecoder().decodeBytes(zipArchive, verify: true);
-}
-
-/// Simulate file for `FirefoxProfile.loadPrefsFile()`
-class MockFile implements io.File {
-  String content;
-
-  MockFile(this.content);
-
-  @override
-  String readAsStringSync({Encoding encoding = utf8}) => content;
-
-  @override
-  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
-}

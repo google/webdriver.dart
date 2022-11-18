@@ -15,7 +15,6 @@
 import 'dart:async';
 import 'dart:convert';
 
-import '../../sync_core.dart' as sync_core;
 import '../common/by.dart';
 import '../common/command_event.dart';
 import '../common/request.dart';
@@ -24,10 +23,6 @@ import '../common/spec.dart';
 import '../common/utils.dart';
 import '../common/webdriver_handler.dart';
 import 'common.dart';
-// ignore: uri_does_not_exist
-import 'common_stub.dart'
-// ignore: uri_does_not_exist
-    if (dart.library.io) 'common_io.dart';
 import 'cookies.dart';
 import 'keyboard.dart';
 import 'logs.dart';
@@ -56,10 +51,6 @@ class WebDriver implements SearchContext {
 
   WebDriver(this.uri, this.id, this.capabilities, this._client, this.spec)
       : _handler = getHandler(spec);
-
-  /// Produces a [sync_core.WebDriver] with the same session ID. Allows
-  /// forwards compatibility with other frameworks.
-  sync_core.WebDriver get syncDriver => createSyncWebDriver(this);
 
   /// Preferred method for registering listeners. Listeners are expected to
   /// return a Future. Use new Future.value() for synchronous listeners.
