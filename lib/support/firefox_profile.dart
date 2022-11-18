@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import 'dart:collection';
-import 'dart:convert' show LineSplitter, base64;
+import 'dart:convert' show LineSplitter;
 import 'dart:io' as io;
 
 // import 'package:archive/archive.dart' show Archive, ArchiveFile, ZipEncoder;
