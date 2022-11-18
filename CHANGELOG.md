@@ -5,6 +5,8 @@
 * Treat 405 response code as an unknown command for compatibility with
   GeckoDriver.
 
+* Updates to apply new Dart 2.17 features for enums and super() constructor.
+
 ## 3.0.0
 
 * Stable release for null safety.

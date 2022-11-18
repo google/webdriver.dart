@@ -11,8 +11,7 @@ class WebDriverException implements Exception {
 
   @override
   String toString() =>
-      '$runtimeType ($statusCode): ' +
-      (message?.isEmpty != false ? '<no message>' : message!);
+      '$runtimeType ($statusCode): ${message?.isEmpty != false ? '<no message>' : message!}';
 
   @override
   bool operator ==(other) =>
@@ -26,193 +25,158 @@ class WebDriverException implements Exception {
 }
 
 class InvalidArgumentException extends WebDriverException {
-  const InvalidArgumentException(int? statusCode, String? message)
-      : super(statusCode, message);
+  const InvalidArgumentException(super.statusCode, super.message);
 }
 
 class InvalidRequestException extends WebDriverException {
-  const InvalidRequestException(int? statusCode, String? message)
-      : super(statusCode, message);
+  const InvalidRequestException(super.statusCode, super.message);
 }
 
 class InvalidResponseException extends WebDriverException {
-  const InvalidResponseException(int? statusCode, String? message)
-      : super(statusCode, message);
+  const InvalidResponseException(super.statusCode, super.message);
 }
 
 class UnknownException extends WebDriverException {
-  const UnknownException(int? statusCode, String? message)
-      : super(statusCode, message);
+  const UnknownException(super.statusCode, super.message);
 }
 
 class NoSuchDriverException extends WebDriverException {
-  const NoSuchDriverException(int? statusCode, String? message)
-      : super(statusCode, message);
+  const NoSuchDriverException(super.statusCode, super.message);
 }
 
 class NoSuchElementException extends WebDriverException {
-  const NoSuchElementException(int? statusCode, String? message)
-      : super(statusCode, message);
+  const NoSuchElementException(super.statusCode, super.message);
 }
 
 class NoSuchFrameException extends WebDriverException {
-  const NoSuchFrameException(int? statusCode, String? message)
-      : super(statusCode, message);
+  const NoSuchFrameException(super.statusCode, super.message);
 }
 
 class UnknownCommandException extends WebDriverException {
-  const UnknownCommandException(int? statusCode, String? message)
-      : super(statusCode, message);
+  const UnknownCommandException(super.statusCode, super.message);
 }
 
 class StaleElementReferenceException extends WebDriverException {
-  const StaleElementReferenceException(int? statusCode, String? message)
-      : super(statusCode, message);
+  const StaleElementReferenceException(super.statusCode, super.message);
 }
 
 class ElementNotVisibleException extends WebDriverException {
-  const ElementNotVisibleException(int? statusCode, String? message)
-      : super(statusCode, message);
+  const ElementNotVisibleException(super.statusCode, super.message);
 }
 
 class InvalidElementStateException extends WebDriverException {
-  const InvalidElementStateException(int? statusCode, String? message)
-      : super(statusCode, message);
+  const InvalidElementStateException(super.statusCode, super.message);
 }
 
 class ElementIsNotSelectableException extends WebDriverException {
-  const ElementIsNotSelectableException(int? statusCode, String? message)
-      : super(statusCode, message);
+  const ElementIsNotSelectableException(super.statusCode, super.message);
 }
 
 class JavaScriptException extends WebDriverException {
-  const JavaScriptException(int? statusCode, String? message)
-      : super(statusCode, message);
+  const JavaScriptException(super.statusCode, super.message);
 }
 
 class XPathLookupException extends WebDriverException {
-  const XPathLookupException(int? statusCode, String? message)
-      : super(statusCode, message);
+  const XPathLookupException(super.statusCode, super.message);
 }
 
 class TimeoutException extends WebDriverException {
-  const TimeoutException(int? statusCode, String? message)
-      : super(statusCode, message);
+  const TimeoutException(super.statusCode, super.message);
 }
 
 class NoSuchWindowException extends WebDriverException {
-  const NoSuchWindowException(int? statusCode, String? message)
-      : super(statusCode, message);
+  const NoSuchWindowException(super.statusCode, super.message);
 }
 
 class InvalidCookieDomainException extends WebDriverException {
-  const InvalidCookieDomainException(int? statusCode, String? message)
-      : super(statusCode, message);
+  const InvalidCookieDomainException(super.statusCode, super.message);
 }
 
 class UnableToSetCookieException extends WebDriverException {
-  const UnableToSetCookieException(int? statusCode, String? message)
-      : super(statusCode, message);
+  const UnableToSetCookieException(super.statusCode, super.message);
 }
 
 class UnexpectedAlertOpenException extends WebDriverException {
-  const UnexpectedAlertOpenException(int? statusCode, String? message)
-      : super(statusCode, message);
+  const UnexpectedAlertOpenException(super.statusCode, super.message);
 }
 
 class NoSuchAlertException extends WebDriverException {
-  const NoSuchAlertException(int? statusCode, String? message)
-      : super(statusCode, message);
+  const NoSuchAlertException(super.statusCode, super.message);
 }
 
 class ScriptTimeoutException extends WebDriverException {
-  const ScriptTimeoutException(int? statusCode, String? message)
-      : super(statusCode, message);
+  const ScriptTimeoutException(super.statusCode, super.message);
 }
 
 class InvalidElementCoordinatesException extends WebDriverException {
-  const InvalidElementCoordinatesException(int? statusCode, String? message)
-      : super(statusCode, message);
+  const InvalidElementCoordinatesException(super.statusCode, super.message);
 }
 
 class IMENotAvailableException extends WebDriverException {
-  const IMENotAvailableException(int? statusCode, String? message)
-      : super(statusCode, message);
+  const IMENotAvailableException(super.statusCode, super.message);
 }
 
 class IMEEngineActivationFailedException extends WebDriverException {
-  const IMEEngineActivationFailedException(int? statusCode, String? message)
-      : super(statusCode, message);
+  const IMEEngineActivationFailedException(super.statusCode, super.message);
 }
 
 class InvalidSelectorException extends WebDriverException {
-  const InvalidSelectorException(int? statusCode, String? message)
-      : super(statusCode, message);
+  const InvalidSelectorException(super.statusCode, super.message);
 }
 
 class SessionNotCreatedException extends WebDriverException {
-  const SessionNotCreatedException(int? statusCode, String? message)
-      : super(statusCode, message);
+  const SessionNotCreatedException(super.statusCode, super.message);
 }
 
 class MoveTargetOutOfBoundsException extends WebDriverException {
-  const MoveTargetOutOfBoundsException(int? statusCode, String? message)
-      : super(statusCode, message);
+  const MoveTargetOutOfBoundsException(super.statusCode, super.message);
 }
 
 /// The Element Click command could not be completed because the element
 /// receiving the events is obscuring the element that was requested clicked.
 class ElementClickInterceptedException extends WebDriverException {
-  const ElementClickInterceptedException(int statusCode, String? message)
-      : super(statusCode, message);
+  const ElementClickInterceptedException(super.statusCode, super.message);
 }
 
 /// A command could not be completed because the element is not pointer- or
 /// keyboard interactable.
 class ElementNotInteractableException extends WebDriverException {
-  const ElementNotInteractableException(int statusCode, String? message)
-      : super(statusCode, message);
+  const ElementNotInteractableException(super.statusCode, super.message);
 }
 
 /// Navigation caused the user agent to hit a certificate warning, which is
 /// usually the result of an expired or invalid TLS certificate.
 class InsecureCertificateException extends WebDriverException {
-  const InsecureCertificateException(int statusCode, String? message)
-      : super(statusCode, message);
+  const InsecureCertificateException(super.statusCode, super.message);
 }
 
 /// Occurs if the given session id is not in the list of active sessions,
 /// meaning the session either does not exist or that it’s not active.
 class InvalidSessionIdException extends WebDriverException {
-  const InvalidSessionIdException(int statusCode, String? message)
-      : super(statusCode, message);
+  const InvalidSessionIdException(super.statusCode, super.message);
 }
 
 /// No cookie matching the given path name was found amongst the associated
 /// cookies of the current browsing context’s active document.
 class NoSuchCookieException extends WebDriverException {
-  const NoSuchCookieException(int statusCode, String? message)
-      : super(statusCode, message);
+  const NoSuchCookieException(super.statusCode, super.message);
 }
 
 /// A screen capture was made impossible.
 class UnableToCaptureScreenException extends WebDriverException {
-  const UnableToCaptureScreenException(int statusCode, String? message)
-      : super(statusCode, message);
+  const UnableToCaptureScreenException(super.statusCode, super.message);
 }
 
 /// The requested command matched a known URL but did not match an method for
 /// that URL.
 class UnknownMethodException extends WebDriverException {
-  const UnknownMethodException(int statusCode, String? message)
-      : super(statusCode, message);
+  const UnknownMethodException(super.statusCode, super.message);
 }
 
 /// Indicates that a command that should have executed properly cannot be
 /// supported for some reason.
 class UnsupportedOperationException extends WebDriverException {
-  const UnsupportedOperationException(int statusCode, String? message)
-      : super(statusCode, message);
+  const UnsupportedOperationException(super.statusCode, super.message);
 }
 
 /// Temporary method to emulate the original json wire exception parsing logic.

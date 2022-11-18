@@ -14,9 +14,8 @@ class AsyncIoRequestClient extends AsyncRequestClient {
 
   final Lock _lock = Lock();
 
-  AsyncIoRequestClient(Uri prefix, {Map<String, String> headers = const {}})
-      : _headers = headers,
-        super(prefix);
+  AsyncIoRequestClient(super.prefix, {Map<String, String> headers = const {}})
+      : _headers = headers;
 
   @override
   Future<WebDriverResponse> sendRaw(WebDriverRequest request) async {

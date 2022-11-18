@@ -65,8 +65,7 @@ Future<WebDriver> createDriver(
       handler.session.buildCreateRequest(desired: desired),
       handler.session.parseCreateResponse);
 
-  if (session.spec != WebDriverSpec.JsonWire &&
-      session.spec != WebDriverSpec.W3c) {
+  if (!session.spec.isRecognized()) {
     throw 'Unexpected spec: ${session.spec}';
   }
 
@@ -93,8 +92,7 @@ Future<WebDriver> fromExistingSession(
   final session = await client.send(handler.session.buildInfoRequest(sessionId),
       (response) => handler.session.parseInfoResponse(response, sessionId));
 
-  if (session.spec != WebDriverSpec.JsonWire &&
-      session.spec != WebDriverSpec.W3c) {
+  if (!session.spec.isRecognized()) {
     throw 'Unexpected spec: ${session.spec}';
   }
 
@@ -119,7 +117,7 @@ WebDriver fromExistingSessionSync(
 
   capabilities ??= Capabilities.empty;
 
-  if (spec != WebDriverSpec.JsonWire && spec != WebDriverSpec.W3c) {
+  if (!spec.isRecognized()) {
     throw 'Unexpected spec: $spec';
   }
 
