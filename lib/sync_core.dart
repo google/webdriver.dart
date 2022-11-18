@@ -12,8 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-library webdriver.sync_core;
-
 import 'dart:collection' show UnmodifiableMapView;
 
 import 'src/common/request_client.dart';

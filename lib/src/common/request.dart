@@ -28,7 +28,7 @@ class WebDriverRequest {
 
   WebDriverRequest(this.method, this.uri, this.body);
 
-  WebDriverRequest.postRequest(this.uri, [params])
+  WebDriverRequest.postRequest(this.uri, [Object? params])
       : method = HttpMethod.httpPost,
         body = params == null ? '{}' : json.encode(params);
 

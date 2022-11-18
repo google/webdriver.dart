@@ -35,7 +35,7 @@ class TargetLocator {
   ///   not provided: selects the first frame on the page or the main document.
   ///
   ///   Throws [NoSuchFrameException] if the specified frame can't be found.
-  Future<void> frame([/* int | WebElement | String */ frame]) async {
+  Future<void> frame([Object? /* int | WebElement | String */ frame]) async {
     if (frame is int?) {
       await _client.send(_handler.frame.buildSwitchByIdRequest(frame),
           _handler.frame.parseSwitchByIdResponse);
@@ -75,5 +75,6 @@ class TargetLocator {
   int get hashCode => _driver.hashCode;
 
   @override
-  bool operator ==(other) => other is TargetLocator && other._driver == _driver;
+  bool operator ==(Object other) =>
+      other is TargetLocator && other._driver == _driver;
 }

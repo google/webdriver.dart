@@ -52,13 +52,13 @@ void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
 
     test('click', () {
       button.click();
-      var alert = driver.switchTo.alert;
+      final alert = driver.switchTo.alert;
       alert.accept();
     });
 
     test('submit', () {
       formSubmit.click();
-      var alert = driver.switchTo.alert;
+      final alert = driver.switchTo.alert;
       expect(alert.text, 'form submitted');
       alert.accept();
     });
@@ -95,7 +95,7 @@ void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
     });
 
     test('rect -- table', () {
-      var rect = table.rect;
+      final rect = table.rect;
       expect(rect, config.isRectangle);
       expect(rect.left, isNonNegative);
       expect(rect.top, isNonNegative);
@@ -104,7 +104,7 @@ void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
     });
 
     test('rect -- invisible', () {
-      var rect = invisible.rect;
+      final rect = invisible.rect;
       expect(rect, config.isRectangle);
       expect(rect.left, 0);
       expect(rect.top, 0);
@@ -113,28 +113,28 @@ void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
     });
 
     test('location -- table', () {
-      var location = table.location;
+      final location = table.location;
       expect(location, config.isPoint);
       expect(location.x, isNonNegative);
       expect(location.y, isNonNegative);
     });
 
     test('location -- invisible', () {
-      var location = invisible.location;
+      final location = invisible.location;
       expect(location, config.isPoint);
       expect(location.x, 0);
       expect(location.y, 0);
     });
 
     test('size -- table', () {
-      var size = table.size;
+      final size = table.size;
       expect(size, config.isRectangle);
       expect(size.width, isNonNegative);
       expect(size.height, isNonNegative);
     });
 
     test('size -- invisible', () {
-      var size = invisible.size;
+      final size = invisible.size;
       expect(size, config.isRectangle);
       expect(size.width, isNonNegative);
       expect(size.height, isNonNegative);
@@ -154,7 +154,7 @@ void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
     });
 
     test('findElement -- success', () {
-      var element = table.findElement(const By.tagName('tr'));
+      final element = table.findElement(const By.tagName('tr'));
       expect(element, config.isWebElement);
     });
 
@@ -168,20 +168,20 @@ void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
     });
 
     test('findElements -- 1 found', () {
-      var elements =
+      final elements =
           form.findElements(const By.cssSelector('input[type=text]')).toList();
       expect(elements, hasLength(1));
       expect(elements, everyElement(config.isWebElement));
     });
 
     test('findElements -- 4 found', () {
-      var elements = table.findElements(const By.tagName('td')).toList();
+      final elements = table.findElements(const By.tagName('td')).toList();
       expect(elements, hasLength(4));
       expect(elements, everyElement(config.isWebElement));
     });
 
     test('findElements -- 0 found', () {
-      var elements = form.findElements(const By.tagName('td')).toList();
+      final elements = form.findElements(const By.tagName('td')).toList();
       expect(elements, isEmpty);
     });
 
@@ -202,7 +202,7 @@ void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
 
     test('equals', () {
       expect(invisible.equals(disabled), isFalse);
-      var element = driver.findElement(const By.cssSelector('table'));
+      final element = driver.findElement(const By.cssSelector('table'));
       expect(element.equals(table), isTrue);
     });
 

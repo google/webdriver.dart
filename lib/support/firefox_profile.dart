@@ -12,8 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-library webdriver.support.firefox_profile;
-
 import 'dart:collection';
 import 'dart:convert' show LineSplitter, base64;
 import 'dart:io' as io;
@@ -222,7 +220,7 @@ class FirefoxProfile {
   /// It can be uses like
   /// `var desired = Capabilities.firefox..addAll(firefoxProfile.toJson()}`
   Map<String, dynamic> toJson() {
-    var archive = Archive();
+    final archive = Archive();
     if (profileDirectory != null) {
       profileDirectory!.listSync(recursive: true).forEach((f) {
         ArchiveFile archiveFile;
@@ -234,7 +232,7 @@ class FirefoxProfile {
             return;
           }
           archiveFile =
-              ArchiveFile(name, f.statSync().size, (f).readAsBytesSync());
+              ArchiveFile(name, f.statSync().size, f.readAsBytesSync());
         } else {
           throw 'Invalid file type for file "${f.path}" '
               '(${io.FileSystemEntity.typeSync(f.path)}).';
@@ -294,7 +292,7 @@ abstract class PrefsOption<T> {
     if (valueString.startsWith('"') && valueString.endsWith('"')) {
       final value = valueString
           .substring(1, valueString.length - 1)
-          .replaceAll(r'\"', r'"')
+          .replaceAll(r'\"', '"')
           .replaceAll(r'\\', r'\');
       return StringOption(name, value) as PrefsOption<T>;
     }
@@ -304,7 +302,7 @@ abstract class PrefsOption<T> {
       return BooleanOption(name, false) as PrefsOption<T>;
     }
     try {
-      var value = int.parse(valueString);
+      final value = int.parse(valueString);
       return IntegerOption(name, value) as PrefsOption<T>;
     } catch (_) {}
     return InvalidOption('Not a valid prefs option: "$prefs".')
@@ -340,7 +338,7 @@ class InvalidOption extends PrefsOption<String> {
 
 /// A boolean preferences option with name and value.
 class BooleanOption extends PrefsOption<bool> {
-  BooleanOption(String name, bool value) : super._(name, value);
+  BooleanOption(super.name, bool super.value) : super._();
 
   @override
   String get _valueAsPrefString => value.toString();
@@ -348,7 +346,7 @@ class BooleanOption extends PrefsOption<bool> {
 
 /// An integer preferences option with name and value.
 class IntegerOption extends PrefsOption<int> {
-  IntegerOption(String name, int value) : super._(name, value);
+  IntegerOption(super.name, int super.value) : super._();
 
   @override
   String get _valueAsPrefString => value.toString();
@@ -357,7 +355,7 @@ class IntegerOption extends PrefsOption<int> {
 /// A String preferences option with name and value.
 /// [_valueAsPrefString] escapes `"` as `\"` and `\` as `\\`.
 class StringOption extends PrefsOption<String> {
-  StringOption(String name, String value) : super._(name, value);
+  StringOption(super.name, String super.value) : super._();
 
   static String _escape(String value) =>
       value.replaceAll(r'\', r'\\').replaceAll('"', r'\"');

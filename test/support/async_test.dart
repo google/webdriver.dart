@@ -22,7 +22,7 @@ import 'package:webdriver/support/async.dart';
 void main() {
   group('Lock', () {
     test('basic acquire/release', () async {
-      var lock = Lock();
+      final lock = Lock();
       expect(lock.isHeld, isFalse);
       await lock.acquire();
       expect(lock.isHeld, isTrue);
@@ -34,12 +34,12 @@ void main() {
     });
 
     test('release without acquiring fails', () {
-      var lock = Lock();
-      expect(() => lock.release(), throwsA(isA<StateError>()));
+      final lock = Lock();
+      expect(lock.release, throwsA(isA<StateError>()));
     });
 
     test('locking prevents acquisition of lock', () async {
-      var lock = Lock();
+      final lock = Lock();
       var secondLockAcquired = false;
       await lock.acquire();
       unawaited(lock.acquire().then((_) => secondLockAcquired = true));
@@ -53,7 +53,7 @@ void main() {
     });
 
     test('awaitChecking throws exception on acquire of held lock', () async {
-      var lock = Lock(awaitChecking: true);
+      final lock = Lock(awaitChecking: true);
       await lock.acquire();
       expect(lock.acquire(), throwsA(anything));
       lock.release();
@@ -63,11 +63,11 @@ void main() {
   });
 
   group('Clock.waitFor', () {
-    var clock = FakeClock();
+    final clock = FakeClock();
 
     test('that returns a string', () async {
       var count = 0;
-      var result = await clock.waitFor(() {
+      final result = await clock.waitFor(() {
         if (count == 2) return 'webdriver - Google Search';
         count++;
         return count;
@@ -78,7 +78,7 @@ void main() {
 
     test('that returns null', () async {
       var count = 0;
-      var result = await clock.waitFor(() {
+      final result = await clock.waitFor(() {
         if (count == 2) return null;
         count++;
         return count;
@@ -88,7 +88,7 @@ void main() {
 
     test('that returns false', () async {
       var count = 0;
-      var result = await clock.waitFor(() {
+      final result = await clock.waitFor(() {
         if (count == 2) return false;
         count++;
         return count;
@@ -98,7 +98,7 @@ void main() {
 
     test('that returns a string, default matcher', () async {
       var count = 0;
-      var result = await clock.waitFor(() {
+      final result = await clock.waitFor(() {
         if (count == 2) return 'Google';
         count++;
         throw '';
@@ -128,7 +128,7 @@ void main() {
     });
 
     test('uses Future value', () async {
-      var result = await clock.waitFor(() => Future.value('a value'),
+      final result = await clock.waitFor(() => Future.value('a value'),
           matcher: 'a value');
       expect(result, 'a value');
     });
@@ -145,9 +145,9 @@ void main() {
     });
 
     test('sanity test with real Clock -- successful', () async {
-      var clock = const Clock();
+      const clock = Clock();
       var count = 0;
-      var result = await clock.waitFor(() {
+      final result = await clock.waitFor(() {
         if (count < 2) {
           count++;
           return null;
@@ -159,7 +159,7 @@ void main() {
     });
 
     test('sanity test with real Clock -- throws', () async {
-      var clock = const Clock();
+      const clock = Clock();
       Object? exception;
       try {
         await clock.waitFor(() => throw 'an exception');
@@ -170,7 +170,7 @@ void main() {
     });
 
     test('sanity test with real Clock -- never matches', () async {
-      var clock = const Clock();
+      const clock = Clock();
       Object? exception;
       try {
         await clock.waitFor(() => null, matcher: isNotNull);

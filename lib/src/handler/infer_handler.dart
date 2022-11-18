@@ -64,8 +64,11 @@ class InferWebDriverHandler extends WebDriverHandler {
       throw UnsupportedError('Unsupported for InferHandler');
 
   @override
-  WebDriverRequest buildGeneralRequest(HttpMethod method, String uri,
-          [params]) =>
+  WebDriverRequest buildGeneralRequest(
+    HttpMethod method,
+    String uri, [
+    Object? params,
+  ]) =>
       throw UnsupportedError('Unsupported for InferHandler');
 
   @override
@@ -122,9 +125,8 @@ class InferSessionHandler extends SessionHandler {
       try {
         body = json.decode(response.body!)['value'] as Map<String, dynamic>?;
       } catch (e) {
-        final rawBody = response.body?.isEmpty != false
-            ? '<empty response>'
-            : response.body;
+        final rawBody =
+            response.body?.isEmpty ?? true ? '<empty response>' : response.body;
         throw WebDriverException(
           response.statusCode,
           'Error parsing response body: $rawBody',

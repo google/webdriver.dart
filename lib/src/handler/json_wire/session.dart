@@ -24,7 +24,7 @@ class JsonWireSessionHandler extends SessionHandler {
   @override
   SessionInfo parseInfoResponse(WebDriverResponse response,
       [String? sessionId]) {
-    final session = parseJsonWireResponse(response, valueOnly: false);
+    final session = parseJsonWireResponse(response, valueOnly: false) as Map;
     return SessionInfo(
       session['sessionId'] as String,
       WebDriverSpec.JsonWire,

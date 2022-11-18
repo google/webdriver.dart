@@ -8,7 +8,7 @@ import '../../common/web_element.dart';
 /// Source: https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol
 const String jsonWireElementStr = 'ELEMENT';
 
-dynamic parseJsonWireResponse(WebDriverResponse response,
+Object? parseJsonWireResponse(WebDriverResponse response,
     {bool valueOnly = true}) {
   final statusCode = response.statusCode!;
   Map<String, dynamic> responseBody;
@@ -103,7 +103,7 @@ String elementPrefix(String? elementId) =>
 /// Deserializes json object returned by WebDriver server.
 ///
 /// Mainly it handles the element object rebuild.
-dynamic deserialize(result, dynamic Function(String) createElement) {
+Object? deserialize(Object? result, dynamic Function(String) createElement) {
   if (result is Map) {
     if (result.containsKey(jsonWireElementStr)) {
       return createElement(result[jsonWireElementStr] as String);
@@ -121,22 +121,19 @@ dynamic deserialize(result, dynamic Function(String) createElement) {
   }
 }
 
-dynamic serialize(dynamic obj) {
+Object? serialize(dynamic obj) {
   if (obj is WebElement) {
     return {jsonWireElementStr: obj.id};
   }
 
   if (obj is Map) {
-    final newResult = <String, dynamic>{};
-    for (final item in obj.entries) {
-      newResult[item.key as String] = serialize(item.value);
-    }
-
-    return newResult;
+    return <String, dynamic>{
+      for (var item in obj.entries) item.key as String: serialize(item.value),
+    };
   }
 
   if (obj is List) {
-    return obj.map(serialize).toList();
+    return [for (var item in obj) serialize(item)];
   }
 
   return obj;

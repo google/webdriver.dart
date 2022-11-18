@@ -44,7 +44,8 @@ abstract class WebDriverHandler {
   LogsHandler get logs;
 
   /// Builds general request to send to web driver server.
-  WebDriverRequest buildGeneralRequest(HttpMethod method, String uri, [params]);
+  WebDriverRequest buildGeneralRequest(HttpMethod method, String uri,
+      [Object? params]);
 
   /// Parses general response got from web driver server.
   dynamic parseGeneralResponse(

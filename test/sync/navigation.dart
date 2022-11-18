@@ -30,7 +30,7 @@ void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
     });
 
     test('refresh', () async {
-      var element = driver.findElement(const By.tagName('button'));
+      final element = driver.findElement(const By.tagName('button'));
       // TODO(b/140553567): Use sync driver when we have a separate server.
       await driver.asyncDriver.refresh();
       try {

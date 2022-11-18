@@ -12,8 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-library webdriver.html;
-
 import 'dart:async' show Future;
 
 import 'async_core.dart' as core
@@ -53,8 +51,7 @@ Future<core.WebDriver> createDriver(
 /// last path component will be dropped.
 Future<core.WebDriver> fromExistingSession(String sessionId,
         {Uri? uri, WebDriverSpec spec = WebDriverSpec.Auto}) =>
-    core.fromExistingSession(
-        (prefix) => AsyncXhrRequestClient(prefix), sessionId,
+    core.fromExistingSession(AsyncXhrRequestClient.new, sessionId,
         uri: uri, spec: spec);
 
 /// Creates an async WebDriver from existing session with a sync function using
@@ -70,6 +67,5 @@ Future<core.WebDriver> fromExistingSession(String sessionId,
 /// last path component will be dropped.
 core.WebDriver fromExistingSessionSync(String sessionId, WebDriverSpec spec,
         {Uri? uri, Map<String, dynamic>? capabilities}) =>
-    core.fromExistingSessionSync(
-        (prefix) => AsyncXhrRequestClient(prefix), sessionId, spec,
+    core.fromExistingSessionSync(AsyncXhrRequestClient.new, sessionId, spec,
         uri: uri, capabilities: capabilities);

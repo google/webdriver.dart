@@ -24,7 +24,7 @@ import 'common_config.dart';
 
 export 'common_config.dart';
 
-final Matcher isWebElement = const TypeMatcher<WebElement>();
+const Matcher isWebElement = TypeMatcher<WebElement>();
 
 Future<WebDriver> createTestDriver({
   Map<String, dynamic>? additionalCapabilities,
@@ -52,8 +52,8 @@ Future<void> createTestServerAndGoToTestPage(WebDriver driver) async {
   final server = await createLocalServer();
   server.listen((request) {
     if (request.method == 'GET' && request.uri.path.endsWith('.html')) {
-      var testPagePath = '$testHomePath${request.uri.path}';
-      var file = File(testPagePath);
+      final testPagePath = '$testHomePath${request.uri.path}';
+      final file = File(testPagePath);
       if (file.existsSync()) {
         request.response
           ..statusCode = HttpStatus.ok

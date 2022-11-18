@@ -45,28 +45,28 @@ void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
 
     test('text', () {
       button.click();
-      var alert = driver.switchTo.alert;
+      final alert = driver.switchTo.alert;
       expect(alert.text, 'button clicked');
       alert.dismiss();
     });
 
     test('accept', () {
       button.click();
-      var alert = driver.switchTo.alert;
+      final alert = driver.switchTo.alert;
       alert.accept();
       expect(output.text, startsWith('accepted'));
     });
 
     test('dismiss', () {
       button.click();
-      var alert = driver.switchTo.alert;
+      final alert = driver.switchTo.alert;
       alert.dismiss();
       expect(output.text, startsWith('dismissed'));
     });
 
     test('sendKeys', () {
       button.click();
-      var alert = driver.switchTo.alert;
+      final alert = driver.switchTo.alert;
       alert.sendKeys('some keys');
       alert.accept();
       expect(output.text, endsWith('some keys'));

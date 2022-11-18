@@ -25,7 +25,7 @@ void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
   group('CommandEvent', () {
     late WebDriver driver;
 
-    var events = <WebDriverCommandEvent>[];
+    final events = <WebDriverCommandEvent>[];
 
     setUp(() async {
       driver = config.createTestDriver(spec: spec);

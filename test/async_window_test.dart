@@ -33,8 +33,8 @@ void main() {
     });
 
     test('size', () async {
-      var window = await driver.window;
-      var size = const Rectangle<int>(0, 0, 600, 400);
+      final window = await driver.window;
+      const size = Rectangle<int>(0, 0, 600, 400);
 
       // Firefox may take a bit longer to do the resize.
       await Future.delayed(const Duration(seconds: 1));
@@ -43,15 +43,15 @@ void main() {
     });
 
     test('location', () async {
-      var window = await driver.window;
-      var position = const Point<int>(100, 200);
+      final window = await driver.window;
+      const position = Point<int>(100, 200);
       await window.setLocation(position);
       expect(await window.location, position);
     });
 
     // May not work on some OS/browser combinations (notably Mac OS X).
     test('maximize', () async {
-      var window = await driver.window;
+      final window = await driver.window;
       await window.setSize(const Rectangle<int>(0, 0, 300, 200));
       await window.setLocation(const Point<int>(100, 200));
       await window.maximize();
@@ -60,8 +60,8 @@ void main() {
       await waitFor(() async => (await window.size).height,
           matcher: greaterThan(200));
 
-      var location = await window.location;
-      var size = await window.size;
+      final location = await window.location;
+      final size = await window.size;
       // Changed from `lessThan(100)` to pass the test on Mac.
       expect(location.x, lessThanOrEqualTo(100));
       expect(location.y, lessThan(200));

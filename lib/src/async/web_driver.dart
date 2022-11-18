@@ -74,7 +74,7 @@ class WebDriver implements SearchContext {
       _handler.core.parseCurrentUrlResponse);
 
   /// Navigates to the specified url
-  Future<void> get(/* Uri | String */ url) => _client.send(
+  Future<void> get(Object /* Uri | String */ url) => _client.send(
       _handler.navigation.buildNavigateToRequest(
         (url is Uri) ? url.toString() : url as String,
       ),
@@ -200,13 +200,13 @@ class WebDriver implements SearchContext {
 
   /// Take a screenshot of the current page as PNG as list of uint8.
   Future<List<int>> captureScreenshotAsList() async {
-    var base64Encoded = captureScreenshotAsBase64();
+    final base64Encoded = captureScreenshotAsBase64();
     return base64.decode(await base64Encoded);
   }
 
   /// Take a screenshot of the specified element as PNG as list of uint8.
   Future<List<int>> captureElementScreenshotAsList(WebElement element) async {
-    var base64Encoded = captureElementScreenshotAsBase64(element);
+    final base64Encoded = captureElementScreenshotAsBase64(element);
     return base64.decode(await base64Encoded);
   }
 
@@ -263,7 +263,7 @@ class WebDriver implements SearchContext {
         ),
       );
 
-  Future<dynamic> postRequest(String command, [params]) => _client.send(
+  Future<dynamic> postRequest(String command, [Object? params]) => _client.send(
         _handler.buildGeneralRequest(HttpMethod.httpPost, command, params),
         (response) => _handler.parseGeneralResponse(
           response,
@@ -290,7 +290,7 @@ class WebDriver implements SearchContext {
   WebElement getElement(
     String elementId, [
     SearchContext? context,
-    locator,
+    Object? locator,
     int? index,
   ]) =>
       WebElement(this, _client, _handler, elementId, context, locator, index);

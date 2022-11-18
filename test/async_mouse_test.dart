@@ -54,7 +54,7 @@ void main() {
     });
 
     test('moveTo coordinates/click', () async {
-      var pos = await button.location;
+      final pos = await button.location;
       await driver.mouse.moveTo(xOffset: pos.x + 5, yOffset: pos.y + 5);
       expect(await mouseOnButton(), true);
     });
@@ -94,7 +94,7 @@ void main() {
 
     test('hide moves to given location in w3c.', () async {
       if (driver.spec == WebDriverSpec.W3c) {
-        var pos = await button.location;
+        final pos = await button.location;
         await driver.mouse.moveTo(element: button);
         expect(await mouseOnButton(), true);
         await driver.mouse.moveTo(xOffset: 0, yOffset: 0, absolute: true);

@@ -15,7 +15,6 @@
 import '../common/by.dart';
 import '../common/request_client.dart';
 import '../common/webdriver_handler.dart';
-
 import 'alert.dart';
 import 'web_driver.dart';
 import 'web_element.dart';
@@ -38,7 +37,7 @@ class TargetLocator {
   ///   not provided: selects the first frame on the page or the main document.
   ///
   ///   Throws [NoSuchFrameException] if the specified frame can't be found.
-  void frame([/* int | WebElement | String */ frame]) {
+  void frame([Object? /* int | WebElement | String */ frame]) {
     if (frame is int?) {
       _client.send(_handler.frame.buildSwitchByIdRequest(frame),
           _handler.frame.parseSwitchByIdResponse);
@@ -82,5 +81,6 @@ class TargetLocator {
   int get hashCode => _driver.hashCode;
 
   @override
-  bool operator ==(other) => other is TargetLocator && other._driver == _driver;
+  bool operator ==(Object other) =>
+      other is TargetLocator && other._driver == _driver;
 }

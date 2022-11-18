@@ -127,6 +127,6 @@ class Mouse {
   int get hashCode => _client.hashCode;
 
   @override
-  bool operator ==(other) =>
+  bool operator ==(Object other) =>
       other is Mouse && _handler == other._handler && _client == other._client;
 }

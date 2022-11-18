@@ -90,7 +90,7 @@ class WebElement extends common.WebElement implements SearchContext {
     WebElement? p = this;
     final result = <String>[];
     while (p != null) {
-      var id = p.id;
+      final id = p.id;
       if (_parentCache.containsKey(id)) {
         break;
       }
@@ -218,7 +218,7 @@ class WebElement extends common.WebElement implements SearchContext {
   int get hashCode => driver.hashCode * 3 + id.hashCode;
 
   @override
-  bool operator ==(other) =>
+  bool operator ==(Object other) =>
       other is WebElement && other.driver == driver && other.id == id;
 
   @override

@@ -38,7 +38,7 @@ void main() {
     }, tags: ['ff']);
 
     test('firefox work', () async {
-      driver = config.createTestDriver(spec: WebDriverSpec.JsonWire);
+      driver = config.createTestDriver();
       await config.createTestServerAndGoToTestPage(driver);
       final button = driver.findElement(const By.tagName('button'));
       try {

@@ -45,7 +45,7 @@ class Timeouts {
   int get hashCode => _client.hashCode;
 
   @override
-  bool operator ==(other) =>
+  bool operator ==(Object other) =>
       other is Timeouts &&
       _handler == other._handler &&
       _client == other._client;

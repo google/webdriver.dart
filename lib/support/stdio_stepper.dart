@@ -12,8 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-library webdriver.support.stdio_stepper;
-
 import 'dart:async' show StreamController;
 import 'dart:convert' show Encoding, json;
 import 'dart:io' show exit, Stdin, stdin, systemEncoding;
@@ -35,7 +33,7 @@ class StdioStepper implements Stepper {
   StdioStepper({LineReader? reader}) : _reader = reader ?? stdinLineReader;
 
   @override
-  Future<bool> step(String method, String command, params) async {
+  Future<bool> step(String method, String command, Object? params) async {
     if (!enabled) return true;
     print('$method $command(${json.encode(params)}):');
     await for (String command in _reader.onLine) {

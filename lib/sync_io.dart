@@ -12,10 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-library webdriver.sync_io;
-
 import 'src/request/sync_http_request_client.dart';
-
 import 'sync_core.dart' as core
     show createDriver, fromExistingSession, WebDriver, WebDriverSpec;
 
@@ -54,6 +51,5 @@ core.WebDriver fromExistingSession(String sessionId,
         {Uri? uri,
         core.WebDriverSpec spec = core.WebDriverSpec.Auto,
         Map<String, dynamic>? capabilities}) =>
-    core.fromExistingSession(
-        sessionId, (prefix) => SyncHttpRequestClient(prefix),
+    core.fromExistingSession(sessionId, SyncHttpRequestClient.new,
         uri: uri, spec: spec, capabilities: capabilities);

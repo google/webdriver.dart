@@ -12,8 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-library webdriver.io;
+@Deprecated("Use 'package:webdriver/async_io.dart' instead.")
+library io;
 
 /// Consider this file as deprecated. This exists as an alias to async_io.dart
 /// for backward compatibility.
-export 'package:webdriver/async_io.dart';
+export 'async_io.dart';

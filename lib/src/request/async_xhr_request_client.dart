@@ -13,9 +13,8 @@ class AsyncXhrRequestClient extends AsyncRequestClient {
   final Lock _lock = Lock();
   final Map<String, String> _headers;
 
-  AsyncXhrRequestClient(Uri prefix, {Map<String, String> headers = const {}})
-      : _headers = headers,
-        super(prefix);
+  AsyncXhrRequestClient(super.prefix, {Map<String, String> headers = const {}})
+      : _headers = headers;
 
   @override
   Future<WebDriverResponse> sendRaw(WebDriverRequest request) async {

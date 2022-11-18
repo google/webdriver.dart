@@ -58,8 +58,11 @@ class W3cWebDriverHandler extends WebDriverHandler {
   LogsHandler get logs => W3cLogsHandler();
 
   @override
-  WebDriverRequest buildGeneralRequest(HttpMethod method, String uri,
-          [params]) =>
+  WebDriverRequest buildGeneralRequest(
+    HttpMethod method,
+    String uri, [
+    Object? params,
+  ]) =>
       WebDriverRequest(
           method, uri, params == null ? null : json.encode(serialize(params)));
 

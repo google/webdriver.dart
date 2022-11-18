@@ -12,11 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-library webdriver.support.async;
-
 import 'dart:async' show Completer, FutureOr;
 
 import 'package:matcher/matcher.dart' as m;
+import 'package:matcher/matcher.dart';
 import 'package:stack_trace/stack_trace.dart' show Chain;
 
 const defaultInterval = Duration(milliseconds: 500);
@@ -25,7 +24,7 @@ const defaultTimeout = Duration(seconds: 5);
 const clock = Clock();
 
 Future<T> waitFor<T>(FutureOr<T> Function() condition,
-        {matcher,
+        {Matcher? matcher,
         Duration timeout = defaultTimeout,
         Duration interval = defaultInterval}) =>
     clock.waitFor<T>(condition,
@@ -50,14 +49,14 @@ class Clock {
   /// rethrown. If [condition] doesn't throw then an [expect] exception is
   /// thrown.
   Future<T> waitFor<T>(FutureOr<T> Function() condition,
-      {matcher,
+      {Object? matcher,
       Duration timeout = defaultTimeout,
       Duration interval = defaultInterval}) async {
-    var mMatcher = matcher == null ? null : m.wrapMatcher(matcher);
-    var endTime = now.add(timeout);
+    final mMatcher = matcher == null ? null : m.wrapMatcher(matcher);
+    final endTime = now.add(timeout);
     while (true) {
       try {
-        var value = await condition();
+        final value = await condition();
         if (mMatcher != null) {
           _matcherExpect(value, mMatcher);
         }
@@ -73,12 +72,12 @@ class Clock {
   }
 }
 
-void _matcherExpect(value, m.Matcher matcher) {
-  var matchState = {};
+void _matcherExpect(Object? value, m.Matcher matcher) {
+  final matchState = {};
   if (matcher.matches(value, matchState)) {
     return;
   }
-  var desc = m.StringDescription()
+  final desc = m.StringDescription()
     ..add('Expected: ')
     ..addDescriptionOf(matcher)
     ..add('\n')
@@ -86,7 +85,7 @@ void _matcherExpect(value, m.Matcher matcher) {
     ..addDescriptionOf(value)
     ..add('\n');
 
-  var mismatchDescription = m.StringDescription();
+  final mismatchDescription = m.StringDescription();
   matcher.describeMismatch(value, mismatchDescription, matchState, true);
   if (mismatchDescription.length > 0) {
     desc.add('   Which: $mismatchDescription\n');
