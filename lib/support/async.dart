@@ -15,7 +15,6 @@
 import 'dart:async' show Completer, FutureOr;
 
 import 'package:matcher/matcher.dart' as m;
-import 'package:matcher/matcher.dart';
 import 'package:stack_trace/stack_trace.dart' show Chain;
 
 const defaultInterval = Duration(milliseconds: 500);
@@ -24,7 +23,7 @@ const defaultTimeout = Duration(seconds: 5);
 const clock = Clock();
 
 Future<T> waitFor<T>(FutureOr<T> Function() condition,
-        {Matcher? matcher,
+        {Object? matcher,
         Duration timeout = defaultTimeout,
         Duration interval = defaultInterval}) =>
     clock.waitFor<T>(condition,
