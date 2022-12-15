@@ -19,9 +19,9 @@ library webdriver.support.firefox_profile_test;
 import 'dart:convert' show base64, Encoding, utf8;
 import 'dart:io' as io;
 
-import 'package:archive/archive.dart' show Archive, ArchiveFile, ZipDecoder;
 import 'package:test/test.dart';
 import 'package:webdriver/async_core.dart';
+import 'package:webdriver/src/common/zip.dart';
 import 'package:webdriver/support/firefox_profile.dart';
 
 void main() {
@@ -140,8 +140,7 @@ void main() {
 
       final prefs = FirefoxProfile.loadPrefsFile(MockFile(
         String.fromCharCodes(
-          archive.files.firstWhere((f) => f.name == 'user.js').content
-              as List<int>,
+          archive.files.firstWhere((f) => f.name == 'user.js').content,
         ),
       ));
       expect(
@@ -166,7 +165,6 @@ void main() {
         'prefs.js',
         'user.js',
         'addons.js',
-        'webapps/',
         'webapps/webapps.json'
       ];
       expect(archive.files.length, greaterThanOrEqualTo(expectedFiles.length));
@@ -178,8 +176,7 @@ void main() {
       final prefs = FirefoxProfile.loadPrefsFile(
         MockFile(
           String.fromCharCodes(
-            archive.files.firstWhere((f) => f.name == 'user.js').content
-                as List<int>,
+            archive.files.firstWhere((f) => f.name == 'user.js').content,
           ),
         ),
       );
@@ -196,8 +193,8 @@ void main() {
 }
 
 Archive unpackArchiveData(Map profileData) {
-  final zipArchive = base64.decode(profileData['firefox_profile'] as String);
-  return ZipDecoder().decodeBytes(zipArchive, verify: true);
+  final zipData = base64.decode(profileData['firefox_profile'] as String);
+  return ZipDecoder.decodeBytes(zipData);
 }
 
 /// Simulate file for `FirefoxProfile.loadPrefsFile()`
