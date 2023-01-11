@@ -16,8 +16,9 @@ import 'dart:collection';
 import 'dart:convert' show LineSplitter, base64;
 import 'dart:io' as io;
 
-import 'package:archive/archive.dart' show Archive, ArchiveFile, ZipEncoder;
 import 'package:path/path.dart' as path;
+
+import '../src/common/zip.dart';
 
 /// Unmodifiable defaults for 'prefs.js' and 'user.js'.
 final List<PrefsOption> lockedPrefs = <PrefsOption>[
@@ -221,36 +222,29 @@ class FirefoxProfile {
   /// `var desired = Capabilities.firefox..addAll(firefoxProfile.toJson()}`
   Map<String, dynamic> toJson() {
     final archive = Archive();
-    if (profileDirectory != null) {
-      profileDirectory!.listSync(recursive: true).forEach((f) {
-        ArchiveFile archiveFile;
-        final name = path.relative(f.path, from: profileDirectory!.path);
-        if (f is io.Directory) {
-          archiveFile = ArchiveFile('$name/', 0, <int>[]);
-        } else if (f is io.File) {
-          if (name == 'prefs.js' || name == 'user.js') {
-            return;
-          }
-          archiveFile =
-              ArchiveFile(name, f.statSync().size, f.readAsBytesSync());
-        } else {
-          throw 'Invalid file type for file "${f.path}" '
-              '(${io.FileSystemEntity.typeSync(f.path)}).';
+    final dir = profileDirectory;
+
+    if (dir != null) {
+      final files = dir.listSync(recursive: true).whereType<io.File>();
+
+      for (var file in files) {
+        final name = path.relative(file.path, from: dir.path);
+        if (name == 'prefs.js' || name == 'user.js') {
+          continue;
         }
-        archive.addFile(archiveFile);
-      });
+        archive.addFile(ArchiveFile(name, file.readAsBytesSync()));
+      }
     }
+
     final prefsJsContent =
         prefs.map((option) => option.asPrefString).join('\n').codeUnits;
-    archive.addFile(
-        ArchiveFile('prefs.js', prefsJsContent.length, prefsJsContent));
+    archive.addFile(ArchiveFile('prefs.js', prefsJsContent));
 
     final userJsContent =
         userPrefs.map((option) => option.asPrefString).join('\n').codeUnits;
-    archive
-        .addFile(ArchiveFile('user.js', userJsContent.length, userJsContent));
+    archive.addFile(ArchiveFile('user.js', userJsContent));
 
-    final zipData = ZipEncoder().encode(archive)!;
+    final zipData = ZipEncoder.encode(archive);
     return {'firefox_profile': base64.encode(zipData)};
   }
 }

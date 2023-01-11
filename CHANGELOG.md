@@ -2,6 +2,7 @@
 
 * Require Dart 2.18
 * "Officially" deprecate `core.dart` and `io.dart` libraries.
+* Remove the dependecy on `package:archive`.
 
 ## 3.0.1
 
