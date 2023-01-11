@@ -122,75 +122,7 @@ class ZipEncoder {
   }
 }
 
-/// Decodes a byte stream into an [Archive]. This is only intended for round-
-/// tripping the [ZipEncoder] class for testing purposes - it is not intended
-/// for general-purpose zip decoding.
-///
-/// visible-for-testing
-class ZipDecoder {
-  ZipDecoder._();
-
-  static Archive decodeBytes(List<int> zipData) {
-    final data = Uint8List.fromList(zipData).buffer.asByteData();
-    final archive = Archive();
-
-    // read the end of central directory record
-    int? directoryStart;
-
-    for (var i = data.lengthInBytes - 22; i > 0; i--) {
-      if (data.getUint32(i, Endian.little) == 0x06054b50) {
-        directoryStart = i;
-        break;
-      }
-    }
-
-    if (directoryStart == null) {
-      throw 'end of central directory record not found';
-    }
-
-    final fileCount = data.getUint16(directoryStart + 10, Endian.little);
-    final directoryOffset = data.getUint32(directoryStart + 16, Endian.little);
-
-    var offset = directoryOffset;
-
-    // read the central directory file headers
-    for (var i = 0; i < fileCount; i++) {
-      final compressionMethod = data.getUint16(offset + 10, Endian.little);
-      final compressedSize = data.getUint32(offset + 20, Endian.little);
-      final filenameLength = data.getUint16(offset + 28, Endian.little);
-      final extraFieldLength = data.getUint16(offset + 30, Endian.little);
-      final fileCommentLength = data.getUint16(offset + 32, Endian.little);
-      final fileHeaderOffset = data.getUint16(offset + 42, Endian.little);
-
-      if (compressionMethod != 0) {
-        throw 'unhandled compression method: $compressionMethod';
-      }
-
-      final filename =
-          utf8.decode(data.buffer.asUint8List(offset + 46, filenameLength));
-      final contents = _readFileData(data, fileHeaderOffset, compressedSize);
-
-      offset += 46 + filenameLength + extraFieldLength + fileCommentLength;
-
-      archive.addFile(ArchiveFile(filename, contents));
-    }
-
-    return archive;
-  }
-
-  static Uint8List _readFileData(
-      ByteData data, int offset, int compressedSize) {
-    final filenameLength = data.getUint16(offset + 26, Endian.little);
-    final extraFieldLength = data.getUint16(offset + 28, Endian.little);
-
-    return data.buffer.asUint8List(
-      offset + 30 + filenameLength + extraFieldLength,
-      compressedSize,
-    );
-  }
-}
-
-extension IntWriter on BytesBuilder {
+extension _IntWriter on BytesBuilder {
   void addUInt16(int value) {
     addByte(value & 0xFF);
     addByte((value >> 8) & 0xFF);

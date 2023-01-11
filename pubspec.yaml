@@ -15,5 +15,6 @@ dependencies:
   sync_http: ^0.3.0
 
 dev_dependencies:
+  archive: ^3.3.0
   lints: ^2.0.0
   test: ^1.16.0

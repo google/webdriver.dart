@@ -95,8 +95,8 @@ void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
       });
 
       test('close/windows', () {
-        final numHandles = (driver.windows.toList()).length;
-        (driver.findElement(const By.partialLinkText('Open copy'))).click();
+        final numHandles = driver.windows.toList().length;
+        driver.findElement(const By.partialLinkText('Open copy')).click();
         sleep(const Duration(milliseconds: 500)); // Bit slow on Firefox.
         expect(driver.windows.toList(), hasLength(numHandles + 1));
         driver.window.close();
@@ -107,7 +107,7 @@ void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
         final orig = driver.window;
         Window? next;
 
-        (driver.findElement(const By.partialLinkText('Open copy'))).click();
+        driver.findElement(const By.partialLinkText('Open copy')).click();
         sleep(const Duration(milliseconds: 500)); // Bit slow on Firefox.
         for (final window in driver.windows) {
           if (window != orig) {
@@ -123,7 +123,7 @@ void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
       test('activeElement', () {
         var element = driver.activeElement!;
         expect(element.name, 'body');
-        (driver.findElement(const By.cssSelector('input[type=text]'))).click();
+        driver.findElement(const By.cssSelector('input[type=text]')).click();
         element = driver.activeElement!;
         expect(element.name, 'input');
       });

@@ -19,9 +19,9 @@ library webdriver.support.firefox_profile_test;
 import 'dart:convert' show base64, Encoding, utf8;
 import 'dart:io' as io;
 
+import 'package:archive/archive_io.dart' as archive;
 import 'package:test/test.dart';
 import 'package:webdriver/async_core.dart';
-import 'package:webdriver/src/common/zip.dart';
 import 'package:webdriver/support/firefox_profile.dart';
 
 void main() {
@@ -129,18 +129,20 @@ void main() {
       // ignore: deprecated_member_use_from_same_package
       profile.setOption(PrefsOption(Capabilities.hasNativeEvents, true));
 
-      final archive = unpackArchiveData(profile.toJson());
+      final zipArchive = unpackArchiveData(profile.toJson());
 
       final expectedFiles = ['prefs.js', 'user.js'];
-      expect(archive.files.length, greaterThanOrEqualTo(expectedFiles.length));
       expect(
-        archive.files,
-        anyElement((ArchiveFile f) => f.name == 'prefs.js'),
+          zipArchive.files.length, greaterThanOrEqualTo(expectedFiles.length));
+      expect(
+        zipArchive.files,
+        anyElement((archive.ArchiveFile f) => f.name == 'prefs.js'),
       );
 
       final prefs = FirefoxProfile.loadPrefsFile(MockFile(
         String.fromCharCodes(
-          archive.files.firstWhere((f) => f.name == 'user.js').content,
+          zipArchive.files.firstWhere((f) => f.name == 'user.js').content
+              as List<int>,
         ),
       ));
       expect(
@@ -159,7 +161,7 @@ void main() {
       // ignore: deprecated_member_use_from_same_package
       profile.setOption(PrefsOption(Capabilities.hasNativeEvents, true));
 
-      final archive = unpackArchiveData(profile.toJson());
+      final zipArchive = unpackArchiveData(profile.toJson());
 
       final expectedFiles = [
         'prefs.js',
@@ -167,16 +169,18 @@ void main() {
         'addons.js',
         'webapps/webapps.json'
       ];
-      expect(archive.files.length, greaterThanOrEqualTo(expectedFiles.length));
       expect(
-        archive.files,
-        anyElement((ArchiveFile f) => f.name == 'prefs.js'),
+          zipArchive.files.length, greaterThanOrEqualTo(expectedFiles.length));
+      expect(
+        zipArchive.files,
+        anyElement((archive.ArchiveFile f) => f.name == 'prefs.js'),
       );
 
       final prefs = FirefoxProfile.loadPrefsFile(
         MockFile(
           String.fromCharCodes(
-            archive.files.firstWhere((f) => f.name == 'user.js').content,
+            zipArchive.files.firstWhere((f) => f.name == 'user.js').content
+                as List<int>,
           ),
         ),
       );
@@ -192,9 +196,9 @@ void main() {
   }, timeout: const Timeout(Duration(minutes: 2)));
 }
 
-Archive unpackArchiveData(Map profileData) {
+archive.Archive unpackArchiveData(Map profileData) {
   final zipData = base64.decode(profileData['firefox_profile'] as String);
-  return ZipDecoder.decodeBytes(zipData);
+  return archive.ZipDecoder().decodeBytes(zipData);
 }
 
 /// Simulate file for `FirefoxProfile.loadPrefsFile()`

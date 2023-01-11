@@ -14,6 +14,7 @@
 
 import 'dart:convert';
 
+import 'package:archive/archive_io.dart' as archive;
 import 'package:test/test.dart';
 import 'package:webdriver/src/common/zip.dart';
 
@@ -21,51 +22,51 @@ void main() {
   group('zip', () {
     test('decode', () {
       final zipData = base64.decode(testZipBase64);
-      final archive = ZipDecoder.decodeBytes(zipData);
+      final zipArchive = archive.ZipDecoder().decodeBytes(zipData);
 
-      expect(archive.files, hasLength(2));
+      expect(zipArchive.files, hasLength(2));
 
-      var file = archive.files[0];
+      var file = zipArchive.files[0];
       expect(file.name, 'dart_test.yaml');
-      expect(file.length, 166);
-      expect(utf8.decode(file.content),
+      expect(file.size, 166);
+      expect(utf8.decode(file.content as List<int>),
           contains('See https://github.com/dart-lang/test/'));
 
-      file = archive.files[1];
+      file = zipArchive.files[1];
       expect(file.name, 'lib/src/common/spec.dart');
-      expect(file.length, 209);
-      expect(utf8.decode(file.content),
+      expect(file.size, 209);
+      expect(utf8.decode(file.content as List<int>),
           contains('Defines the WebDriver spec to use'));
     });
 
     test('round-trip', () {
-      final archive = Archive();
+      final zipArchive = Archive();
       const aaaContents = 'aaa';
       const bbbContents = 'bbb';
       final cccContents = 'c' * 1024;
 
-      archive.addFile(ArchiveFile('aaa.txt', utf8.encode(aaaContents)));
-      archive.addFile(ArchiveFile('bbb.txt', utf8.encode(bbbContents)));
-      archive.addFile(ArchiveFile('ccc/ccc.txt', utf8.encode(cccContents)));
+      zipArchive.addFile(ArchiveFile('aaa.txt', utf8.encode(aaaContents)));
+      zipArchive.addFile(ArchiveFile('bbb.txt', utf8.encode(bbbContents)));
+      zipArchive.addFile(ArchiveFile('ccc/ccc.txt', utf8.encode(cccContents)));
 
-      final zipBytes = ZipEncoder.encode(archive);
+      final zipBytes = ZipEncoder.encode(zipArchive);
 
       expect(zipBytes, isNotEmpty);
 
-      final decodedArchive = ZipDecoder.decodeBytes(zipBytes);
+      final decodedArchive = archive.ZipDecoder().decodeBytes(zipBytes);
       expect(decodedArchive.files, hasLength(3));
 
-      var file = archive.files[0];
+      var file = zipArchive.files[0];
       expect(file.name, 'aaa.txt');
       expect(file.length, 3);
       expect(utf8.decode(file.content), equals('aaa'));
 
-      file = archive.files[1];
+      file = zipArchive.files[1];
       expect(file.name, 'bbb.txt');
       expect(file.length, 3);
       expect(utf8.decode(file.content), equals('bbb'));
 
-      file = archive.files[2];
+      file = zipArchive.files[2];
       expect(file.name, 'ccc/ccc.txt');
       expect(file.length, 1024);
       expect(utf8.decode(file.content), contains('cccccccccccccc'));
