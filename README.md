@@ -5,6 +5,8 @@
 Provides WebDriver bindings for Dart. These use the WebDriver JSON interface,
 and as such, require the use of the WebDriver remote server.
 
+## Using package:webdriver
+
 In your Dart code, you can use:
 
 ```dart

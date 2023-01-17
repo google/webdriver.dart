@@ -1,4 +1,4 @@
-## 3.0.2-dev
+## 3.0.2
 
 * Require Dart 2.18
 * "Officially" deprecate `core.dart` and `io.dart` libraries.
