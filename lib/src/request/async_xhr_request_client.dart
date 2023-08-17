@@ -25,6 +25,9 @@ class AsyncXhrRequestClient extends AsyncRequestClient {
     };
 
     headers.addAll(_headers);
+    if (request.body != null && request.body!.isNotEmpty) {
+      headers['Content-Type'] ??= 'application/json';
+    }
 
     HttpRequest httpRequest;
 
