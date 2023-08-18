@@ -1,3 +1,10 @@
+## 3.0.3
+
+* Include a content-type header when sending requests from `async_html.dart`.
+  The content-type is necessary for compatibility with GeckoDriver 0.27.0 and
+  newer versions.  The content-type header was already being sent in IO clients
+  for a long time, so only the HTML client had to be updated.
+
 ## 3.0.2
 
 * Require Dart 2.18
