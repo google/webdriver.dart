@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import '../../common/request.dart';
+import '../../common/timeouts.dart';
 import '../../common/webdriver_handler.dart';
 import 'utils.dart';
 
@@ -46,5 +47,17 @@ class JsonWireTimeoutsHandler extends TimeoutsHandler {
   @override
   void parseSetPageLoadTimeoutResponse(WebDriverResponse response) {
     parseJsonWireResponse(response);
+  }
+
+  @override
+  WebDriverRequest buildGetTimeoutsRequest() {
+    // Not supported by JSON protocol:
+    // https://www.selenium.dev/documentation/legacy/json_wire_protocol/#command-summary
+    throw UnimplementedError();
+  }
+
+  @override
+  TimeoutValues parseGetTimeoutsResponse(WebDriverResponse response) {
+    throw UnimplementedError();
   }
 }

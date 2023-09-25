@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import '../../common/request.dart';
+import '../../common/timeouts.dart';
 import '../../common/webdriver_handler.dart';
 import 'utils.dart';
 
@@ -45,5 +46,19 @@ class W3cTimeoutsHandler extends TimeoutsHandler {
   @override
   void parseSetPageLoadTimeoutResponse(WebDriverResponse response) {
     parseW3cResponse(response);
+  }
+
+  @override
+  WebDriverRequest buildGetTimeoutsRequest() =>
+      WebDriverRequest.getRequest('timeouts');
+
+  @override
+  TimeoutValues parseGetTimeoutsResponse(WebDriverResponse response) {
+    final timeouts = parseW3cResponse(response) as Map<String, dynamic>;
+    return TimeoutValues(
+      script: Duration(milliseconds: timeouts['script'] as int),
+      implicit: Duration(milliseconds: timeouts['implicit'] as int),
+      pageLoad: Duration(milliseconds: timeouts['pageLoad'] as int),
+    );
   }
 }
