@@ -1,3 +1,5 @@
+## 3.0.4-wip
+
 ## 3.0.3
 
 * Include a content-type header when sending requests from `async_html.dart`.
