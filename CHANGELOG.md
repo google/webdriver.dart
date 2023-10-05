@@ -1,3 +1,7 @@
+## 3.0.4-wip
+
+* Require Dart 3.0.
+
 ## 3.0.3
 
 * Include a content-type header when sending requests from `async_html.dart`.
@@ -7,7 +11,7 @@
 
 ## 3.0.2
 
-* Require Dart 2.18
+* Require Dart 2.18.
 * "Officially" deprecate `core.dart` and `io.dart` libraries.
 * Remove the dependecy on `package:archive`.
 

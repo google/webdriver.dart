@@ -14,6 +14,7 @@
 
 import 'dart:async';
 import 'dart:io';
+import 'dart:isolate';
 
 import 'package:path/path.dart' as path;
 import 'package:test/test.dart';
@@ -47,7 +48,9 @@ WebDriver createTestDriver({
   return driver;
 }
 
-Future<void> createTestServerAndGoToTestPage(WebDriver driver) async {
+Future<void> _runServer(SendPort send) async {
+  final receive = ReceivePort();
+  send.send(receive.sendPort);
   final server = await createLocalServer();
   server.listen((request) {
     if (request.method == 'GET' && request.uri.path.endsWith('.html')) {
@@ -69,14 +72,37 @@ Future<void> createTestServerAndGoToTestPage(WebDriver driver) async {
         ..close();
     }
   });
+  send.send(server.port);
+  receive.listen((_) async {
+    await server.close(force: true);
+    send.send(null);
+  });
+}
 
-  // TODO(b/140553567): Use sync driver when we have a separate server.
-  await driver.asyncDriver.get(
-    'http://$testHostname:${server.port}/test_page.html',
-  );
+Future<void> createTestServerAndGoToTestPage(WebDriver driver) async {
+  final receive = ReceivePort();
+  final sendCompleter = Completer<SendPort>();
+  final portCompleter = Completer<int>();
+  final closedCompleter = Completer<void>();
+  receive.listen((message) {
+    if (!sendCompleter.isCompleted) {
+      sendCompleter.complete(message as SendPort);
+    } else if (!portCompleter.isCompleted) {
+      portCompleter.complete(message as int);
+    } else {
+      closedCompleter.complete();
+    }
+  });
+  await Isolate.spawn(_runServer, receive.sendPort);
+
+  final send = await sendCompleter.future;
+  final port = await portCompleter.future;
+
+  driver.get('http://$testHostname:$port/test_page.html');
 
   addTearDown(() async {
-    await server.close(force: true);
+    send.send(null);
+    await closedCompleter.future;
   });
 }
 

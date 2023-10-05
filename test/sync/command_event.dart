@@ -32,6 +32,7 @@ void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
       driver.addEventListener(events.add);
 
       await config.createTestServerAndGoToTestPage(driver);
+      events.clear();
     });
 
     tearDown(() async {

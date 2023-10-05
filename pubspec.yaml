@@ -1,12 +1,12 @@
 name: webdriver
-version: 3.0.3
+version: 3.0.4-wip
 description: >-
   Provides WebDriver bindings for Dart. Supports WebDriver JSON interface and
   W3C spec. Requires the use of WebDriver remote server.
 repository: https://github.com/google/webdriver.dart
 
 environment:
-  sdk: '>=2.18.0 <3.0.0'
+  sdk: ^3.0.0
 
 dependencies:
   matcher: ^0.12.10
