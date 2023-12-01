@@ -12,7 +12,6 @@ linter:
     - avoid_classes_with_only_static_members
     - avoid_private_typedef_functions
     - avoid_redundant_argument_values
-    - avoid_returning_null_for_future
     - avoid_returning_this
     - avoid_unused_constructor_parameters
     - avoid_void_async
@@ -41,4 +40,3 @@ linter:
     - use_if_null_to_convert_nulls_to_bools
     - use_raw_strings
     - use_string_buffers
-    - use_super_parameters
