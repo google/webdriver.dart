@@ -3,6 +3,7 @@ import 'dart:math';
 import '../../async_core.dart';
 import 'request.dart';
 import 'session.dart';
+import 'timeouts.dart';
 
 /// Handler for spec related request building and response parsing.
 ///
@@ -502,6 +503,12 @@ abstract class TimeoutsHandler {
 
   /// Parses response for 'Set Page Load Timeout'.
   void parseSetPageLoadTimeoutResponse(WebDriverResponse response);
+
+  /// Builds request for 'Get Timeouts'.
+  WebDriverRequest buildGetTimeoutsRequest();
+
+  /// Parses response for 'Get Timeouts'.
+  TimeoutValues parseGetTimeoutsResponse(WebDriverResponse response);
 }
 
 /// Handler for retrieving logs.

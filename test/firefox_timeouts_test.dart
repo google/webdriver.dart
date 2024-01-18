@@ -16,7 +16,7 @@
 import 'package:test/test.dart';
 import 'package:webdriver/sync_core.dart';
 
-import 'sync/timeouts.dart';
+import 'sync/timeouts_w3c.dart';
 
 void main() {
   runTests(spec: WebDriverSpec.W3c);
