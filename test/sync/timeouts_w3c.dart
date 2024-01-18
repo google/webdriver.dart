@@ -41,5 +41,14 @@ void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
       expect(driver.timeouts.getAllTimeouts(),
           TimeoutValues(script: five, implicit: one, pageLoad: ten));
     });
+
+    test('get default timeouts', () {
+      expect(
+          driver.timeouts.getAllTimeouts(),
+          TimeoutValues(
+              script: const Duration(seconds: 30),
+              implicit: Duration.zero,
+              pageLoad: const Duration(minutes: 5)));
+    });
   }, timeout: const Timeout(Duration(minutes: 2)));
 }
