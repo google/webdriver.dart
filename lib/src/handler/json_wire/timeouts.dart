@@ -51,13 +51,15 @@ class JsonWireTimeoutsHandler extends TimeoutsHandler {
 
   @override
   WebDriverRequest buildGetTimeoutsRequest() {
-    // Not supported by JSON protocol:
-    // https://www.selenium.dev/documentation/legacy/json_wire_protocol/#command-summary
-    throw UnimplementedError();
+    throw UnsupportedError(_timeoutsUnsupportedMsg);
   }
 
   @override
   TimeoutValues parseGetTimeoutsResponse(WebDriverResponse response) {
-    throw UnimplementedError();
+    throw UnsupportedError(_timeoutsUnsupportedMsg);
   }
 }
+
+// https://www.selenium.dev/documentation/legacy/json_wire_protocol/#command-summary
+const _timeoutsUnsupportedMsg =
+    'The JSON wire protocol does not support setting timeouts';
