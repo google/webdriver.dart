@@ -46,7 +46,7 @@ jobs:
     - uses: dart-lang/setup-dart@b64355ae6ca0b5d484f0106a033dd1388965d06d
       with:
         sdk: ${{ matrix.sdk }}
-    - uses: nanasess/setup-chromedriver@480d644e773cd6d53e4cb76557c8ad5e5806d7da
+    - uses: nanasess/setup-chromedriver@42cc2998329f041de87dc3cfa33a930eacd57eaa
     - id: install
       name: Install dependencies
       run: dart pub get
