@@ -21,7 +21,7 @@ jobs:
         sdk: [dev]
     steps:
     - uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b
-    - uses: dart-lang/setup-dart@b64355ae6ca0b5d484f0106a033dd1388965d06d
+    - uses: dart-lang/setup-dart@f0ead981b4d9a35b37f30d36160575d60931ec30
       with:
         sdk: ${{ matrix.sdk }}
     - id: install
@@ -43,7 +43,7 @@ jobs:
         sdk: [3.0.0, stable, dev]
     steps:
     - uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b
-    - uses: dart-lang/setup-dart@b64355ae6ca0b5d484f0106a033dd1388965d06d
+    - uses: dart-lang/setup-dart@f0ead981b4d9a35b37f30d36160575d60931ec30
       with:
         sdk: ${{ matrix.sdk }}
     - uses: nanasess/setup-chromedriver@42cc2998329f041de87dc3cfa33a930eacd57eaa
@@ -69,7 +69,7 @@ jobs:
         sdk: [3.0.0, stable, dev]
     steps:
     - uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b
-    - uses: dart-lang/setup-dart@b64355ae6ca0b5d484f0106a033dd1388965d06d
+    - uses: dart-lang/setup-dart@f0ead981b4d9a35b37f30d36160575d60931ec30
       with:
         sdk: ${{ matrix.sdk }}
     - uses: browser-actions/setup-firefox@latest
