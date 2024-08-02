@@ -13,9 +13,10 @@
 // limitations under the License.
 
 import '../common/request_client.dart';
+import '../common/timeouts.dart';
 import '../common/webdriver_handler.dart';
 
-/// Sets WebDriver timeouts.
+/// Sets or gets WebDriver timeouts.
 class Timeouts {
   final SyncRequestClient _client;
   final WebDriverHandler _handler;
@@ -39,6 +40,11 @@ class Timeouts {
     _client.send(_handler.timeouts.buildSetPageLoadTimeoutRequest(duration),
         _handler.timeouts.parseSetPageLoadTimeoutResponse);
   }
+
+  /// Gets the current timeout values.
+  TimeoutValues getAllTimeouts() => _client.send(
+      _handler.timeouts.buildGetTimeoutsRequest(),
+      _handler.timeouts.parseGetTimeoutsResponse);
 
   @override
   String toString() => '$_handler.timeouts($_client)';

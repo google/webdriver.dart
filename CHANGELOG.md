@@ -1,6 +1,7 @@
 ## 3.0.4-wip
 
-* Require Dart 3.0.
+* Add support for reading and setting webdriver timeouts with the sync client.
+* Require Dart 3.0.0
 
 ## 3.0.3
 
