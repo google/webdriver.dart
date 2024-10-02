@@ -13,6 +13,8 @@
 // limitations under the License.
 
 @Tags(['ff'])
+library;
+
 import 'package:test/test.dart';
 import 'package:webdriver/sync_core.dart';
 

@@ -12,7 +12,5 @@ WebDriverHandler getHandler(WebDriverSpec spec) {
       return W3cWebDriverHandler();
     case WebDriverSpec.Auto:
       return InferWebDriverHandler();
-    default:
-      throw UnsupportedError('Unexpected web driver spec: $spec.');
   }
 }
