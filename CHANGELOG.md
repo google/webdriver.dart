@@ -1,7 +1,6 @@
 ## 3.0.4
 
 * Require Dart 3.1.
-* Update to the latest package:lints.
 
 ## 3.0.3
 
