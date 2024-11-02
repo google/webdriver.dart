@@ -15,7 +15,6 @@
 import 'dart:async' show Completer, FutureOr;
 
 import 'package:matcher/expect.dart' as m;
-import 'package:matcher/matcher.dart' as m;
 import 'package:stack_trace/stack_trace.dart' show Chain;
 
 const defaultInterval = Duration(milliseconds: 500);
