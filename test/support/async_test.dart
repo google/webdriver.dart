@@ -106,7 +106,7 @@ void main() {
       expect(result, equals('Google'));
     });
 
-    test('throws if condition throws and timeouts', () async {
+    test('throws if condition throws', () async {
       Object? exception;
 
       try {
@@ -125,6 +125,20 @@ void main() {
         exception = e;
       }
       expect(exception, isNotNull);
+    });
+
+    test('throws with passed reason if condition never matches', () async {
+      Object? exception;
+      try {
+        await clock.waitFor(() => null,
+            matcher: isNotNull, reason: 'some reason');
+      } catch (e) {
+        exception = e;
+      }
+      expect(
+          exception,
+          isA<TestFailure>()
+              .having((e) => e.message, 'message', contains('some reason')));
     });
 
     test('uses Future value', () async {

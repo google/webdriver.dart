@@ -1,3 +1,7 @@
+## 3.1.0-wip
+
+* Add a `reason` argument to `Clock.waitFor`.
+
 ## 3.0.4
 
 * Require Dart 3.1.
