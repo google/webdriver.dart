@@ -1,4 +1,4 @@
-## 3.1.0-wip
+## 3.1.0
 
 * Add a `reason` argument to `Clock.waitFor`.
 * Explicitly close http clients on quit. 

@@ -1,5 +1,5 @@
 name: webdriver
-version: 3.1.0-wip
+version: 3.1.0
 description: >-
   Provides WebDriver bindings for Dart. Supports WebDriver JSON interface and
   W3C spec. Requires the use of WebDriver remote server.
