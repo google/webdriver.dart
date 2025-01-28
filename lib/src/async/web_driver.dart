@@ -126,10 +126,14 @@ class WebDriver implements SearchContext {
       _handler.core.parsePageSourceResponse);
 
   /// Quits the browser.
-  Future<void> quit({bool closeSession = true}) => closeSession
-      ? _client.send(_handler.core.buildDeleteSessionRequest(),
-          _handler.core.parseDeleteSessionResponse)
-      : Future.value();
+  Future<void> quit({bool closeSession = true}) async {
+    if (!closeSession) {
+      return;
+    }
+    await _client.send(_handler.core.buildDeleteSessionRequest(),
+        _handler.core.parseDeleteSessionResponse);
+    _client.close();
+  }
 
   /// Closes the current window.
   ///
