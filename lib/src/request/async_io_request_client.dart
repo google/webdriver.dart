@@ -60,4 +60,7 @@ class AsyncIoRequestClient extends AsyncRequestClient {
 
   @override
   String toString() => 'AsyncIo';
+
+  @override
+  void close() => client.close(force: true);
 }

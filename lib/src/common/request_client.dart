@@ -114,4 +114,6 @@ abstract class AsyncRequestClient extends RequestClient {
   }
 
   Future<WebDriverResponse> sendRaw(WebDriverRequest request);
+
+  void close() {}
 }
