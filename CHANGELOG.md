@@ -1,3 +1,7 @@
+## 3.2.0-wip
+
+* Require Dart 3.4 and add a dependency on `package:web`.
+
 ## 3.1.0
 
 * Add a `reason` argument to `Clock.waitFor`.
