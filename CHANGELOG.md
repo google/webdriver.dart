@@ -1,3 +1,8 @@
+## 4.0.0-wip
+
+* Replace usages of `Point<int>` and `Rectangle<int>` from `dart:math` with
+  custom `Location`, `Rect`, and `Size` types.
+
 ## 3.1.0
 
 * Add a `reason` argument to `Clock.waitFor`.

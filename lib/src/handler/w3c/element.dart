@@ -1,5 +1,4 @@
-import 'dart:math';
-
+import '../../common/geometry.dart';
 import '../../common/request.dart';
 import '../../common/webdriver_handler.dart';
 import 'utils.dart';
@@ -64,7 +63,7 @@ class W3cElementHandler extends ElementHandler {
       _buildRectRequest(elementId);
 
   @override
-  Point<int> parseLocationResponse(WebDriverResponse response) =>
+  Position parseLocationResponse(WebDriverResponse response) =>
       _parseRectResponse(response).topLeft;
 
   @override
@@ -72,21 +71,21 @@ class W3cElementHandler extends ElementHandler {
       _buildRectRequest(elementId);
 
   @override
-  Rectangle<int> parseSizeResponse(WebDriverResponse response) {
+  Size parseSizeResponse(WebDriverResponse response) {
     final rect = _parseRectResponse(response);
-    return Rectangle(0, 0, rect.width, rect.height);
+    return rect.size;
   }
 
   WebDriverRequest _buildRectRequest(String elementId) =>
       WebDriverRequest.getRequest('${elementPrefix(elementId)}rect');
 
-  Rectangle<int> _parseRectResponse(WebDriverResponse response) {
+  Rect _parseRectResponse(WebDriverResponse response) {
     final rect = parseW3cResponse(response);
-    return Rectangle(
-      (rect['x'] as num).toInt(),
-      (rect['y'] as num).toInt(),
-      (rect['width'] as num).toInt(),
-      (rect['height'] as num).toInt(),
+    return Rect(
+      left: (rect['x'] as num).toInt(),
+      top: (rect['y'] as num).toInt(),
+      width: (rect['width'] as num).toInt(),
+      height: (rect['height'] as num).toInt(),
     );
   }
 

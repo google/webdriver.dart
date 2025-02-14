@@ -16,7 +16,6 @@
 library webdriver.window_test;
 
 import 'dart:io';
-import 'dart:math' show Rectangle;
 
 import 'package:test/test.dart';
 import 'package:webdriver/sync_core.dart';
@@ -33,7 +32,7 @@ void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
 
     test('size', () {
       final window = driver.window;
-      const windowRect = Rectangle<int>(0, 0, 600, 400);
+      const windowRect = Rect(left: 0, top: 0, width: 600, height: 400);
       window.rect = windowRect;
 
       // Firefox may take a bit longer to do the resize.
@@ -51,7 +50,7 @@ void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
     // May not work on some OS/browser combinations (notably Mac OS X).
     test('maximize', () {
       final window = driver.window;
-      const windowRect = Rectangle<int>(100, 200, 300, 300);
+      const windowRect = Rect(left: 100, top: 200, width: 300, height: 300);
       window.rect = windowRect;
       window.maximize();
 
