@@ -14,7 +14,6 @@
 
 import 'dart:async';
 import 'dart:io' show HttpServer, InternetAddress, Platform;
-import 'dart:math' show Point, Rectangle;
 
 import 'package:matcher/matcher.dart' show Matcher, TypeMatcher;
 import 'package:path/path.dart' as path;
@@ -25,8 +24,8 @@ final Uri _defaultFirefoxUri = Uri.parse('http://127.0.0.1:4445/');
 
 const WebDriverSpec defaultSpec = WebDriverSpec.JsonWire;
 
-const Matcher isRectangle = TypeMatcher<Rectangle<int>>();
-const Matcher isPoint = TypeMatcher<Point<int>>();
+const Matcher isRectangle = TypeMatcher<Rect>();
+const Matcher isPoint = TypeMatcher<Position>();
 
 Future<HttpServer> createLocalServer() =>
     HttpServer.bind(InternetAddress.anyIPv4, 0);

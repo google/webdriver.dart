@@ -12,8 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import 'dart:math';
-
+import '../../common/geometry.dart';
 import '../../common/request.dart';
 import '../../common/webdriver_handler.dart';
 import 'utils.dart';
@@ -48,16 +47,16 @@ class W3cWindowHandler extends WindowHandler {
   WebDriverRequest buildLocationRequest() => buildRectRequest();
 
   @override
-  Point<int> parseLocationResponse(WebDriverResponse response) =>
+  Position parseLocationResponse(WebDriverResponse response) =>
       parseRectResponse(response).topLeft;
 
   @override
   WebDriverRequest buildSizeRequest() => buildRectRequest();
 
   @override
-  Rectangle<int> parseSizeResponse(WebDriverResponse response) {
+  Size parseSizeResponse(WebDriverResponse response) {
     final rect = parseRectResponse(response);
-    return Rectangle(0, 0, rect.width, rect.height);
+    return rect.size;
   }
 
   @override
@@ -65,18 +64,18 @@ class W3cWindowHandler extends WindowHandler {
       WebDriverRequest.getRequest('window/rect');
 
   @override
-  Rectangle<int> parseRectResponse(WebDriverResponse response) {
+  Rect parseRectResponse(WebDriverResponse response) {
     final rect = parseW3cResponse(response);
-    return Rectangle(
-      (rect['x'] as num).toInt(),
-      (rect['y'] as num).toInt(),
-      (rect['width'] as num).toInt(),
-      (rect['height'] as num).toInt(),
+    return Rect(
+      left: (rect['x'] as num).toInt(),
+      top: (rect['y'] as num).toInt(),
+      width: (rect['width'] as num).toInt(),
+      height: (rect['height'] as num).toInt(),
     );
   }
 
   @override
-  WebDriverRequest buildSetLocationRequest(Point<int> location) =>
+  WebDriverRequest buildSetLocationRequest(Position location) =>
       WebDriverRequest.postRequest('window/rect', {
         'x': location.x,
         'y': location.y,
@@ -88,7 +87,7 @@ class W3cWindowHandler extends WindowHandler {
   }
 
   @override
-  WebDriverRequest buildSetSizeRequest(Rectangle<int> size) =>
+  WebDriverRequest buildSetSizeRequest(Size size) =>
       WebDriverRequest.postRequest(
           'window/rect', {'width': size.width, 'height': size.height});
 
@@ -98,7 +97,7 @@ class W3cWindowHandler extends WindowHandler {
   }
 
   @override
-  WebDriverRequest buildSetRectRequest(Rectangle<int> rect) =>
+  WebDriverRequest buildSetRectRequest(Rect rect) =>
       WebDriverRequest.postRequest('window/rect', {
         'x': rect.left,
         'y': rect.top,
@@ -147,8 +146,11 @@ class W3cWindowHandler extends WindowHandler {
       });
 
   @override
-  Rectangle<int> parseInnerSizeResponse(WebDriverResponse response) {
+  Size parseInnerSizeResponse(WebDriverResponse response) {
     final size = parseW3cResponse(response);
-    return Rectangle(0, 0, size['width'] as int, size['height'] as int);
+    return Size(
+      width: (size['width'] as num).toInt(),
+      height: (size['height'] as num).toInt(),
+    );
   }
 }

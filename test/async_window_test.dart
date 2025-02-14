@@ -16,7 +16,6 @@
 library webdriver.window_test;
 
 import 'dart:async';
-import 'dart:math' show Point, Rectangle;
 
 import 'package:test/test.dart';
 import 'package:webdriver/async_core.dart';
@@ -34,7 +33,7 @@ void main() {
 
     test('size', () async {
       final window = await driver.window;
-      const size = Rectangle<int>(0, 0, 600, 400);
+      const size = Size(width: 600, height: 400);
 
       // Firefox may take a bit longer to do the resize.
       await Future.delayed(const Duration(seconds: 1));
@@ -44,7 +43,7 @@ void main() {
 
     test('location', () async {
       final window = await driver.window;
-      const position = Point<int>(100, 200);
+      const position = Position(x: 100, y: 200);
       await window.setLocation(position);
       expect(await window.location, position);
     });
@@ -52,8 +51,8 @@ void main() {
     // May not work on some OS/browser combinations (notably Mac OS X).
     test('maximize', () async {
       final window = await driver.window;
-      await window.setSize(const Rectangle<int>(0, 0, 300, 200));
-      await window.setLocation(const Point<int>(100, 200));
+      await window.setSize(const Size(width: 300, height: 200));
+      await window.setLocation(const Position(x: 100, y: 200));
       await window.maximize();
 
       // maximizing can take some time
