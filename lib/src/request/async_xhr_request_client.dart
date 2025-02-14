@@ -1,4 +1,6 @@
 import 'dart:async';
+// TODO: Migrate to package:web.
+// ignore: deprecated_member_use
 import 'dart:html';
 
 import '../../support/async.dart';
