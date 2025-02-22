@@ -4,11 +4,12 @@
 * Migrate `dart:html` usages to `package:web`.
 * Add a new driver that uses `package:http` and accepts a custom `Client`
   that can be used from the `async_http` library.
+* Ensure HTTP clients are closed if creating a session fails.
 
 ## 3.1.0
 
 * Add a `reason` argument to `Clock.waitFor`.
-* Explicitly close http clients on quit. 
+* Explicitly close http clients on quit.
 
 ## 3.0.4
 

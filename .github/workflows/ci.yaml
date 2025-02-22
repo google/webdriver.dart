@@ -46,7 +46,7 @@ jobs:
     - uses: dart-lang/setup-dart@e630b99d28a3b71860378cafdc2a067c71107f94
       with:
         sdk: ${{ matrix.sdk }}
-    - uses: nanasess/setup-chromedriver@5418e3074d44d074af079511f7840e45da3c2454
+    - uses: nanasess/setup-chromedriver@46174af8ff4d958c291f6830dacee57ba8c7b97a
     - id: install
       name: Install dependencies
       run: dart pub get
@@ -60,27 +60,28 @@ jobs:
       env:
         CHROMEDRIVER_ARGS: '--no-sandbox --headless'
 
-  test_firefox:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-latest]
-        sdk: [3.4, stable, dev]
-    steps:
-    - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
-    - uses: dart-lang/setup-dart@e630b99d28a3b71860378cafdc2a067c71107f94
-      with:
-        sdk: ${{ matrix.sdk }}
-    - uses: browser-actions/setup-firefox@latest
-    - uses: browser-actions/setup-geckodriver@eb8b0670366f719ca31703766a8cb7e3ea2c56ed
-    - id: install
-      name: Install dependencies
-      run: dart pub get
-    - name: test
-      run: |
-        export DISPLAY=:99
-        geckodriver --port=4445 &
-        sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 &
-        dart test --tags ff
-      if: always() && steps.install.outcome == 'success'
+  # Disabled; see https://github.com/google/webdriver.dart/issues/292.
+  # test_firefox:
+  #   runs-on: ${{ matrix.os }}
+  #   strategy:
+  #     fail-fast: false
+  #     matrix:
+  #       os: [ubuntu-latest]
+  #       sdk: [3.4, stable, dev]
+  #   steps:
+  #   - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+  #   - uses: dart-lang/setup-dart@e630b99d28a3b71860378cafdc2a067c71107f94
+  #     with:
+  #       sdk: ${{ matrix.sdk }}
+  #   - uses: browser-actions/setup-firefox@latest
+  #   - uses: browser-actions/setup-geckodriver@eb8b0670366f719ca31703766a8cb7e3ea2c56ed
+  #   - id: install
+  #     name: Install dependencies
+  #     run: dart pub get
+  #   - name: test
+  #     run: |
+  #       export DISPLAY=:99
+  #       geckodriver --port=4445 &
+  #       sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 &
+  #       dart test --tags ff
+  #     if: always() && steps.install.outcome == 'success'
