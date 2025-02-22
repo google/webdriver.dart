@@ -1,14 +1,12 @@
 import 'dart:async';
-// TODO: Migrate to package:web.
-// ignore: deprecated_member_use
-import 'dart:html';
+
+import 'package:web/web.dart' as web;
 
 import '../../support/async.dart';
-
 import '../common/request.dart';
 import '../common/request_client.dart';
 
-/// Async request client using dart:html package.
+/// Async request client using `dart:js_interop` through `package:web`.
 ///
 /// On the low level, it's using XMLHttpRequest object (XHR).
 class AsyncXhrRequestClient extends AsyncRequestClient {
@@ -22,25 +20,23 @@ class AsyncXhrRequestClient extends AsyncRequestClient {
   Future<WebDriverResponse> sendRaw(WebDriverRequest request) async {
     await _lock.acquire();
 
-    final headers = {
-      'Accept': 'application/json',
-    };
-
-    headers.addAll(_headers);
-    if (request.body != null && request.body!.isNotEmpty) {
-      headers['Content-Type'] ??= 'application/json';
-    }
-
-    HttpRequest httpRequest;
-
+    web.XMLHttpRequest httpRequest;
     try {
-      httpRequest = await HttpRequest.request(resolve(request.uri!).toString(),
-          method: request.method!.name,
-          requestHeaders: headers,
-          sendData: request.body,
-          mimeType: 'application/json');
-    } on ProgressEvent catch (e) {
-      httpRequest = e.target as HttpRequest;
+      // ignore: deprecated_member_use
+      httpRequest = await web.HttpRequest.request(
+        resolve(request.uri!).toString(),
+        method: request.method!.name,
+        requestHeaders: {
+          ..._headers,
+          'Accept': 'application/json',
+          if (request.body?.isNotEmpty ?? false)
+            'Content-Type': 'application/json',
+        },
+        sendData: request.body,
+        mimeType: 'application/json',
+      );
+    } on web.ProgressEvent catch (e) {
+      httpRequest = e.target as web.XMLHttpRequest;
     } finally {
       _lock.release();
     }
@@ -48,7 +44,7 @@ class AsyncXhrRequestClient extends AsyncRequestClient {
     return WebDriverResponse(
       httpRequest.status,
       httpRequest.statusText,
-      httpRequest.response as String?,
+      httpRequest.responseText,
     );
   }
 

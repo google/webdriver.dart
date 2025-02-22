@@ -1,6 +1,7 @@
 ## 3.2.0-wip
 
 * Require Dart 3.4 and add a dependency on `package:http`.
+* Migrate `dart:html` usages to `package:web`.
 * Add a new driver that uses `package:http` and accepts a custom `Client`
   that can be used from the `async_http` library.
 
@@ -24,7 +25,7 @@
 
 * Require Dart 2.18.
 * "Officially" deprecate `core.dart` and `io.dart` libraries.
-* Remove the dependecy on `package:archive`.
+* Remove the dependency on `package:archive`.
 
 ## 3.0.1
 
