@@ -1,5 +1,6 @@
-## 3.1.1-wip
+## 3.2.0-wip
 
+* Require Dart 3.4 and add a dependency on `package:web`.
 * Ensure HTTP clients are closed if creating a session fails.
 
 ## 3.1.0
@@ -22,7 +23,7 @@
 
 * Require Dart 2.18.
 * "Officially" deprecate `core.dart` and `io.dart` libraries.
-* Remove the dependecy on `package:archive`.
+* Remove the dependency on `package:archive`.
 
 ## 3.0.1
 

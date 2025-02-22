@@ -27,7 +27,7 @@ final Uri defaultUri = Uri.parse('http://127.0.0.1:4444/wd/hub/');
 
 /// Creates a new async WebDriver using [AsyncXhrRequestClient].
 ///
-/// This will bring in dependency on `dart:html`.
+/// This will bring in a dependency on the Dart web platform.
 /// Note: WebDriver endpoints will be constructed using [resolve] against
 /// [uri]. Therefore, if [uri] does not end with a trailing slash, the
 /// last path component will be dropped.
@@ -45,7 +45,7 @@ Future<core.WebDriver> createDriver(
 /// Creates an async WebDriver from existing session using
 /// [AsyncXhrRequestClient].
 ///
-/// This will bring in dependency on `dart:html`.
+/// This will bring in a dependency on the Dart web platform.
 /// Note: WebDriver endpoints will be constructed using [resolve] against
 /// [uri]. Therefore, if [uri] does not end with a trailing slash, the
 /// last path component will be dropped.
@@ -61,7 +61,7 @@ Future<core.WebDriver> fromExistingSession(String sessionId,
 /// [capabilities]) has to be given. Because otherwise, making a call to
 /// WebDriver server will make this function async.
 ///
-/// This will bring in dependency on `dart:html`.
+/// This will bring in a dependency on the Dart web platform.
 /// Note: WebDriver endpoints will be constructed using [resolve] against
 /// [uri]. Therefore, if [uri] does not end with a trailing slash, the
 /// last path component will be dropped.
