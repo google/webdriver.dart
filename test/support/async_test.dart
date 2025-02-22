@@ -12,8 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-library webdriver.support.async_test;
-
 import 'dart:async' show Future, unawaited;
 
 import 'package:test/test.dart';

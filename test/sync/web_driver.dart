@@ -13,7 +13,7 @@
 // limitations under the License.
 
 @TestOn('vm')
-library webdriver.web_driver_test;
+library;
 
 import 'dart:io';
 

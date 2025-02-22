@@ -14,7 +14,7 @@
 
 import 'dart:async' show StreamController;
 import 'dart:convert' show Encoding, json;
-import 'dart:io' show exit, Stdin, stdin, systemEncoding;
+import 'dart:io' show Stdin, exit, stdin, systemEncoding;
 
 import '../src/async/stepper.dart';
 
@@ -75,8 +75,8 @@ class StdioStepper implements Stepper {
   }
 }
 
-/// Converts a Stream<List<int> | int> to Stream<String> that fires an event
-/// for every line of data in the original Stream.
+/// Converts a `Stream<List<int> | int>` to `Stream<String>` that
+/// fires an event for every line of data in the original [Stream].
 class LineReader {
   static const cr = 13;
   static const lf = 10;
@@ -98,7 +98,7 @@ class LineReader {
         onDone: _controller.close, onError: _controller.addError);
   }
 
-  void _listen(/* List<int> | int */ data) {
+  void _listen(Object? /* List<int> | int */ data) {
     if (data is List<int>) {
       data.forEach(_addByte);
     } else {

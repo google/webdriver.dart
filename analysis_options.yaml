@@ -16,7 +16,9 @@ linter:
     - avoid_unused_constructor_parameters
     - avoid_void_async
     - cancel_subscriptions
+    - combinators_ordering
     - directives_ordering
+    - lines_longer_than_80_chars
     - literal_only_boolean_expressions
     - missing_whitespace_between_adjacent_strings
     - no_adjacent_strings_in_list
@@ -34,6 +36,7 @@ linter:
     - type_annotate_public_apis
     - unawaited_futures
     - unnecessary_lambdas
+    - unnecessary_library_directive
     - unnecessary_parenthesis
     - unnecessary_statements
     - use_if_null_to_convert_nulls_to_bools

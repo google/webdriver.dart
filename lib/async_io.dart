@@ -16,11 +16,11 @@ import 'dart:async' show Future;
 
 import 'async_core.dart' as core
     show
+        WebDriver,
+        WebDriverSpec,
         createDriver,
         fromExistingSession,
-        fromExistingSessionSync,
-        WebDriver,
-        WebDriverSpec;
+        fromExistingSessionSync;
 import 'src/request/async_io_request_client.dart';
 
 export 'package:webdriver/async_core.dart'

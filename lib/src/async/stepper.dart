@@ -12,14 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-library webdriver.stepper;
-
 import 'dart:async';
 
 class Stepper {
   const Stepper();
 
-  /// returns true if command should be executed, false if should not be executed.
+  /// Returns `true` if [command] should be executed,
+  /// `false` if it should not be executed.
   Future<bool> step(String method, String command, Object? params) =>
       Future.value(true);
 }

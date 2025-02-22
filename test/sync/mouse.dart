@@ -13,7 +13,7 @@
 // limitations under the License.
 
 @TestOn('vm')
-library webdriver.mouse_test;
+library;
 
 import 'package:test/test.dart';
 import 'package:webdriver/sync_core.dart';

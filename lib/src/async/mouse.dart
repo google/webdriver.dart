@@ -38,11 +38,11 @@ class Mouse {
       _handler.mouse.buildDownRequest(button),
       _handler.mouse.parseDownResponse);
 
-  /// Releases the mouse button previously held (where the mouse is currently at).
+  /// Releases the mouse button previously held (where the mouse is currently).
   Future<void> up([MouseButton button = MouseButton.primary]) => _client.send(
       _handler.mouse.buildUpRequest(button), _handler.mouse.parseUpResponse);
 
-  /// Double-clicks at the current mouse coordinates (set by moveTo).
+  /// Double-clicks at the current mouse coordinates (set by [moveTo]).
   Future<void> doubleClick() => _client.send(
       _handler.mouse.buildDoubleClickRequest(),
       _handler.mouse.parseDoubleClickResponse);
@@ -52,8 +52,8 @@ class Mouse {
   /// If [element] is specified and [xOffset] and [yOffset] are not, will move
   /// the mouse to the center of the [element].
   ///
-  /// If [xOffset] and [yOffset] are specified, will move the mouse that distance
-  /// from its current location.
+  /// If [xOffset] and [yOffset] are specified, will move the mouse
+  /// that distance from its current location.
   ///
   /// If all three are specified, the behavior will be different
   /// for W3C and JsonWire. For W3C, it will use [element] center as the

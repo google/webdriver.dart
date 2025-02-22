@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:io' show ContentType, HttpClient, HttpHeaders, HttpClientRequest;
+import 'dart:io' show ContentType, HttpClient, HttpClientRequest, HttpHeaders;
 
 import '../../support/async.dart';
 
