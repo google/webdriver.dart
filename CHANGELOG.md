@@ -4,6 +4,7 @@
 * Migrate `dart:html` usages to `package:web`.
 * Add a new driver that uses `package:http` and accepts a custom `Client`
   that can be used from the `async_http` library.
+  Consider migrating `async_io` and `async_web` usages to `async_http`.
 * Ensure HTTP clients are closed if creating a session fails.
 
 ## 3.1.0
