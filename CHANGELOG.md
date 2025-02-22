@@ -1,11 +1,12 @@
 ## 3.2.0-wip
 
 * Require Dart 3.4 and add a dependency on `package:web`.
+* Ensure HTTP clients are closed if creating a session fails.
 
 ## 3.1.0
 
 * Add a `reason` argument to `Clock.waitFor`.
-* Explicitly close http clients on quit. 
+* Explicitly close http clients on quit.
 
 ## 3.0.4
 
