@@ -13,7 +13,7 @@
 // limitations under the License.
 
 @TestOn('vm')
-library webdriver.window_test;
+library;
 
 import 'dart:async';
 import 'dart:math' show Point, Rectangle;

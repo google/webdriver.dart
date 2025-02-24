@@ -13,7 +13,7 @@
 // limitations under the License.
 
 @TestOn('vm')
-library webdriver.web_element_test;
+library;
 
 import 'package:test/test.dart';
 import 'package:webdriver/async_core.dart';

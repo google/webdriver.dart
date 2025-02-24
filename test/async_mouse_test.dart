@@ -13,7 +13,7 @@
 // limitations under the License.
 
 @TestOn('vm')
-library webdriver.mouse_test;
+library;
 
 import 'dart:async';
 

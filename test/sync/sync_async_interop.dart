@@ -12,8 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-library webdriver.support.async_test;
-
 import 'package:test/test.dart';
 import 'package:webdriver/async_core.dart' as async_core;
 import 'package:webdriver/sync_io.dart';

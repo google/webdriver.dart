@@ -10,8 +10,13 @@ class WebDriverException implements Exception {
   const WebDriverException(this.statusCode, this.message);
 
   @override
-  String toString() =>
-      '$runtimeType ($statusCode): ${message?.isEmpty ?? true ? '<no message>' : message!}';
+  String toString() {
+    final errorMessage = switch (message) {
+      final message? when message.isNotEmpty => message,
+      _ => '<no message>',
+    };
+    return '$runtimeType ($statusCode): $errorMessage';
+  }
 
   @override
   bool operator ==(Object other) =>

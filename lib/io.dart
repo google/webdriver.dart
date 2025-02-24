@@ -13,7 +13,7 @@
 // limitations under the License.
 
 @Deprecated("Use 'package:webdriver/async_io.dart' instead.")
-library io;
+library;
 
 /// Consider this file as deprecated. This exists as an alias to async_io.dart
 /// for backward compatibility.

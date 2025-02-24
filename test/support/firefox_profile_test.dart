@@ -14,9 +14,9 @@
 
 @Tags(['ff'])
 @TestOn('vm')
-library webdriver.support.firefox_profile_test;
+library;
 
-import 'dart:convert' show base64, Encoding, utf8;
+import 'dart:convert' show Encoding, base64, utf8;
 import 'dart:io' as io;
 
 import 'package:archive/archive_io.dart' as archive;
