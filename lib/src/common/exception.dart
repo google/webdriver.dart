@@ -258,7 +258,7 @@ WebDriverException getExceptionFromW3cResponse({
   dynamic jsonResp,
 }) {
   if (jsonResp is Map && jsonResp.keys.contains('value')) {
-    final value = jsonResp['value'] as Map<String, dynamic>;
+    final value = jsonResp['value'] as Map<String, Object?>;
 
     switch (value['error']) {
       case 'invalid argument':
