@@ -15,6 +15,7 @@
 import 'dart:async' show StreamController;
 import 'dart:convert' show Encoding, json;
 import 'dart:io' show Stdin, exit, stdin, systemEncoding;
+import 'dart:typed_data';
 
 import '../src/async/stepper.dart';
 
@@ -82,7 +83,7 @@ class LineReader {
   static const lf = 10;
 
   bool _crPrevious = false;
-  final _bytes = <int>[];
+  final _bytes = BytesBuilder();
   final _controller = StreamController<String>.broadcast();
 
   final Encoding encoding;
@@ -113,10 +114,9 @@ class LineReader {
     }
     _crPrevious = byte == cr;
     if (byte == cr || byte == lf) {
-      _controller.add(encoding.decode(_bytes));
-      _bytes.clear();
+      _controller.add(encoding.decode(_bytes.takeBytes()));
     } else {
-      _bytes.add(byte);
+      _bytes.addByte(byte);
     }
   }
 

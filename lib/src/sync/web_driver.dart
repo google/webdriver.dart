@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import 'dart:convert' show base64;
+import 'dart:typed_data';
 
 import '../../async_core.dart' as async_core;
 import '../common/by.dart';
@@ -213,13 +214,13 @@ class WebDriver implements SearchContext {
       _handler.core.parseScreenshotResponse);
 
   /// Take a screenshot of the current page as PNG as list of uint8.
-  List<int> captureScreenshotAsList() {
+  Uint8List captureScreenshotAsList() {
     final base64Encoded = captureScreenshotAsBase64();
     return base64.decode(base64Encoded);
   }
 
   /// Take a screenshot of the specified element as PNG as list of uint8.
-  List<int> captureElementScreenshotAsList(WebElement element) {
+  Uint8List captureElementScreenshotAsList(WebElement element) {
     final base64Encoded = captureElementScreenshotAsBase64(element);
     return base64.decode(base64Encoded);
   }
