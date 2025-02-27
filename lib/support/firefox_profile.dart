@@ -199,7 +199,7 @@ class FirefoxProfile {
     var canNotParseCaption = true;
 
     for (final line in lines) {
-      final option = PrefsOption.parse(line);
+      final option = PrefsOption<Object>.parse(line);
       if (option is InvalidOption) {
         if (canNotParseCaption) {
           print('Can\'t parse lines from file "${file.path}":');

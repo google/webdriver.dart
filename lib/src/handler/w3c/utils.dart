@@ -126,9 +126,9 @@ Object? deserialize(Object? result, dynamic Function(String) createElement) {
     if (result.containsKey(w3cElementStr)) {
       return createElement(result[w3cElementStr] as String);
     } else {
-      final newResult = {};
+      final newResult = <String, dynamic>{};
       result.forEach((key, value) {
-        newResult[key] = deserialize(value, createElement);
+        newResult[key as String] = deserialize(value, createElement);
       });
       return newResult;
     }

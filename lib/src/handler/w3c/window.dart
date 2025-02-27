@@ -66,7 +66,7 @@ class W3cWindowHandler extends WindowHandler {
 
   @override
   Rectangle<int> parseRectResponse(WebDriverResponse response) {
-    final rect = parseW3cResponse(response);
+    final rect = parseW3cResponse(response) as Map<String, dynamic>;
     return Rectangle(
       (rect['x'] as num).toInt(),
       (rect['y'] as num).toInt(),
@@ -143,12 +143,12 @@ class W3cWindowHandler extends WindowHandler {
       WebDriverRequest.postRequest('execute/sync', {
         'script':
             'return { width: window.innerWidth, height: window.innerHeight };',
-        'args': []
+        'args': <Object>[]
       });
 
   @override
   Rectangle<int> parseInnerSizeResponse(WebDriverResponse response) {
-    final size = parseW3cResponse(response);
+    final size = parseW3cResponse(response) as Map<String, dynamic>;
     return Rectangle(0, 0, size['width'] as int, size['height'] as int);
   }
 }

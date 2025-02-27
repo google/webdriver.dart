@@ -29,7 +29,7 @@ Object? parseJsonWireResponse(WebDriverResponse response,
       statusCode > 299 ||
       (responseBody['status'] != null && responseBody['status'] != 0)) {
     final status = responseBody['status'] as int?;
-    final message = responseBody['value']['message'] as String?;
+    final message = (responseBody['value'] as Map)['message'] as String?;
 
     switch (status) {
       case 0:
@@ -108,9 +108,9 @@ Object? deserialize(Object? result, dynamic Function(String) createElement) {
     if (result.containsKey(jsonWireElementStr)) {
       return createElement(result[jsonWireElementStr] as String);
     } else {
-      final newResult = {};
+      final newResult = <String, dynamic>{};
       result.forEach((key, value) {
-        newResult[key] = deserialize(value, createElement);
+        newResult[key as String] = deserialize(value, createElement);
       });
       return newResult;
     }

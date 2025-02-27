@@ -16,7 +16,7 @@ class W3cSessionHandler extends SessionHandler {
 
   @override
   SessionInfo parseCreateResponse(WebDriverResponse response) {
-    final session = parseW3cResponse(response);
+    final session = parseW3cResponse(response) as Map;
     return SessionInfo(
       session['sessionId'] as String,
       WebDriverSpec.W3c,

@@ -169,7 +169,8 @@ class WebElement extends common.WebElement implements SearchContext {
 
   ///Find an element nested within this element.
   ///
-  /// Throws [NoSuchElementException] if matching element is not found.
+  /// Throws [async_core.NoSuchElementException] if matching element is not
+  /// found.
   @override
   WebElement findElement(By by) => WebElement(
       driver,
