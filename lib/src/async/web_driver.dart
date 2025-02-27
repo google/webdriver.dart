@@ -14,6 +14,7 @@
 
 import 'dart:async';
 import 'dart:convert';
+import 'dart:typed_data';
 
 import '../../sync_core.dart' as sync_core;
 import '../common/by.dart';
@@ -203,13 +204,13 @@ class WebDriver implements SearchContext {
           _handler.core.parseScreenshotResponse);
 
   /// Take a screenshot of the current page as PNG as list of uint8.
-  Future<List<int>> captureScreenshotAsList() async {
+  Future<Uint8List> captureScreenshotAsList() async {
     final base64Encoded = captureScreenshotAsBase64();
     return base64.decode(await base64Encoded);
   }
 
   /// Take a screenshot of the specified element as PNG as list of uint8.
-  Future<List<int>> captureElementScreenshotAsList(WebElement element) async {
+  Future<Uint8List> captureElementScreenshotAsList(WebElement element) async {
     final base64Encoded = captureElementScreenshotAsBase64(element);
     return base64.decode(await base64Encoded);
   }

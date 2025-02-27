@@ -2,6 +2,7 @@
 
 * Require Dart 3.4 and add a dependency on `package:web`.
 * Ensure HTTP clients are closed if creating a session fails.
+* Update functions that return `List<int>` to return `Uint8List`.
 
 ## 3.1.0
 
