@@ -67,6 +67,6 @@ void main() {
       expect(location.y, lessThan(200));
       expect(size.height, greaterThan(200));
       expect(size.width, greaterThan(300));
-    }, skip: 'unreliable');
+    });
   }, timeout: const Timeout(Duration(minutes: 2)));
 }
