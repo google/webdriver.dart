@@ -37,7 +37,7 @@ void main() {
       const size = Rectangle<int>(0, 0, 600, 400);
 
       // Firefox may take a bit longer to do the resize.
-      await Future.delayed(const Duration(seconds: 1));
+      await Future<void>.delayed(const Duration(seconds: 1));
       await window.setSize(size);
       expect(await window.size, size);
     });

@@ -47,7 +47,7 @@ class W3cElementFinder extends ElementFinder {
   @override
   List<String> parseFindElementsResponse(WebDriverResponse response) =>
       (parseW3cResponse(response) as List)
-          .map<String>((e) => e[w3cElementStr] as String)
+          .map<String>((e) => (e as Map)[w3cElementStr] as String)
           .toList();
 
   @override
@@ -58,7 +58,7 @@ class W3cElementFinder extends ElementFinder {
 
   @override
   String? parseFindActiveElementResponse(WebDriverResponse response) =>
-      parseW3cResponse(response)[w3cElementStr] as String;
+      (parseW3cResponse(response) as Map)[w3cElementStr] as String;
 
   @override
   WebDriverRequest buildFindActiveElementRequest() =>
@@ -66,5 +66,5 @@ class W3cElementFinder extends ElementFinder {
 
   @override
   String? parseFindElementResponseCore(WebDriverResponse response) =>
-      (parseW3cResponse(response) ?? {})[w3cElementStr] as String?;
+      (parseW3cResponse(response) as Map?)?[w3cElementStr] as String?;
 }

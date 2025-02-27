@@ -114,7 +114,8 @@ class WebDriver implements SearchContext {
   }
 
   /// Search for an element within the entire current page.
-  /// Throws [NoSuchElementException] if a matching element is not found.
+  /// Throws [sync_core.NoSuchElementException] if a matching element is not
+  /// found.
   @override
   Future<WebElement> findElement(By by) => _client.send(
       _handler.elementFinder.buildFindElementRequest(by),
