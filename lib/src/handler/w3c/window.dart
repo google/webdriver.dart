@@ -148,7 +148,7 @@ class W3cWindowHandler extends WindowHandler {
 
   @override
   Rectangle<int> parseInnerSizeResponse(WebDriverResponse response) {
-    final size = parseW3cResponse(response) as Map<String, dynamic>;
+    final size = parseW3cResponse(response) as Map<String, Object?>;
     return Rectangle(0, 0, size['width'] as int, size['height'] as int);
   }
 }
