@@ -66,7 +66,7 @@ class W3cWindowHandler extends WindowHandler {
 
   @override
   Rectangle<int> parseRectResponse(WebDriverResponse response) {
-    final rect = parseW3cResponse(response) as Map<String, dynamic>;
+    final rect = parseW3cResponse(response) as Map<String, Object?>;
     return Rectangle(
       (rect['x'] as num).toInt(),
       (rect['y'] as num).toInt(),

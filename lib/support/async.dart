@@ -78,7 +78,7 @@ class Clock {
 }
 
 void _matcherExpect(Object? value, m.Matcher matcher, String? reason) {
-  final matchState = <String, dynamic>{};
+  final matchState = <String, Object?>{};
   if (matcher.matches(value, matchState)) {
     return;
   }

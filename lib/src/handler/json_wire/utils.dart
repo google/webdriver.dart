@@ -108,7 +108,7 @@ Object? deserialize(Object? result, dynamic Function(String) createElement) {
     if (result.containsKey(jsonWireElementStr)) {
       return createElement(result[jsonWireElementStr] as String);
     } else {
-      final newResult = <String, dynamic>{};
+      final newResult = <String, Object?>{};
       result.forEach((key, value) {
         newResult[key as String] = deserialize(value, createElement);
       });
