@@ -1,13 +1,18 @@
 ## 4.0.0-wip
 
-* Require Dart 3.4.
 * Replace usages of `Point<int>` and `Rectangle<int>` from `dart:math` with
   custom `Location`, `Rect`, and `Size` types.
+
+## 3.2.0-wip
+
+* Require Dart 3.4 and add a dependency on `package:web`.
+* Ensure HTTP clients are closed if creating a session fails.
+* Update functions that return `List<int>` to return `Uint8List`.
 
 ## 3.1.0
 
 * Add a `reason` argument to `Clock.waitFor`.
-* Explicitly close http clients on quit. 
+* Explicitly close http clients on quit.
 
 ## 3.0.4
 
@@ -24,7 +29,7 @@
 
 * Require Dart 2.18.
 * "Officially" deprecate `core.dart` and `io.dart` libraries.
-* Remove the dependecy on `package:archive`.
+* Remove the dependency on `package:archive`.
 
 ## 3.0.1
 

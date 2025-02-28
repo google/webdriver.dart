@@ -60,7 +60,7 @@ Future<void> _runServer(SendPort send) async {
         request.response
           ..statusCode = HttpStatus.ok
           ..headers.set('Content-type', 'text/html');
-        file.openRead().cast<List<int>>().pipe(request.response);
+        file.openRead().pipe(request.response);
       } else {
         request.response
           ..statusCode = HttpStatus.notFound

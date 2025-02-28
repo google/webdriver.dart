@@ -14,9 +14,9 @@
 
 @Tags(['ff'])
 @TestOn('vm')
-library webdriver.support.firefox_profile_test;
+library;
 
-import 'dart:convert' show base64, Encoding, utf8;
+import 'dart:convert' show Encoding, base64, utf8;
 import 'dart:io' as io;
 
 import 'package:archive/archive_io.dart' as archive;
@@ -32,7 +32,7 @@ void main() {
           r'7e08-4474-a285-3208198ce6fd}\":{\"d\":\"/opt/firefox/browser/'
           r'extensions/{972ce4c6-7e08-4474-a285-3208198ce6fd}\",\"e\":true,\'
           r'"v\":\"40.0\",\"st\":1439535413000,\"mt\":1438968709000}}}");';
-      final option = PrefsOption.parse(value);
+      final option = PrefsOption<String>.parse(value);
       expect(option, isA<StringOption>());
       expect(option.asPrefString, value);
     });
@@ -40,21 +40,21 @@ void main() {
     test('parse and serialize string value with backslash', () {
       const value = 'user_pref("browser.cache.disk.parent_directory", '
           r'"\\\\volume\\web\\cache\\mz");';
-      final option = PrefsOption.parse(value);
+      final option = PrefsOption<String>.parse(value);
       expect(option, isA<StringOption>());
       expect(option.asPrefString, value);
     });
 
     test('parse and serialize integer value', () {
       const value = 'user_pref("browser.cache.frecency_experiment", 3);';
-      final option = PrefsOption.parse(value);
+      final option = PrefsOption<int>.parse(value);
       expect(option, isA<IntegerOption>());
       expect(option.asPrefString, value);
     });
 
     test('parse and serialize negative integer value', () {
       const value = 'user_pref("browser.cache.frecency_experiment", -3);';
-      final option = PrefsOption.parse(value);
+      final option = PrefsOption<int>.parse(value);
       expect(option, isA<IntegerOption>());
       expect(option.asPrefString, value);
     });
@@ -62,7 +62,7 @@ void main() {
     test('parse and serialize boolean true', () {
       const value =
           'user_pref("browser.cache.disk.smart_size.first_run", true);';
-      final option = PrefsOption.parse(value);
+      final option = PrefsOption<bool>.parse(value);
       expect(option, isA<BooleanOption>());
       expect(option.asPrefString, value);
     });
@@ -70,7 +70,7 @@ void main() {
     test('parse and serialize boolean false', () {
       const value =
           'user_pref("browser.cache.disk.smart_size.first_run", false);';
-      final option = PrefsOption.parse(value);
+      final option = PrefsOption<bool>.parse(value);
       expect(option, isA<BooleanOption>());
       expect(option.asPrefString, value);
     });
@@ -78,7 +78,7 @@ void main() {
     test('parse boolean uppercase True', () {
       const value =
           'user_pref("browser.cache.disk.smart_size.first_run", True);';
-      final option = PrefsOption.parse(value);
+      final option = PrefsOption<bool>.parse(value);
       expect(option, isA<BooleanOption>());
       expect(option.value, true);
     });
@@ -141,8 +141,7 @@ void main() {
 
       final prefs = FirefoxProfile.loadPrefsFile(MockFile(
         String.fromCharCodes(
-          zipArchive.files.firstWhere((f) => f.name == 'user.js').content
-              as List<int>,
+          zipArchive.files.firstWhere((f) => f.name == 'user.js').content,
         ),
       ));
       expect(
@@ -179,8 +178,7 @@ void main() {
       final prefs = FirefoxProfile.loadPrefsFile(
         MockFile(
           String.fromCharCodes(
-            zipArchive.files.firstWhere((f) => f.name == 'user.js').content
-                as List<int>,
+            zipArchive.files.firstWhere((f) => f.name == 'user.js').content,
           ),
         ),
       );

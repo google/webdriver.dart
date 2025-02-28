@@ -80,7 +80,7 @@ class W3cElementHandler extends ElementHandler {
       WebDriverRequest.getRequest('${elementPrefix(elementId)}rect');
 
   Rect _parseRectResponse(WebDriverResponse response) {
-    final rect = parseW3cResponse(response);
+    final rect = parseW3cResponse(response) as Map<String, Object?>;
     return Rect(
       left: (rect['x'] as num).toInt(),
       top: (rect['y'] as num).toInt(),

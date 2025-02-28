@@ -14,6 +14,7 @@
 
 import 'dart:async';
 import 'dart:convert';
+import 'dart:typed_data';
 
 import '../../sync_core.dart' as sync_core;
 import '../common/by.dart';
@@ -113,7 +114,8 @@ class WebDriver implements SearchContext {
   }
 
   /// Search for an element within the entire current page.
-  /// Throws [NoSuchElementException] if a matching element is not found.
+  /// Throws [sync_core.NoSuchElementException] if a matching element is not
+  /// found.
   @override
   Future<WebElement> findElement(By by) => _client.send(
       _handler.elementFinder.buildFindElementRequest(by),
@@ -203,22 +205,22 @@ class WebDriver implements SearchContext {
           _handler.core.parseScreenshotResponse);
 
   /// Take a screenshot of the current page as PNG as list of uint8.
-  Future<List<int>> captureScreenshotAsList() async {
+  Future<Uint8List> captureScreenshotAsList() async {
     final base64Encoded = captureScreenshotAsBase64();
     return base64.decode(await base64Encoded);
   }
 
   /// Take a screenshot of the specified element as PNG as list of uint8.
-  Future<List<int>> captureElementScreenshotAsList(WebElement element) async {
+  Future<Uint8List> captureElementScreenshotAsList(WebElement element) async {
     final base64Encoded = captureElementScreenshotAsBase64(element);
     return base64.decode(await base64Encoded);
   }
 
   /// Take a screenshot of the current page as PNG as stream of uint8.
   ///
-  /// Don't use this method. Prefer [captureScreenshotAsBase64] or
-  /// [captureScreenshotAsList]. Returning the data as Stream<int> can be very
-  /// slow.
+  /// Don't use this method.
+  /// Prefer [captureScreenshotAsBase64] or [captureScreenshotAsList].
+  /// Returning the data as `Stream<int>` can be very slow.
   @Deprecated('Use captureScreenshotAsBase64 or captureScreenshotAsList!')
   Stream<int> captureScreenshot() async* {
     yield* Stream.fromIterable(await captureScreenshotAsList());

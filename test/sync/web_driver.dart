@@ -13,7 +13,7 @@
 // limitations under the License.
 
 @TestOn('vm')
-library webdriver.web_driver_test;
+library;
 
 import 'dart:io';
 
@@ -139,7 +139,7 @@ void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
         const script = '''
             arguments[1].textContent = arguments[0];
             return arguments[1];''';
-        final e = driver.execute(script, ['new text', button]);
+        final e = driver.execute(script, ['new text', button]) as WebElement;
         expect(e.text, 'new text');
       });
 
@@ -148,7 +148,8 @@ void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
         const script = '''
             arguments[1].textContent = arguments[0];
             arguments[2](arguments[1]);''';
-        final e = driver.executeAsync(script, ['new text', button]);
+        final e =
+            driver.executeAsync(script, ['new text', button]) as WebElement;
         expect(e.text, 'new text');
       });
 

@@ -139,7 +139,7 @@ class JsonWireWindowHandler extends WindowHandler {
       WebDriverRequest.postRequest('execute', {
         'script':
             'return { width: window.innerWidth, height: window.innerHeight };',
-        'args': []
+        'args': <Object>[]
       });
 
   @override

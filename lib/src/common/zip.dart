@@ -33,7 +33,7 @@ class Archive {
 /// This class represents a file in an archive.
 class ArchiveFile {
   final String name;
-  final List<int> content;
+  final Uint8List content;
 
   ArchiveFile(this.name, this.content);
 

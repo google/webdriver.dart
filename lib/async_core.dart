@@ -18,6 +18,7 @@ import 'dart:collection' show UnmodifiableMapView;
 import 'src/async/web_driver.dart';
 import 'src/common/capabilities.dart';
 import 'src/common/request_client.dart';
+import 'src/common/session.dart';
 import 'src/common/spec.dart';
 import 'src/common/utils.dart';
 
@@ -44,10 +45,10 @@ export 'package:webdriver/src/common/spec.dart';
 
 final Uri defaultUri = Uri.parse('http://127.0.0.1:4444/wd/hub/');
 
-/// Creates a new async WebDriver.
+/// Creates a new async [WebDriver].
 ///
 /// This is intended for internal use! Please use [createDriver] from
-/// async_io.dart or async_html.dart.
+/// `async_io.dart` or `async_html.dart`.
 Future<WebDriver> createDriver(
     AsyncRequestClient Function(Uri prefix) createRequestClient,
     {Uri? uri,
@@ -60,10 +61,14 @@ Future<WebDriver> createDriver(
 
   final handler = getHandler(spec);
 
-  final session = await client.send(
-      handler.session.buildCreateRequest(desired: desired),
-      handler.session.parseCreateResponse);
-  client.close();
+  final SessionInfo session;
+  try {
+    session = await client.send(
+        handler.session.buildCreateRequest(desired: desired),
+        handler.session.parseCreateResponse);
+  } finally {
+    client.close();
+  }
 
   if (session.spec != WebDriverSpec.JsonWire &&
       session.spec != WebDriverSpec.W3c) {
@@ -74,10 +79,10 @@ Future<WebDriver> createDriver(
       createRequestClient(uri.resolve('session/${session.id}/')), session.spec);
 }
 
-/// Creates an async WebDriver from existing session.
+/// Creates an async [WebDriver] from existing session.
 ///
 /// This is intended for internal use! Please use [fromExistingSession] from
-/// async_io.dart or async_html.dart.
+/// `async_io.dart` or `async_html.dart`.
 Future<WebDriver> fromExistingSession(
     AsyncRequestClient Function(Uri prefix) createRequestClient,
     String sessionId,
@@ -90,9 +95,13 @@ Future<WebDriver> fromExistingSession(
 
   final handler = getHandler(spec);
 
-  final session = await client.send(handler.session.buildInfoRequest(sessionId),
-      (response) => handler.session.parseInfoResponse(response, sessionId));
-  client.close();
+  final SessionInfo session;
+  try {
+    session = await client.send(handler.session.buildInfoRequest(sessionId),
+        (response) => handler.session.parseInfoResponse(response, sessionId));
+  } finally {
+    client.close();
+  }
 
   if (session.spec != WebDriverSpec.JsonWire &&
       session.spec != WebDriverSpec.W3c) {
@@ -103,13 +112,13 @@ Future<WebDriver> fromExistingSession(
       createRequestClient(uri.resolve('session/${session.id}/')), session.spec);
 }
 
-/// Creates an async WebDriver from existing session with a sync function.
+/// Creates an async [WebDriver] from existing session with a sync function.
 ///
 /// This will be helpful when you can't use async when creating WebDriver. For
-/// example in a consctructor.
+/// example in a constructor.
 ///
 /// This is intended for internal use! Please use [fromExistingSessionSync] from
-/// async_io.dart or async_html.dart.
+/// `async_io.dart` or `async_html.dart`.
 WebDriver fromExistingSessionSync(
     AsyncRequestClient Function(Uri prefix) createRequestClient,
     String sessionId,

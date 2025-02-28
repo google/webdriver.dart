@@ -1,9 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:io' show ContentType, HttpClient, HttpHeaders, HttpClientRequest;
+import 'dart:io' show ContentType, HttpClient, HttpClientRequest, HttpHeaders;
 
 import '../../support/async.dart';
-
 import '../common/request.dart';
 import '../common/request_client.dart';
 
@@ -52,7 +51,7 @@ class AsyncIoRequestClient extends AsyncRequestClient {
       final response = await httpRequest.close();
 
       return WebDriverResponse(response.statusCode, response.reasonPhrase,
-          await utf8.decodeStream(response.cast<List<int>>()));
+          await utf8.decodeStream(response));
     } finally {
       _lock.release();
     }

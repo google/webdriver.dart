@@ -13,7 +13,7 @@
 // limitations under the License.
 
 @TestOn('vm')
-library webdriver.command_event_test;
+library;
 
 import 'package:stack_trace/stack_trace.dart';
 import 'package:test/test.dart';

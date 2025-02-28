@@ -131,14 +131,15 @@ class JsonWireElementHandler extends ElementHandler {
       parseJsonWireResponse(response)?.toString();
 
   @override
-  WebDriverRequest buildCssPropertyRequest(String elementId, String name) =>
-      WebDriverRequest.postRequest('execute', {
-        'script':
-            'return window.getComputedStyle(arguments[0]).${_cssPropName(name)};',
-        'args': [
-          {jsonWireElementStr: elementId}
-        ]
-      });
+  WebDriverRequest buildCssPropertyRequest(String elementId, String name) {
+    final cssProperty = _cssPropName(name);
+    return WebDriverRequest.postRequest('execute', {
+      'script': 'return window.getComputedStyle(arguments[0]).$cssProperty;',
+      'args': [
+        {jsonWireElementStr: elementId}
+      ]
+    });
+  }
 
   @override
   String? parseCssPropertyResponse(WebDriverResponse response) =>
@@ -158,6 +159,6 @@ class JsonWireElementHandler extends ElementHandler {
       parseJsonWireResponse(response)?.toString();
 
   /// Convert hyphenated-properties to camelCase.
-  String _cssPropName(String name) => name.splitMapJoin(RegExp(r'-(\w)'),
+  static String _cssPropName(String name) => name.splitMapJoin(RegExp(r'-(\w)'),
       onMatch: (m) => m.group(1)!.toUpperCase(), onNonMatch: (m) => m);
 }
