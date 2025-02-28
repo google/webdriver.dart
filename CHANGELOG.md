@@ -6,6 +6,7 @@
   that can be used from the `async_http` library.
   Consider migrating `async_io` and `async_web` usages to `async_http`.
 * Ensure HTTP clients are closed if creating a session fails.
+* Update functions that return `List<int>` to return `Uint8List`.
 
 ## 3.1.0
 

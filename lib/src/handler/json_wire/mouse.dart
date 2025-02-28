@@ -51,7 +51,7 @@ class JsonWireMouseHandler extends MouseHandler {
           0, 'Move to an absolute location is only supported in W3C spec.');
     }
 
-    final body = {};
+    final body = <String, Object?>{};
     if (elementId != null) {
       body['element'] = elementId;
     }

@@ -123,7 +123,8 @@ class InferSessionHandler extends SessionHandler {
       // May be W3C, as it will throw an unknown command exception.
       Map<String, dynamic>? body;
       try {
-        body = json.decode(response.body!)['value'] as Map<String, dynamic>?;
+        body = (json.decode(response.body!) as Map)['value']
+            as Map<String, dynamic>?;
       } catch (e) {
         final rawBody =
             response.body?.isEmpty ?? true ? '<empty response>' : response.body;

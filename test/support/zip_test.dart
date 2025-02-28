@@ -29,13 +29,13 @@ void main() {
       var file = zipArchive.files[0];
       expect(file.name, 'dart_test.yaml');
       expect(file.size, 166);
-      expect(utf8.decode(file.content as List<int>),
+      expect(utf8.decode(file.content),
           contains('See https://github.com/dart-lang/test/'));
 
       file = zipArchive.files[1];
       expect(file.name, 'lib/src/common/spec.dart');
       expect(file.size, 209);
-      expect(utf8.decode(file.content as List<int>),
+      expect(utf8.decode(file.content),
           contains('Defines the WebDriver spec to use'));
     });
 
@@ -75,7 +75,7 @@ void main() {
 
   group('crc32', () {
     test('0 bytes', () {
-      expect(crc32([]), 0x00000000);
+      expect(crc32(<int>[]), 0x00000000);
     });
 
     test('1 byte', () {

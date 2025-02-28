@@ -13,7 +13,7 @@
 // limitations under the License.
 
 @TestOn('vm')
-library webdriver.web_driver_test;
+library;
 
 import 'dart:async';
 
@@ -137,7 +137,8 @@ void main() {
         const script = '''
             arguments[1].textContent = arguments[0];
             return arguments[1];''';
-        final e = await driver.execute(script, ['new text', button]);
+        final e =
+            await driver.execute(script, ['new text', button]) as WebElement;
         expect(await e.text, 'new text');
       });
 
@@ -146,7 +147,8 @@ void main() {
         const script = '''
             arguments[1].textContent = arguments[0];
             arguments[2](arguments[1]);''';
-        final e = await driver.executeAsync(script, ['new text', button]);
+        final e = await driver.executeAsync(script, ['new text', button])
+            as WebElement;
         expect(await e.text, 'new text');
       });
 

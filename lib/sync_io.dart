@@ -14,7 +14,7 @@
 
 import 'src/request/sync_http_request_client.dart';
 import 'sync_core.dart' as core
-    show createDriver, fromExistingSession, WebDriver, WebDriverSpec;
+    show WebDriver, WebDriverSpec, createDriver, fromExistingSession;
 
 export 'package:webdriver/sync_core.dart'
     hide createDriver, fromExistingSession;

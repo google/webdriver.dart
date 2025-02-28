@@ -10,8 +10,13 @@ class WebDriverException implements Exception {
   const WebDriverException(this.statusCode, this.message);
 
   @override
-  String toString() =>
-      '$runtimeType ($statusCode): ${message?.isEmpty ?? true ? '<no message>' : message!}';
+  String toString() {
+    final errorMessage = switch (message) {
+      final message? when message.isNotEmpty => message,
+      _ => '<no message>',
+    };
+    return '$runtimeType ($statusCode): $errorMessage';
+  }
 
   @override
   bool operator ==(Object other) =>
@@ -184,7 +189,7 @@ WebDriverException getExceptionFromJsonWireResponse(
     {int? httpStatusCode, String? httpReasonPhrase, dynamic jsonResp}) {
   if (jsonResp is Map) {
     final status = jsonResp['status'] as int?;
-    final message = jsonResp['value']['message'] as String?;
+    final message = (jsonResp['value'] as Map)['message'] as String?;
 
     switch (status) {
       case 0:
@@ -253,7 +258,7 @@ WebDriverException getExceptionFromW3cResponse({
   dynamic jsonResp,
 }) {
   if (jsonResp is Map && jsonResp.keys.contains('value')) {
-    final value = jsonResp['value'];
+    final value = jsonResp['value'] as Map<String, Object?>;
 
     switch (value['error']) {
       case 'invalid argument':

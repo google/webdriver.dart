@@ -17,9 +17,9 @@ class JsonWireElementFinder extends ElementFinder {
   @override
   List<String> parseFindElementsResponse(WebDriverResponse response) =>
       (parseJsonWireResponse(response) as List)
-          .map((e) => e[jsonWireElementStr])
-          .toList()
-          .cast<String>();
+          .map((e) => (e as Map)[jsonWireElementStr])
+          .cast<String>()
+          .toList();
 
   @override
   WebDriverRequest buildFindElementRequest(By by, [String? contextId]) {

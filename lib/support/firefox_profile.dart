@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import 'dart:collection';
-import 'dart:convert' show LineSplitter, base64;
+import 'dart:convert' show LineSplitter, base64, utf8;
 import 'dart:io' as io;
 
 import 'package:path/path.dart' as path;
@@ -199,7 +199,7 @@ class FirefoxProfile {
     var canNotParseCaption = true;
 
     for (final line in lines) {
-      final option = PrefsOption.parse(line);
+      final option = PrefsOption<Object>.parse(line);
       if (option is InvalidOption) {
         if (canNotParseCaption) {
           print('Can\'t parse lines from file "${file.path}":');
@@ -237,11 +237,11 @@ class FirefoxProfile {
     }
 
     final prefsJsContent =
-        prefs.map((option) => option.asPrefString).join('\n').codeUnits;
+        utf8.encode(prefs.map((option) => option.asPrefString).join('\n'));
     archive.addFile(ArchiveFile('prefs.js', prefsJsContent));
 
     final userJsContent =
-        userPrefs.map((option) => option.asPrefString).join('\n').codeUnits;
+        utf8.encode(userPrefs.map((option) => option.asPrefString).join('\n'));
     archive.addFile(ArchiveFile('user.js', userJsContent));
 
     final zipData = ZipEncoder.encode(archive);

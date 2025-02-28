@@ -12,8 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-library webdriver.support.async_test;
-
 import 'dart:async' show Future, unawaited;
 
 import 'package:test/test.dart';
@@ -44,11 +42,11 @@ void main() {
       await lock.acquire();
       unawaited(lock.acquire().then((_) => secondLockAcquired = true));
       // Make sure that lock is not unacquired just because of timing
-      await Future.delayed(const Duration(seconds: 1));
+      await Future<void>.delayed(const Duration(seconds: 1));
       expect(secondLockAcquired, isFalse);
       lock.release();
       // Make sure that enough time has occurred that lock is acquired
-      await Future.delayed(const Duration(seconds: 1));
+      await Future<void>.delayed(const Duration(seconds: 1));
       expect(secondLockAcquired, isTrue);
     });
 
@@ -151,7 +149,7 @@ void main() {
       Object? exception;
 
       try {
-        await clock.waitFor(() => Future.error('an exception'));
+        await clock.waitFor(() => Future<void>.error('an exception'));
       } catch (e) {
         exception = e;
       }

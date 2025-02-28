@@ -15,7 +15,7 @@
 import 'dart:async' show Future;
 
 import 'async_core.dart' as core
-    show createDriver, fromExistingSession, fromExistingSessionSync, WebDriver;
+    show WebDriver, createDriver, fromExistingSession, fromExistingSessionSync;
 import 'src/common/spec.dart';
 import 'src/request/async_xhr_request_client.dart';
 

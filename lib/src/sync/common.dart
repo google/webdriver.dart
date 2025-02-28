@@ -14,7 +14,6 @@
 
 import '../../async_core.dart' as async_core;
 import '../common/by.dart';
-
 import 'web_driver.dart';
 import 'web_element.dart';
 
@@ -49,6 +48,7 @@ abstract class SearchContext {
 
   /// Searches for an element within the context.
   ///
-  /// Throws [NoSuchElementException] if no matching element is found.
+  /// Throws [async_core.NoSuchElementException] if no matching element is
+  /// found.
   WebElement findElement(By by);
 }

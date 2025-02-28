@@ -38,7 +38,7 @@ class Alert {
   /// Dismisses the currently displayed alert (may not be the alert for which
   /// this object was created).
   ///
-  ///  Throws [NoSuchAlertException] if there isn't currently an alert.
+  /// Throws [NoSuchAlertException] if there isn't currently an alert.
   void dismiss() {
     _client.send(_handler.alert.buildDismissRequest(),
         _handler.alert.parseDismissResponse);
