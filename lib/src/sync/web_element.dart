@@ -12,10 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import 'dart:math' show Point, Rectangle;
-
 import '../../async_core.dart' as async_core;
 import '../common/by.dart';
+import '../common/geometry.dart';
 import '../common/request_client.dart';
 import '../common/web_element.dart' as common;
 import '../common/webdriver_handler.dart';
@@ -144,19 +143,19 @@ class WebElement extends common.WebElement implements SearchContext {
   ///
   /// This is assumed to be the upper left corner of the element, but its
   /// implementation is not well defined in the JSON spec.
-  Point<int> get location => _client.send(
+  Position get location => _client.send(
       _handler.element.buildLocationRequest(id),
       _handler.element.parseLocationResponse);
 
   /// The size of this element.
-  Rectangle<int> get size => _client.send(_handler.element.buildSizeRequest(id),
+  Size get size => _client.send(_handler.element.buildSizeRequest(id),
       _handler.element.parseSizeResponse);
 
   /// The bounds of this element.
-  Rectangle<int> get rect {
+  Rect get rect {
     final location = this.location;
     final size = this.size;
-    return Rectangle<int>(location.x, location.y, size.width, size.height);
+    return Rect.from(topLeft: location, size: size);
   }
 
   /// The tag name for this element.
