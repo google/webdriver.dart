@@ -9,6 +9,7 @@ environment:
   sdk: ^3.4.0
 
 dependencies:
+  http: ^1.2.2
   matcher: ^0.12.10
   path: ^1.8.0
   stack_trace: ^1.10.0
