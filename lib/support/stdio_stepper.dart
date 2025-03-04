@@ -51,7 +51,6 @@ class StdioStepper implements Stepper {
         case 'help':
         case 'h':
           _printUsage();
-          break;
         case 'disable':
         case 'd':
           enabled = false;

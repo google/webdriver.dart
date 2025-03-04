@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:io' show ContentType, HttpClient, HttpClientRequest, HttpHeaders;
+import 'dart:io' show ContentType, HttpClient, HttpHeaders;
 
 import '../../support/async.dart';
 import '../common/request.dart';
@@ -19,19 +19,13 @@ class AsyncIoRequestClient extends AsyncRequestClient {
   @override
   Future<WebDriverResponse> sendRaw(WebDriverRequest request) async {
     await _lock.acquire();
-    late HttpClientRequest httpRequest;
 
-    switch (request.method) {
-      case HttpMethod.httpGet:
-        httpRequest = await client.getUrl(resolve(request.uri!));
-        break;
-      case HttpMethod.httpPost:
-        httpRequest = await client.postUrl(resolve(request.uri!));
-        break;
-      case HttpMethod.httpDelete:
-        httpRequest = await client.deleteUrl(resolve(request.uri!));
-        break;
-    }
+    final requestUri = resolve(request.uri!);
+    final httpRequest = switch (request.method!) {
+      HttpMethod.httpGet => await client.getUrl(requestUri),
+      HttpMethod.httpPost => await client.postUrl(requestUri),
+      HttpMethod.httpDelete => await client.deleteUrl(requestUri)
+    };
 
     httpRequest.followRedirects = true;
     _headers.forEach(httpRequest.headers.add);

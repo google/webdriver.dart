@@ -35,24 +35,14 @@ class By {
 
   @override
   String toString() {
-    var constructor = using;
-    switch (using) {
-      case 'link text':
-        constructor = 'linkText';
-        break;
-      case 'partial link text':
-        constructor = 'partialLinkText';
-        break;
-      case 'tag name':
-        constructor = 'tagName';
-        break;
-      case 'class name':
-        constructor = 'className';
-        break;
-      case 'css selector':
-        constructor = 'cssSelector';
-        break;
-    }
+    final constructor = switch (using) {
+      'link text' => 'linkText',
+      'partial link text' => 'partialLinkText',
+      'tag name' => 'tagName',
+      'class name' => 'className',
+      'css selector' => 'cssSelector',
+      _ => using
+    };
     return 'By.$constructor($value)';
   }
 

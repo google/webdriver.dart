@@ -255,25 +255,22 @@ WebDriverException getExceptionFromJsonWireResponse(
 WebDriverException getExceptionFromW3cResponse({
   int? httpStatusCode,
   String? httpReasonPhrase,
-  dynamic jsonResp,
+  Object? jsonResp,
 }) {
   if (jsonResp is Map && jsonResp.keys.contains('value')) {
     final value = jsonResp['value'] as Map<String, Object?>;
 
-    switch (value['error']) {
-      case 'invalid argument':
-        return InvalidArgumentException(
+    return switch (value['error']) {
+      'invalid argument' => InvalidArgumentException(
           httpStatusCode,
           value['message'] as String?,
-        );
-      case 'no such element':
-        return NoSuchElementException(
+        ),
+      'no such element' => NoSuchElementException(
           httpStatusCode,
           value['message'] as String?,
-        );
-      default:
-        return WebDriverException(httpStatusCode, value['message'] as String?);
-    }
+        ),
+      _ => WebDriverException(httpStatusCode, value['message'] as String?),
+    };
   }
 
   return InvalidResponseException(httpStatusCode, jsonResp.toString());
