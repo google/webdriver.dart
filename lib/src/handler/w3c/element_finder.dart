@@ -9,31 +9,22 @@ class W3cElementFinder extends ElementFinder {
   /// In principle, W3C spec implementations should be nearly the same as
   /// the existing JSON wire spec. In practice compliance is uneven.
   Map<String, String> _byToJson(By by) {
-    String using;
-    String value;
+    final (using, value) = switch (by.using) {
+      // This doesn't exist in the W3C spec.
+      'id' => ('css selector', '#${by.value}'),
 
-    switch (by.using) {
-      case 'id': // This doesn't exist in the W3C spec.
-        using = 'css selector';
-        value = '#${by.value}';
-        break;
-      case 'name': // This doesn't exist in the W3C spec.
-        using = 'css selector';
-        value = '[name=${by.value}]';
-        break;
-      case 'tag name': // This is in the W3C spec, but not in geckodriver.
-        using = 'css selector';
-        value = by.value;
-        break;
-      case 'class name': // This doesn't exist in the W3C spec.
-        using = 'css selector';
-        value = '.${by.value}';
-        break;
+      // This doesn't exist in the W3C spec.
+      'name' => ('css selector', '[name=${by.value}]'),
+
+      // This is in the W3C spec, but not in geckodriver.
+      'tag name' => ('css selector', by.value),
+
+      // This doesn't exist in the W3C spec.
+      'class name' => ('css selector', '.${by.value}'),
+
       // xpath, css selector, link text, partial link text, seem fine.
-      default:
-        using = by.using;
-        value = by.value;
-    }
+      _ => (by.using, by.value),
+    };
 
     return {'using': using, 'value': value};
   }

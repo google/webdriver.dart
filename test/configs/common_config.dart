@@ -34,40 +34,32 @@ String get testHostname => '127.0.0.1';
 
 String get testHomePath => path.absolute('test');
 
-Uri? getWebDriverUri(WebDriverSpec spec) {
-  switch (spec) {
-    case WebDriverSpec.W3c:
-      return _defaultFirefoxUri;
-    case WebDriverSpec.JsonWire:
-      return _defaultChromeUri;
-    default:
-      return null;
-  }
-}
+Uri? getWebDriverUri(WebDriverSpec spec) => switch (spec) {
+      WebDriverSpec.W3c => _defaultFirefoxUri,
+      WebDriverSpec.JsonWire => _defaultChromeUri,
+      _ => null,
+    };
 
-Map<String, dynamic> getCapabilities(WebDriverSpec spec) {
-  switch (spec) {
-    case WebDriverSpec.W3c:
-      return Capabilities.firefox;
-    case WebDriverSpec.JsonWire:
-      final capabilities = Capabilities.chrome;
-      final env = Platform.environment;
+Map<String, Object?> getCapabilities(WebDriverSpec spec) => switch (spec) {
+      WebDriverSpec.W3c => Capabilities.firefox,
+      WebDriverSpec.JsonWire => () {
+          final capabilities = Capabilities.chrome;
+          final env = Platform.environment;
 
-      final chromeOptions = <String, dynamic>{};
+          final chromeOptions = <String, Object?>{};
 
-      if (env['CHROMEDRIVER_BINARY'] != null) {
-        chromeOptions['binary'] = env['CHROMEDRIVER_BINARY'];
-      }
+          if (env['CHROMEDRIVER_BINARY'] != null) {
+            chromeOptions['binary'] = env['CHROMEDRIVER_BINARY'];
+          }
 
-      if (env['CHROMEDRIVER_ARGS'] != null) {
-        chromeOptions['args'] = env['CHROMEDRIVER_ARGS']!.split(' ');
-      }
+          if (env['CHROMEDRIVER_ARGS'] != null) {
+            chromeOptions['args'] = env['CHROMEDRIVER_ARGS']!.split(' ');
+          }
 
-      if (chromeOptions.isNotEmpty) {
-        capabilities[Capabilities.chromeOptions] = chromeOptions;
-      }
-      return capabilities;
-    default:
-      return <String, dynamic>{};
-  }
-}
+          if (chromeOptions.isNotEmpty) {
+            capabilities[Capabilities.chromeOptions] = chromeOptions;
+          }
+          return capabilities;
+        }(),
+      _ => <String, Object?>{}
+    };
