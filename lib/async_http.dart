@@ -16,11 +16,11 @@ import 'package:http/http.dart' as http show Client;
 
 import 'async_core.dart' as core
     show
+        WebDriver,
+        WebDriverSpec,
         createDriver,
         fromExistingSession,
-        fromExistingSessionSync,
-        WebDriver,
-        WebDriverSpec;
+        fromExistingSessionSync;
 import 'src/request/async_http_request_client.dart';
 
 export 'package:webdriver/async_core.dart'
