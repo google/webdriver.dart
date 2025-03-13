@@ -23,6 +23,17 @@ final class Position {
 
   /// Create a location at the specified [x] and [y] coordinates.
   const Position({required this.x, required this.y});
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Position && x == other.x && y == other.y;
+
+  @override
+  int get hashCode => Object.hash(x, y);
+
+  @override
+  String toString() => 'Position(x: $x, y: $y)';
 }
 
 /// A rectangle, which is a quadrilateral with four right angles, represented on
@@ -92,6 +103,22 @@ final class Rect {
 
   /// The location of the bottom-left corner of this rectangle.
   Position get bottomLeft => Position(x: left, y: bottom);
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Rect &&
+          _left == other._left &&
+          _top == other._top &&
+          _width == other._width &&
+          _height == other._height;
+
+  @override
+  int get hashCode => Object.hash(_left, _top, _width, _height);
+
+  @override
+  String toString() =>
+      'Rect(left: $_left, top: $_top, width: $_width, height: $_height)';
 }
 
 /// The width and height dimensions of a 2D object.
@@ -111,4 +138,15 @@ final class Size {
       : assert(width >= 0, height >= 0),
         width = (width < 0) ? 0 : width,
         height = (height < 0) ? 0 : height;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Size && width == other.width && height == other.height;
+
+  @override
+  int get hashCode => Object.hash(width, height);
+
+  @override
+  String toString() => 'Size(width: $width, height: $height)';
 }
