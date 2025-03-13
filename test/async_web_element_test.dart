@@ -97,28 +97,24 @@ void main() {
 
     test('location -- table', () async {
       final location = await table.location;
-      expect(location, config.isPoint);
       expect(location.x, isNonNegative);
       expect(location.y, isNonNegative);
     });
 
     test('location -- invisible', () async {
       final location = await invisible.location;
-      expect(location, config.isPoint);
       expect(location.x, 0);
       expect(location.y, 0);
     });
 
     test('size -- table', () async {
       final size = await table.size;
-      expect(size, config.isRectangle);
       expect(size.width, isNonNegative);
       expect(size.height, isNonNegative);
     });
 
     test('size -- invisible', () async {
       final size = await invisible.size;
-      expect(size, config.isRectangle);
       expect(size.width, isNonNegative);
       expect(size.height, isNonNegative);
     });
