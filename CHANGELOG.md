@@ -1,3 +1,8 @@
+## 4.0.0-wip
+
+* Replace usages of `Point<int>` and `Rectangle<int>` from `dart:math` with
+  custom `Location`, `Rect`, and `Size` types.
+
 ## 3.2.0-wip
 
 * Require Dart 3.4 and add a dependency on `package:web`.
