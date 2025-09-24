@@ -12,8 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import 'dart:math' show Point, Rectangle;
-
+import '../common/geometry.dart';
 import '../common/request_client.dart';
 import '../common/webdriver_handler.dart';
 
@@ -34,21 +33,19 @@ class Window {
   }
 
   /// The location of the window.
-  Point<int> get location => _client.send(
-      _handler.window.buildLocationRequest(),
+  Position get location => _client.send(_handler.window.buildLocationRequest(),
       _handler.window.parseLocationResponse);
 
   /// The outer size of the window.
-  Rectangle<int> get size => _client.send(
+  Size get size => _client.send(
       _handler.window.buildSizeRequest(), _handler.window.parseSizeResponse);
 
   /// The inner size of the window.
-  Rectangle<int> get innerSize => _client.send(
-      _handler.window.buildInnerSizeRequest(),
+  Size get innerSize => _client.send(_handler.window.buildInnerSizeRequest(),
       _handler.window.parseInnerSizeResponse);
 
   /// The location and size of the window.
-  Rectangle<int> get rect {
+  Rect get rect {
     try {
       return _client.send(_handler.window.buildRectRequest(),
           _handler.window.parseRectResponse);
@@ -57,19 +54,19 @@ class Window {
       // Delegate to other methods.
       final location = this.location;
       final size = this.size;
-      return Rectangle<int>(location.x, location.y, size.width, size.height);
+      return Rect.from(topLeft: location, size: size);
     }
   }
 
   /// Sets the window location.
   ///
   /// TODO(jingbian): Remove this, prefer setter.
-  void setLocation(Point<int> point) {
+  void setLocation(Position point) {
     location = point;
   }
 
   /// Sets the window location.
-  set location(Point<int> value) {
+  set location(Position value) {
     _client.send(_handler.window.buildSetLocationRequest(value),
         _handler.window.parseSetLocationResponse);
   }
@@ -77,18 +74,18 @@ class Window {
   /// Sets the window size.
   ///
   /// TODO(jingbian): Remove this, prefer setter.
-  void setSize(Rectangle<int> size) {
+  void setSize(Size size) {
     this.size = size;
   }
 
   /// Sets the window size.
-  set size(Rectangle<int> value) {
+  set size(Size value) {
     _client.send(_handler.window.buildSetSizeRequest(value),
         _handler.window.parseSetSizeResponse);
   }
 
   /// The location and size of the window.
-  set rect(Rectangle<int> value) {
+  set rect(Rect value) {
     try {
       _client.send(_handler.window.buildSetRectRequest(value),
           _handler.window.parseSetRectResponse);
@@ -97,7 +94,7 @@ class Window {
       // JsonWire cannot implement this API in one call.
       // Delegate to other methods.
       location = value.topLeft;
-      size = Rectangle(0, 0, value.width, value.height);
+      size = value.size;
     }
   }
 

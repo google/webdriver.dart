@@ -1,5 +1,4 @@
-import 'dart:math';
-
+import '../../common/geometry.dart';
 import '../../common/request.dart';
 import '../../common/webdriver_handler.dart';
 import 'utils.dart';
@@ -63,9 +62,12 @@ class JsonWireElementHandler extends ElementHandler {
       WebDriverRequest.getRequest('${elementPrefix(elementId)}location');
 
   @override
-  Point<int> parseLocationResponse(WebDriverResponse response) {
-    final point = parseJsonWireResponse(response) as Map;
-    return Point((point['x'] as num).toInt(), (point['y'] as num).toInt());
+  Position parseLocationResponse(WebDriverResponse response) {
+    final point = parseJsonWireResponse(response) as Map<String, Object?>;
+    return Position(
+      x: (point['x'] as num).toInt(),
+      y: (point['y'] as num).toInt(),
+    );
   }
 
   @override
@@ -73,13 +75,11 @@ class JsonWireElementHandler extends ElementHandler {
       WebDriverRequest.getRequest('${elementPrefix(elementId)}size');
 
   @override
-  Rectangle<int> parseSizeResponse(WebDriverResponse response) {
-    final size = parseJsonWireResponse(response) as Map;
-    return Rectangle<int>(
-      0,
-      0,
-      (size['width'] as num).toInt(),
-      (size['height'] as num).toInt(),
+  Size parseSizeResponse(WebDriverResponse response) {
+    final size = parseJsonWireResponse(response) as Map<String, Object?>;
+    return Size(
+      width: (size['width'] as num).toInt(),
+      height: (size['height'] as num).toInt(),
     );
   }
 

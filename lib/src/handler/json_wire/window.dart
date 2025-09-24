@@ -12,8 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import 'dart:math';
-
+import '../../common/geometry.dart';
 import '../../common/request.dart';
 import '../../common/webdriver_handler.dart';
 import 'utils.dart';
@@ -49,11 +48,11 @@ class JsonWireWindowHandler extends WindowHandler {
       WebDriverRequest.getRequest('window/current/position');
 
   @override
-  Point<int> parseLocationResponse(WebDriverResponse response) {
-    final point = parseJsonWireResponse(response) as Map;
-    return Point(
-      (point['x'] as num).toInt(),
-      (point['y'] as num).toInt(),
+  Position parseLocationResponse(WebDriverResponse response) {
+    final point = parseJsonWireResponse(response) as Map<String, Object?>;
+    return Position(
+      x: (point['x'] as num).toInt(),
+      y: (point['y'] as num).toInt(),
     );
   }
 
@@ -62,13 +61,11 @@ class JsonWireWindowHandler extends WindowHandler {
       WebDriverRequest.getRequest('window/current/size');
 
   @override
-  Rectangle<int> parseSizeResponse(WebDriverResponse response) {
-    final size = parseJsonWireResponse(response) as Map;
-    return Rectangle<int>(
-      0,
-      0,
-      (size['width'] as num).toInt(),
-      (size['height'] as num).toInt(),
+  Size parseSizeResponse(WebDriverResponse response) {
+    final size = parseJsonWireResponse(response) as Map<String, Object?>;
+    return Size(
+      width: (size['width'] as num).toInt(),
+      height: (size['height'] as num).toInt(),
     );
   }
 
@@ -78,14 +75,14 @@ class JsonWireWindowHandler extends WindowHandler {
   }
 
   @override
-  Rectangle<int> parseRectResponse(WebDriverResponse response) {
+  Rect parseRectResponse(WebDriverResponse response) {
     throw UnsupportedError('Get Window Rect is not supported in JsonWire.');
   }
 
   @override
-  WebDriverRequest buildSetLocationRequest(Point<int> location) =>
-      WebDriverRequest.postRequest('window/current/position',
-          {'x': location.x.toInt(), 'y': location.y.toInt()});
+  WebDriverRequest buildSetLocationRequest(Position location) =>
+      WebDriverRequest.postRequest(
+          'window/current/position', {'x': location.x, 'y': location.y});
 
   @override
   void parseSetLocationResponse(WebDriverResponse response) {
@@ -93,9 +90,9 @@ class JsonWireWindowHandler extends WindowHandler {
   }
 
   @override
-  WebDriverRequest buildSetSizeRequest(Rectangle<int> size) =>
-      WebDriverRequest.postRequest('window/current/size',
-          {'width': size.width.toInt(), 'height': size.height.toInt()});
+  WebDriverRequest buildSetSizeRequest(Size size) =>
+      WebDriverRequest.postRequest(
+          'window/current/size', {'width': size.width, 'height': size.height});
 
   @override
   void parseSetSizeResponse(WebDriverResponse response) {
@@ -103,7 +100,7 @@ class JsonWireWindowHandler extends WindowHandler {
   }
 
   @override
-  WebDriverRequest buildSetRectRequest(Rectangle<int> rect) {
+  WebDriverRequest buildSetRectRequest(Rect rect) {
     throw UnsupportedError('Set Window Rect is not supported in JsonWire.');
   }
 
@@ -146,8 +143,11 @@ class JsonWireWindowHandler extends WindowHandler {
       });
 
   @override
-  Rectangle<int> parseInnerSizeResponse(WebDriverResponse response) {
-    final size = parseJsonWireResponse(response) as Map;
-    return Rectangle(0, 0, size['width'] as int, size['height'] as int);
+  Size parseInnerSizeResponse(WebDriverResponse response) {
+    final size = parseJsonWireResponse(response) as Map<String, Object?>;
+    return Size(
+      width: (size['width'] as num).toInt(),
+      height: (size['height'] as num).toInt(),
+    );
   }
 }
