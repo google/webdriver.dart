@@ -26,6 +26,7 @@ linter:
     - prefer_expression_function_bodies
     - prefer_final_locals
     - unnecessary_breaks
+    - unnecessary_ignore
     - use_enums
     - use_if_null_to_convert_nulls_to_bools
     - use_raw_strings

@@ -23,10 +23,7 @@ import '../common/spec.dart';
 import '../common/utils.dart';
 import '../common/webdriver_handler.dart';
 import 'common.dart';
-// ignore: uri_does_not_exist
-import 'common_stub.dart'
-// ignore: uri_does_not_exist
-    if (dart.library.io) 'common_io.dart';
+import 'common_stub.dart' if (dart.library.io) 'common_io.dart';
 import 'cookies.dart';
 import 'keyboard.dart';
 import 'logs.dart';
