@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// ignore: avoid_classes_with_only_static_members
 /// Capabilities constants.
+// ignore: avoid_classes_with_only_static_members
 class Capabilities {
   static const String browserName = 'browserName';
   static const String browserVersion = 'browserVersion';

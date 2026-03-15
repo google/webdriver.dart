@@ -126,7 +126,6 @@ void main() {
 
     test('encode/decode "user.js" in-memory', () {
       final profile = FirefoxProfile();
-      // ignore: deprecated_member_use_from_same_package
       profile.setOption(PrefsOption(Capabilities.hasNativeEvents, true));
 
       final zipArchive = unpackArchiveData(profile.toJson());
@@ -148,7 +147,6 @@ void main() {
         prefs,
         anyElement(
           (PrefsOption o) =>
-              // ignore: deprecated_member_use_from_same_package
               o.name == Capabilities.hasNativeEvents && o.value == true,
         ),
       );
@@ -157,7 +155,6 @@ void main() {
     test('encode/decode profile directory from disk', () {
       final profile = FirefoxProfile(
           profileDirectory: io.Directory('test/support/firefox_profile'));
-      // ignore: deprecated_member_use_from_same_package
       profile.setOption(PrefsOption(Capabilities.hasNativeEvents, true));
 
       final zipArchive = unpackArchiveData(profile.toJson());
@@ -186,7 +183,6 @@ void main() {
         prefs,
         anyElement(
           (PrefsOption o) =>
-              // ignore: deprecated_member_use_from_same_package
               o.name == Capabilities.hasNativeEvents && o.value == true,
         ),
       );

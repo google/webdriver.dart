@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:js_interop';
 
 import 'package:web/web.dart' as web;
 
@@ -36,8 +37,12 @@ class AsyncXhrRequestClient extends AsyncRequestClient {
         sendData: request.body,
         mimeType: 'application/json',
       );
-    } on web.ProgressEvent catch (e) {
-      httpRequest = e.target as web.XMLHttpRequest;
+    } catch (e) {
+      if (e.isA<web.ProgressEvent>()) {
+        httpRequest = (e as web.ProgressEvent).target as web.XMLHttpRequest;
+      } else {
+        rethrow;
+      }
     } finally {
       _lock.release();
     }
