@@ -1,4 +1,4 @@
-[![CI](https://github.com/google/webdriver.dart/actions/workflows/ci.yaml/badge.svg)](https://github.com/google/webdriver.dart/actions/workflows/ci.yaml)
+[![CI](https://github.com/google/webdriver.dart/actions/workflows/ci.yaml/badge.svg?branch=master)](https://github.com/google/webdriver.dart/actions/workflows/ci.yaml)
 [![pub package](https://img.shields.io/pub/v/webdriver.svg)](https://pub.dartlang.org/packages/webdriver)
 [![package publisher](https://img.shields.io/pub/publisher/webdriver.svg)](https://pub.dev/packages/webdriver/publisher)
 
