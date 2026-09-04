@@ -12,6 +12,8 @@ on:
 env:
   PUB_ENVIRONMENT: bot.github
 
+permissions: read-all
+
 jobs:
   analyze:
     runs-on: ubuntu-latest
