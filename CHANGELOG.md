@@ -1,4 +1,4 @@
-## 3.2.0-wip
+## 3.2.0
 
 * Require Dart 3.4 and add a dependency on `package:web`.
 * Ensure HTTP clients are closed if creating a session fails.
