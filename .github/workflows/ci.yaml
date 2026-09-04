@@ -72,7 +72,7 @@ jobs:
       - uses: dart-lang/setup-dart@6afc89df92d6eb3834022f73cd65adc8cdfcb92d
         with:
           sdk: ${{ matrix.sdk }}
-      - uses: browser-actions/setup-firefox@latest
+      - uses: browser-actions/setup-firefox@0bc507ddf224827e3b1af68e014d5e42ab93e795
       - uses: browser-actions/setup-geckodriver@eb8b0670366f719ca31703766a8cb7e3ea2c56ed
       - id: install
         name: Install dependencies
