@@ -1,3 +1,8 @@
+## 3.2.1
+
+* Fix a potential regression in async matchers that could cause type error when 
+  providing values to matchers in tests.
+
 ## 3.2.0
 
 * Require Dart 3.4 and add a dependency on `package:web`.
