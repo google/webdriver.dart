@@ -78,7 +78,8 @@ class Clock {
 }
 
 void _matcherExpect(Object? value, m.Matcher matcher, String? reason) {
-  final matchState = <String, Object?>{};
+  // ignore: inference_failure_on_collection_literal
+  final matchState = {};
   if (matcher.matches(value, matchState)) {
     return;
   }
