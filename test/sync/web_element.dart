@@ -96,7 +96,6 @@ void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
 
     test('rect -- table', () {
       final rect = table.rect;
-      expect(rect, config.isRectangle);
       expect(rect.left, isNonNegative);
       expect(rect.top, isNonNegative);
       expect(rect.width, isNonNegative);
@@ -105,7 +104,6 @@ void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
 
     test('rect -- invisible', () {
       final rect = invisible.rect;
-      expect(rect, config.isRectangle);
       expect(rect.left, 0);
       expect(rect.top, 0);
       expect(rect.width, isNonNegative);
@@ -114,28 +112,24 @@ void runTests({WebDriverSpec spec = WebDriverSpec.Auto}) {
 
     test('location -- table', () {
       final location = table.location;
-      expect(location, config.isPoint);
       expect(location.x, isNonNegative);
       expect(location.y, isNonNegative);
     });
 
     test('location -- invisible', () {
       final location = invisible.location;
-      expect(location, config.isPoint);
       expect(location.x, 0);
       expect(location.y, 0);
     });
 
     test('size -- table', () {
       final size = table.size;
-      expect(size, config.isRectangle);
       expect(size.width, isNonNegative);
       expect(size.height, isNonNegative);
     });
 
     test('size -- invisible', () {
       final size = invisible.size;
-      expect(size, config.isRectangle);
       expect(size.width, isNonNegative);
       expect(size.height, isNonNegative);
     });

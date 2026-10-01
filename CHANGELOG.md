@@ -1,6 +1,12 @@
+## 4.0.0-wip
+
+* **Breaking change:**
+  Replace usages of `Point<int>` and `Rectangle<int>` from `dart:math` with
+  custom `Position`, `Rect`, and `Size` types.
+
 ## 3.2.1
 
-* Fix a potential regression in async matchers that could cause type error when 
+* Fix a potential regression in async matchers that could cause type error when
   providing values to matchers in tests.
 
 ## 3.2.0

@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import '../../async_core.dart';
 import 'request.dart';
 import 'session.dart';
@@ -157,15 +155,13 @@ abstract class ElementHandler {
   WebDriverRequest buildLocationRequest(String elementId);
 
   /// Parses response for 'Element Location'.
-  Point<int> parseLocationResponse(WebDriverResponse response);
+  Position parseLocationResponse(WebDriverResponse response);
 
   /// Builds request for 'Element Size'.
   WebDriverRequest buildSizeRequest(String elementId);
 
   /// Parses response for 'Element Size'.
-  ///
-  /// This will be the rectangle moved to (0, 0).
-  Rectangle<int> parseSizeResponse(WebDriverResponse response);
+  Size parseSizeResponse(WebDriverResponse response);
 
   /// Builds request for 'Element Name'.
   WebDriverRequest buildNameRequest(String elementId);
@@ -363,36 +359,34 @@ abstract class WindowHandler {
   WebDriverRequest buildLocationRequest();
 
   /// Parses response for 'Window Location'.
-  Point<int> parseLocationResponse(WebDriverResponse response);
+  Position parseLocationResponse(WebDriverResponse response);
 
   /// Builds request for 'Window Size'.
   WebDriverRequest buildSizeRequest();
 
   /// Parses response for 'Window Size'.
-  ///
-  /// This will be the rectangle moved to (0, 0).
-  Rectangle<int> parseSizeResponse(WebDriverResponse response);
+  Size parseSizeResponse(WebDriverResponse response);
 
   /// Builds request for 'Window Rect'.
   WebDriverRequest buildRectRequest();
 
   /// Parses response for 'Window Rect'.
-  Rectangle<int> parseRectResponse(WebDriverResponse response);
+  Rect parseRectResponse(WebDriverResponse response);
 
   /// Builds request for 'Set Window Location'.
-  WebDriverRequest buildSetLocationRequest(Point<int> location);
+  WebDriverRequest buildSetLocationRequest(Position location);
 
   /// Parses response for 'Set Window Location'.
   void parseSetLocationResponse(WebDriverResponse response);
 
   /// Builds request for 'Set Window Size'.
-  WebDriverRequest buildSetSizeRequest(Rectangle<int> size);
+  WebDriverRequest buildSetSizeRequest(Size size);
 
   /// Parses response for 'Set Window Size'.
   void parseSetSizeResponse(WebDriverResponse response);
 
   /// Builds request for 'Set Window Rect'.
-  WebDriverRequest buildSetRectRequest(Rectangle<int> rect);
+  WebDriverRequest buildSetRectRequest(Rect rect);
 
   /// Parses response for 'Set Window Rect'.
   void parseSetRectResponse(WebDriverResponse response);
@@ -423,7 +417,7 @@ abstract class WindowHandler {
   WebDriverRequest buildInnerSizeRequest();
 
   /// Parses response for 'Inner Size'.
-  Rectangle<int> parseInnerSizeResponse(WebDriverResponse response);
+  Size parseInnerSizeResponse(WebDriverResponse response);
 }
 
 abstract class FrameHandler {

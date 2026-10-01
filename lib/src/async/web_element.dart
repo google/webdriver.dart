@@ -13,9 +13,9 @@
 // limitations under the License.
 
 import 'dart:async';
-import 'dart:math';
 
 import '../common/by.dart';
+import '../common/geometry.dart';
 import '../common/request_client.dart';
 import '../common/web_element.dart' as common;
 import '../common/webdriver_handler.dart';
@@ -74,21 +74,21 @@ class WebElement extends common.WebElement implements SearchContext {
       _handler.element.buildDisplayedRequest(id),
       _handler.element.parseDisplayedResponse);
 
-  /// The location within the document of this element.
-  Future<Point<int>> get location => _client.send(
+  /// The position of this element's top-left corner,
+  /// relative to the top-left corner of the document.
+  Future<Position> get location => _client.send(
       _handler.element.buildLocationRequest(id),
       _handler.element.parseLocationResponse);
 
-  /// The size of this element.
-  Future<Rectangle<int>> get size => _client.send(
-      _handler.element.buildSizeRequest(id),
+  /// The width and height of this element.
+  Future<Size> get size => _client.send(_handler.element.buildSizeRequest(id),
       _handler.element.parseSizeResponse);
 
-  /// The bounds of this element.
-  Future<Rectangle<int>> get rect async {
+  /// The bounds of this element, combining its [location] and [size].
+  Future<Rect> get rect async {
     final location = await this.location;
     final size = await this.size;
-    return Rectangle<int>(location.x, location.y, size.width, size.height);
+    return Rect.from(topLeft: location, size: size);
   }
 
   /// The tag name for this element.

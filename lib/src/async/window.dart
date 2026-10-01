@@ -13,8 +13,8 @@
 // limitations under the License.
 
 import 'dart:async';
-import 'dart:math';
 
+import '../common/geometry.dart';
 import '../common/request_client.dart';
 import '../common/webdriver_handler.dart';
 
@@ -30,22 +30,26 @@ class Window {
       _handler.window.buildSetActiveRequest(id),
       _handler.window.parseSetActiveResponse);
 
-  /// The location of the window.
-  Future<Point<int>> get location => _client.send(
+  /// The position of the top-left corner of the window on the screen.
+  Future<Position> get location => _client.send(
       _handler.window.buildLocationRequest(),
       _handler.window.parseLocationResponse);
 
-  /// The outer size of the window.
-  Future<Rectangle<int>> get size => _client.send(
+  /// The outer size of the window,
+  /// including browser interface elements such as toolbars and borders.
+  Future<Size> get size => _client.send(
       _handler.window.buildSizeRequest(), _handler.window.parseSizeResponse);
 
-  /// The inner size of the window.
-  Future<Rectangle<int>> get innerSize => _client.send(
+  /// The viewport size of the currently selected browsing context,
+  /// as reported by `window.innerWidth` and `window.innerHeight`.
+  ///
+  /// If a frame is selected, this is the size of that frame's viewport.
+  Future<Size> get innerSize => _client.send(
       _handler.window.buildInnerSizeRequest(),
       _handler.window.parseInnerSizeResponse);
 
-  /// The location and size of the window.
-  Future<Rectangle<int>> get rect async {
+  /// The position and outer size of the window.
+  Future<Rect> get rect async {
     try {
       return await _client.send(_handler.window.buildRectRequest(),
           _handler.window.parseRectResponse);
@@ -54,22 +58,32 @@ class Window {
       // Delegate to other methods.
       final location = await this.location;
       final size = await this.size;
-      return Rectangle<int>(location.x, location.y, size.width, size.height);
+      return Rect.from(topLeft: location, size: size);
     }
   }
 
-  /// Sets the window location.
-  Future<void> setLocation(Point<int> point) => _client.send(
-      _handler.window.buildSetLocationRequest(point),
+  /// Requests that the window be moved so its top-left corner is at [position].
+  ///
+  /// The actual resulting position might differ due to
+  /// browser or window manager constraints.
+  Future<void> setLocation(Position position) => _client.send(
+      _handler.window.buildSetLocationRequest(position),
       _handler.window.parseSetLocationResponse);
 
-  /// Sets the window size.
-  Future<void> setSize(Rectangle<int> size) => _client.send(
+  /// Requests that the window be resized so its outer size is [size].
+  ///
+  /// The actual resulting size might differ due to
+  /// browser or window manager constraints.
+  Future<void> setSize(Size size) => _client.send(
       _handler.window.buildSetSizeRequest(size),
       _handler.window.parseSetSizeResponse);
 
-  /// The location and size of the window.
-  Future<void> setRect(Rectangle<int> rect) async {
+  /// Requests that the window be moved and resized to
+  /// the position and outer size specified by [rect].
+  ///
+  /// The actual resulting position and size might differ due to
+  /// browser or window manager constraints.
+  Future<void> setRect(Rect rect) async {
     try {
       await _client.send(_handler.window.buildSetRectRequest(rect),
           _handler.window.parseSetRectResponse);
@@ -78,7 +92,7 @@ class Window {
       // JsonWire cannot implement this API in one call.
       // Delegate to other methods.
       await setLocation(rect.topLeft);
-      await setSize(Rectangle(0, 0, rect.width, rect.height));
+      await setSize(rect.size);
     }
   }
 

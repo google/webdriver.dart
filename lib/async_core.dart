@@ -38,6 +38,7 @@ export 'package:webdriver/src/common/capabilities.dart';
 export 'package:webdriver/src/common/command_event.dart';
 export 'package:webdriver/src/common/cookie.dart';
 export 'package:webdriver/src/common/exception.dart';
+export 'package:webdriver/src/common/geometry.dart';
 export 'package:webdriver/src/common/log.dart';
 export 'package:webdriver/src/common/mouse.dart';
 export 'package:webdriver/src/common/spec.dart';
